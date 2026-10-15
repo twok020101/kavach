@@ -6,8 +6,8 @@
 
 ## 1. Conventions
 
-- Base URL: `https://api.<domain>/v1` (Cloud Run URL in the hackathon).
-- Auth: `Authorization: Bearer <Firebase ID token>` on every call except `/health`, `/v1/public/*`.
+- Base URL: `https://api.<domain>` (the Cloud Run URL in the hackathon). Every path below already includes its version prefix (`/v1/...`), so clients join base URL + path as written; there is no `/v1` in the base URL.
+- Auth: `Authorization: Bearer <Firebase ID token>` on every call except `/health` and `GET /v1/public/proof`. Demo users get their token from Firebase anonymous sign-in (see `POST /v1/public/demo`).
 - JSON, camelCase. Money in integer rupees (`...Inr`). Dates `YYYY-MM-DD`.
 - Idempotency: commands accept `Idempotency-Key` header (UUID); repeats within 24 h return the original result.
 - Concurrency: commands accept optional `expectedVersion`; mismatch → `409 version_conflict` with current version.
@@ -23,7 +23,7 @@
 |---|---|---|
 | GET | `/health` | Liveness (`{"ok":true,"version":"…","models":{…}}`) |
 | GET | `/v1/public/proof` | Latest eval summary for the Proof page |
-| POST | `/v1/public/demo` | Create an anonymous demo session: clones the Sharma household for this anonymous uid; returns `{householdId}` |
+| POST | `/v1/public/demo` | **Requires an ID token from Firebase anonymous auth.** Client flow: `signInAnonymously()` → get ID token → call this endpoint with `Authorization: Bearer`. The server verifies the token, clones the Sharma household with that anonymous uid in `access`/`accessUids` (so API calls and Firestore rules both work), and returns `{householdId}`. If the user later signs in with Google, link the anonymous account (`linkWithPopup`) so the uid and household are kept |
 
 ### Households and setup
 

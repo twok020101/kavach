@@ -495,7 +495,10 @@ service cloud.firestore {
                    || request.auth.uid in resource.data.ownerUids);
       allow write: if false;
       match /clauses/{cid} {
-        allow read: if signedIn();                 // clause text of public wordings; private products read via API only
+        // Child rules do not inherit the parent's check, so repeat it here against the parent product.
+        allow read: if signedIn() && (
+          get(/databases/$(db)/documents/policyProducts/$(pid)).data.isPublic == true
+          || request.auth.uid in get(/databases/$(db)/documents/policyProducts/$(pid)).data.ownerUids);
         allow write: if false;
       }
     }
@@ -507,7 +510,7 @@ service cloud.firestore {
 }
 ```
 
-Note: for private products (a GMC wording uploaded by one household) restrict clause reads by serving them through the API, or store `ownerUids` on each clause. Choose the API route for the hackathon.
+Note: a clause rule must check the parent product itself (as above), because Firestore does not apply a parent document's rule to its subcollections. The web app may still fetch private clauses through the API (`GET /v1/products/{productId}/clauses/{clauseId}`), which checks household membership server-side; the rule is the second line of defence.
 
 `infra/storage.rules`:
 ```

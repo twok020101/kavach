@@ -1,6 +1,6 @@
 # 10 · Build plan: workstreams, order, schedule and definition of done
 
-**How to turn this plan into a working, deployed Kavach by Saturday 18 October 2026, with several builders (people or agents) working in parallel without stepping on each other.** This is a plan only; no build starts until Kshitij says go.
+**How to turn this plan into a working, deployed Kavach by Sunday 18 October 2026 (confirm the exact cut-off time and time zone with the organisers), with several builders (people or agents) working in parallel without stepping on each other.** This is a plan only; no build starts until Kshitij says go.
 
 ---
 
@@ -42,15 +42,17 @@ J (independent, feeds B's rules pack) ─► B
 I (samples on day 1; personas after B; video/deck last)
 ```
 
-## 4. Schedule (Tue 14 → Sat 18 Oct 2026)
+## 4. Schedule (Wed 14 → Sun 18 Oct 2026)
+
+The rows are relative: if the go comes later than Wed 14, compress the first two rows into one day rather than moving the submission day.
 
 | When | A | B | C | D | E | F | G | H | I/J |
 |---|---|---|---|---|---|---|---|---|---|
-| **Tue 14 evening** | Scaffold, contracts v0, GCP project + APIs, CI | Rules pack YAML skeleton, test cases written for HX-1/CX-1/PX-1 | Pick ingest libs; prompts drafted | Prompts drafted | Spike: ADK `run_live` echo through Cloud Run WebSocket | – | Tokens, shell, S01, S04–S06 on fixtures | Choose 24 wordings; manifest | Sample docs drafted; start rule verification |
-| **Wed 15** | Event store, projector, auth, Firestore rules; first deploy | needs, budget, optimise, cover_map, score passing | Schedule extraction live; wording segmentation + embeddings | Intake + question planner + setup commands | Live audio both ways on a phone; barge-in | Letter reader prompt + fixture | S07–S11, S14–S16 | Label 8 wordings | Persona event script v1 |
-| **Thu 16** | Hardening, rate limits, logging | calendar, diff, hospital (HX-1 green), claim (CX-1 green), sensitivity | Terms extraction + verifier on terms | Life change → plan diff → actions; advisor | Estimate capture → engine → cards; verified cards; Hindi voice tuned | Claim assess + appeal draft + PDF | S17–S24 | Harness runs on 8; label 8 more | Demo controls; samples printed + photographed |
-| **Fri 17** | Prod deploy, min instances, budget alert | Property tests, edge cases | Perf (ingest ≤ 90 s) | Polish copy, Hindi strings | Fallback text mode; resilience; 10-scenario rehearsal | S30–S32 wired | S25–S29, accessibility pass, desktop layouts | Full run on 24; Proof page live | Full end-to-end runs on live URL; record video takes |
-| **Sat 18** | Freeze by noon IST | – | – | – | Final rehearsal | – | Bug fixes only | Final numbers | Edit video, deck PDF, README; **submit early (by afternoon IST)** |
+| **Wed 14 evening** | Scaffold, contracts v0, GCP project + APIs, CI | Rules pack YAML skeleton, test cases written for HX-1/CX-1/PX-1 | Pick ingest libs; prompts drafted | Prompts drafted | Spike: ADK `run_live` echo through Cloud Run WebSocket | – | Tokens, shell, S01, S04–S06 on fixtures | Choose 24 wordings; manifest | Sample docs drafted; start rule verification |
+| **Thu 15** | Event store, projector, auth, Firestore rules; first deploy | needs, budget, optimise, cover_map, score passing | Schedule extraction live; wording segmentation + embeddings | Intake + question planner + setup commands | Live audio both ways on a phone; barge-in | Letter reader prompt + fixture | S07–S11, S14–S16 | Label 8 wordings | Persona event script v1 |
+| **Fri 16** | Hardening, rate limits, logging | calendar, diff, hospital (HX-1 green), claim (CX-1 green), sensitivity | Terms extraction + verifier on terms | Life change → plan diff → actions; advisor | Estimate capture → engine → cards; verified cards; Hindi voice tuned | Claim assess + appeal draft + PDF | S17–S24 | Harness runs on 8; label 8 more | Demo controls; samples printed + photographed |
+| **Sat 17** | Prod deploy, min instances, budget alert | Property tests, edge cases | Perf (ingest ≤ 90 s) | Polish copy, Hindi strings | Fallback text mode; resilience; 10-scenario rehearsal | S30–S32 wired | S25–S29, accessibility pass, desktop layouts | Full run on 24; Proof page live | Full end-to-end runs on live URL; record video takes |
+| **Sun 18** | Freeze by noon IST | – | – | – | Final rehearsal | – | Bug fixes only | Final numbers | Edit video, deck PDF, README; **submit early (by afternoon IST)** |
 
 ## 5. Definition of done (per feature)
 

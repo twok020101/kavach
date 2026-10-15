@@ -2,7 +2,7 @@
 
 **Kavach is the AI that stands beside your family at every insurance moment.** It remembers the household and acts at three moments where Indian families lose money: when life changes, at the hospital desk (the hero, live by voice and camera in Hindi), and when a claim goes wrong.
 
-This folder is the complete build plan for the Google Cloud AI Builder Cup 2026 (BFSI track, prototype due **Sat 18 Oct 2026**). It is written so that someone who has never seen the project can read it and build Kavach on their own. Written 14 Oct 2026 from the adopted [game plan](../research/game-plan.md) and the research in [brief.md](../research/brief.md), [feasibility.md](../research/feasibility.md), [market-scan.md](../research/market-scan.md) and [past-winners.md](../research/past-winners.md).
+This folder is the complete build plan for the Google Cloud AI Builder Cup 2026 (BFSI track, prototype due **Sun 18 Oct 2026**). It is written so that someone who has never seen the project can read it and build Kavach on their own. Written 14 Oct 2026 from the adopted [game plan](../research/game-plan.md) and the research in [brief.md](../research/brief.md), [feasibility.md](../research/feasibility.md), [market-scan.md](../research/market-scan.md) and [past-winners.md](../research/past-winners.md).
 
 > **Status:** plan only. No code has been written. Implementation starts when Kshitij says go.
 
@@ -33,7 +33,7 @@ This folder is the complete build plan for the Google Cloud AI Builder Cup 2026 
 | 07 | [Design system](07-design-system.md) | Brand, colour palette with contrast ratios (light, dark, desk theme), typography for English and Hindi, components, motion, icons, voice and tone, accessibility, tokens CSS |
 | 08 | [Screens](08-screens.md) | Sitemap and 30+ screens with mobile wireframes, copy, states and acceptance criteria; screen ↔ requirement ↔ endpoint map |
 | 09 | [Demo data, video script, deck, submission](09-demo-data-and-script.md) | Personas, sample documents, demo checkpoints, 3-minute shot list, 12-slide deck outline, submission checklist |
-| 10 | [Build plan](10-build-plan.md) | 10 parallel workstreams, dependency graph, day-by-day schedule to Sat 18, definition of done, tests, cut list, risks |
+| 10 | [Build plan](10-build-plan.md) | 10 parallel workstreams, dependency graph, day-by-day schedule to Sun 18, definition of done, tests, cut list, risks |
 | 11 | [Trust, safety, compliance](11-trust-safety-compliance.md) | IRDAI boundaries, DPDP Act design, hospital AI safety, disclaimers, rule-verification table |
 | 12 | [Roadmap](12-roadmap.md) | Validation, Singapore pack, licensed partner, employers, AA and Bima Sugam |
 
@@ -76,7 +76,7 @@ This folder is the complete build plan for the Google Cloud AI Builder Cup 2026 
 
 ## Open items to settle before or during the build
 
-1. Kshitij to say "go" to start the build (10 §4 schedule assumes a Tue evening start).
+1. Kshitij to say "go" to start the build (10 §4 schedule assumes a Wed 14 evening start; compress the first days if the go comes later).
 2. Pin exact Gemini model IDs and region on day 1 (03 §2, 02 §3.2).
 3. Verify every rule flagged VERIFY (11 §5).
 4. Confirm with organisers: India in JAPAC, and the BFSI category on the submission form (brief.md).

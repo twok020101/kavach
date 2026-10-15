@@ -97,7 +97,7 @@ Target 2:55. Screen recordings at 1080p from a real phone (Android, Chrome) mirr
 
 Design: use the Kavach design system (07): sand background, indigo headings, marigold accents, Plus Jakarta Sans. Export to PDF.
 
-## 6. Submission checklist (due Sat 18 Oct 2026)
+## 6. Submission checklist (due Sun 18 Oct 2026; confirm the exact cut-off time and time zone with the organisers)
 
 | Item | Owner | Check |
 |---|---|---|
