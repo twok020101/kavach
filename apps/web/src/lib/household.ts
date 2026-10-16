@@ -9,7 +9,7 @@ import { startDemo, storedHouseholdId } from './session';
 export const householdQueryKey = ['household'] as const;
 
 /** Loads the remembered household, or starts a demo when there is none (or it has gone). */
-async function loadCurrentHousehold(): Promise<Household> {
+export async function loadCurrentHousehold(): Promise<Household> {
   const token = await getIdToken();
   const remembered = storedHouseholdId();
   if (remembered) {
