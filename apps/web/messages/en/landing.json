@@ -1,4 +1,46 @@
 {
   "headline": "The AI that stands beside your family at every insurance moment.",
-  "subhead": "Kavach remembers your family's cover and acts when it matters: when life changes, at the hospital desk, and when a claim goes wrong."
+  "subhead": "Kavach remembers your family's cover and acts when it matters: when life changes, at the hospital desk, and when a claim goes wrong.",
+  "tryHospital": "Try the hospital scene",
+  "tryHospitalSub": "Sample estimate, Hindi or English, under a minute. No sign-in.",
+  "previewLabel": "Example answer",
+  "previewCaption": "What Kavach tells the family at the hospital desk",
+  "momentsTitle": "Three moments that matter",
+  "moments": {
+    "change": {
+      "title": "When life changes",
+      "body": "“Joining a startup on 1 Dec.” Kavach sees that your parents’ cover ends on 30 Nov, drafts the letter to keep it, and reminds you on WhatsApp.",
+      "stat": "Parents’ cover kept, not lost"
+    },
+    "hospital": {
+      "title": "At the hospital desk",
+      "body": "Voice and camera, in Hindi. Show the estimate and Kavach says which policy card to give and which room to ask for.",
+      "stat": "<amount></amount> less to pay"
+    },
+    "claim": {
+      "title": "When a claim goes wrong",
+      "body": "Send the settlement letter. Kavach checks every deduction against your policy and drafts the appeal.",
+      "stat": "<amount></amount> found to appeal"
+    }
+  },
+  "whatsapp": {
+    "title": "No app? Same answer on WhatsApp",
+    "body": "Send a photo of the estimate or a Hindi voice note. Kavach replies with a voice note and a card.",
+    "qrAlt": "QR code that opens WhatsApp with the message to join Kavach’s test number",
+    "openOnPhone": "On this phone? Open WhatsApp",
+    "notConfigured": "The WhatsApp test number isn’t set up yet.",
+    "step1": "Scan the code with your phone camera. WhatsApp opens with a join message.",
+    "step2": "Send that message to join Kavach’s test number.",
+    "step3": "Send RAHUL to get the family alert on your phone, then send a photo of an estimate or a voice note.",
+    "note": "This uses a WhatsApp test number. Membership lasts 3 days; scan again after that."
+  },
+  "trust": {
+    "title": "Every number shows its working",
+    "body": "Rupee amounts come from tested rules, never from a guess. Tap “Why these numbers?” to see the rule and the clause behind each one."
+  },
+  "footer": {
+    "disclaimer": "Guidance, not a policy recommendation. Confirm with your insurer or the TPA desk.",
+    "sample": "Everything in this demo is made-up sample data.",
+    "built": "Built on Gemini and Google Cloud."
+  }
 }

@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { Citation, RuleFiring, Rupees } from './common';
+import { BillingType } from './hospital';
 
 /** What the claim letter reader extracts from a settlement letter. */
 export const SettlementLetter = z.object({
@@ -15,12 +16,26 @@ export const SettlementLetter = z.object({
       label: z.string(),
       amount: Rupees,
       reasonGiven: z.string().optional(),
+      /** Set by the letter reader when it can tell; the engine falls back to the label. */
+      category: z
+        .enum(['non_payable', 'proportionate', 'consumables', 'room_excess', 'other'])
+        .optional(),
     }),
   ),
   copayApplied: Rupees.default(0),
   letterDate: z.string().date().optional(),
 });
 export type SettlementLetter = z.infer<typeof SettlementLetter>;
+
+/** What the engine needs to know about the hospital bill behind a claim. */
+export const ClaimBill = z.object({
+  total: Rupees,
+  roomRentPerDay: Rupees.optional(),
+  billingType: BillingType.default('unknown'),
+  /** True when the stay (or the deducted part of it) was in ICU. */
+  icuStay: z.boolean().default(false),
+});
+export type ClaimBill = z.infer<typeof ClaimBill>;
 
 export const DeductionVerdict = z.enum(['valid', 'challengeable', 'possibly']);
 
@@ -39,6 +54,8 @@ export type AssessedDeduction = z.infer<typeof AssessedDeduction>;
 export const ClaimAssessment = z.object({
   deductions: z.array(AssessedDeduction),
   recoverable: Rupees,
+  /** What the engine computes the insurer approved from the letter's deductions and co-pay. */
+  approved: Rupees.optional(),
   expectedPayout: Rupees,
   trace: z.array(RuleFiring),
 });

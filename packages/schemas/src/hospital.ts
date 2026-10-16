@@ -41,6 +41,8 @@ export const EstimateLine = z.object({
   pricedByRoom: z.boolean(),
   /** Amount for each room category, keyed by RoomCategory.id. */
   amounts: z.record(z.string(), Rupees),
+  /** Days charged on a per-day head (room, icu) when it differs from the stay; defaults to HospitalEstimate.days. */
+  days: z.number().int().positive().optional(),
 });
 export type EstimateLine = z.infer<typeof EstimateLine>;
 
@@ -52,6 +54,7 @@ export const HospitalEstimate = z.object({
   admissionType: z.enum(['planned', 'emergency']),
   days: z.number().int().positive(),
   billingType: BillingType,
+  /** The first category is the room the estimate was quoted for. */
   roomCategories: z.array(RoomCategory).min(1),
   lines: z.array(EstimateLine),
   packagePrices: z.record(z.string(), Rupees).optional(),

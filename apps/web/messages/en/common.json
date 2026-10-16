@@ -1,0 +1,69 @@
+{
+  "verified": "Verified",
+  "toVerify": "Check with insurer",
+  "rules": "Rules",
+  "loading": "Loading",
+  "error": "Something went wrong. Please try again, or type your question instead.",
+  "close": "Close",
+  "language": "Language",
+  "languages": { "en": "English", "hi": "हिंदी" },
+  "skipToContent": "Skip to content",
+  "mainNav": "Main",
+  "atHospital": "At the hospital",
+  "nav": {
+    "home": "Home",
+    "plan": "Plan",
+    "policies": "Policies",
+    "timeline": "Timeline",
+    "more": "More"
+  },
+  "status": {
+    "covered": "Covered",
+    "partial": "Partly covered",
+    "contingent": "Depends on job",
+    "gap": "Not covered",
+    "na": "Not needed"
+  },
+  "relation": {
+    "self": "Self",
+    "spouse": "Spouse",
+    "child": "Child",
+    "parent": "Parent",
+    "parent_in_law": "Parent-in-law",
+    "other": "Family"
+  },
+  "captions": { "agent": "Kavach", "user": "You" },
+  "why": {
+    "rulesTitle": "Rules behind the answer",
+    "tariffTitle": "The hospital’s room tariff",
+    "tariffIntro": "Read from the estimate. Charges marked below change with the room, so the insurer cuts them in proportion in a room above your limit.",
+    "charge": "Charge",
+    "changesWithRoom": "Changes with room",
+    "branchTitle": "Only <amount></amount> saved if the hospital doesn’t price by room",
+    "branchBody": "Then only the room rent differs, and nothing else is cut. You would pay about:"
+  },
+  "heads": {
+    "room": "Room rent",
+    "nursing": "Nursing & RMO",
+    "surgeon": "Surgeon / procedure",
+    "ot": "Cath lab / OT",
+    "doctor_visits": "Doctor visits",
+    "icu": "ICU",
+    "implant": "Stent / implant",
+    "pharmacy": "Pharmacy & consumables",
+    "consumables": "Consumables",
+    "diagnostics": "Diagnostics",
+    "non_payable": "Non-payable items",
+    "other": "Other"
+  },
+  "compare": {
+    "room": "Room",
+    "recommended": "Ask for this",
+    "bill": "Hospital bill",
+    "notPaid": "Not paid: {label}",
+    "copay": "Co-pay",
+    "policyPays": "Policy pays",
+    "youPay": "You pay",
+    "none": "None"
+  }
+}
