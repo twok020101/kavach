@@ -1,0 +1,19 @@
+{
+  "kind": "estimate",
+  "documentId": "doc-estimate",
+  "summary": "City Heart Hospital estimate for Suresh Sharma: planned PTCA, 4 days, Deluxe Single and Single Standard room options.",
+  "insuredPersons": [
+    {
+      "name": "Suresh Sharma",
+      "age": 62
+    }
+  ],
+  "citations": [
+    {
+      "documentId": "doc-estimate",
+      "page": 1,
+      "quote": "Nursing & RMO, surgeon / procedure, cath lab / OT and doctor visit charges are levied as per the room category occupied (differential tariff)."
+    }
+  ],
+  "notes": ["Open the hospital desk to compare the room options against the family's cover."]
+}

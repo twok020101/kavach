@@ -1,18 +1,38 @@
 {
   "kind": "benefits_summary",
   "documentId": "doc-benefits-acme",
-  "policyNumber": "SHI/GMC/2026/ACME/0021",
   "insuredPersons": [
-    { "name": "Rahul Sharma", "relation": "self", "age": 34 },
-    { "name": "Priya Sharma", "relation": "spouse", "age": 32 },
-    { "name": "Anaya Sharma", "relation": "child", "age": 5 },
-    { "name": "Suresh Sharma", "relation": "parent", "age": 62 },
-    { "name": "Kamala Sharma", "relation": "parent", "age": 58 }
+    {
+      "name": "Rahul Sharma",
+      "relation": "self",
+      "age": 34
+    },
+    {
+      "name": "Priya Sharma",
+      "relation": "spouse",
+      "age": 32
+    },
+    {
+      "name": "Anaya Sharma",
+      "relation": "child",
+      "age": 5
+    },
+    {
+      "name": "Suresh Sharma",
+      "relation": "parent",
+      "age": 62
+    },
+    {
+      "name": "Kamala Sharma",
+      "relation": "parent",
+      "age": 58
+    }
   ],
   "policy": {
     "kind": "group_health",
     "insurer": "Suraksha Health Insurance Ltd (SAMPLE)",
     "productName": "Acme Software Group Mediclaim (family floater)",
+    "policyNumber": "SHI/GMC/2026/ACME/0021",
     "source": "employer",
     "employer": "Acme Software Pvt Ltd",
     "sumInsured": 500000,

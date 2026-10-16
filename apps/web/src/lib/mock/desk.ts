@@ -1,34 +1,21 @@
 /**
- * Mock desk data: the Sharma family and the HX-1 hero scene (City Heart Hospital,
- * planned angioplasty, 4 days), shaped exactly like @kavach/schemas.
+ * A static HX-1 answer (City Heart Hospital, planned angioplasty, 4 days), shaped exactly like
+ * @kavach/schemas, for the landing page preview that renders without the API.
  *
  * Every rupee here is copied from the engine's worked example in
- * docs/research/red-team-response.md §3. It stands in for the API until the desk
- * core (WP-3) lands; then `lib/desk-client.ts` switches to the real API.
+ * docs/research/red-team-response.md §3. The desk screens use the real API (lib/desk-client.ts).
  */
 import {
   DeskAnswer,
   DeskEvaluation,
-  DeskSession,
   HospitalEstimate,
-  Member,
   type Locale,
   type RoomOptionResult,
 } from '@kavach/schemas';
-import type { DeskClient, DeskHousehold, DeskSessionSummary } from '../desk-client';
 
-const HOUSEHOLD_ID = 'hh_sharma_demo';
 const HOSPITAL = 'City Heart Hospital';
 const PARENTS_POLICY = 'pol_parents_migrated';
 const TOP_UP = 'pol_supertopup';
-
-const members = [
-  { id: 'm_suresh', name: 'Suresh Sharma', relation: 'parent', age: 62, language: 'hi' },
-  { id: 'm_kamala', name: 'Kamala Sharma', relation: 'parent', age: 58, language: 'hi' },
-  { id: 'm_rahul', name: 'Rahul Sharma', relation: 'self', age: 34, language: 'en' },
-  { id: 'm_priya', name: 'Priya Sharma', relation: 'spouse', age: 32, language: 'en' },
-  { id: 'm_anaya', name: 'Anaya Sharma', relation: 'child', age: 5, language: 'en' },
-].map((m) => Member.parse(m));
 
 /** The printed estimate with the hospital's room-category tariff (HX-1). */
 const estimate = HospitalEstimate.parse({
@@ -324,103 +311,3 @@ export function mockAnswer(lang: Locale, hasEstimate = true) {
     ],
   });
 }
-
-// ── Session state (kept in sessionStorage so a reload keeps the session) ──
-
-const sessions = new Map<string, DeskSession>();
-
-function save(session: DeskSession) {
-  sessions.set(session.id, session);
-  try {
-    sessionStorage.setItem(`kavach.desk.${session.id}`, JSON.stringify(session));
-  } catch {
-    // Storage blocked: the in-memory copy still works until reload.
-  }
-}
-
-function load(sessionId: string): DeskSession {
-  const cached = sessions.get(sessionId);
-  if (cached) return cached;
-  try {
-    const raw = sessionStorage.getItem(`kavach.desk.${sessionId}`);
-    if (raw) return DeskSession.parse(JSON.parse(raw));
-  } catch {
-    // Fall through to a fresh session.
-  }
-  // Unknown id (e.g. a shared link): start a fresh demo session for Suresh.
-  const session = DeskSession.parse({
-    id: sessionId,
-    householdId: HOUSEHOLD_ID,
-    patientMemberId: 'm_suresh',
-    language: sessionId.includes('-hi-') ? 'hi' : 'en',
-    hospitalName: HOSPITAL,
-    channel: 'app',
-    status: 'active',
-    createdAt: new Date().toISOString(),
-  });
-  save(session);
-  return session;
-}
-
-/** Waits a little, so the UI shows its agent steps as it will with the real API. */
-const delay = (ms: number) => new Promise((r) => setTimeout(r, ms));
-
-export const mockDeskClient: DeskClient = {
-  async getHousehold(): Promise<DeskHousehold> {
-    return { householdId: HOUSEHOLD_ID, hospitalName: HOSPITAL, members };
-  },
-
-  async startSession({ patientMemberId, language }) {
-    await delay(300);
-    const id = `mock-${language}-${Math.random().toString(36).slice(2, 10)}`;
-    save(
-      DeskSession.parse({
-        id,
-        householdId: HOUSEHOLD_ID,
-        patientMemberId,
-        language,
-        hospitalName: HOSPITAL,
-        channel: 'app',
-        status: 'active',
-        createdAt: new Date().toISOString(),
-      }),
-    );
-    return { sessionId: id };
-  },
-
-  async getSession(sessionId) {
-    return load(sessionId);
-  },
-
-  async capture(sessionId) {
-    await delay(1800);
-    const session = load(sessionId);
-    save({ ...session, estimate });
-    return estimate;
-  },
-
-  async ask(sessionId, _text, language) {
-    await delay(1500);
-    const session = load(sessionId);
-    const reply = mockAnswer(language, Boolean(session.estimate));
-    if (reply.cards.length) save({ ...session, lastAnswer: reply });
-    return reply;
-  },
-
-  async evaluate(sessionId, language) {
-    load(sessionId);
-    return mockEvaluation(language);
-  },
-
-  async end(sessionId): Promise<DeskSessionSummary> {
-    await delay(300);
-    const session = { ...load(sessionId), status: 'ended' as const };
-    save(session);
-    return {
-      session,
-      summary: session.lastAnswer
-        ? { en: copy.en.summary, hi: copy.hi.summary }
-        : { en: '', hi: '' },
-    };
-  },
-};

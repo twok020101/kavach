@@ -10,6 +10,8 @@ import {
 } from 'fastify-type-provider-zod';
 import { env } from './env';
 import { demoRoutes } from './routes/demo';
+import { deskRoutes } from './routes/desk';
+import { documentRoutes } from './routes/documents';
 import { healthRoutes } from './routes/health';
 import { householdRoutes } from './routes/households';
 import { actionRoutes } from './routes/actions';
@@ -40,6 +42,8 @@ export async function buildServer() {
   await app.register(planRoutes);
   await app.register(lifeChangeRoutes);
   await app.register(actionRoutes);
+  await app.register(deskRoutes);
+  await app.register(documentRoutes);
 
   return app;
 }

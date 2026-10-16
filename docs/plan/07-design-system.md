@@ -1,6 +1,8 @@
 # 07 · Design system: brand, colour, type, components
 
-**The visual and interaction language of Kavach: colour tokens (light, dark and the hospital "desk" theme), typography for English and Hindi, spacing, components, motion, iconography, voice and tone, and accessibility rules.** Screen-by-screen layouts are in [08-screens.md](08-screens.md). UX is 10% of the score and there is a separate Best UI/UX prize, so this is built to be distinctive, calm and usable by a 58-year-old under stress.
+> Updated 16 Oct 2026 to match red-team-response.md and implementation-plan.md.
+
+**The visual and interaction language of Kavach: colour tokens (light, dark and the hospital "desk" theme), typography for English and Hindi, spacing, components, motion, iconography, voice and tone, and accessibility rules.** Screen-by-screen layouts are in [08-screens.md](08-screens.md); the same answer-card design is rendered as an image for WhatsApp replies (§8). UX is 10% of the score and there is a separate Best UI/UX prize, so this is built to be distinctive, calm and usable by a 58-year-old under stress.
 
 ---
 
@@ -182,7 +184,7 @@ Library: Motion. Respect `prefers-reduced-motion` (fade only).
 | `FactValue` (custom) | renders a `Fact`: value + source badge ("from your policy", "you said", "we assumed · change") + citation chip | normal, inferred, low-confidence, editing |
 | `CitationChip` (custom) | `§4.2.1 · p14` with `Quote` icon; tap opens Clause Viewer | default, verified (badge), partially verified |
 | `ClauseViewer` (custom sheet) | Quote in serif; full clause; page image with highlight box; product name, UIN; "Open full document" | loading, ready |
-| `WhyPanel` (custom) | Lists statements with verification badge, rule IDs and plain-English rule, clauses; collapsible | – |
+| `WhyPanel` (custom) | Lists statements with verification badge, rule IDs and plain-English rule, clauses; on the desk it also shows the tariff columns that drove the deduction ("deduction applies because these charges change with the room") and the billing branch ("₹16,000 if the hospital doesn't price by room"); collapsible | single answer, two branches (billing unknown) |
 | `MemberAvatar` | initials on a tinted circle (colour derived from relation), name, relation, age | default, selected, with status dot |
 | `FamilyCard` (custom) | Tree layout: owner centre, spouse beside, children below, parents above | editing per member |
 | `CoverMapGrid` (custom) | rows = members, columns = risks; cells show icon + status + ₹ gap; sticky first column; horizontal scroll on mobile | per cell: covered/partial/contingent/gap/na; selected; changed (pulse) |
@@ -199,8 +201,10 @@ Library: Motion. Respect `prefers-reduced-motion` (fade only).
 | `MoneySlider` | slider + numeric input; Indian formatting; "typical for your city" marker | – |
 | `VoiceOrb` (custom) | listening/speaking/thinking states; tap to mute | idle, listening, thinking, speaking, error |
 | `CaptionStream` (custom) | live captions, agent lines bold, user lines muted; auto-scroll | – |
-| `DeskCard` (custom) | large card: icon, title, big number, one-line explanation, citation chip, verification badge | verifying, verified, partial |
-| `CameraCapture` (custom) | live preview with document frame guide; capture button; retake | – |
+| `DeskCard` / `AnswerCard` (custom) | large card: icon, title, big number, one-line explanation, citation chip, ✓ badge from the engine trace (`DeskCard.verified`); kinds: policy order, room compare, ask the desk, billing branch, warning | verified (engine), not verified, branch pending (waiting for the desk's answer) |
+| `CameraCapture` (custom) | camera preview with document frame guide; capture button sends a still to the estimate reader (no video is streamed to the live model); retake | – |
+| `WhatsAppCard` (image) | the `AnswerCard` rendered to a 1080 × 1350 PNG by `app/api/og/card/[cardId]` (Next.js `ImageResponse`), Noto Sans Devanagari for Hindi, Kavach mark and "SAMPLE" in demo; link to the full card under it | – |
+| `WhatsAppQR` | sandbox QR code with join text, on the landing page and README | – |
 | `PremiumStrip` | 12 bars (months), spike outlines | – |
 | `LanguageToggle` | EN / हिं segmented control | – |
 | `DisclaimerBar` | thin bar: "Guidance, not a policy recommendation. Confirm with your insurer." | – |
@@ -216,7 +220,7 @@ Library: Motion. Respect `prefers-reduced-motion` (fade only).
 | Uncertainty | Honest | "I couldn't find this in your policy. Please ask the desk." | "यह आपकी पॉलिसी में नहीं मिला। कृपया डेस्क से पूछ लीजिए।" |
 | Good news | Understated | "You're covered for this." | "इसके लिए आप कवर्ड हैं।" |
 
-Rules: no jargon without a one-tap explanation (glossary popovers); no exclamation marks in hospital mode; never "guaranteed"; numbers in lakh/crore; use "you" and the person's name; Hindi keeps everyday English insurance words (policy, room rent, TPA, cashless) as people actually say them.
+Rules: no jargon without a one-tap explanation (glossary popovers); no exclamation marks in hospital mode or on WhatsApp; WhatsApp texts are at most three short lines, with the detail in the card image and the link; never "guaranteed"; numbers in lakh/crore; use "you" and the person's name; Hindi keeps everyday English insurance words (policy, room rent, TPA, cashless) as people actually say them.
 
 ## 10. Accessibility checklist (WCAG 2.2 AA)
 
@@ -231,7 +235,9 @@ Rules: no jargon without a one-tap explanation (glossary popovers); no exclamati
 - Language attribute set per element (`lang="hi"`).
 - Forms: labels always visible; errors in text, not colour only.
 
-## 11. Tokens file (starter `apps/web/styles/tokens.css`)
+## 11. Tokens file (`apps/web/src/app/globals.css`)
+
+The tokens live in the Tailwind v4 entry stylesheet on `main` (exposed as classes such as `bg-primary`, `text-muted`, `bg-safe-bg`). Starter:
 
 ```css
 @import "tailwindcss";

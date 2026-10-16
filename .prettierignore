@@ -2,3 +2,4 @@ pnpm-lock.yaml
 docs/
 .next/
 dist/
+apps/api/src/retrieval/seed-clauses.json

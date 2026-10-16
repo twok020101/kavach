@@ -12,6 +12,8 @@ export const Citation = z.object({
   documentId: z.string(),
   page: z.number().int().positive().optional(),
   clauseRef: z.string().optional(),
+  /** The clause in the clause library this quote comes from, when known (see document.ts). */
+  clauseId: z.string().optional(),
   quote: z.string(),
 });
 export type Citation = z.infer<typeof Citation>;

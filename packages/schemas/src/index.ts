@@ -6,3 +6,4 @@ export * from './claim';
 export * from './action';
 export * from './demo';
 export * from './plan';
+export * from './document';
