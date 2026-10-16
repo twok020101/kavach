@@ -9,11 +9,16 @@ import {
   type ZodTypeProvider,
 } from 'fastify-type-provider-zod';
 import { env } from './env';
+import { claimRoutes } from './routes/claims';
 import { demoRoutes } from './routes/demo';
 import { deskRoutes } from './routes/desk';
 import { documentRoutes } from './routes/documents';
 import { healthRoutes } from './routes/health';
 import { householdRoutes } from './routes/households';
+import { actionRoutes } from './routes/actions';
+import { lifeChangeRoutes } from './routes/life-changes';
+import { planRoutes } from './routes/plans';
+import { proofRoutes } from './routes/proof';
 import { liveRoutes } from './routes/live';
 
 export async function buildServer() {
@@ -28,7 +33,11 @@ export async function buildServer() {
   app.setValidatorCompiler(validatorCompiler);
   app.setSerializerCompiler(serializerCompiler);
 
-  await app.register(cors, { origin: [env.PUBLIC_WEB_URL], credentials: true });
+  await app.register(cors, {
+    origin: [env.PUBLIC_WEB_URL],
+    credentials: true,
+    methods: ['GET', 'HEAD', 'POST', 'PUT', 'PATCH', 'DELETE'],
+  });
   await app.register(rateLimit, { max: 120, timeWindow: '1 minute' });
   await app.register(multipart, { limits: { fileSize: 15 * 1024 * 1024, files: 4 } });
   await app.register(websocket);
@@ -37,8 +46,13 @@ export async function buildServer() {
   await app.register(healthRoutes);
   await app.register(demoRoutes);
   await app.register(householdRoutes);
+  await app.register(planRoutes);
+  await app.register(lifeChangeRoutes);
+  await app.register(actionRoutes);
   await app.register(deskRoutes);
   await app.register(documentRoutes);
+  await app.register(proofRoutes);
+  await app.register(claimRoutes);
   await app.register(liveRoutes);
 
   return app;

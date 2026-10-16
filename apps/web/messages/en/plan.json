@@ -1,0 +1,166 @@
+{
+  "loading": "Loading your family's cover…",
+  "error": "Couldn't load this. Is the API running?",
+  "retry": "Try again",
+  "close": "Close",
+  "why": "How we worked this out",
+  "risk": { "health": "Health", "life": "Life", "accident": "Accident" },
+  "layer": {
+    "employer": "From the employer",
+    "personal": "Your own",
+    "statutory": "Government scheme"
+  },
+  "issue": {
+    "topup_without_base": "The super top-up pays only above its deductible, and no base policy covers that part any more. Without a base it pays nothing.",
+    "savings_plan_not_term": "This is mainly a savings plan; its life cover is small for what you pay.",
+    "below_minimum": "Below the minimum we suggest."
+  },
+  "home": {
+    "demoDate": "Demo date: {date}",
+    "startStory": "Start the story",
+    "score": "Safety score",
+    "summary": "{gaps, plural, =0 {No gaps} one {# gap} other {# gaps}} · {onJob, plural, =0 {nothing depends on a job} one {# depends on {name}'s job} other {# depend on {name}'s job}}",
+    "mapCaption": "Who is covered for what, on the chosen date",
+    "member": "Member",
+    "cellTitle": "{name} · {risk}",
+    "next": "Next: {count, plural, one {# step} other {# steps}} for <amount></amount>/mo",
+    "nextHint": "Within your budget · see your plan",
+    "drafts": "{count, plural, one {# step is} other {# steps are}} waiting for you",
+    "whatsChanging": "What's changing?"
+  },
+  "scrubber": {
+    "asOf": "As of {date}",
+    "today": "Back to today",
+    "pins": "Dates your cover changes",
+    "cover_ends": "{name} cover ends",
+    "cover_starts": "{name} cover starts"
+  },
+  "cell": {
+    "needs": "Needs",
+    "has": "Has",
+    "endsWithJob": "Ends with {name}'s job · in force till {date}",
+    "topUpAbove": "Pays only above <amount></amount> a year",
+    "nothing": "Nothing covers this on this date.",
+    "seeFix": "See the fix in your plan"
+  },
+  "rec": {
+    "title": {
+      "term_life": "Term life for {names}",
+      "family_health": "Family health ({names})",
+      "parents_health": "Parents' own health ({names})",
+      "personal_accident": "Accident cover for {names}",
+      "device": "Phone protection ({asset})"
+    },
+    "perMonth": "~<amount></amount>/mo",
+    "viaMigration": "by moving from {employer}'s policy",
+    "illustrative": "Illustrative",
+    "defer": {
+      "employer_cover": "Covered by {employer}'s group policy for now. Urgent if the job changes.",
+      "budget": "Later: doesn't fit this month's budget."
+    }
+  },
+  "plan": {
+    "title": "Your plan",
+    "uses": "Uses <spend></spend>/mo of the <budget></budget>/mo free for protection",
+    "howBudget": "How we set your budget",
+    "budgetExplain": "You have <left></left> left each month after EMIs and spending. We suggest using up to 20% (<total></total>) on protection. You already pay <existing></existing>, so <free></free> is free.",
+    "thinFund": "Your emergency fund is under 3 months of fixed costs, so we prefer low-deductible options.",
+    "later": "Later",
+    "review": "Things to review",
+    "reviewIssue": {
+      "savings_plan_not_term": "Mainly a savings plan; its life cover is small for the premium.",
+      "topup_without_base": "Pays nothing without a base policy below it.",
+      "below_minimum": "Below the minimum we suggest."
+    },
+    "disclaimer": "Premiums are illustrative, not a quote. Kavach doesn't sell insurance; talk to a licensed adviser before you buy."
+  },
+  "change": {
+    "title": "What's changing?",
+    "label": "Describe the change",
+    "placeholder": "For example: Joining a startup on 1 Dec",
+    "common": "Common changes",
+    "chips": {
+      "newJob": "New job",
+      "baby": "Baby on the way",
+      "parents": "Parents moving in",
+      "car": "New car",
+      "trip": "Trip abroad",
+      "loan": "New home loan"
+    },
+    "examples": {
+      "newJob": "Joining Orbit Labs, a startup, on 1 Dec. They cover me, Priya and Anaya for ₹3 lakh.",
+      "baby": "We're expecting a baby in May.",
+      "parents": "My parents are moving in with us next month.",
+      "car": "Buying a new car next month.",
+      "trip": "Going to Europe for two weeks in March.",
+      "loan": "Taking a home loan of ₹60 lakh."
+    },
+    "check": "Check",
+    "understood": "Here's what I understood",
+    "parseError": "Couldn't understand that. Try saying it another way."
+  },
+  "confirm": {
+    "leaves": "{name} leaves {employer} on {date}",
+    "coverEnds": "{employer} health cover ends {date} for {count, plural, one {# person} other {all # of you}}",
+    "joins": "Joins {employer} on {date}",
+    "newCover": "{employer} health cover <amount></amount> for {names}",
+    "noCover": "{employer} gives no health cover",
+    "offerQuestion": "Does {employer} give health cover?",
+    "offerYes": "Yes",
+    "offerNo": "No / not sure",
+    "unrecognised": "Not used: {text}",
+    "checkDates": "Some dates were guessed. Check them before you continue.",
+    "saveError": "Couldn't save the change. Please try again.",
+    "edit": "Edit",
+    "looksRight": "Looks right"
+  },
+  "replan": {
+    "notFound": "Couldn't find this change.",
+    "headline": "On {date}, {names} lose cover",
+    "headlineNone": "From {date}, here's your new plan",
+    "score": "Safety score {before} → {after} without action",
+    "newPlan": "Your new plan",
+    "spend": "<before></before> → <after></after>/mo",
+    "fits": "Fits your budget",
+    "steps": "Steps, with dates",
+    "checkHr": "Deadlines come from the employer's benefits summary. Check them with HR.",
+    "by": "By",
+    "kind": {
+      "migration_letter": "Letter to review",
+      "grievance_letter": "Letter to review",
+      "reminder": "WhatsApp reminder"
+    },
+    "status": {
+      "draft": "Waiting for you",
+      "approved": "Approved",
+      "done": "Done",
+      "dismissed": "Dismissed"
+    }
+  },
+  "actions": {
+    "title": "Your steps",
+    "empty": "Nothing waiting. Tell Kavach what's changing and it will prepare the steps.",
+    "due": "Due {date}"
+  },
+  "review": {
+    "notFound": "Couldn't find this step.",
+    "due": "Due {date}",
+    "to": "To: {to}",
+    "blanks": "Filled in from your family details. Highlighted blanks are for you to fill.",
+    "fill": "please fill",
+    "why": "Why this step",
+    "whyLetter": "When a job ends, the group health policy ends for everyone on it. Parents can usually move to an individual policy and keep credit for waiting periods, if the request reaches the insurer in time.",
+    "whyReminder": "Kavach will remind you on WhatsApp on this date, with the letter ready to send.",
+    "approve": "Approve",
+    "approveReminder": "Turn on reminder",
+    "dismiss": "Not now",
+    "approvedLetter": "Approved. Your letter is ready.",
+    "approvedReminder": "Reminder on. Kavach will message you on WhatsApp.",
+    "copy": "Copy",
+    "copied": "Copied",
+    "pdf": "PDF",
+    "neverSends": "Kavach never sends letters for you. You send it.",
+    "whatsapp": "Kavach on WhatsApp",
+    "error": "Something went wrong. Please try again."
+  }
+}

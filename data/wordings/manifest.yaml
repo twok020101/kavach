@@ -1,0 +1,87 @@
+# Public Indian health insurance policy wordings used by the Proof page evals (WP-11).
+#
+# The PDFs are not committed. `pnpm wordings:fetch` downloads them into data/wordings/pdfs/
+# (git-ignored) and prints each file's SHA-256 to copy into `sha256` below.
+# Labels for each wording: data/wordings/labels/<uin>.json (shape: WordingLabel in
+# packages/schemas/src/proof.ts). Value conventions for the person checking them:
+#   null        not labelled yet (not scored)
+#   "none"      the wording has no such limit / condition (e.g. no room rent cap, co-pay at all ages)
+#   "schedule"  set in the policy schedule, not the wording (e.g. a super top-up deductible; not scored)
+#   rupees      limits written as "% of sum insured" are labelled at referenceSumInsured (Rs 5,00,000),
+#               applying any rupee cap, e.g. "1% of SI up to Rs 5,000" -> 5000
+#   nonPayables true when the wording points to the non-payable items list (IRDAI List I / Annexure)
+# Set checkedBy and checkedAt once every field has been checked against the PDF.
+#
+# Mix (docs/plan/03 §9.1): 8 insurers; individual, floater, senior, super top-up, 3 group
+# wordings and the IRDAI standard product Arogya Sanjeevani. IRDAI-hosted copies are the
+# filed versions; a later version of the same product has a different UIN.
+wordings:
+  - uin: NIAHLIP25044V022425
+    insurer: The New India Assurance Co. Ltd.
+    product: Arogya Sanjeevani Policy
+    segment: standard
+    source: insurer
+    url: https://www.newindia.co.in/assets/docs/know-more/health/arogya-sanjeevani/POLICY%20CLAUSES%20Arogya%20Sanjeevani.pdf
+    sha256: null
+    note: >-
+      Search found this file at uatportalug.newindia.co.in (same path); the CIS and prospectus
+      for the same UIN are at this www.newindia.co.in path. Confirm the link on first fetch.
+
+  - uin: SHAHLIP19101V031819
+    insurer: Star Health and Allied Insurance Co. Ltd.
+    product: Senior Citizens Red Carpet Health Insurance Policy
+    segment: senior
+    source: irdai
+    url: https://irdai.gov.in/documents/37343/931203/SHAHLIP19101V031819_2018-2019.pdf/5664fc0d-ebb8-ebea-2375-65831ee91169?version=1.1&t=1668509571504&download=true
+    sha256: null
+    note: >-
+      2018-19 filed version. Later versions: SHAHLIP25027V072425 (2024) and SHAHLIP26041V082526
+      (2025) on Star Health's site.
+
+  - uin: HDFHLIP22021V042122
+    insurer: HDFC ERGO General Insurance Co. Ltd.
+    product: my:health Medisure Super Top Up Insurance
+    segment: super_top_up
+    source: irdai
+    url: https://irdai.gov.in/documents/37343/931203/HDFHLIP22021V042122_HEALTH2016.pdf/cf850b83-268e-cffe-962c-9fdcedbd7d59?version=1.1&t=1668845231281&download=true
+    sha256: null
+
+  - uin: SBIHLIP23050V012223
+    insurer: SBI General Insurance Co. Ltd.
+    product: Super Health Insurance
+    segment: individual
+    source: irdai
+    url: https://irdai.gov.in/documents/37343/931203/SBIHLIP23050V012223.pdf/de34fc22-e5b0-d313-41b1-9bcd4243d600?version=1.0&t=1669351245742&download=true
+    sha256: null
+
+  - uin: UNIHLIP23006V032223
+    insurer: Universal Sompo General Insurance Co. Ltd.
+    product: Complete Healthcare Insurance
+    segment: floater
+    source: irdai
+    url: https://irdai.gov.in/documents/37343/931203/UNIHLIP23006V032223.pdf/a78a1bbf-533e-247a-b9a0-136768029158?version=1.0&t=1669354136950&download=true
+    sha256: null
+
+  - uin: ICIHLGP22207V032122
+    insurer: ICICI Lombard General Insurance Co. Ltd.
+    product: Group Health Insurance
+    segment: group
+    source: irdai
+    url: https://irdai.gov.in/documents/37343/931203/ICIHLGP22207V032122.pdf/4836615c-d306-3524-d3c2-e530c12a7cea?version=1.1&t=1668851204294&download=true
+    sha256: null
+
+  - uin: UIIHLGP21226V022021
+    insurer: United India Insurance Co. Ltd.
+    product: Group Health Policy
+    segment: group
+    source: irdai
+    url: https://irdai.gov.in/documents/37343/931203/UIIHLGP21226V022021_2020-2021.pdf/3761fa7d-ef8c-7d8d-2b7a-2dd44eb41f25?version=1.1&t=1668590224936&download=true
+    sha256: null
+
+  - uin: FGIHLGP21165V022021
+    insurer: Future Generali India Insurance Co. Ltd.
+    product: Group Health Insurance (Revised)
+    segment: group
+    source: irdai
+    url: https://irdai.gov.in/documents/37343/931203/FGIHLGP21165V022021_2020-2021.pdf/31b9b937-4dbc-ddda-b33d-d0195eafdf4b?version=1.1&t=1668578906592&download=true
+    sha256: null

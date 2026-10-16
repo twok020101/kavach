@@ -21,6 +21,10 @@ const IRDAI_2024: Source = {
   url: 'https://irdai.gov.in/documents/37343/365525/%e0%a4%b8%e0%a5%8d%e0%a4%b5%e0%a4%be%e0%a4%b8%e0%a5%8d%e0%a4%a5%e0%a5%8d%e0%a4%af+%e0%a4%ac%e0%a5%80%e0%a4%ae%e0%a4%be+%e0%a4%b5%e0%a5%8d%e0%a4%af%e0%a4%b5%e0%a4%b8%e0%a4%be%e0%a4%af+%e0%a4%aa%e0%a4%b0+%e0%a4%ae%e0%a4%be%e0%a4%b8%e0%a5%8d%e0%a4%9f%e0%a4%b0+%e0%a4%aa%e0%a4%b0%e0%a4%bf%e0%a4%aa%e0%a4%a4%e0%a5%8d%e0%a4%b0+_+Master+Circular++on+Health++Insurance+Business++29052024.pdf/5e707a91-b5de-1ec1-cf18-b66273a6839d?t=1716962621002&version=1.0',
 };
 const WORDING: Source = { title: "The policy's own wording (terms extracted with citations)" };
+const HEURISTIC: Source = { title: 'Kavach planning heuristic (docs/plan/05), not regulation' };
+const BENEFITS: Source = {
+  title: "The employer's group health benefits summary (migration clause); check with HR",
+};
 
 const list: Rule[] = [
   {
@@ -139,6 +143,103 @@ const list: Rule[] = [
       'A proportionate deduction applied to ICU charges, or at a hospital that does not bill by room category, is challengeable.',
     status: 'to_verify',
     sources: [IRDAI_2020, IRDAI_2024],
+  },
+  // Planning heuristics behind the cover map and plan (docs/plan/05 §3–§8).
+  {
+    id: 'R-HN-010',
+    name: 'Nuclear family health need',
+    statement:
+      'Self, spouse and children need a family health floater of ₹10,00,000 in a tier-1 city.',
+    status: 'verified',
+    sources: [HEURISTIC],
+  },
+  {
+    id: 'R-HN-011',
+    name: "Parents' health need",
+    statement:
+      'Parents need health cover of their own, separate from the nuclear floater: ₹10,00,000 per pair, ₹5,00,000 at the least.',
+    status: 'verified',
+    sources: [HEURISTIC],
+  },
+  {
+    id: 'R-HN-012',
+    name: 'Employer cover is contingent',
+    statement:
+      "Employer group health counts toward the need, but only while the job lasts: a cell met only with it is 'depends on job'.",
+    status: 'verified',
+    sources: [HEURISTIC],
+  },
+  {
+    id: 'R-HN-013',
+    name: 'Super top-up needs a base',
+    statement:
+      'A super top-up counts only when a base policy covers its deductible; without a base it pays nothing.',
+    status: 'verified',
+    sources: [HEURISTIC, WORDING],
+  },
+  {
+    id: 'R-LF-001',
+    name: 'Term life need',
+    statement:
+      'Life cover need = annual income × 12 (under 40; 10 in the 40s, 8 in the 50s) + loans + ₹25,00,000 per child under 18 − emergency fund, less existing life cover; recommend in steps of ₹25,00,000.',
+    status: 'verified',
+    sources: [HEURISTIC],
+  },
+  {
+    id: 'R-LF-002',
+    name: 'Savings plan is not term cover',
+    statement:
+      'Endowment and ULIP plans count at their sum assured, but they are mainly savings; their life cover is small for the premium.',
+    status: 'verified',
+    sources: [HEURISTIC],
+  },
+  {
+    id: 'R-PA-001',
+    name: 'Personal accident need',
+    statement:
+      'Each earner needs accident cover of 3 × annual income (at most ₹1,00,00,000); at least ₹50,00,000 when income is ₹15,00,000 or more.',
+    status: 'verified',
+    sources: [HEURISTIC],
+  },
+  {
+    id: 'R-DV-001',
+    name: 'Device protection',
+    statement:
+      'Devices worth ₹50,000 or more in their first 2 years can be protected. Low priority.',
+    status: 'verified',
+    sources: [HEURISTIC],
+  },
+  {
+    id: 'R-BG-001',
+    name: 'Monthly protection budget',
+    statement:
+      'Budget = the smaller of 20% of what is left after EMIs and fixed spending, and 10% of take-home pay; personal premiums already paid come out of it.',
+    status: 'verified',
+    sources: [HEURISTIC],
+  },
+  {
+    id: 'R-OP-001',
+    name: 'Most protection per rupee, most urgent first',
+    statement:
+      'Recommendations are ranked by urgency, then by weighted need closed per rupee of premium, and chosen while they fit the budget. Premiums are illustrative.',
+    status: 'verified',
+    sources: [HEURISTIC],
+  },
+  {
+    id: 'R-SC-001',
+    name: 'Safety score',
+    statement:
+      'Score = weighted share of each need that is covered; employer cover counts half because it ends with the job.',
+    status: 'verified',
+    sources: [HEURISTIC],
+  },
+  {
+    id: 'R-MG-001',
+    name: 'Migrate group cover before the last working day',
+    statement:
+      "Members of an employer's group health policy can ask to move to an individual policy, keeping their continuous cover, if the request reaches the insurer in time (Acme: 15 days before the last working day).",
+    status: 'to_verify',
+    sources: [BENEFITS, IRDAI_2024],
   },
 ];
 

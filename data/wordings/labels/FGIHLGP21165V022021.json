@@ -1,0 +1,70 @@
+{
+  "uin": "FGIHLGP21165V022021",
+  "checkedBy": null,
+  "checkedAt": null,
+  "prefilledFromPdf": false,
+  "referenceSumInsured": 500000,
+  "note": "Pre-filled by an agent WITHOUT reading the PDF: the agent's sandbox could not reach irdai.gov.in or the insurer's site, so every value is null. Open the PDF from data/wordings/manifest.yaml, fill value, page, clauseRef and a 5-30 word verbatim quote for each field, then set checkedBy and checkedAt. Hints are unverified pointers from public summaries; never copy one without finding it in the PDF.",
+  "fields": {
+    "roomRentLimitPerDay": {
+      "value": null,
+      "page": null,
+      "clauseRef": null,
+      "quote": null
+    },
+    "icuLimitPerDay": {
+      "value": null,
+      "page": null,
+      "clauseRef": null,
+      "quote": null
+    },
+    "copayPercent": {
+      "value": null,
+      "page": null,
+      "clauseRef": null,
+      "quote": null
+    },
+    "copayFromAge": {
+      "value": null,
+      "page": null,
+      "clauseRef": null,
+      "quote": null
+    },
+    "proportionateDeduction": {
+      "value": null,
+      "page": null,
+      "clauseRef": null,
+      "quote": null
+    },
+    "deductible": {
+      "value": null,
+      "page": null,
+      "clauseRef": null,
+      "quote": null
+    },
+    "initialWaitingDays": {
+      "value": null,
+      "page": null,
+      "clauseRef": null,
+      "quote": null
+    },
+    "pedWaitingMonths": {
+      "value": null,
+      "page": null,
+      "clauseRef": null,
+      "quote": null
+    },
+    "specificWaitingMonths": {
+      "value": null,
+      "page": null,
+      "clauseRef": null,
+      "quote": null
+    },
+    "nonPayables": {
+      "value": null,
+      "page": null,
+      "clauseRef": null,
+      "quote": null
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "kind": "wording",
+  "documentId": "HDFHLIP22021V042122",
+  "insuredPersons": [],
+  "policy": {
+    "kind": "super_top_up",
+    "insurer": "HDFC ERGO General Insurance Co. Ltd.",
+    "productName": "my:health Medisure Super Top Up Insurance",
+    "uin": "HDFHLIP22021V042122",
+    "source": "personal",
+    "sumInsured": 500000,
+    "startDate": "2026-04-01",
+    "endDate": "2027-03-31",
+    "terms": {
+      "copayPercent": 0,
+      "deductible": 0,
+      "proportionateDeduction": true,
+      "citations": {}
+    }
+  },
+  "citations": [],
+  "notes": [
+    "Placeholder fixture so `pnpm eval` runs with FAKE_LLM=1. It is not a model answer: replace it with a recorded real run once Vertex keys are in."
+  ]
+}

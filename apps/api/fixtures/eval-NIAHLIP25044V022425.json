@@ -1,0 +1,25 @@
+{
+  "kind": "wording",
+  "documentId": "NIAHLIP25044V022425",
+  "insuredPersons": [],
+  "policy": {
+    "kind": "retail_health",
+    "insurer": "The New India Assurance Co. Ltd.",
+    "productName": "Arogya Sanjeevani Policy",
+    "uin": "NIAHLIP25044V022425",
+    "source": "personal",
+    "sumInsured": 500000,
+    "startDate": "2026-04-01",
+    "endDate": "2027-03-31",
+    "terms": {
+      "copayPercent": 0,
+      "deductible": 0,
+      "proportionateDeduction": true,
+      "citations": {}
+    }
+  },
+  "citations": [],
+  "notes": [
+    "Placeholder fixture so `pnpm eval` runs with FAKE_LLM=1. It is not a model answer: replace it with a recorded real run once Vertex keys are in."
+  ]
+}

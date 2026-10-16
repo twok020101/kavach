@@ -1,0 +1,96 @@
+{
+  "loading": "Loading",
+  "error": "Something went wrong. Please try again.",
+  "retry": "Try again",
+  "back": "Claims",
+  "list": {
+    "title": "Claims",
+    "intro": "Got a settlement letter with deductions? Kavach checks each one against your policy and the IRDAI rules.",
+    "drop": "Upload the insurer’s settlement letter",
+    "choose": "Choose PDF or photo",
+    "photo": "Take a photo",
+    "sample": "Use the sample letter",
+    "empty": "No claim letters yet.",
+    "failed": "Couldn’t read this letter: {reason}",
+    "recoverable": "Up to <amount></amount> may be recoverable",
+    "nothing": "Every deduction looks valid",
+    "claimNo": "Claim {number}",
+    "status": {
+      "reading": "Reading",
+      "assessed": "Checked",
+      "appeal_drafted": "Appeal drafted",
+      "appeal_sent": "Appeal sent",
+      "resolved": "Resolved",
+      "failed": "Not read"
+    }
+  },
+  "steps": {
+    "read": "Reading the settlement letter",
+    "match": "Finding the patient and the policy",
+    "check": "Checking each deduction against the policy",
+    "cite": "Linking the policy clauses"
+  },
+  "check": {
+    "billed": "Billed",
+    "paid": "Paid",
+    "recoverable": "Up to <amount></amount> may be recoverable",
+    "nothing": "Every deduction on this letter looks valid. There is nothing to appeal.",
+    "payout": "If the appeal succeeds, the insurer pays <amount></amount> in all.",
+    "fromLetter": "From the letter",
+    "room": "Room {amount} per day",
+    "noRoom": "Room rent not printed",
+    "icu": "ICU stay",
+    "noIcu": "No ICU stay",
+    "change": "Change",
+    "roomRent": "Room rent per day (₹)",
+    "icuLabel": "Part of the stay was in ICU",
+    "save": "Check again",
+    "cancel": "Cancel",
+    "deductions": "Deductions",
+    "verdict": {
+      "challengeable": "Challengeable",
+      "possibly": "Possibly",
+      "valid": "Valid"
+    },
+    "back": "{amount} back after co-pay",
+    "copay": "Co-pay {percent}%",
+    "copayValid": "{percent}% of the bill after deductions, as the policy says",
+    "copayWrong": "Should be {expected}; see the extra line above",
+    "why": "Why these verdicts",
+    "draft": "Draft the appeal letter",
+    "review": "Review the appeal letter",
+    "seeLetter": "See the settlement letter",
+    "notAdvice": "Kavach checks the letter against your policy and IRDAI rules. The insurer decides the appeal."
+  },
+  "appeal": {
+    "title": "Appeal letter",
+    "to": "To the Grievance Redressal Officer, {insurer}",
+    "verified": "Checked: every amount matches the engine and every quote matches your policy",
+    "failed": "Fix these before the PDF can be made",
+    "checks": "{count} checks",
+    "kinds": {
+      "quote": "Quote",
+      "amount": "Amount",
+      "rule": "Rule",
+      "clause": "Clause",
+      "total": "Total asked"
+    },
+    "edit": "Edit",
+    "save": "Save and check again",
+    "cancel": "Cancel",
+    "edited": "Edited by you",
+    "pdf": "Download PDF",
+    "copy": "Copy text",
+    "copied": "Copied",
+    "email": "Email",
+    "blocked": "The PDF is blocked until every check passes.",
+    "next": "If they don’t agree",
+    "ladder": {
+      "one": "Insurer’s Grievance Redressal Officer (now)",
+      "two": "Bima Bharosa portal, if there is no reply in the time the insurer’s letter gives",
+      "three": "Insurance Ombudsman, within one year of the insurer’s reply"
+    },
+    "neverSends": "Kavach never sends letters for you. You send it, from your own email or by post.",
+    "notFound": "No appeal drafted for this claim yet."
+  }
+}

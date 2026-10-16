@@ -4,13 +4,18 @@
  * store and to apps/api/src/retrieval/seed-clauses.json (loaded at API start-up).
  *
  *   pnpm ingest            # with FAKE_LLM=1 the clauses come from apps/api/fixtures/clauses-*.json
+ *
+ * The eval wordings in data/wordings/manifest.yaml are added once fetched (`pnpm wordings:fetch`);
+ * with FAKE_LLM=1 only those with a recorded clauses-<uin> fixture are included.
  */
-import { readFile, writeFile } from 'node:fs/promises';
+import { access, readFile, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { ClauseList } from '@kavach/schemas';
+import { env } from '../apps/api/src/env';
 import { generateStructured, models } from '../apps/api/src/lib/gemini';
-import { repoRoot } from '../apps/api/src/paths';
+import { appRoot, repoRoot } from '../apps/api/src/paths';
 import { clauseId, productKeyFor, saveClauses } from '../apps/api/src/retrieval/clauses';
+import { hasPdf, loadManifest, pdfPath } from '../evals/wordings';
 
 /** The Sharma family's wordings (sample documents with a wording extract). */
 const WORDINGS = [
@@ -54,9 +59,38 @@ RULES
 
 const seedFile = resolve(repoRoot, 'apps/api/src/retrieval/seed-clauses.json');
 
+const exists = (file: string) =>
+  access(file).then(
+    () => true,
+    () => false,
+  );
+
+/** The public eval wordings that are ready to ingest. */
+async function evalWordings() {
+  const ready = [];
+  for (const w of await loadManifest()) {
+    const fixture = `clauses-${w.uin}`;
+    const ok = env.FAKE_LLM
+      ? await exists(resolve(appRoot, 'fixtures', `${fixture}.json`))
+      : await hasPdf(w.uin);
+    if (!ok) {
+      console.log(`${w.uin}: skipped (${env.FAKE_LLM ? 'no fixture' : 'not fetched'})`);
+      continue;
+    }
+    ready.push({
+      file: pdfPath(w.uin),
+      fixture,
+      insurer: w.insurer,
+      productName: w.product,
+      uin: w.uin,
+    });
+  }
+  return ready;
+}
+
 async function main() {
   const library = [];
-  for (const wording of WORDINGS) {
+  for (const wording of [...WORDINGS, ...(await evalWordings())]) {
     const productKey = productKeyFor(wording)!;
     const pdf = await readFile(resolve(repoRoot, wording.file));
     const { clauses } = await generateStructured({
