@@ -15,6 +15,7 @@
   --on-primary: #ffffff;
   --accent: #f4a62a;
   --accent-ink: #0f1b3d;
+  --accent-soft: #fff8eb;
   --status-safe: #1f7a4d;
   --status-safe-bg: #e4f3ea;
   --status-partial: #9a5b00;
@@ -44,6 +45,7 @@
   --on-primary: #12141c;
   --accent: #f4a62a;
   --accent-ink: #12141c;
+  --accent-soft: #3a2a10;
   --status-safe: #5bc48a;
   --status-safe-bg: #173326;
   --status-partial: #f0b44c;
@@ -60,6 +62,10 @@
   --surface: #ffffff;
   --text: #0b0b0c;
   --text-muted: #34312b;
+}
+
+/* Desk mode scales the whole page (rem units) to a 20 px base. */
+html:has([data-mode='desk']) {
   font-size: 125%;
 }
 
@@ -77,6 +83,7 @@
   --color-on-primary: var(--on-primary);
   --color-accent: var(--accent);
   --color-accent-ink: var(--accent-ink);
+  --color-accent-soft: var(--accent-soft);
   --color-safe: var(--status-safe);
   --color-safe-bg: var(--status-safe-bg);
   --color-partial: var(--status-partial);
@@ -102,6 +109,12 @@ body {
   font-family: var(--font-sans);
 }
 
+/* One visible focus ring everywhere: 2 px + 2 px offset. */
+:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
 /* All amounts use tabular figures so columns line up. */
 .amount {
   font-feature-settings: 'tnum';
@@ -109,4 +122,13 @@ body {
 
 :lang(hi) {
   line-height: 1.7;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }
