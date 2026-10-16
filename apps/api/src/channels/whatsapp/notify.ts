@@ -88,7 +88,10 @@ const PARENTS = ['parent', 'parent_in_law'];
  */
 export async function alertHouseholdOwner(household: Household, session: DeskSession) {
   try {
-    const owner = household.members.find((m) => m.relation === 'self');
+    // The family's chosen alert contact (S28), else the person who set Kavach up.
+    const owner =
+      household.members.find((m) => m.id === household.alertContactMemberId) ??
+      household.members.find((m) => m.relation === 'self');
     const patient = deskPatient(household, session.patientMemberId);
     const { estimate } = session;
     if (!owner || !estimate || estimate.needsConfirmation) return;

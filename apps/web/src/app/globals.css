@@ -1,7 +1,10 @@
 @import 'tailwindcss';
 
-/* Design tokens from docs/plan/07-design-system.md §11. */
-:root {
+/* Design tokens from docs/plan/07-design-system.md §11.
+   The desk re-declares the light tokens, so it stays light inside a dark page. */
+:root,
+[data-mode='desk'] {
+  color-scheme: light;
   --bg: #fbfaf7;
   --surface: #ffffff;
   --surface-sunken: #f5f3ee;
@@ -32,6 +35,7 @@
 }
 
 [data-theme='dark'] {
+  color-scheme: dark;
   --bg: #12141c;
   --surface: #1a1d28;
   --surface-sunken: #151821;
@@ -62,6 +66,11 @@
   --surface: #ffffff;
   --text: #0b0b0c;
   --text-muted: #34312b;
+}
+
+/* Larger text (S27 Settings). The desk sets its own size. */
+html[data-text-scale='large']:not(:has([data-mode='desk'])) {
+  font-size: 112.5%;
 }
 
 /* Desk mode scales the whole page (rem units) to a 20 px base. */
@@ -131,4 +140,10 @@ body {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+/* Icons that swap with the theme without waiting for React (theme toggle). */
+[data-theme='dark'] .dark-hidden,
+:root:not([data-theme='dark']) .light-hidden {
+  display: none;
 }

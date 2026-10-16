@@ -1,0 +1,165 @@
+{
+  "step": "Step {step} of {total}",
+  "back": "Back",
+  "continue": "Continue",
+  "error": "That didn't work. Please try again.",
+  "loading": "Loading…",
+  "signIn": {
+    "title": "Your family's insurance, in one place",
+    "intro": "Sign in to keep your family's cover, documents and plan safe and in sync.",
+    "google": "Continue with Google",
+    "guest": "Continue without an account",
+    "guestNote": "We keep your family on this device. You can add an account later.",
+    "localMode": "Local mode: sign-in is switched off, so you'll go straight in.",
+    "demo": "Just looking?",
+    "demoLink": "Try the demo family",
+    "invited": "{inviter} invited you to the {household}",
+    "invitedAs": "You'll join as {name}. You'll see your cover and the hospital button.",
+    "join": "Join the family",
+    "inviteGone": "This invite has expired or was already used. Ask for a new link."
+  },
+  "consent": {
+    "title": "Before we start",
+    "intro": "Kavach keeps your family's details to give you advice. Choose what we may use.",
+    "purposes": {
+      "planning": {
+        "label": "Use my family, money and policy details to plan cover",
+        "hint": "Needed to show your family's cover."
+      },
+      "documents": {
+        "label": "Read the documents I upload",
+        "hint": "Policies, benefit summaries, hospital estimates."
+      },
+      "health": {
+        "label": "Health details (for example, diabetes)",
+        "hint": "Optional. Helps at the hospital. Without it, hospital advice may be less precise."
+      },
+      "whatsapp": {
+        "label": "WhatsApp messages to my family",
+        "hint": "Optional. Alerts and dated reminders."
+      }
+    },
+    "required": "Kavach needs at least the first one to work.",
+    "promise": "We never sell your data. We never contact insurers for you. You can download or delete everything at any time from Settings.",
+    "agree": "Agree and continue"
+  },
+  "family": {
+    "title": "Tell us about your family",
+    "intro": "Who depends on you? One sentence is enough.",
+    "label": "Your family, in your words",
+    "placeholder": "I'm Rahul, 34, in Bengaluru. Wife Priya, daughter Anaya is 5, and my parents live with us…",
+    "try": "Try:",
+    "example": "Me, my wife Priya, daughter Anaya, and my parents in Pune",
+    "speak": "Hold to speak",
+    "listening": "Listening… let go when you're done",
+    "micBlocked": "We couldn't use the microphone. Please type instead.",
+    "voiceReady": "Voice note recorded ({seconds} s). Continue to send it.",
+    "clearVoice": "Remove",
+    "understanding": "Understanding your family",
+    "found": "Found {count, plural, one {# person} other {# people}}",
+    "nobody": "I couldn't find anyone in that. Could you say who lives with you?"
+  },
+  "confirm": {
+    "title": "Is this your family?",
+    "intro": "Tap anyone to change their details.",
+    "familyName": "Family name",
+    "familyNamePlaceholder": "Kulkarni family",
+    "city": "City",
+    "you": "you",
+    "age": "{age} yrs",
+    "addAge": "Add age",
+    "earning": "earning",
+    "assumed": "We assumed:",
+    "assumedEarning": "{name} {earning, select, true {is earning} other {isn't earning}}",
+    "change": "change",
+    "add": "Add someone",
+    "needAges": "Fill in {count, plural, one {# detail} other {# details}} to continue",
+    "looksRight": "Looks right",
+    "edit": {
+      "title": "Edit person",
+      "newTitle": "Add someone",
+      "name": "Name",
+      "relation": "Relation",
+      "age": "Age",
+      "earning": "Earns money",
+      "earningOptions": {
+        "yes": "Yes",
+        "no": "No",
+        "unknown": "Not sure"
+      },
+      "conditions": "Health conditions",
+      "conditionsHint": "Only kept because you allowed health details.",
+      "language": "Language Kavach speaks with them",
+      "save": "Save",
+      "remove": "Remove from family"
+    },
+    "conditionNames": {
+      "diabetes_t2": "Diabetes",
+      "hypertension": "Blood pressure",
+      "heart_disease": "Heart condition",
+      "asthma": "Asthma"
+    },
+    "defaultNames": {
+      "self": "You",
+      "spouse": "Spouse",
+      "child": "Child",
+      "parent": "Parent",
+      "parent_in_law": "Parent-in-law",
+      "other": "Family member"
+    },
+    "assumedSelf": "You earn the family's income"
+  },
+  "money": {
+    "title": "Four numbers. Rough is fine.",
+    "intro": "Why we ask: to suggest only what you can afford.",
+    "takeHome": "Take-home pay / month",
+    "emi": "All loan EMIs / month",
+    "spend": "Household spending / month",
+    "spendHint": "Rent, school, groceries…",
+    "fund": "Savings you could use in an emergency",
+    "emiHigh": "That's a lot of your income. We'll keep the plan lean.",
+    "loans": "Add loan details (optional)",
+    "loansOutstanding": "Loans still to repay (home, car…)",
+    "income": "Yearly income before tax (optional)",
+    "incomeHint": "Used to size life cover. Leave empty to use take-home × 12."
+  },
+  "questions": {
+    "title": "Just {count, plural, one {one question} other {# questions}}",
+    "none": "Nothing more to ask",
+    "noneIntro": "We have what we need to show your family's cover.",
+    "intro": "Each answer changes your plan.",
+    "spouse_earning": {
+      "q": "Does {name} earn?",
+      "why": "Decides whose income the family depends on.",
+      "options": {
+        "no": "No",
+        "part_time": "Yes, part-time",
+        "yes": "Yes"
+      }
+    },
+    "other_cover": {
+      "q": "{employer, select, none {Do you have any health or life policy you haven't added?} other {Is {employer} your only employer cover?}}",
+      "why": "Decides if your parents are safe if you change jobs.",
+      "options": {
+        "only": "That's all",
+        "another": "I have another"
+      }
+    },
+    "parents_health": {
+      "q": "Does {name} have a long-term health condition?",
+      "why": "Hospitals and insurers ask; it changes waiting periods.",
+      "options": {
+        "none": "None",
+        "diabetes_t2": "Diabetes",
+        "hypertension": "Blood pressure",
+        "heart_disease": "Heart"
+      }
+    },
+    "impact": "Changes your life cover by about <amount></amount>",
+    "see": "See my family's cover"
+  },
+  "landing": {
+    "signIn": "Sign in",
+    "start": "Start with my family"
+  }
+}

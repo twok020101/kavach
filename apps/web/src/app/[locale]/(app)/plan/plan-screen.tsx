@@ -1,14 +1,16 @@
 'use client';
 
-import type { Household } from '@kavach/schemas';
+import type { Household, Recommendation } from '@kavach/schemas';
+import { ChevronRight } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import { useState } from 'react';
 import { Amount } from '@/components/kavach/amount';
 import { Card } from '@/components/ui/card';
-import { Disclosure } from '@/components/ui/disclosure';
+import { BudgetSheet } from '@/components/plan/budget-sheet';
+import { ItemSheet } from '@/components/plan/item-sheet';
 import { PlanFrame } from '@/components/plan/plan-frame';
 import { usePlan } from '@/components/plan/queries';
 import { RecommendationRow } from '@/components/plan/recommendation';
-import { RuleList } from '@/components/plan/rule-list';
 
 export function PlanScreen() {
   return <PlanFrame>{(household) => <PlanView household={household} />}</PlanFrame>;
@@ -16,7 +18,10 @@ export function PlanScreen() {
 
 function PlanView({ household }: { household: Household }) {
   const t = useTranslations('plan.plan');
+  const tr = useTranslations('plan.rec');
   const { data: plan } = usePlan(household.id);
+  const [budgetOpen, setBudgetOpen] = useState(false);
+  const [item, setItem] = useState<Recommendation>();
   if (!plan) return null;
 
   const selected = plan.recommendations.filter((r) => r.status === 'selected');
@@ -38,58 +43,81 @@ function PlanView({ household }: { household: Household }) {
         </p>
       </header>
 
-      <Card className="p-3 sm:p-4">
-        <Disclosure label={t('howBudget')}>
-          <p className="text-sm">
-            {t.rich('budgetExplain', {
-              left: () => <Amount value={budget.disposableMonthly} />,
-              total: () => <Amount value={budget.totalMonthly} />,
-              existing: () => <Amount value={budget.existingPremiumsMonthly} />,
-              free: () => <Amount value={budget.forNewMonthly} />,
-            })}
-          </p>
-          {budget.thinEmergencyFund && <p className="mt-2 text-sm text-partial">{t('thinFund')}</p>}
-          <div className="mt-3">
-            <RuleList ids={['R-BG-001', 'R-OP-001']} />
-          </div>
-        </Disclosure>
-      </Card>
-
-      <ol className="flex flex-col gap-2">
-        {selected.map((r, i) => (
-          <RecommendationRow key={r.id} household={household} rec={r} index={i + 1} />
-        ))}
-      </ol>
-
-      {later.length > 0 && (
-        <section className="flex flex-col gap-2">
-          <h2 className="font-display text-lg font-semibold text-muted">{t('later')}</h2>
-          <ul className="flex flex-col gap-2">
-            {later.map((r) => (
-              <RecommendationRow key={r.id} household={household} rec={r} />
+      <div className="grid items-start gap-5 lg:grid-cols-[minmax(0,1fr)_360px]">
+        <div className="flex flex-col gap-5">
+          <ol className="flex flex-col gap-2">
+            {selected.map((r, i) => (
+              <RecommendationRow
+                key={r.id}
+                household={household}
+                rec={r}
+                index={i + 1}
+                onSelect={() => setItem(r)}
+              />
             ))}
-          </ul>
-        </section>
-      )}
+          </ol>
 
-      {plan.reviews.length > 0 && (
-        <section className="flex flex-col gap-2">
-          <h2 className="font-display text-lg font-semibold text-muted">{t('review')}</h2>
-          <ul className="flex flex-col gap-2">
-            {plan.reviews.map((r) => (
-              <li
-                key={r.policyId + r.issue}
-                className="rounded-md border border-border bg-surface p-3"
-              >
-                <p className="font-semibold">{policy(r.policyId)?.productName}</p>
-                <p className="text-sm text-muted">{t(`reviewIssue.${r.issue}`)}</p>
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
+          {later.length > 0 && (
+            <section className="flex flex-col gap-2">
+              <h2 className="font-display text-lg font-semibold text-muted">{t('later')}</h2>
+              <ul className="flex flex-col gap-2">
+                {later.map((r) => (
+                  <RecommendationRow
+                    key={r.id}
+                    household={household}
+                    rec={r}
+                    onSelect={() => setItem(r)}
+                  />
+                ))}
+              </ul>
+            </section>
+          )}
+        </div>
 
-      <p className="text-xs text-muted">{t('disclaimer')}</p>
+        <aside className="flex flex-col gap-5 lg:sticky lg:top-8">
+          <Card className="p-0 sm:p-0">
+            <button
+              onClick={() => setBudgetOpen(true)}
+              className="flex w-full items-center gap-3 p-4 text-left hover:bg-sunken"
+            >
+              <span className="flex flex-1 flex-col">
+                <span className="font-semibold">{t('howBudget')}</span>
+                <span className="text-sm text-muted">
+                  {tr.rich('perMonth', { amount: () => <Amount value={budget.forNewMonthly} /> })}
+                </span>
+              </span>
+              <ChevronRight aria-hidden className="size-5 text-primary" />
+            </button>
+          </Card>
+
+          {plan.reviews.length > 0 && (
+            <section className="flex flex-col gap-2">
+              <h2 className="font-display text-lg font-semibold text-muted">{t('review')}</h2>
+              <ul className="flex flex-col gap-2">
+                {plan.reviews.map((r) => (
+                  <li
+                    key={r.policyId + r.issue}
+                    className="rounded-md border border-border bg-surface p-3"
+                  >
+                    <p className="font-semibold">{policy(r.policyId)?.productName}</p>
+                    <p className="text-sm text-muted">{t(`reviewIssue.${r.issue}`)}</p>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
+
+          <p className="text-xs text-muted">{t('disclaimer')}</p>
+        </aside>
+      </div>
+
+      <BudgetSheet
+        budget={budget}
+        open={budgetOpen}
+        canEdit={!household.isDemo}
+        onClose={() => setBudgetOpen(false)}
+      />
+      <ItemSheet household={household} rec={item} onClose={() => setItem(undefined)} />
     </div>
   );
 }

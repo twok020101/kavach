@@ -19,6 +19,8 @@ import { whatsappRoutes } from './routes/whatsapp';
 import { actionRoutes } from './routes/actions';
 import { lifeChangeRoutes } from './routes/life-changes';
 import { planRoutes } from './routes/plans';
+import { accessRoutes, inviteRoutes } from './routes/access';
+import { setupRoutes } from './routes/setup';
 import { proofRoutes } from './routes/proof';
 import { liveRoutes } from './routes/live';
 
@@ -52,6 +54,9 @@ export async function buildServer() {
   await app.register(actionRoutes);
   await app.register(deskRoutes);
   await app.register(documentRoutes);
+  await app.register(setupRoutes);
+  await app.register(accessRoutes);
+  await app.register(inviteRoutes);
   await app.register(proofRoutes);
   await app.register(claimRoutes);
   await app.register(liveRoutes);

@@ -11,6 +11,7 @@ dist/
 *.log
 /.data/
 next-env.d.ts
+apps/web/AGENTS.md
 # Policy wording PDFs are fetched by `pnpm wordings:fetch`, never committed.
 /data/wordings/pdfs/
 # Eval runs: only the latest results are committed.

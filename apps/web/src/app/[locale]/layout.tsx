@@ -48,7 +48,12 @@ export default async function LocaleLayout({ children, params }: LayoutProps<'/[
   const fonts = [inter, jakarta, notoDeva, sourceSerif, jetbrains].map((f) => f.variable);
 
   return (
-    <html lang={locale} className={fonts.join(' ')}>
+    // public/theme.js sets data-theme before React loads, so React must not warn about it.
+    <html lang={locale} className={fonts.join(' ')} suppressHydrationWarning>
+      <head>
+        {/* Async so React can hoist it; it is tiny and runs before the page has painted. */}
+        <script async src="/theme.js" />
+      </head>
       <body className="min-h-dvh antialiased">
         <NextIntlClientProvider>
           <Providers>{children}</Providers>
