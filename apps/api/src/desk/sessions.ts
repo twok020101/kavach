@@ -101,7 +101,11 @@ export async function takeTurn(household: Household, sid: string, body: DeskTurn
   return reply;
 }
 
-/** The engine result straight, for the Why panel and "compare rooms". */
+/**
+ * The engine result straight, for the Why panel and "compare rooms". When the hospital bills by
+ * room, the flat-billing branch is attached as `alternate` so the panel can show what the
+ * saving would be if it didn't (red-team-response §3).
+ */
 export async function evaluateSession(
   household: Household,
   sid: string,
@@ -111,10 +115,12 @@ export async function evaluateSession(
   if (!session.estimate) {
     throw Object.assign(new Error('No estimate yet: capture one first'), { statusCode: 409 });
   }
-  return evaluateDesk(deskPatient(household, session.patientMemberId), session.estimate, {
-    billingTypeAnswer: session.billingTypeAnswer,
-    roomOptions,
-  });
+  const patient = deskPatient(household, session.patientMemberId);
+  const opts = { billingTypeAnswer: session.billingTypeAnswer, roomOptions };
+  const evaluation = evaluateDesk(patient, session.estimate, opts);
+  if (evaluation.primary.billingType !== 'differential' || evaluation.alternate) return evaluation;
+  const flat = evaluateDesk(patient, session.estimate, { ...opts, billingTypeAnswer: 'flat' });
+  return { ...evaluation, alternate: flat.primary };
 }
 
 export async function endSession(household: Household, sid: string): Promise<DeskSessionSummary> {

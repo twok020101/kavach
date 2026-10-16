@@ -20,6 +20,10 @@ export function WhyPanel({
   estimate?: HospitalEstimate;
 }) {
   const t = useTranslations('common.why');
+  // The engine fires a rule once per room and policy; show each rule once.
+  const rules = evaluation.trace.filter(
+    (f, i, all) => all.findIndex((g) => g.ruleId === f.ruleId) === i,
+  );
   return (
     <div className="flex flex-col gap-5">
       {estimate && <TariffTable estimate={estimate} />}
@@ -30,7 +34,7 @@ export function WhyPanel({
           {t('rulesTitle')}
         </h4>
         <ol className="flex flex-col gap-3">
-          {evaluation.trace.map((firing) => (
+          {rules.map((firing) => (
             <li key={firing.ruleId} className="rounded-md border border-border bg-surface p-3">
               <div className="flex flex-wrap items-center gap-2">
                 <RuleId id={firing.ruleId} />
