@@ -17,6 +17,8 @@ COPY --from=build /out/node_modules ./node_modules
 COPY --from=build /out/package.json ./
 COPY --from=build /repo/apps/api/dist ./dist
 COPY --from=build /repo/apps/api/fixtures ./fixtures
+# Fonts for the WhatsApp card PNG (Noto Sans Devanagari).
+COPY --from=build /repo/apps/api/assets ./assets
 COPY --from=build /repo/apps/api/src/agents/prompts ./src/agents/prompts
 # repoRoot resolves to / in this image; sample documents and the sample estimate photo live there.
 COPY --from=build /repo/data/samples /data/samples
