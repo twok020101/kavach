@@ -42,7 +42,10 @@ function Line({ text }: { text: string }) {
 /** The approved letter as an A4 PDF. Kavach never sends it; the family does. */
 function LetterPdf({ action, approvedOn }: { action: Action; approvedOn: string }) {
   const [subjectLine = '', ...body] = action.content.split('\n');
-  const paragraphs = body.join('\n').split(/\n{2,}/).filter(Boolean);
+  const paragraphs = body
+    .join('\n')
+    .split(/\n{2,}/)
+    .filter(Boolean);
   return (
     <Document title={action.title} author="Kavach" creator="Kavach">
       <Page size="A4" style={styles.page}>

@@ -34,7 +34,9 @@ export function ChangeConfirm({
 
   const setOffer = (index: number, offer: GroupHealthOffer) =>
     setChanges((all) =>
-      all.map((c, i) => (i === index && c.type === 'employment_started' ? { ...c, groupHealth: offer } : c)),
+      all.map((c, i) =>
+        i === index && c.type === 'employment_started' ? { ...c, groupHealth: offer } : c,
+      ),
     );
   const nuclear = household.members
     .filter((m) => ['self', 'spouse', 'child'].includes(m.relation))
@@ -60,7 +62,11 @@ export function ChangeConfirm({
           c.type === 'employment_ended' ? (
             <li key={i} className="flex flex-col gap-1">
               <span>
-                {t('leaves', { name: name(c.memberId), employer: c.employer, date: date(c.lastDay) })}
+                {t('leaves', {
+                  name: name(c.memberId),
+                  employer: c.employer,
+                  date: date(c.lastDay),
+                })}
               </span>
               {losses(c).map((p) => (
                 <span key={p.id} className="font-semibold text-gap">
@@ -75,7 +81,11 @@ export function ChangeConfirm({
           ) : (
             <li key={i} className="flex flex-col gap-1">
               <span>
-                {t('joins', { name: name(c.memberId), employer: c.employer, date: date(c.startDate, true) })}
+                {t('joins', {
+                  name: name(c.memberId),
+                  employer: c.employer,
+                  date: date(c.startDate, true),
+                })}
               </span>
               {c.groupHealth.offered === 'yes' && c.groupHealth.sumInsured && (
                 <span>
@@ -86,14 +96,18 @@ export function ChangeConfirm({
                   })}
                 </span>
               )}
-              {c.groupHealth.offered === 'no' && <span>{t('noCover', { employer: c.employer })}</span>}
+              {c.groupHealth.offered === 'no' && (
+                <span>{t('noCover', { employer: c.employer })}</span>
+              )}
               {c.groupHealth.offered === 'unknown' && (
                 <OfferQuestion
                   employer={c.employer}
                   onAnswer={(sum) =>
                     setOffer(
                       i,
-                      sum ? { offered: 'yes', sumInsured: sum, coveredMemberIds: nuclear } : { offered: 'no' },
+                      sum
+                        ? { offered: 'yes', sumInsured: sum, coveredMemberIds: nuclear }
+                        : { offered: 'no' },
                     )
                   }
                 />
@@ -103,7 +117,9 @@ export function ChangeConfirm({
         )}
       </ul>
       {changeSet.unrecognised.length > 0 && (
-        <p className="text-sm text-muted">{t('unrecognised', { text: changeSet.unrecognised.join('; ') })}</p>
+        <p className="text-sm text-muted">
+          {t('unrecognised', { text: changeSet.unrecognised.join('; ') })}
+        </p>
       )}
       {changeSet.needsConfirmation && <p className="text-sm text-partial">{t('checkDates')}</p>}
       {failed && <p className="rounded-md bg-gap-bg p-3 text-gap">{t('saveError')}</p>}
@@ -124,7 +140,13 @@ export function ChangeConfirm({
 }
 
 /** The one clarifying question: does the new employer give health cover, and how much? */
-function OfferQuestion({ employer, onAnswer }: { employer: string; onAnswer: (sum?: number) => void }) {
+function OfferQuestion({
+  employer,
+  onAnswer,
+}: {
+  employer: string;
+  onAnswer: (sum?: number) => void;
+}) {
   const t = useTranslations('plan.confirm');
   const [yes, setYes] = useState(false);
   const chip = 'min-h-10 rounded-full border border-border px-3 text-sm hover:border-primary';
@@ -132,7 +154,10 @@ function OfferQuestion({ employer, onAnswer }: { employer: string; onAnswer: (su
     <div className="mt-1 flex flex-col gap-2 rounded-md bg-sunken p-3">
       <span className="font-semibold">{t('offerQuestion', { employer })}</span>
       <div className="flex flex-wrap gap-2">
-        <button className={cn(chip, yes && 'border-primary text-primary')} onClick={() => setYes(true)}>
+        <button
+          className={cn(chip, yes && 'border-primary text-primary')}
+          onClick={() => setYes(true)}
+        >
           {t('offerYes')}
         </button>
         <button className={chip} onClick={() => onAnswer(undefined)}>

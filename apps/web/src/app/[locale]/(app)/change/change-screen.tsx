@@ -29,10 +29,7 @@ function Change({ household }: { household: Household }) {
   const check = () =>
     parse.mutate({ text, locale }, { onSuccess: (changeSet) => setDraft(changeSet) });
   const confirm = (changeSet: ChangeSet) =>
-    record.mutate(
-      { changeSet, text },
-      { onSuccess: ({ id }) => router.push(`/change/${id}`) },
-    );
+    record.mutate({ changeSet, text }, { onSuccess: ({ id }) => router.push(`/change/${id}`) });
 
   return (
     <div className="flex flex-col gap-5">

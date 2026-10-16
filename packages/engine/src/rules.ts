@@ -204,7 +204,8 @@ const list: Rule[] = [
   {
     id: 'R-DV-001',
     name: 'Device protection',
-    statement: 'Devices worth ₹50,000 or more in their first 2 years can be protected. Low priority.',
+    statement:
+      'Devices worth ₹50,000 or more in their first 2 years can be protected. Low priority.',
     status: 'verified',
     sources: [HEURISTIC],
   },

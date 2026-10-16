@@ -37,7 +37,11 @@ export const lifeChangeRoutes: FastifyPluginAsyncZod = async (app) => {
         params: Params,
         body: z.object({ changeSet: ChangeSet, text: z.string().max(1000).optional() }),
         response: {
-          200: z.object({ id: z.string(), diff: LifeChangeRecord.shape.diff, actions: z.array(Action) }),
+          200: z.object({
+            id: z.string(),
+            diff: LifeChangeRecord.shape.diff,
+            actions: z.array(Action),
+          }),
         },
       },
     },

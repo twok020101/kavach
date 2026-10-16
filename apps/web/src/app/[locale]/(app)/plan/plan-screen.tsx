@@ -31,7 +31,9 @@ function PlanView({ household }: { household: Household }) {
         <p className="text-muted">
           {t.rich('uses', {
             spend: () => <Amount value={plan.monthlySpend} className="font-semibold text-text" />,
-            budget: () => <Amount value={budget.forNewMonthly} className="font-semibold text-text" />,
+            budget: () => (
+              <Amount value={budget.forNewMonthly} className="font-semibold text-text" />
+            ),
           })}
         </p>
       </header>
@@ -75,7 +77,10 @@ function PlanView({ household }: { household: Household }) {
           <h2 className="font-display text-lg font-semibold text-muted">{t('review')}</h2>
           <ul className="flex flex-col gap-2">
             {plan.reviews.map((r) => (
-              <li key={r.policyId + r.issue} className="rounded-md border border-border bg-surface p-3">
+              <li
+                key={r.policyId + r.issue}
+                className="rounded-md border border-border bg-surface p-3"
+              >
                 <p className="font-semibold">{policy(r.policyId)?.productName}</p>
                 <p className="text-sm text-muted">{t(`reviewIssue.${r.issue}`)}</p>
               </li>

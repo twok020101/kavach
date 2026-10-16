@@ -1,11 +1,4 @@
-import type {
-  ChangeSet,
-  Household,
-  Plan,
-  PlanEvent,
-  Policy,
-  RuleFiring,
-} from '@kavach/schemas';
+import type { ChangeSet, Household, Plan, PlanEvent, Policy, RuleFiring } from '@kavach/schemas';
 import { budget } from './budget';
 import { addDays, coverMap, inForce } from './cover-map';
 import { optimise } from './optimise';

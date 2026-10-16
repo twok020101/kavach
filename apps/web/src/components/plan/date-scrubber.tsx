@@ -34,7 +34,10 @@ export function DateScrubber({
           {t('asOf', { date: date(value, true) })}
         </label>
         {value !== from && (
-          <button className="min-h-10 px-2 text-sm text-primary underline" onClick={() => onChange(from)}>
+          <button
+            className="min-h-10 px-2 text-sm text-primary underline"
+            onClick={() => onChange(from)}
+          >
             {t('today')}
           </button>
         )}

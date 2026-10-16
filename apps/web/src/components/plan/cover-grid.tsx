@@ -24,9 +24,7 @@ export function CoverGrid({
   onSelect?: (cell: CoverCell) => void;
 }) {
   const t = useTranslations('plan');
-  const shown = risks.filter((risk) =>
-    map.cells.some((c) => c.risk === risk && c.status !== 'na'),
-  );
+  const shown = risks.filter((risk) => map.cells.some((c) => c.risk === risk && c.status !== 'na'));
   const cell = (memberId: string, risk: Risk) =>
     map.cells.find((c) => c.memberId === memberId && c.risk === risk);
 

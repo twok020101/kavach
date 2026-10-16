@@ -36,9 +36,19 @@ function lifeMultiple(age: number) {
 
 function healthNeed(member: Member): Need {
   if (isNuclear(member))
-    return { memberId: member.id, risk: 'health', amount: NUCLEAR_HEALTH_NEED, ruleIds: ['R-HN-010'] };
+    return {
+      memberId: member.id,
+      risk: 'health',
+      amount: NUCLEAR_HEALTH_NEED,
+      ruleIds: ['R-HN-010'],
+    };
   if (isParent(member))
-    return { memberId: member.id, risk: 'health', amount: PARENTS_HEALTH_NEED, ruleIds: ['R-HN-011'] };
+    return {
+      memberId: member.id,
+      risk: 'health',
+      amount: PARENTS_HEALTH_NEED,
+      ruleIds: ['R-HN-011'],
+    };
   return { memberId: member.id, risk: 'health', amount: 0, ruleIds: [] };
 }
 

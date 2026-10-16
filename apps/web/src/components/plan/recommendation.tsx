@@ -54,10 +54,10 @@ export function RecommendationRow({
           <Amount value={rec.cover} className="text-sm font-semibold" />
         </div>
         <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-muted">
-          <span>
-            {t.rich('perMonth', { amount: () => <Amount value={rec.premiumMonthly} /> })}
-          </span>
-          {rec.via === 'migration' && <span>· {t('viaMigration', { employer: rec.employer ?? '' })}</span>}
+          <span>{t.rich('perMonth', { amount: () => <Amount value={rec.premiumMonthly} /> })}</span>
+          {rec.via === 'migration' && (
+            <span>· {t('viaMigration', { employer: rec.employer ?? '' })}</span>
+          )}
           <Badge tone="neutral" className="text-xs">
             {t('illustrative')}
           </Badge>

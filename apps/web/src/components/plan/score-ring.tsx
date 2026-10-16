@@ -18,7 +18,12 @@ export function ScoreRing({ score, size = 72 }: { score: number; size?: number }
         strokeDasharray={`${(score / 100) * circumference} ${circumference}`}
         transform="rotate(-90 36 36)"
       />
-      <text x="36" y="42" textAnchor="middle" className="fill-current font-display text-lg font-bold">
+      <text
+        x="36"
+        y="42"
+        textAnchor="middle"
+        className="fill-current font-display text-lg font-bold"
+      >
         {score}
       </text>
     </svg>

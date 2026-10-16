@@ -5,7 +5,11 @@
   "close": "Close",
   "why": "How we worked this out",
   "risk": { "health": "Health", "life": "Life", "accident": "Accident" },
-  "layer": { "employer": "From the employer", "personal": "Your own", "statutory": "Government scheme" },
+  "layer": {
+    "employer": "From the employer",
+    "personal": "Your own",
+    "statutory": "Government scheme"
+  },
   "issue": {
     "topup_without_base": "The super top-up pays only above its deductible, and no base policy covers that part any more. Without a base it pays nothing.",
     "savings_plan_not_term": "This is mainly a savings plan; its life cover is small for what you pay.",

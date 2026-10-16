@@ -36,7 +36,9 @@ export function CellDetail({ household, cell }: { household: Household; cell: Co
 
       {LAYERS.map((layer) => {
         const inLayer = policies.filter((p) =>
-          layer === 'employer' ? p.source === 'employer' : layer === 'personal' && p.source === 'personal',
+          layer === 'employer'
+            ? p.source === 'employer'
+            : layer === 'personal' && p.source === 'personal',
         );
         if (inLayer.length === 0) return null;
         return (
@@ -53,7 +55,10 @@ export function CellDetail({ household, cell }: { household: Household; cell: Co
                 {p.source === 'employer' && (
                   <p className="mt-1 flex items-center gap-1 text-sm text-partial">
                     <Briefcase aria-hidden className="size-4" />
-                    {t('cell.endsWithJob', { name: holder(p.holderMemberId), date: date(p.endDate, true) })}
+                    {t('cell.endsWithJob', {
+                      name: holder(p.holderMemberId),
+                      date: date(p.endDate, true),
+                    })}
                   </p>
                 )}
                 {p.kind === 'super_top_up' && (

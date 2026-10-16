@@ -66,7 +66,13 @@ function candidate(
 ): Candidate {
   const closed = cells.map((c) => Math.min(cover, atRisk(c)));
   const value = cells.reduce(
-    (sum, c, i) => sum + weight(members.find((m) => m.id === c.memberId)!, c.risk) * closed[i]!,
+    (sum, c, i) =>
+      sum +
+      weight(
+        members.find((m) => m.id === c.memberId)!,
+        c.risk,
+      ) *
+        closed[i]!,
     0,
   );
   const rec = {
@@ -149,7 +155,8 @@ function candidates(household: Household, map: CoverMap): Candidate[] {
   }
 
   for (const asset of household.assets.filter((a) => a.kind === 'device')) {
-    const recent = !asset.purchasedOn || daysBetween(asset.purchasedOn, asOf) <= DEVICE_MAX_AGE_DAYS;
+    const recent =
+      !asset.purchasedOn || daysBetween(asset.purchasedOn, asOf) <= DEVICE_MAX_AGE_DAYS;
     if (asset.value < DEVICE_MIN_VALUE || !recent) continue;
     const premiumAnnual = Math.round(asset.value * CATALOG.deviceRate);
     out.push({
@@ -193,7 +200,11 @@ export function optimise(
       return { ...rec, status: 'selected' };
     }
     const onlyContingent = cells.length > 0 && cells.every((c) => c.status === 'contingent');
-    return { ...rec, status: 'deferred', deferReason: onlyContingent ? 'employer_cover' : 'budget' };
+    return {
+      ...rec,
+      status: 'deferred',
+      deferReason: onlyContingent ? 'employer_cover' : 'budget',
+    };
   });
   return {
     recommendations,

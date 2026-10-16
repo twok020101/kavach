@@ -84,7 +84,9 @@ function Review({ household, id }: { household: Household; id: string }) {
 
       {action.status === 'approved' && (
         <Card className="flex flex-col gap-2 border-safe bg-safe-bg">
-          <p className="font-semibold text-safe">{t(isLetter ? 'approvedLetter' : 'approvedReminder')}</p>
+          <p className="font-semibold text-safe">
+            {t(isLetter ? 'approvedLetter' : 'approvedReminder')}
+          </p>
           {isLetter && (
             <div className="grid grid-cols-2 gap-2">
               <Button
@@ -98,9 +100,7 @@ function Review({ household, id }: { household: Household; id: string }) {
               </Button>
               {action.pdfPath && (
                 <Button
-                  onClick={() =>
-                    openPdf(household.id, action.id).catch(() => setPdfFailed(true))
-                  }
+                  onClick={() => openPdf(household.id, action.id).catch(() => setPdfFailed(true))}
                 >
                   <FileDown aria-hidden className="size-5" />
                   {t('pdf')}

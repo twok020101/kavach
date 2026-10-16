@@ -1,6 +1,6 @@
 'use client';
 
-import type { Action, Household, LifeChangeRecord } from '@kavach/schemas';
+import type { Action, Household } from '@kavach/schemas';
 import { ArrowRight, BellRing, FileText } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';

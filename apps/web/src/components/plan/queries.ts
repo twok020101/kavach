@@ -1,30 +1,23 @@
 'use client';
 
-import {
-  Action,
-  ChangeSet,
-  LifeChangeRecord,
-  Plan,
-  PlanDiff,
-  type Locale,
-} from '@kavach/schemas';
+import { Action, ChangeSet, LifeChangeRecord, Plan, PlanDiff, type Locale } from '@kavach/schemas';
 import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { z } from 'zod';
 import { api, apiUrl } from '@/lib/api';
 import { getIdToken } from '@/lib/firebase';
 
-const call = async <S extends z.ZodType>(path: string, schema: S, init: Parameters<typeof api>[2] = {}) =>
-  api(path, schema, { ...init, token: await getIdToken() });
+const call = async <S extends z.ZodType>(
+  path: string,
+  schema: S,
+  init: Parameters<typeof api>[2] = {},
+) => api(path, schema, { ...init, token: await getIdToken() });
 
 /** The plan as of a date (the household's today when asOf is undefined). */
 export function usePlan(householdId: string | undefined, asOf?: string) {
   return useQuery({
     queryKey: ['plan', householdId, asOf ?? 'today'],
     queryFn: () =>
-      call(
-        `/v1/households/${householdId}/plans/current${asOf ? `?asOf=${asOf}` : ''}`,
-        Plan,
-      ),
+      call(`/v1/households/${householdId}/plans/current${asOf ? `?asOf=${asOf}` : ''}`, Plan),
     enabled: !!householdId,
     placeholderData: keepPreviousData,
   });
@@ -51,7 +44,8 @@ export function useRecordChange(householdId: string | undefined) {
         json: { changeSet, text },
       }),
     // The household's policies and every plan changed.
-    onSuccess: () => queryClient.invalidateQueries({ predicate: (q) => q.queryKey[0] !== 'lifeChange' }),
+    onSuccess: () =>
+      queryClient.invalidateQueries({ predicate: (q) => q.queryKey[0] !== 'lifeChange' }),
   });
 }
 
@@ -104,4 +98,3 @@ export async function openPdf(householdId: string, actionId: string) {
   const url = URL.createObjectURL(await response.blob());
   window.open(url, '_blank');
 }
-

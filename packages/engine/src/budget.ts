@@ -37,7 +37,12 @@ export function budget(household: Household, asOf: string): { budget: Budget; tr
     budget: result,
     trace: fire(
       'R-BG-001',
-      { takeHome: f.takeHomeMonthly, emi: f.emiMonthly, fixedSpend: f.fixedSpendMonthly, existingAnnual },
+      {
+        takeHome: f.takeHomeMonthly,
+        emi: f.emiMonthly,
+        fixedSpend: f.fixedSpendMonthly,
+        existingAnnual,
+      },
       { ...result },
     ),
   };

@@ -39,7 +39,10 @@ function Home({ household }: { household: Household }) {
   }, [asOf]);
 
   const { data: todayPlan } = usePlan(household.id);
-  const { data: plan, isFetching } = usePlan(household.id, debounced === today ? undefined : debounced);
+  const { data: plan, isFetching } = usePlan(
+    household.id,
+    debounced === today ? undefined : debounced,
+  );
   const { data: actions = [] } = useActions(household.id);
   const pins = usePins(household, todayPlan);
   const { reset } = useDemoControls(household.id);
@@ -77,9 +80,7 @@ function Home({ household }: { household: Household }) {
           <ScoreRing score={plan.coverMap.score} />
           <div className="flex flex-col">
             <span className="font-display text-lg font-bold">{t('score')}</span>
-            <span className="text-muted">
-              {t('summary', { gaps, onJob, name: earner })}
-            </span>
+            <span className="text-muted">{t('summary', { gaps, onJob, name: earner })}</span>
           </div>
         </Card>
       )}
@@ -127,7 +128,11 @@ function Home({ household }: { household: Household }) {
       <Sheet
         open={!!selected}
         onClose={() => setSelected(undefined)}
-        title={selected ? t('cellTitle', { name: member(selected.memberId), risk: tp(`risk.${selected.risk}`) }) : ''}
+        title={
+          selected
+            ? t('cellTitle', { name: member(selected.memberId), risk: tp(`risk.${selected.risk}`) })
+            : ''
+        }
       >
         {selected && <CellDetail household={household} cell={selected} />}
       </Sheet>

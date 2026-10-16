@@ -20,7 +20,11 @@ RULES
 export function lifeEventContext(household: Household, today: string, text: string) {
   const members = household.members.map((m) => `${m.id}: ${m.name} (${m.relation}, ${m.age})`);
   const employers = [
-    ...new Set(household.policies.flatMap((p) => (p.employer ? [`${p.employer} (${p.holderMemberId})`] : []))),
+    ...new Set(
+      household.policies.flatMap((p) =>
+        p.employer ? [`${p.employer} (${p.holderMemberId})`] : [],
+      ),
+    ),
   ];
   const policies = household.policies.map(
     (p) =>

@@ -49,7 +49,8 @@ export function draftJobChangeActions(
     (c): c is Extract<LifeChange, { type: 'employment_ended' }> => c.type === 'employment_ended',
   );
   const started = changeSet.changes.filter(
-    (c): c is Extract<LifeChange, { type: 'employment_started' }> => c.type === 'employment_started',
+    (c): c is Extract<LifeChange, { type: 'employment_started' }> =>
+      c.type === 'employment_started',
   );
   const newlyCovered = new Set(
     started.flatMap((c) =>
@@ -94,7 +95,7 @@ export function draftJobChangeActions(
         '',
         'Dear Sir/Madam,',
         '',
-        `I am leaving ${employer}; my last working day is ${longDate(end.lastDay)} (employee ID ${BLANK}). ${coveredPeople} covered under the ${group.productName} policy with ${group.insurer} (policy number ${BLANK}), sum insured ${formatInr(group.sumInsured).replace('₹', 'Rs ')} family floater.`,
+        `I am leaving ${employer}; my last working day is ${longDate(end.lastDay)} (employee ID ${BLANK}). ${coveredPeople} covered under the ${group.productName} policy with ${group.insurer} (policy number ${group.policyNumber ?? BLANK}), sum insured ${formatInr(group.sumInsured).replace('₹', 'Rs ')} family floater.`,
         '',
         `I request that ${losing.length > 1 ? 'their' : 'this'} cover be migrated to an individual health policy with ${group.insurer} from ${longDate(addDays(end.lastDay, 1))}, with credit for the time already covered under the group policy for waiting periods. Please send me the migration form and the premium, so that the request reaches the insurer at least ${MIGRATION_NOTICE_DAYS} days before my last working day.`,
         '',

@@ -18,7 +18,10 @@ export type ReminderNudge = {
  * Hook for the WhatsApp feature: reminders due on or before `date` that haven't been sent or dismissed.
  * The caller sends them, then calls markNudgeSent. Kavach drafts these when a life change is recorded.
  */
-export async function dueReminderNudges(household: Household, date: string): Promise<ReminderNudge[]> {
+export async function dueReminderNudges(
+  household: Household,
+  date: string,
+): Promise<ReminderNudge[]> {
   const actions = await store.list<Action>(`households/${household.id}/actions`);
   return actions
     .filter(
