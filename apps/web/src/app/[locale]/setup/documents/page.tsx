@@ -134,11 +134,11 @@ export default function DocumentsSetupPage() {
       <footer className="mt-auto flex items-center justify-between gap-3 border-t border-border pt-4">
         <span className="text-sm text-muted">
           {t('setup.none')}{' '}
-          <Link href="/policies" className="font-medium text-primary underline">
+          <Link href="/setup/questions" className="font-medium text-primary underline">
             {t('setup.skip')}
           </Link>
         </span>
-        <Link href="/policies" className={buttonClasses()}>
+        <Link href="/setup/questions" className={buttonClasses()}>
           {t('setup.continue')}
         </Link>
       </footer>

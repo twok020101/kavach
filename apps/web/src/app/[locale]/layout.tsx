@@ -10,6 +10,7 @@ import {
   Source_Serif_4,
 } from 'next/font/google';
 import { routing } from '@/i18n/routing';
+import { themeScript } from '@/lib/theme';
 import { Providers } from '../providers';
 import '../globals.css';
 
@@ -48,7 +49,11 @@ export default async function LocaleLayout({ children, params }: LayoutProps<'/[
   const fonts = [inter, jakarta, notoDeva, sourceSerif, jetbrains].map((f) => f.variable);
 
   return (
-    <html lang={locale} className={fonts.join(' ')}>
+    // The theme script sets data-theme before React loads, so React must not warn about it.
+    <html lang={locale} className={fonts.join(' ')} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
       <body className="min-h-dvh antialiased">
         <NextIntlClientProvider>
           <Providers>{children}</Providers>

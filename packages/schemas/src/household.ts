@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { Citation, Locale, Rupees } from './common';
+import { AccessEntry, ConsentRecord } from './consent';
 
 export const Relation = z.enum(['self', 'spouse', 'child', 'parent', 'parent_in_law', 'other']);
 
@@ -101,6 +102,14 @@ export const Household = z.object({
   finances: Finances.optional(),
   /** Uids allowed to read and change this household. */
   accessUids: z.array(z.string()).default([]),
+  /** Who each login is and what it may do (S28). Missing on older households: everyone is an owner. */
+  access: z.array(AccessEntry).optional(),
+  /** DPDP consent per purpose (S03, S27). */
+  consents: z.array(ConsentRecord).optional(),
+  /** Answers to the smart questions (S08). */
+  answers: z.record(z.string(), z.string()).optional(),
+  /** Who is told when someone in the family is at the hospital (S28), e.g. Rahul for Kamala. */
+  alertContactMemberId: z.string().optional(),
   isDemo: z.boolean().default(false),
   /** Demo clock (ISO date). Real households use today. */
   asOf: z.string().date().optional(),

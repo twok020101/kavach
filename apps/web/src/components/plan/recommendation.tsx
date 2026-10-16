@@ -22,22 +22,25 @@ export function RecommendationRow({
   rec,
   index,
   sign,
+  onSelect,
 }: {
   household: Household;
   rec: Recommendation;
   index?: number;
   sign?: '+' | '−';
+  /** Makes the row a button that opens the item's detail (S11). */
+  onSelect?: () => void;
 }) {
   const t = useTranslations('plan.rec');
   const title = useRecommendationTitle(household);
-  return (
-    <li
-      className={cn(
-        'flex gap-3 rounded-md border border-border bg-surface p-3',
-        sign === '+' && 'border-l-4 border-l-safe',
-        sign === '−' && 'border-l-4 border-l-border-strong opacity-80',
-      )}
-    >
+  const className = cn(
+    'flex gap-3 rounded-md border border-border bg-surface p-3',
+    sign === '+' && 'border-l-4 border-l-safe',
+    sign === '−' && 'border-l-4 border-l-border-strong opacity-80',
+    onSelect && 'w-full text-left hover:border-primary',
+  );
+  const content = (
+    <>
       {index !== undefined && (
         <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-primary-soft text-sm font-bold text-primary">
           {index}
@@ -68,7 +71,16 @@ export function RecommendationRow({
           </p>
         )}
       </div>
+    </>
+  );
+  return onSelect ? (
+    <li>
+      <button type="button" onClick={onSelect} className={className}>
+        {content}
+      </button>
     </li>
+  ) : (
+    <li className={className}>{content}</li>
   );
 }
 

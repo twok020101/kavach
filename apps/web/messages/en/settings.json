@@ -1,0 +1,131 @@
+{
+  "title": "Settings",
+  "error": "That didn't work. Please try again.",
+  "appearance": {
+    "title": "Language and display",
+    "language": "Language",
+    "theme": "Theme",
+    "themes": { "system": "Same as my phone", "light": "Light", "dark": "Dark" },
+    "textSize": "Text size",
+    "textSizes": { "normal": "Normal", "large": "Large" },
+    "toggle": "Switch light or dark theme"
+  },
+  "family": {
+    "title": "Family",
+    "access": "Family access",
+    "accessHint": "Who can open Kavach for your family",
+    "edit": "Edit family and money",
+    "editHint": "People, ages, income and spending",
+    "demo": "Demo controls",
+    "demoHint": "Jump to a moment of the Sharma family's story"
+  },
+  "consent": {
+    "title": "What Kavach may use",
+    "save": "Save choices",
+    "saved": "Saved",
+    "demoNote": "The demo family is made up, so it has every permission."
+  },
+  "data": {
+    "title": "Your data",
+    "download": "Download my data",
+    "downloadHint": "Everything Kavach keeps about your family, as a file.",
+    "delete": "Delete our family's data",
+    "deleteHint": "Deletes the family, its documents, plans and letters. This can't be undone.",
+    "deleteConfirm": "Type “{phrase}” to confirm",
+    "deletePhrase": "DELETE",
+    "deleteButton": "Delete everything",
+    "deleted": "Deleted."
+  },
+  "about": {
+    "title": "About",
+    "body": "Kavach explains your insurance and helps you act. It doesn't sell insurance and never contacts insurers for you. Amounts are worked out by fixed rules from your policy documents; always check with your insurer before you decide.",
+    "proof": "How accurate is Kavach?"
+  },
+  "signOut": "Sign out",
+  "access": {
+    "title": "Family access",
+    "intro": "People who can open Kavach for your family, and who hears when someone is at the hospital.",
+    "logins": "Logins",
+    "owner": "Owner · sees everything",
+    "member": "Sees their own cover and the hospital button",
+    "youLabel": "This device",
+    "remove": "Remove",
+    "alerts": "When someone is at the hospital, tell",
+    "alertsHint": "Gets the alert on WhatsApp and sees the hospital visit in the timeline.",
+    "alertsNone": "Choose someone",
+    "invite": "Invite family member",
+    "inviteWho": "Who are you inviting?",
+    "inviteLanguage": "Their language",
+    "invitePhone": "Their WhatsApp number (optional)",
+    "createLink": "Create invite link",
+    "linkReady": "Share this link with {name}. It works for 14 days.",
+    "copy": "Copy link",
+    "copied": "Copied",
+    "sendWhatsApp": "Send on WhatsApp",
+    "shareText": "{inviter} added you to {household} on Kavach. Open this link: {url}",
+    "pending": "Waiting for",
+    "inviteSent": "Invited {date}",
+    "joined": "Joined"
+  },
+  "timeline": {
+    "title": "Timeline",
+    "intro": "What happened to your family's cover, and what's coming.",
+    "today": "Today",
+    "ahead": "Coming up",
+    "empty": "Nothing here yet. Add a document or tell us what's changing.",
+    "filters": {
+      "all": "All",
+      "changes": "Changes",
+      "documents": "Documents",
+      "hospital": "Hospital",
+      "claims": "Claims"
+    },
+    "by": { "you": "You said", "document": "From a document", "kavach": "Kavach" },
+    "entry": {
+      "setup": "Family set up · {count} people",
+      "consent": "Permissions updated",
+      "document_added": "Read {filename}",
+      "life_change": "Life change",
+      "action": "Drafted for you",
+      "desk_session": "{name} at the hospital",
+      "desk_session_at": "{name} at {hospital}",
+      "claim_case": "Claim letter checked",
+      "cover_starts": "{name} cover starts",
+      "cover_ends": "{name} cover ends"
+    },
+    "actionStatus": {
+      "draft": "Waiting for you",
+      "approved": "Approved",
+      "done": "Done",
+      "dismissed": "Dismissed"
+    },
+    "effective": "From {date}"
+  },
+  "plan": {
+    "budgetTitle": "Your budget for protection",
+    "budgetLeft": "You have <amount></amount> left each month after EMIs and spending.",
+    "budgetTotal": "We suggest putting up to <amount></amount> a month into protection: the smaller of 20% of what's left and 10% of your take-home pay.",
+    "budgetExisting": "You already pay <existing></existing> a month for your own policies, so <free></free> is free for new cover.",
+    "budgetThin": "Your emergency savings cover less than three months of EMIs and spending. Build those up alongside.",
+    "budgetChange": "Change your money numbers",
+    "itemWhat": "What it covers",
+    "itemCover": "Cover of <amount></amount>",
+    "itemWho": "For {names}",
+    "itemPremium": "About <amount></amount> a month",
+    "itemIllustrative": "Indicative premium from an illustrative price list, not a quote.",
+    "itemWhy": "Why this size",
+    "partner": "Talk to a licensed partner",
+    "partnerTitle": "Talk to a licensed partner",
+    "partnerIntro": "Kavach doesn't sell insurance. A licensed partner can show you real quotes for: {item}.",
+    "partnerShare": "Share with the partner",
+    "partnerFields": {
+      "cover": "The cover you need",
+      "people": "Names and ages",
+      "city": "Your city",
+      "health": "Health conditions"
+    },
+    "partnerContinue": "Continue to partner",
+    "partnerDemo": "Demo — no real purchase. In the live product this opens the partner's page with only what you ticked.",
+    "partnerBack": "Back"
+  }
+}

@@ -1,0 +1,185 @@
+'use client';
+
+import type { Household, TimelineEntry, TimelineKind } from '@kavach/schemas';
+import {
+  CalendarClock,
+  FileText,
+  GitBranch,
+  Hospital,
+  type LucideIcon,
+  PenLine,
+  Receipt,
+  ShieldCheck,
+  Users,
+} from 'lucide-react';
+import { useLocale, useTranslations } from 'next-intl';
+import { useState } from 'react';
+import { PlanFrame } from '@/components/plan/plan-frame';
+import { useDate } from '@/components/plan/format';
+import { Chip } from '@/components/setup/member-sheet';
+import { cn } from '@/components/ui/cn';
+import { Spinner } from '@/components/ui/spinner';
+import { Link } from '@/i18n/navigation';
+import { useTimeline } from '@/lib/setup';
+
+const FILTERS: Record<string, TimelineKind[] | null> = {
+  all: null,
+  changes: ['life_change', 'action', 'cover_starts', 'cover_ends', 'setup', 'consent'],
+  documents: ['document_added'],
+  hospital: ['desk_session'],
+  claims: ['claim_case'],
+};
+type Filter = 'all' | 'changes' | 'documents' | 'hospital' | 'claims';
+
+const ICONS: Record<TimelineKind, LucideIcon> = {
+  setup: Users,
+  consent: ShieldCheck,
+  document_added: FileText,
+  life_change: GitBranch,
+  action: PenLine,
+  desk_session: Hospital,
+  claim_case: Receipt,
+  cover_starts: CalendarClock,
+  cover_ends: CalendarClock,
+};
+
+export function TimelineScreen() {
+  return <PlanFrame>{(household) => <TimelineView household={household} />}</PlanFrame>;
+}
+
+function TimelineView({ household }: { household: Household }) {
+  const t = useTranslations('settings.timeline');
+  const locale = useLocale();
+  const { data } = useTimeline(household.id);
+  const [filter, setFilter] = useState<Filter>('all');
+
+  const kinds = FILTERS[filter];
+  const entries = data?.entries.filter((e) => !kinds || kinds.includes(e.kind)) ?? [];
+  const upcoming = entries.filter((e) => e.upcoming);
+  const past = entries.filter((e) => !e.upcoming);
+  const month = new Intl.DateTimeFormat(locale === 'hi' ? 'hi-IN' : 'en-IN', {
+    month: 'long',
+    year: 'numeric',
+    timeZone: 'UTC',
+  });
+  const byMonth = new Map<string, TimelineEntry[]>();
+  for (const e of past) {
+    const key = month.format(new Date(e.at));
+    byMonth.set(key, [...(byMonth.get(key) ?? []), e]);
+  }
+
+  return (
+    <div className="mx-auto flex max-w-3xl flex-col gap-5">
+      <header className="flex flex-col gap-1">
+        <h1 className="font-display text-2xl font-bold">{t('title')}</h1>
+        <p className="text-muted">{t('intro')}</p>
+      </header>
+
+      <div className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1" role="group">
+        {(Object.keys(FILTERS) as Filter[]).map((f) => (
+          <Chip key={f} selected={filter === f} onClick={() => setFilter(f)} className="shrink-0">
+            {t(`filters.${f}`)}
+          </Chip>
+        ))}
+      </div>
+
+      {!data && (
+        <p className="flex items-center gap-2 text-muted">
+          <Spinner /> …
+        </p>
+      )}
+      {data && entries.length === 0 && (
+        <p className="rounded-md bg-sunken p-6 text-center text-muted">{t('empty')}</p>
+      )}
+
+      {upcoming.length > 0 && (
+        <section className="flex flex-col gap-2">
+          <h2 className="text-sm font-semibold uppercase tracking-wide text-muted">{t('ahead')}</h2>
+          <ol className="flex flex-col gap-2">
+            {upcoming.map((e) => (
+              <Entry key={e.id} entry={e} />
+            ))}
+          </ol>
+        </section>
+      )}
+
+      {data && (upcoming.length > 0 || past.length > 0) && (
+        <div className="flex items-center gap-3" role="separator">
+          <span className="h-px flex-1 bg-primary" />
+          <span className="rounded-full bg-primary px-3 py-0.5 text-sm font-semibold text-on-primary">
+            {t('today')}
+          </span>
+          <span className="h-px flex-1 bg-primary" />
+        </div>
+      )}
+
+      {[...byMonth].map(([label, items]) => (
+        <section key={label} className="flex flex-col gap-2">
+          <h2 className="text-sm font-semibold uppercase tracking-wide text-muted">{label}</h2>
+          <ol className="flex flex-col gap-2">
+            {items.map((e) => (
+              <Entry key={e.id} entry={e} />
+            ))}
+          </ol>
+        </section>
+      ))}
+    </div>
+  );
+}
+
+function Entry({ entry }: { entry: TimelineEntry }) {
+  const t = useTranslations('settings.timeline');
+  const date = useDate();
+  const Icon = ICONS[entry.kind];
+  const p = entry.params;
+
+  const title =
+    entry.kind === 'desk_session' && p.hospital
+      ? t('entry.desk_session_at', p)
+      : entry.kind === 'life_change' || entry.kind === 'action'
+        ? (entry.text ?? t(`entry.${entry.kind}`))
+        : t(`entry.${entry.kind}`, p);
+  const detail =
+    entry.kind === 'action' && p.status
+      ? t(`actionStatus.${p.status as 'draft'}`)
+      : entry.kind === 'life_change' && p.effectiveDate
+        ? t('effective', { date: date(p.effectiveDate, true) })
+        : undefined;
+
+  const body = (
+    <>
+      <span
+        className={cn(
+          'flex size-10 shrink-0 items-center justify-center rounded-full',
+          entry.upcoming ? 'bg-partial-bg text-partial' : 'bg-primary-soft text-primary',
+        )}
+      >
+        <Icon aria-hidden className="size-5" />
+      </span>
+      <span className="flex min-w-0 flex-1 flex-col">
+        <span className="font-semibold">{title}</span>
+        <span className="text-sm text-muted">
+          {date(entry.at.slice(0, 10), true)} · {t(`by.${entry.by}`)}
+          {detail && ` · ${detail}`}
+        </span>
+      </span>
+    </>
+  );
+
+  return (
+    <li>
+      {entry.href ? (
+        <Link
+          href={entry.href}
+          className="flex items-center gap-3 rounded-md border border-border bg-surface p-3 hover:border-primary"
+        >
+          {body}
+        </Link>
+      ) : (
+        <div className="flex items-center gap-3 rounded-md border border-border bg-surface p-3">
+          {body}
+        </div>
+      )}
+    </li>
+  );
+}

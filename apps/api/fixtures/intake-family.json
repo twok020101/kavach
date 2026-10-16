@@ -1,0 +1,56 @@
+{
+  "familyName": null,
+  "city": "Pune",
+  "members": [
+    {
+      "name": "Me",
+      "named": false,
+      "relation": "self",
+      "age": null,
+      "earning": true,
+      "conditions": [],
+      "language": null,
+      "assumed": ["earning"]
+    },
+    {
+      "name": "Priya",
+      "named": true,
+      "relation": "spouse",
+      "age": null,
+      "earning": null,
+      "conditions": [],
+      "language": null,
+      "assumed": []
+    },
+    {
+      "name": "Anaya",
+      "named": true,
+      "relation": "child",
+      "age": null,
+      "earning": false,
+      "conditions": [],
+      "language": null,
+      "assumed": ["earning"]
+    },
+    {
+      "name": "Father",
+      "named": false,
+      "relation": "parent",
+      "age": null,
+      "earning": null,
+      "conditions": [],
+      "language": null,
+      "assumed": []
+    },
+    {
+      "name": "Mother",
+      "named": false,
+      "relation": "parent",
+      "age": null,
+      "earning": null,
+      "conditions": [],
+      "language": null,
+      "assumed": []
+    }
+  ]
+}

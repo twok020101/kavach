@@ -75,55 +75,71 @@ function Home({ household }: { household: Household }) {
         </div>
       )}
 
-      {plan && (
-        <Card className="flex items-center gap-4">
-          <ScoreRing score={plan.coverMap.score} />
-          <div className="flex flex-col">
-            <span className="font-display text-lg font-bold">{t('score')}</span>
-            <span className="text-muted">{t('summary', { gaps, onJob, name: earner })}</span>
-          </div>
-        </Card>
-      )}
-
-      <Card className="flex flex-col gap-3">
-        <DateScrubber from={today} days={SCRUB_DAYS} value={asOf} pins={pins} onChange={setAsOf} />
+      {/* Phone: one column. Desktop: the map on the left, score and next steps on the right. */}
+      <div className="flex flex-col gap-4 lg:grid lg:grid-cols-[minmax(0,1fr)_340px] lg:items-start">
         {plan && (
-          <div aria-busy={isFetching} className={isFetching ? 'opacity-70' : undefined}>
-            <CoverGrid household={household} map={plan.coverMap} onSelect={setSelected} />
-          </div>
-        )}
-      </Card>
-
-      {plan && selectedCount > 0 && (
-        <Link href="/plan" className="block">
-          <Card className="flex items-center gap-3 hover:border-primary">
-            <div className="flex-1">
-              <p className="font-semibold">
-                {t.rich('next', {
-                  count: selectedCount,
-                  amount: () => <Amount value={plan.monthlySpend} />,
-                })}
-              </p>
-              <p className="text-sm text-muted">{t('nextHint')}</p>
+          <Card className="flex items-center gap-4 lg:col-start-2 lg:row-start-1">
+            <ScoreRing score={plan.coverMap.score} />
+            <div className="flex flex-col">
+              <span className="font-display text-lg font-bold">{t('score')}</span>
+              <span className="text-muted">{t('summary', { gaps, onJob, name: earner })}</span>
             </div>
-            <ArrowRight aria-hidden className="size-5 text-primary" />
           </Card>
-        </Link>
-      )}
+        )}
 
-      {drafts.length > 0 && (
-        <Link href="/actions" className="block">
-          <Card className="flex items-center gap-3 border-accent hover:border-primary">
-            <p className="flex-1 font-semibold">{t('drafts', { count: drafts.length })}</p>
-            <ArrowRight aria-hidden className="size-5 text-primary" />
-          </Card>
-        </Link>
-      )}
+        <Card className="flex flex-col gap-3 lg:col-start-1 lg:row-span-4 lg:row-start-1">
+          <DateScrubber
+            from={today}
+            days={SCRUB_DAYS}
+            value={asOf}
+            pins={pins}
+            onChange={setAsOf}
+          />
+          {plan && (
+            <div aria-busy={isFetching} className={isFetching ? 'opacity-70' : undefined}>
+              <CoverGrid household={household} map={plan.coverMap} onSelect={setSelected} />
+            </div>
+          )}
+        </Card>
 
-      <Link href="/change" className={buttonClasses({ variant: 'secondary', size: 'lg' })}>
-        <Plus aria-hidden className="size-5" />
-        {t('whatsChanging')}
-      </Link>
+        {plan && selectedCount > 0 && (
+          <Link href="/plan" className="block lg:col-start-2">
+            <Card className="flex items-center gap-3 hover:border-primary">
+              <div className="flex-1">
+                <p className="font-semibold">
+                  {t.rich('next', {
+                    count: selectedCount,
+                    amount: () => <Amount value={plan.monthlySpend} />,
+                  })}
+                </p>
+                <p className="text-sm text-muted">{t('nextHint')}</p>
+              </div>
+              <ArrowRight aria-hidden className="size-5 text-primary" />
+            </Card>
+          </Link>
+        )}
+
+        {drafts.length > 0 && (
+          <Link href="/actions" className="block lg:col-start-2">
+            <Card className="flex items-center gap-3 border-accent hover:border-primary">
+              <p className="flex-1 font-semibold">{t('drafts', { count: drafts.length })}</p>
+              <ArrowRight aria-hidden className="size-5 text-primary" />
+            </Card>
+          </Link>
+        )}
+
+        <Link
+          href="/change"
+          className={buttonClasses({
+            variant: 'secondary',
+            size: 'lg',
+            className: 'lg:col-start-2',
+          })}
+        >
+          <Plus aria-hidden className="size-5" />
+          {t('whatsChanging')}
+        </Link>
+      </div>
 
       <Sheet
         open={!!selected}

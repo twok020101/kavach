@@ -11,3 +11,4 @@ dist/
 *.log
 /.data/
 next-env.d.ts
+apps/web/AGENTS.md

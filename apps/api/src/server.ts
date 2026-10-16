@@ -17,6 +17,8 @@ import { householdRoutes } from './routes/households';
 import { actionRoutes } from './routes/actions';
 import { lifeChangeRoutes } from './routes/life-changes';
 import { planRoutes } from './routes/plans';
+import { accessRoutes, inviteRoutes } from './routes/access';
+import { setupRoutes } from './routes/setup';
 
 export async function buildServer() {
   const app = Fastify({
@@ -44,6 +46,9 @@ export async function buildServer() {
   await app.register(actionRoutes);
   await app.register(deskRoutes);
   await app.register(documentRoutes);
+  await app.register(setupRoutes);
+  await app.register(accessRoutes);
+  await app.register(inviteRoutes);
 
   return app;
 }
