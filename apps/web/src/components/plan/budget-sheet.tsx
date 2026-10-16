@@ -20,16 +20,16 @@ export function BudgetSheet({
   onClose: () => void;
 }) {
   const t = useTranslations('settings.plan');
-  const strong = (value: number) => () => <Amount value={value} className="font-semibold" />;
+  const strong = (value: number) => <Amount value={value} className="font-semibold" />;
   return (
     <Sheet open={open} onClose={onClose} title={t('budgetTitle')}>
       <div className="flex flex-col gap-3 text-lg">
-        <p>{t.rich('budgetLeft', { amount: strong(budget.disposableMonthly) })}</p>
-        <p>{t.rich('budgetTotal', { amount: strong(budget.totalMonthly) })}</p>
+        <p>{t.rich('budgetLeft', { amount: () => strong(budget.disposableMonthly) })}</p>
+        <p>{t.rich('budgetTotal', { amount: () => strong(budget.totalMonthly) })}</p>
         <p>
           {t.rich('budgetExisting', {
-            existing: strong(budget.existingPremiumsMonthly),
-            free: strong(budget.forNewMonthly),
+            existing: () => strong(budget.existingPremiumsMonthly),
+            free: () => strong(budget.forNewMonthly),
           })}
         </p>
         {budget.thinEmergencyFund && (

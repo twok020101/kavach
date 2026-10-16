@@ -1,6 +1,14 @@
 'use client';
 
-import { Clock, Ellipsis, FolderOpen, Hospital, House, ListChecks } from 'lucide-react';
+import {
+  Clock,
+  Ellipsis,
+  FileWarning,
+  FolderOpen,
+  Hospital,
+  House,
+  ListChecks,
+} from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import type { ReactNode } from 'react';
 import { Link, usePathname } from '@/i18n/navigation';
@@ -15,6 +23,7 @@ const tabs = [
   { href: '/plan', key: 'plan', icon: ListChecks },
   { href: '/policies', key: 'policies', icon: FolderOpen },
   { href: '/timeline', key: 'timeline', icon: Clock },
+  { href: '/claims', key: 'claims', icon: FileWarning },
   { href: '/settings', key: 'more', icon: Ellipsis },
 ] as const;
 
@@ -115,7 +124,7 @@ export function AppShell({
         aria-label={t('mainNav')}
         className="fixed inset-x-0 bottom-0 z-30 border-t border-border bg-surface pb-[env(safe-area-inset-bottom)] lg:hidden"
       >
-        <ul className="mx-auto grid max-w-3xl grid-cols-5">
+        <ul className="mx-auto grid max-w-3xl grid-cols-6">
           {tabs.map(({ href, key, icon: Icon }) => (
             <li key={key}>
               <Link

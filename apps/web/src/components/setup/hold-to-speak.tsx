@@ -24,16 +24,16 @@ export function HoldToSpeak({ onRecorded }: { onRecorded: (note: VoiceNote) => v
       const rec = new MediaRecorder(stream);
       const chunks: Blob[] = [];
       rec.ondataavailable = (e) => chunks.push(e.data);
-      rec.onstop = async () => {
+      rec.onstart = (e) => (started.current = e.timeStamp);
+      rec.onstop = async (e) => {
         stream.getTracks().forEach((track) => track.stop());
         recorder.current = null;
         const blob = new Blob(chunks, { type: rec.mimeType });
-        const seconds = Math.round((Date.now() - started.current) / 1000);
+        const seconds = Math.round((e.timeStamp - started.current) / 1000);
         if (seconds < 1) return;
         onRecorded({ mimeType: rec.mimeType.split(';')[0]!, data: await toBase64(blob), seconds });
       };
       recorder.current = rec;
-      started.current = Date.now();
       rec.start();
       setRecording(true);
       setTimeout(stop, MAX_SECONDS * 1000);

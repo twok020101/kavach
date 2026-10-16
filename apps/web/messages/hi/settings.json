@@ -5,9 +5,16 @@
     "title": "भाषा और दिखावट",
     "language": "भाषा",
     "theme": "थीम",
-    "themes": { "system": "फ़ोन जैसा", "light": "लाइट", "dark": "डार्क" },
+    "themes": {
+      "system": "फ़ोन जैसा",
+      "light": "लाइट",
+      "dark": "डार्क"
+    },
     "textSize": "अक्षरों का आकार",
-    "textSizes": { "normal": "सामान्य", "large": "बड़ा" },
+    "textSizes": {
+      "normal": "सामान्य",
+      "large": "बड़ा"
+    },
     "toggle": "लाइट या डार्क थीम बदलें"
   },
   "family": {
@@ -65,7 +72,15 @@
     "shareText": "{inviter} ने आपको कवच पर {household} में जोड़ा है। यह लिंक खोलें: {url}",
     "pending": "इंतज़ार",
     "inviteSent": "{date} को बुलाया",
-    "joined": "जुड़ गए"
+    "joined": "जुड़ गए",
+    "whatsapp": "WhatsApp",
+    "whatsappHint": "कवच किसी को WhatsApp पर तभी संदेश भेजता है जब वे पहले संदेश का जवाब YES में दें। STOP भेजने पर बंद हो जाता है।",
+    "waState": {
+      "joined": "हाँ कहा",
+      "opted_out": "बंद किया",
+      "not_joined": "अभी नहीं जुड़े",
+      "no_number": "नंबर नहीं"
+    }
   },
   "timeline": {
     "title": "टाइमलाइन",
@@ -80,7 +95,11 @@
       "hospital": "अस्पताल",
       "claims": "क्लेम"
     },
-    "by": { "you": "आपने बताया", "document": "दस्तावेज़ से", "kavach": "कवच" },
+    "by": {
+      "you": "आपने बताया",
+      "document": "दस्तावेज़ से",
+      "kavach": "कवच"
+    },
     "entry": {
       "setup": "परिवार जोड़ा गया · {count} लोग",
       "consent": "अनुमतियाँ बदलीं",
@@ -91,7 +110,8 @@
       "desk_session_at": "{name} {hospital} में",
       "claim_case": "क्लेम का पत्र जाँचा गया",
       "cover_starts": "{name} का कवर शुरू",
-      "cover_ends": "{name} का कवर ख़त्म"
+      "cover_ends": "{name} का कवर ख़त्म",
+      "notification": "{name} को अलर्ट"
     },
     "actionStatus": {
       "draft": "आपका इंतज़ार",
@@ -99,7 +119,12 @@
       "done": "हो गया",
       "dismissed": "हटाया गया"
     },
-    "effective": "{date} से"
+    "effective": "{date} से",
+    "channel": {
+      "whatsapp_template": "WhatsApp पर",
+      "whatsapp_text": "WhatsApp पर",
+      "in_app": "ऐप में"
+    }
   },
   "plan": {
     "budgetTitle": "सुरक्षा के लिए आपका बजट",

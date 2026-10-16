@@ -13,6 +13,7 @@ import type {
 import { readEstimate, type EstimateImage } from '../agents/estimate-reader';
 import { answer, evaluateDesk } from '../core/answer';
 import { deskContext, deskPatient, policyNickname } from '../core/context';
+import { alertHouseholdOwner } from '../channels/whatsapp/notify';
 import { blobs } from '../lib/blobs';
 import { store } from '../store';
 
@@ -52,23 +53,26 @@ async function activeSession(household: Household, sid: string) {
   return session;
 }
 
-/** Stores the photos, reads the estimate and answers with it. A new estimate clears the old billing answer. */
+/**
+ * Stores the photos, reads the estimate and answers with it. A new estimate clears the old billing
+ * answer. `keepPhotos: false` (WhatsApp) reads the photos without storing them.
+ */
 export async function captureEstimate(
   household: Household,
   sid: string,
   images: EstimateImage[],
-  opts: { fixture?: string } = {},
+  opts: { fixture?: string; keepPhotos?: boolean } = {},
 ) {
   const session = await activeSession(household, sid);
   const capturePaths = [...session.capturePaths];
-  for (const img of images) {
+  for (const img of opts.keepPhotos === false ? [] : images) {
     const path = `households/${household.id}/desk/${sid}/capture-${capturePaths.length + 1}.${extension(img.mimeType)}`;
     await blobs.put(path, img.data, img.mimeType);
     capturePaths.push(path);
   }
   const estimate = await readEstimate(images, opts);
   const reply = answer(household, session.patientMemberId, { estimate }, session.language);
-  await save(household, {
+  const updated: DeskSession = {
     ...session,
     estimate,
     hospitalName: session.hospitalName ?? estimate.hospitalName,
@@ -76,7 +80,9 @@ export async function captureEstimate(
     capturePaths,
     lastAnswer: reply,
     language: reply.locale ?? session.language,
-  });
+  };
+  await save(household, updated);
+  await alertHouseholdOwner(household, updated);
   return { estimate, answer: reply };
 }
 
@@ -91,13 +97,15 @@ export async function takeTurn(household: Household, sid: string, body: DeskTurn
     { estimate, utteranceText: body.text, billingTypeAnswer },
     body.language ?? session.language,
   );
-  await save(household, {
+  const updated: DeskSession = {
     ...session,
     estimate,
     billingTypeAnswer,
     lastAnswer: reply,
     language: reply.locale ?? session.language,
-  });
+  };
+  await save(household, updated);
+  await alertHouseholdOwner(household, updated);
   return reply;
 }
 

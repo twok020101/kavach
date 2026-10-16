@@ -2,9 +2,21 @@
 
 import type { DeskAnswer, HospitalEstimate, Locale } from '@kavach/schemas';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { Camera, FileText, Keyboard, Send, Share2, Scale } from 'lucide-react';
+import {
+  Camera,
+  FileText,
+  Keyboard,
+  Mic,
+  MicOff,
+  RadioTower,
+  Send,
+  Share2,
+  Scale,
+  TriangleAlert,
+} from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
-import { useRef, useState, type FormEvent } from 'react';
+import { useCallback, useRef, useState, type FormEvent } from 'react';
+import { AgentSteps, type AgentStep } from '@/components/kavach/agent-steps';
 import { AnswerCard } from '@/components/kavach/answer-card';
 import { Amount } from '@/components/kavach/amount';
 import { Captions, type CaptionLine } from '@/components/kavach/captions';
@@ -18,13 +30,19 @@ import { Disclosure } from '@/components/ui/disclosure';
 import { Spinner } from '@/components/ui/spinner';
 import { useRouter } from '@/i18n/navigation';
 import { deskClient } from '@/lib/desk-client';
+import { useLiveDesk, type LiveFallback, type LiveStatus } from '@/lib/live/use-live-desk';
 import { AgentStepsTicker } from './agent-steps-ticker';
+import { CameraCapture } from './camera-capture';
 import { DeskHeader } from './desk-header';
 
-/** S22 + S23: text-mode desk. Photo of the estimate, typed questions, captions and answer cards. */
+/**
+ * S22 + S23: the desk. Text mode (photo of the estimate, typed questions) or live voice mode
+ * (mic, camera still, spoken answers); both show the same captions and answer cards.
+ */
 export function DeskSessionScreen({ sid, demo }: { sid: string; demo: boolean }) {
   const t = useTranslations('desk.session');
   const tc = useTranslations('common');
+  const tl = useTranslations('live');
   const locale = useLocale() as Locale;
   const router = useRouter();
   const fileInput = useRef<HTMLInputElement>(null);
@@ -39,6 +57,15 @@ export function DeskSessionScreen({ sid, demo }: { sid: string; demo: boolean })
   const [question, setQuestion] = useState('');
   const [operation, setOperation] = useState<{ id: number; labels: string[] }>();
   const [shared, setShared] = useState(false);
+  const [live, setLive] = useState(false);
+  const [fallback, setFallback] = useState<LiveFallback>();
+  const [cameraOpen, setCameraOpen] = useState(false);
+  const [liveSteps, setLiveSteps] = useState<AgentStep[]>([]);
+  /** Cards the live agent has shown so far; `all` once its turn is complete (and in text mode). */
+  const [shownCards, setShownCards] = useState<Set<string> | 'all'>('all');
+  const openCaption = useRef<{ user?: string; agent?: string }>({});
+  /** The next live step starts a fresh list (a new turn). */
+  const stepsDone = useRef(true);
 
   const household = useQuery({ queryKey: ['desk', 'household'], queryFn: deskClient.getHousehold });
   const session = useQuery({
@@ -52,15 +79,88 @@ export function DeskSessionScreen({ sid, demo }: { sid: string; demo: boolean })
     setCaptions((lines) => [...lines, { id: String(++lineId.current), who, text }]);
   const begin = (labels: string[]) => setOperation({ id: lineId.current, labels });
 
+  /** Live captions grow word by word: update the open line for that speaker, or start one. */
+  const caption = (who: CaptionLine['who'], text: string, final: boolean) => {
+    const open = openCaption.current[who];
+    const id = open ?? String(++lineId.current);
+    openCaption.current[who] = final ? undefined : id;
+    setCaptions((lines) =>
+      open ? lines.map((l) => (l.id === id ? { ...l, text } : l)) : [...lines, { id, who, text }],
+    );
+  };
+
+  const voice = useLiveDesk(sid, locale, {
+    caption,
+    step(label, state) {
+      const text = t(`steps.${label}` as 'steps.reading');
+      const fresh = state === 'start' && stepsDone.current;
+      stepsDone.current = false;
+      setLiveSteps((steps) => {
+        const base = fresh ? [] : steps;
+        const others = base.filter((s) => s.label !== text);
+        return [...others, { label: text, state: state === 'start' ? 'active' : 'done' }];
+      });
+    },
+    estimate: setCaptured,
+    answer(reply) {
+      setAnswer(reply);
+      setShownCards(new Set());
+    },
+    card: (card) =>
+      setShownCards((shown) => (shown === 'all' ? shown : new Set(shown).add(card.id))),
+    turnComplete() {
+      setShownCards('all');
+      stepsDone.current = true;
+    },
+    fallback(reason) {
+      openCaption.current = {};
+      stepsDone.current = true;
+      setLive(false);
+      setCameraOpen(false);
+      setShownCards('all');
+      setLiveSteps((steps) => steps.map((s) => ({ ...s, state: 'done' })));
+      setFallback(reason);
+    },
+  });
+
+  function startLive() {
+    setFallback(undefined);
+    setLive(true);
+    // Swap the text-mode greeting for the spoken one, unless the conversation has started.
+    setCaptions((lines) =>
+      lines.length === 1 && lines[0]!.id === 'hello'
+        ? [{ id: 'hello', who: 'agent', text: tl('greeting') }]
+        : [...lines, { id: String(++lineId.current), who: 'agent', text: tl('greeting') }],
+    );
+    void voice.start();
+  }
+
+  function stopLive() {
+    voice.stop();
+    setLive(false);
+    setShownCards('all');
+  }
+
+  const cameraUnavailable = useCallback(() => {
+    setCameraOpen(false);
+    fileInput.current?.click();
+  }, []);
+
+  /** The camera button: the live camera preview, or the phone's camera in text mode. */
+  const showEstimate = () => (live ? setCameraOpen(true) : fileInput.current?.click());
+
   const capture = useMutation({
     mutationFn: (photo: File | 'sample') => deskClient.capture(sid, photo),
     onMutate: (photo) => {
       setPhotoUrl(photo === 'sample' ? undefined : URL.createObjectURL(photo));
       say('user', photo === 'sample' ? t('sampleSent') : t('photoSent'));
-      begin([t('steps.reading'), t('steps.tariff'), t('steps.policies')]);
+      setCameraOpen(false);
+      if (!live) begin([t('steps.reading'), t('steps.tariff'), t('steps.policies')]);
     },
     onSuccess: (est) => {
       setCaptured(est);
+      // Live: the agent reads the estimate itself and answers aloud.
+      if (live) return voice.capture();
       say(
         'agent',
         t('estimateRead', {
@@ -82,6 +182,7 @@ export function DeskSessionScreen({ sid, demo }: { sid: string; demo: boolean })
     },
     onSuccess: (reply) => {
       say('agent', reply.text);
+      setShownCards('all');
       if (reply.cards.length) setAnswer(reply);
     },
     onError: () => say('agent', tc('error')),
@@ -94,7 +195,10 @@ export function DeskSessionScreen({ sid, demo }: { sid: string; demo: boolean })
   });
 
   const end = useMutation({
-    mutationFn: () => deskClient.end(sid),
+    mutationFn: () => {
+      voice.stop(true);
+      return deskClient.end(sid);
+    },
     onSuccess: () => router.push(`/desk/${sid}/summary`),
   });
 
@@ -103,7 +207,16 @@ export function DeskSessionScreen({ sid, demo }: { sid: string; demo: boolean })
   function submit(event: FormEvent) {
     event.preventDefault();
     const text = question.trim();
-    if (text && !busy) ask.mutate(text);
+    if (!text || busy) return;
+    if (live) {
+      voice.text(text);
+      setQuestion('');
+    } else ask.mutate(text);
+  }
+
+  function answerBilling(kind: 'differ' | 'same') {
+    if (live) voice.billingAnswer(kind === 'same' ? 'flat' : 'differential');
+    else ask.mutate(tl(`billing.${kind}Text`));
   }
 
   async function share() {
@@ -144,19 +257,29 @@ export function DeskSessionScreen({ sid, demo }: { sid: string; demo: boolean })
 
       <main className="mx-auto flex max-w-2xl flex-col gap-5 px-4 pb-56 pt-4">
         <div className="flex items-center justify-between gap-3">
-          <ListeningOrb
-            size="sm"
-            state={busy ? 'thinking' : 'idle'}
-            label={busy ? t('orb.thinking') : t('orb.ready')}
-          />
-          <Badge icon={Keyboard} className="shrink-0">
-            {t('textMode')}
+          {live ? (
+            <ListeningOrb
+              size={voice.status === 'off' ? 'sm' : 'md'}
+              state={voice.muted ? 'idle' : orbState(voice.status)}
+              label={voice.muted ? tl('orb.muted') : tl(`orb.${liveLabel(voice.status)}`)}
+            />
+          ) : (
+            <ListeningOrb
+              size="sm"
+              state={busy ? 'thinking' : 'idle'}
+              label={busy ? t('orb.thinking') : t('orb.ready')}
+            />
+          )}
+          <Badge icon={live ? RadioTower : Keyboard} className="shrink-0">
+            {live ? tl('badge') : t('textMode')}
           </Badge>
         </div>
 
         <Captions lines={captions} />
 
-        {operation && (
+        {live && liveSteps.length > 0 && <AgentSteps steps={liveSteps} />}
+
+        {!live && operation && (
           <AgentStepsTicker key={operation.id} labels={operation.labels} running={busy} />
         )}
 
@@ -166,7 +289,7 @@ export function DeskSessionScreen({ sid, demo }: { sid: string; demo: boolean })
               {t('capture.title')}
             </h2>
             <p className="text-muted">{t('capture.hint')}</p>
-            <Button size="desk" onClick={() => fileInput.current?.click()}>
+            <Button size="desk" onClick={showEstimate}>
               <Camera aria-hidden className="size-6" />
               {t('capture.photo')}
             </Button>
@@ -218,7 +341,7 @@ export function DeskSessionScreen({ sid, demo }: { sid: string; demo: boolean })
                 size="sm"
 
                 disabled={busy}
-                onClick={() => fileInput.current?.click()}
+                onClick={showEstimate}
               >
                 <Camera aria-hidden className="size-5" />
                 {t('estimate.retake')}
@@ -229,18 +352,37 @@ export function DeskSessionScreen({ sid, demo }: { sid: string; demo: boolean })
 
         {answer && (
           <section aria-label={t('answers')} className="flex flex-col gap-4">
-            {answer.cards.map((card, i) => (
-              <AnswerCard key={card.id} card={card} index={i}>
-                {card.kind === 'room_compare' && evaluation.data && (
-                  <Disclosure
-                    label={t('compareRooms')}
-                    icon={<Scale aria-hidden className="size-5" />}
+            {answer.questionForDesk && answer.cards.some((c) => c.kind === 'billing_branch') && (
+              <Card className="flex flex-col gap-3 border-2 border-primary">
+                <p className="font-semibold">{tl('billing.question')}</p>
+                <div className="grid grid-cols-1 gap-2 min-[400px]:grid-cols-2">
+                  <Button
+                    variant="secondary"
+                    disabled={busy}
+                    onClick={() => answerBilling('differ')}
                   >
-                    <RoomCompare result={evaluation.data.primary} />
-                  </Disclosure>
-                )}
-              </AnswerCard>
-            ))}
+                    {tl('billing.differ')}
+                  </Button>
+                  <Button variant="secondary" disabled={busy} onClick={() => answerBilling('same')}>
+                    {tl('billing.same')}
+                  </Button>
+                </div>
+              </Card>
+            )}
+            {answer.cards
+              .filter((card) => shownCards === 'all' || shownCards.has(card.id))
+              .map((card, i) => (
+                <AnswerCard key={card.id} card={card} index={i}>
+                  {card.kind === 'room_compare' && evaluation.data && (
+                    <Disclosure
+                      label={t('compareRooms')}
+                      icon={<Scale aria-hidden className="size-5" />}
+                    >
+                      <RoomCompare result={evaluation.data.primary} />
+                    </Disclosure>
+                  )}
+                </AnswerCard>
+              ))}
 
             <Card className="p-2 sm:p-3">
               <Disclosure label={t('why')}>
@@ -283,55 +425,140 @@ export function DeskSessionScreen({ sid, demo }: { sid: string; demo: boolean })
         }}
       />
 
+      {cameraOpen && (
+        <CameraCapture
+          onCapture={(photo) => capture.mutate(photo)}
+          onClose={() => setCameraOpen(false)}
+          onUnavailable={cameraUnavailable}
+          onSample={demo ? () => capture.mutate('sample') : undefined}
+        />
+      )}
+
       <div className="fixed inset-x-0 bottom-0 z-20 border-t border-border bg-bg pb-[env(safe-area-inset-bottom)]">
-        <div className="mx-auto flex max-w-2xl flex-col gap-2 px-4 py-3">
-          {!answer && (
-            <div className="flex gap-2 overflow-x-auto pb-1" aria-label={t('suggestions')}>
-              {[t('suggest.room'), t('suggest.card')].map((s) => (
-                <button
-                  key={s}
-                  type="button"
-                  disabled={busy}
-                  onClick={() => ask.mutate(s)}
-                  className="min-h-12 shrink-0 rounded-full border-2 border-primary bg-surface px-4 font-semibold text-primary hover:bg-primary-soft disabled:opacity-50"
-                >
-                  {s}
-                </button>
-              ))}
-            </div>
-          )}
-          <form onSubmit={submit} className="flex items-stretch gap-2">
+        {live ? (
+          <div className="mx-auto grid max-w-2xl grid-cols-[auto_minmax(0,1fr)_auto] items-stretch gap-2 px-4 py-3">
+            <Button
+              variant={voice.muted ? 'secondary' : 'primary'}
+              className="min-h-16 min-w-16 shrink-0 px-0"
+              aria-label={voice.muted ? tl('unmute') : tl('mute')}
+              aria-pressed={voice.muted}
+              disabled={voice.status === 'connecting'}
+              onClick={voice.toggleMute}
+            >
+              {voice.muted ? (
+                <MicOff aria-hidden className="size-7" />
+              ) : (
+                <Mic aria-hidden className="size-7" />
+              )}
+            </Button>
+            <Button
+              variant="accent"
+              size="desk"
+              className="min-w-0 whitespace-nowrap px-3"
+              disabled={busy}
+              onClick={showEstimate}
+            >
+              <Camera aria-hidden className="size-6 shrink-0" />
+              {tl('showEstimate')}
+            </Button>
             <Button
               variant="secondary"
               className="min-h-16 min-w-16 shrink-0 px-0"
-              aria-label={t('capture.photo')}
-              disabled={busy}
-              onClick={() => fileInput.current?.click()}
+              aria-label={tl('typeInstead')}
+              onClick={stopLive}
             >
-              <Camera aria-hidden className="size-7" />
+              <Keyboard aria-hidden className="size-7" />
             </Button>
-            <label htmlFor="desk-question" className="sr-only">
-              {t('questionLabel')}
-            </label>
-            <input
-              id="desk-question"
-              value={question}
-              onChange={(e) => setQuestion(e.target.value)}
-              placeholder={t('questionPlaceholder')}
-              autoComplete="off"
-              className="min-h-16 min-w-0 flex-1 rounded-md border-2 border-border-strong bg-surface px-3 text-lg placeholder:text-muted focus-visible:border-primary"
-            />
-            <Button
-              type="submit"
-              className="min-h-16 min-w-16 shrink-0 px-0"
-              aria-label={t('send')}
-              disabled={busy || !question.trim()}
-            >
-              <Send aria-hidden className="size-7" />
-            </Button>
-          </form>
-        </div>
+          </div>
+        ) : (
+          <div className="mx-auto flex max-w-2xl flex-col gap-2 px-4 py-3">
+            {fallback && (
+              <div
+                role="alert"
+                className="flex flex-col gap-2 rounded-md border-2 border-partial bg-partial-bg p-3 text-base text-text"
+              >
+                <p className="flex items-center gap-2 font-semibold text-partial">
+                  <TriangleAlert aria-hidden className="size-5 shrink-0" />
+                  {tl('fallback.title')}
+                </p>
+                <p>{tl(`fallback.${fallbackMessage(fallback)}`)}</p>
+                <div className="flex flex-wrap gap-2">
+                  {fallback !== 'time_limit' && (
+                    <Button variant="secondary" size="sm" onClick={startLive}>
+                      <Mic aria-hidden className="size-5" />
+                      {tl('fallback.retry')}
+                    </Button>
+                  )}
+                  <Button variant="ghost" size="sm" onClick={() => setFallback(undefined)}>
+                    {tl('fallback.dismiss')}
+                  </Button>
+                </div>
+              </div>
+            )}
+            {!fallback && (
+              <Button variant="accent" size="desk" onClick={startLive}>
+                <Mic aria-hidden className="size-6" />
+                {tl('talk')}
+              </Button>
+            )}
+            {!answer && (
+              <div className="flex gap-2 overflow-x-auto pb-1" aria-label={t('suggestions')}>
+                {[t('suggest.room'), t('suggest.card')].map((s) => (
+                  <button
+                    key={s}
+                    type="button"
+                    disabled={busy}
+                    onClick={() => ask.mutate(s)}
+                    className="min-h-12 shrink-0 rounded-full border-2 border-primary bg-surface px-4 font-semibold text-primary hover:bg-primary-soft disabled:opacity-50"
+                  >
+                    {s}
+                  </button>
+                ))}
+              </div>
+            )}
+            <form onSubmit={submit} className="flex items-stretch gap-2">
+              <Button
+                variant="secondary"
+                className="min-h-16 min-w-16 shrink-0 px-0"
+                aria-label={t('capture.photo')}
+                disabled={busy}
+                onClick={() => fileInput.current?.click()}
+              >
+                <Camera aria-hidden className="size-7" />
+              </Button>
+              <label htmlFor="desk-question" className="sr-only">
+                {t('questionLabel')}
+              </label>
+              <input
+                id="desk-question"
+                value={question}
+                onChange={(e) => setQuestion(e.target.value)}
+                placeholder={t('questionPlaceholder')}
+                autoComplete="off"
+                className="min-h-16 min-w-0 flex-1 rounded-md border-2 border-border-strong bg-surface px-3 text-lg placeholder:text-muted focus-visible:border-primary"
+              />
+              <Button
+                type="submit"
+                className="min-h-16 min-w-16 shrink-0 px-0"
+                aria-label={t('send')}
+                disabled={busy || !question.trim()}
+              >
+                <Send aria-hidden className="size-7" />
+              </Button>
+            </form>
+          </div>
+        )}
       </div>
     </>
   );
 }
+
+const orbState = (status: LiveStatus) =>
+  status === 'speaking' ? 'speaking' : status === 'listening' ? 'listening' : 'thinking';
+
+const liveLabel = (status: LiveStatus) => (status === 'off' ? 'connecting' : status);
+
+const fallbackMessage = (reason: LiveFallback) =>
+  reason === 'connection_lost' || reason === 'mic_denied' || reason === 'time_limit'
+    ? reason
+    : 'other';

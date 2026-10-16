@@ -9,3 +9,6 @@ export * from './plan';
 export * from './document';
 export * from './setup';
 export * from './consent';
+export * from './proof';
+export * from './live';
+export * from './whatsapp';

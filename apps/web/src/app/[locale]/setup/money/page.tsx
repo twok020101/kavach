@@ -3,7 +3,7 @@
 import type { Finances } from '@kavach/schemas';
 import { ChevronDown } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import { useEffect, useId, useState } from 'react';
+import { useId, useState } from 'react';
 import { SetupFrame } from '@/components/setup/setup-frame';
 import { useSetupHousehold } from '@/components/setup/use-setup-household';
 import { Button } from '@/components/ui/button';
@@ -38,19 +38,13 @@ export default function MoneyPage() {
   const router = useRouter();
   const { data: household } = useSetupHousehold();
   const save = useSetFinances(household?.id);
-  const [finances, setFinances] = useState<Finances>(EMPTY);
+  // Edits start from the saved numbers; `null` until the user changes something.
+  const [edited, setFinances] = useState<Finances | null>(null);
+  const finances = edited ?? household?.finances ?? EMPTY;
   const [more, setMore] = useState(false);
-  const [loaded, setLoaded] = useState(false);
-
-  useEffect(() => {
-    if (household && !loaded) {
-      if (household.finances) setFinances(household.finances);
-      setLoaded(true);
-    }
-  }, [household, loaded]);
 
   const set = (field: keyof Finances, value: number) =>
-    setFinances((f) => ({ ...f, [field]: value }));
+    setFinances({ ...finances, [field]: value });
   const emiHigh =
     finances.takeHomeMonthly > 0 && finances.emiMonthly > finances.takeHomeMonthly / 2;
 

@@ -39,6 +39,14 @@ export const PolicyTerms = z.object({
   /** Super top-up / deductible: the policy pays only above this amount per year. */
   deductible: Rupees.default(0),
   proportionateDeduction: z.boolean().default(true),
+  /** Read from full wordings (evals); schedules usually don't print them. */
+  waitingPeriods: z
+    .object({
+      initialDays: z.number().int().optional(),
+      pedMonths: z.number().int().optional(),
+      specificMonths: z.number().int().optional(),
+    })
+    .optional(),
   citations: z.record(z.string(), Citation).default({}),
 });
 export type PolicyTerms = z.infer<typeof PolicyTerms>;

@@ -2,6 +2,7 @@
 
 import type { Household, TimelineEntry, TimelineKind } from '@kavach/schemas';
 import {
+  BellRing,
   CalendarClock,
   FileText,
   GitBranch,
@@ -26,7 +27,7 @@ const FILTERS: Record<string, TimelineKind[] | null> = {
   all: null,
   changes: ['life_change', 'action', 'cover_starts', 'cover_ends', 'setup', 'consent'],
   documents: ['document_added'],
-  hospital: ['desk_session'],
+  hospital: ['desk_session', 'notification'],
   claims: ['claim_case'],
 };
 type Filter = 'all' | 'changes' | 'documents' | 'hospital' | 'claims';
@@ -39,6 +40,7 @@ const ICONS: Record<TimelineKind, LucideIcon> = {
   action: PenLine,
   desk_session: Hospital,
   claim_case: Receipt,
+  notification: BellRing,
   cover_starts: CalendarClock,
   cover_ends: CalendarClock,
 };
@@ -140,11 +142,13 @@ function Entry({ entry }: { entry: TimelineEntry }) {
         ? (entry.text ?? t(`entry.${entry.kind}`))
         : t(`entry.${entry.kind}`, p);
   const detail =
-    entry.kind === 'action' && p.status
-      ? t(`actionStatus.${p.status as 'draft'}`)
-      : entry.kind === 'life_change' && p.effectiveDate
-        ? t('effective', { date: date(p.effectiveDate, true) })
-        : undefined;
+    entry.kind === 'notification' && p.channel
+      ? t(`channel.${p.channel as 'in_app'}`)
+      : entry.kind === 'action' && p.status
+        ? t(`actionStatus.${p.status as 'draft'}`)
+        : entry.kind === 'life_change' && p.effectiveDate
+          ? t('effective', { date: date(p.effectiveDate, true) })
+          : undefined;
 
   const body = (
     <>
@@ -158,6 +162,9 @@ function Entry({ entry }: { entry: TimelineEntry }) {
       </span>
       <span className="flex min-w-0 flex-1 flex-col">
         <span className="font-semibold">{title}</span>
+        {entry.kind === 'notification' && entry.text && (
+          <span className="line-clamp-2 text-sm">{entry.text}</span>
+        )}
         <span className="text-sm text-muted">
           {date(entry.at.slice(0, 10), true)} · {t(`by.${entry.by}`)}
           {detail && ` · ${detail}`}

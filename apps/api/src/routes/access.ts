@@ -11,6 +11,7 @@ import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod';
 import { z } from 'zod';
 import { loadHousehold, requireUser } from '../auth';
 import { env } from '../env';
+import { getSender } from '../channels/whatsapp/senders';
 import { store } from '../store';
 import { requireOwner } from './setup';
 
@@ -63,6 +64,7 @@ export const accessRoutes: FastifyPluginAsyncZod = async (app) => {
             addedAt: household.createdAt,
           })),
         invites,
+        whatsapp: await Promise.all(household.members.map(whatsappState)),
         alertContactMemberId: household.alertContactMemberId,
       };
     },
@@ -179,6 +181,18 @@ export const accessRoutes: FastifyPluginAsyncZod = async (app) => {
 };
 
 const now = () => new Date().toISOString();
+
+/** Joined = said YES to the first-message consent; STOP opts out. */
+async function whatsappState(member: Household['members'][number]) {
+  if (!member.phone) return { memberId: member.id, state: 'no_number' as const };
+  const sender = await getSender(member.phone);
+  const state = sender?.optedOut
+    ? ('opted_out' as const)
+    : member.whatsappConsentAt || sender?.consent?.grantedAt
+      ? ('joined' as const)
+      : ('not_joined' as const);
+  return { memberId: member.id, phone: member.phone, state };
+}
 
 async function openInvite(token: string) {
   const invite = await store.get<Invite>('invites', inviteId(token));

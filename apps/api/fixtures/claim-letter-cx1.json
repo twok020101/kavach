@@ -15,7 +15,8 @@
     {
       "label": "Proportionate deduction",
       "amount": 9600,
-      "reasonGiven": "Proportionate deduction as per room rent eligibility (Clause 3.2)"
+      "reasonGiven": "Proportionate deduction as per room rent eligibility (Clause 3.2)",
+      "clauseRef": "3.2"
     },
     {
       "label": "Consumables",
@@ -24,5 +25,13 @@
     }
   ],
   "copayApplied": 51160,
-  "letterDate": "2027-03-02"
+  "letterDate": "2027-03-02",
+  "diagnosis": "CAD – PTCA with 1 DES",
+  "admissionDate": "2027-02-08",
+  "dischargeDate": "2027-02-12",
+  "roomCategory": "Single Standard",
+  "roomRentPerDay": 5000,
+  "roomEligibilityPerDay": 5000,
+  "icuStay": false,
+  "grievanceEmail": "grievance@suraksha-sample.example"
 }

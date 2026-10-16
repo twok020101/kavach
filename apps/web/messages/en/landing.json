@@ -32,7 +32,8 @@
     "step1": "Scan the code with your phone camera. WhatsApp opens with a join message.",
     "step2": "Send that message to join Kavach’s test number.",
     "step3": "Send RAHUL to get the family alert on your phone, then send a photo of an estimate or a voice note.",
-    "note": "This uses a WhatsApp test number. Membership lasts 3 days; scan again after that."
+    "note": "This uses a WhatsApp test number. Membership lasts 3 days; scan again after that.",
+    "joinText": "Or send “{join}” to {number} on WhatsApp."
   },
   "trust": {
     "title": "Every number shows its working",

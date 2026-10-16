@@ -5,9 +5,16 @@
     "title": "Language and display",
     "language": "Language",
     "theme": "Theme",
-    "themes": { "system": "Same as my phone", "light": "Light", "dark": "Dark" },
+    "themes": {
+      "system": "Same as my phone",
+      "light": "Light",
+      "dark": "Dark"
+    },
     "textSize": "Text size",
-    "textSizes": { "normal": "Normal", "large": "Large" },
+    "textSizes": {
+      "normal": "Normal",
+      "large": "Large"
+    },
     "toggle": "Switch light or dark theme"
   },
   "family": {
@@ -65,7 +72,15 @@
     "shareText": "{inviter} added you to {household} on Kavach. Open this link: {url}",
     "pending": "Waiting for",
     "inviteSent": "Invited {date}",
-    "joined": "Joined"
+    "joined": "Joined",
+    "whatsapp": "WhatsApp",
+    "whatsappHint": "Kavach messages someone on WhatsApp only after they reply YES to its first message. Sending STOP turns it off.",
+    "waState": {
+      "joined": "Said yes",
+      "opted_out": "Stopped",
+      "not_joined": "Not joined yet",
+      "no_number": "No number"
+    }
   },
   "timeline": {
     "title": "Timeline",
@@ -80,7 +95,11 @@
       "hospital": "Hospital",
       "claims": "Claims"
     },
-    "by": { "you": "You said", "document": "From a document", "kavach": "Kavach" },
+    "by": {
+      "you": "You said",
+      "document": "From a document",
+      "kavach": "Kavach"
+    },
     "entry": {
       "setup": "Family set up · {count} people",
       "consent": "Permissions updated",
@@ -91,7 +110,8 @@
       "desk_session_at": "{name} at {hospital}",
       "claim_case": "Claim letter checked",
       "cover_starts": "{name} cover starts",
-      "cover_ends": "{name} cover ends"
+      "cover_ends": "{name} cover ends",
+      "notification": "Alert to {name}"
     },
     "actionStatus": {
       "draft": "Waiting for you",
@@ -99,7 +119,12 @@
       "done": "Done",
       "dismissed": "Dismissed"
     },
-    "effective": "From {date}"
+    "effective": "From {date}",
+    "channel": {
+      "whatsapp_template": "on WhatsApp",
+      "whatsapp_text": "on WhatsApp",
+      "in_app": "in the app"
+    }
   },
   "plan": {
     "budgetTitle": "Your budget for protection",

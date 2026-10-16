@@ -19,6 +19,7 @@ export default async function LandingPage({ params }: PageProps<'/[locale]'>) {
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations('landing');
+  const tProof = await getTranslations('proof');
   const roomCard = mockAnswer(locale as Locale).cards.find((c) => c.kind === 'room_compare');
 
   return (
@@ -99,6 +100,13 @@ export default async function LandingPage({ params }: PageProps<'/[locale]'>) {
               {t('trust.title')}
             </h2>
             <p className="text-muted">{t('trust.body')}</p>
+            <Link
+              href="/proof"
+              className="mt-1 inline-flex min-h-12 items-center gap-1 font-semibold text-primary underline"
+            >
+              {tProof('linkFromLanding')}
+              <ArrowRight aria-hidden className="size-4" />
+            </Link>
           </div>
         </section>
       </main>

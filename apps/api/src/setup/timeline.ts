@@ -9,6 +9,7 @@ import type {
   LifeChangeRecord,
   TimelineEntry,
 } from '@kavach/schemas';
+import { listNotifications } from '../channels/whatsapp/notify';
 import { store } from '../store';
 
 const timelineOf = (hid: string) => `households/${hid}/timeline`;
@@ -34,13 +35,14 @@ export async function addTimeline(
 export async function buildTimeline(household: Household) {
   const hid = household.id;
   const list = <T>(name: string) => store.list<T>(`households/${hid}/${name}`);
-  const [stored, documents, changes, actions, sessions, claims] = await Promise.all([
+  const [stored, documents, changes, actions, sessions, claims, notifications] = await Promise.all([
     list<TimelineEntry>('timeline'),
     list<DocumentRecord>('documents'),
     list<LifeChangeRecord>('lifeChanges'),
     list<Action>('actions'),
     list<DeskSession>('deskSessions'),
     list<ClaimCase>('claimCases'),
+    listNotifications(hid),
   ]);
   const member = (id?: string) => household.members.find((m) => m.id === id)?.name ?? '';
   const policyName = (id: string) => {
@@ -92,6 +94,16 @@ export async function buildTimeline(household: Household) {
       by: 'document' as const,
       params: { hospital: c.letter?.hospitalName ?? '', status: c.status },
       href: `/claims/${c.id}`,
+    })),
+    // Messages Kavach sent the family (Rahul's hospital alert, reminders), also shown in the app.
+    ...notifications.map((n) => ({
+      id: n.id,
+      kind: 'notification' as const,
+      at: n.createdAt,
+      by: 'kavach' as const,
+      text: n.text,
+      params: { name: member(n.memberId), type: n.kind, channel: n.channel },
+      href: n.link,
     })),
     ...plan(household).events.map((e) => ({
       id: `${e.kind}_${e.policyId}_${e.date}`,

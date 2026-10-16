@@ -42,49 +42,48 @@ function initialDrafts(intake: IntakeResult | undefined, household: Household): 
 /** S05 Family card: check the people the agent found, fill in ages, then save. */
 export default function FamilyConfirmPage() {
   const t = useTranslations('setup.confirm');
-  const tc = useTranslations('common');
-  const ts = useTranslations('setup');
-  const router = useRouter();
   const { data: household } = useSetupHousehold();
-  const save = useSetMembers(household?.id);
-  const [drafts, setDrafts] = useState<Draft[]>();
-  const [familyName, setFamilyName] = useState('');
-  const [city, setCity] = useState('');
-  const [editing, setEditing] = useState<number | 'new'>();
-
-  useEffect(() => {
-    if (!household || drafts) return;
-    const intake = loadIntake();
-    const initial = initialDrafts(intake, household);
-    if (!initial.length) {
-      router.replace('/setup/family');
-      return;
-    }
-    setDrafts(initial);
-    setFamilyName(
-      intake?.familyName
-        ? `${intake.familyName} family`
-        : household.members.length
-          ? household.name
-          : '',
-    );
-    setCity(intake?.city ?? household.city);
-    // Sign-in may know the person's own name.
-    signedInName().then(
-      (name) =>
-        name &&
-        setDrafts((list) =>
-          list?.map((d) => (d.relation === 'self' && !d.name ? { ...d, name } : d)),
-        ),
-    );
-  }, [household, drafts, router]);
-
-  if (!household || !drafts)
+  if (!household)
     return (
       <SetupFrame step={1} title={t('title')}>
         {null}
       </SetupFrame>
     );
+  return <FamilyConfirm household={household} />;
+}
+
+function FamilyConfirm({ household }: { household: Household }) {
+  const t = useTranslations('setup.confirm');
+  const tc = useTranslations('common');
+  const ts = useTranslations('setup');
+  const router = useRouter();
+  const save = useSetMembers(household.id);
+  const [intake] = useState(loadIntake);
+  const [drafts, setDrafts] = useState(() => initialDrafts(intake, household));
+  const [familyName, setFamilyName] = useState(
+    intake?.familyName
+      ? `${intake.familyName} family`
+      : household.members.length
+        ? household.name
+        : '',
+  );
+  const [city, setCity] = useState(intake?.city ?? household.city);
+  const [editing, setEditing] = useState<number | 'new'>();
+
+  const empty = drafts.length === 0;
+  useEffect(() => {
+    if (empty) router.replace('/setup/family');
+  }, [empty, router]);
+  // Sign-in may know the person's own name.
+  useEffect(() => {
+    signedInName().then(
+      (name) =>
+        name &&
+        setDrafts((list) =>
+          list.map((d) => (d.relation === 'self' && !d.name ? { ...d, name } : d)),
+        ),
+    );
+  }, []);
 
   const health = household.consents?.some((c) => c.purpose === 'health' && !c.withdrawnAt) ?? false;
   const missing = drafts.filter((d) => d.age === null || !d.name).length;
@@ -94,8 +93,8 @@ export default function FamilyConfirmPage() {
   const onSave = (member: DraftMember) => {
     setDrafts((list) =>
       editing === 'new'
-        ? [...(list ?? []), { ...member, assumed: [] }]
-        : list?.map((d, i) => (i === editing ? { ...member, assumed: [] } : d)),
+        ? [...list, { ...member, assumed: [] }]
+        : list.map((d, i) => (i === editing ? { ...member, assumed: [] } : d)),
     );
     setEditing(undefined);
   };
@@ -105,7 +104,8 @@ export default function FamilyConfirmPage() {
       {
         name: familyName.trim() || t('familyNamePlaceholder'),
         city: city.trim() || undefined,
-        members: drafts.map(({ assumed: _, age, ...m }) => ({ ...m, age: age ?? 0 })),
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        members: drafts.map(({ assumed, age, ...m }) => ({ ...m, age: age ?? 0 })),
       },
       {
         onSuccess: () => {
@@ -237,7 +237,7 @@ export default function FamilyConfirmPage() {
         health={health}
         onSave={onSave}
         onRemove={() => {
-          setDrafts((list) => list?.filter((_, i) => i !== editing));
+          setDrafts((list) => list.filter((_, i) => i !== editing));
           setEditing(undefined);
         }}
         onClose={() => setEditing(undefined)}

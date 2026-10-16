@@ -14,6 +14,13 @@ import { Button, buttonClasses } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { useAccess, useCreateInvite, useRemoveAccess, useSetAlertContact } from '@/lib/setup';
 
+const WA_TONES = {
+  joined: 'safe',
+  opted_out: 'gap',
+  not_joined: 'partial',
+  no_number: 'na',
+} as const;
+
 export function AccessScreen() {
   return <PlanFrame>{(household) => <Access household={household} />}</PlanFrame>;
 }
@@ -56,6 +63,30 @@ function Access({ household }: { household: Household }) {
             ))}
         </div>
         <p className="text-sm text-muted">{t('alertsHint')}</p>
+      </Card>
+
+      <Card as="section" className="flex flex-col gap-3">
+        <h2 className="flex items-center gap-2 font-display text-lg font-semibold">
+          <MessageCircle aria-hidden className="size-5 text-safe" />
+          {t('whatsapp')}
+        </h2>
+        <ul className="flex flex-col gap-2">
+          {data?.whatsapp.map((w) => {
+            const m = member(w.memberId);
+            if (!m) return null;
+            return (
+              <li key={w.memberId} className="flex items-center gap-3">
+                <MemberAvatar member={m} className="size-10 text-base" />
+                <span className="flex flex-1 flex-col">
+                  <span className="font-semibold">{m.name}</span>
+                  {w.phone && <span className="text-sm text-muted">{w.phone}</span>}
+                </span>
+                <Badge tone={WA_TONES[w.state]}>{t(`waState.${w.state}`)}</Badge>
+              </li>
+            );
+          })}
+        </ul>
+        <p className="text-sm text-muted">{t('whatsappHint')}</p>
       </Card>
 
       <Card as="section" className="flex flex-col gap-3">

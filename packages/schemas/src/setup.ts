@@ -106,8 +106,16 @@ export const InvitePreview = z.object({
   language: Locale,
 });
 
+/** A member's WhatsApp state (S28): whether Kavach may message them there. */
+export const WhatsAppOptIn = z.object({
+  memberId: z.string(),
+  phone: z.string().optional(),
+  state: z.enum(['joined', 'opted_out', 'not_joined', 'no_number']),
+});
+
 export const FamilyAccess = z.object({
   access: z.array(AccessEntry),
+  whatsapp: z.array(WhatsAppOptIn).default([]),
   invites: z.array(Invite),
   alertContactMemberId: z.string().optional(),
 });
@@ -122,6 +130,7 @@ export const TimelineKind = z.enum([
   'action',
   'desk_session',
   'claim_case',
+  'notification',
   'cover_starts',
   'cover_ends',
 ]);

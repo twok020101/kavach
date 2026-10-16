@@ -1,0 +1,637 @@
+{
+  "runAt": "2026-10-16T15:02:28.471Z",
+  "model": "fixtures",
+  "mode": "fixtures",
+  "wordings": 8,
+  "wordingsRead": 8,
+  "labelsChecked": 0,
+  "overall": {
+    "labelled": 0,
+    "correct": 0,
+    "accuracy": null
+  },
+  "perField": [
+    {
+      "field": "roomRentLimitPerDay",
+      "labelled": 0,
+      "correct": 0,
+      "accuracy": null
+    },
+    {
+      "field": "icuLimitPerDay",
+      "labelled": 0,
+      "correct": 0,
+      "accuracy": null
+    },
+    {
+      "field": "copayPercent",
+      "labelled": 0,
+      "correct": 0,
+      "accuracy": null
+    },
+    {
+      "field": "copayFromAge",
+      "labelled": 0,
+      "correct": 0,
+      "accuracy": null
+    },
+    {
+      "field": "proportionateDeduction",
+      "labelled": 0,
+      "correct": 0,
+      "accuracy": null
+    },
+    {
+      "field": "deductible",
+      "labelled": 0,
+      "correct": 0,
+      "accuracy": null
+    },
+    {
+      "field": "initialWaitingDays",
+      "labelled": 0,
+      "correct": 0,
+      "accuracy": null
+    },
+    {
+      "field": "pedWaitingMonths",
+      "labelled": 0,
+      "correct": 0,
+      "accuracy": null
+    },
+    {
+      "field": "specificWaitingMonths",
+      "labelled": 0,
+      "correct": 0,
+      "accuracy": null
+    },
+    {
+      "field": "nonPayables",
+      "labelled": 0,
+      "correct": 0,
+      "accuracy": null
+    }
+  ],
+  "results": [
+    {
+      "uin": "NIAHLIP25044V022425",
+      "insurer": "The New India Assurance Co. Ltd.",
+      "product": "Arogya Sanjeevani Policy",
+      "segment": "standard",
+      "status": "read",
+      "humanChecked": false,
+      "fields": [
+        {
+          "field": "roomRentLimitPerDay",
+          "label": null,
+          "extracted": "none",
+          "correct": null
+        },
+        {
+          "field": "icuLimitPerDay",
+          "label": null,
+          "extracted": "none",
+          "correct": null
+        },
+        {
+          "field": "copayPercent",
+          "label": null,
+          "extracted": 0,
+          "correct": null
+        },
+        {
+          "field": "copayFromAge",
+          "label": null,
+          "extracted": "none",
+          "correct": null
+        },
+        {
+          "field": "proportionateDeduction",
+          "label": null,
+          "extracted": true,
+          "correct": null
+        },
+        {
+          "field": "deductible",
+          "label": null,
+          "extracted": 0,
+          "correct": null
+        },
+        {
+          "field": "initialWaitingDays",
+          "label": null,
+          "extracted": "none",
+          "correct": null
+        },
+        {
+          "field": "pedWaitingMonths",
+          "label": null,
+          "extracted": "none",
+          "correct": null
+        },
+        {
+          "field": "specificWaitingMonths",
+          "label": null,
+          "extracted": "none",
+          "correct": null
+        },
+        {
+          "field": "nonPayables",
+          "label": null,
+          "extracted": false,
+          "correct": null
+        }
+      ]
+    },
+    {
+      "uin": "SHAHLIP19101V031819",
+      "insurer": "Star Health and Allied Insurance Co. Ltd.",
+      "product": "Senior Citizens Red Carpet Health Insurance Policy",
+      "segment": "senior",
+      "status": "read",
+      "humanChecked": false,
+      "fields": [
+        {
+          "field": "roomRentLimitPerDay",
+          "label": null,
+          "extracted": "none",
+          "correct": null
+        },
+        {
+          "field": "icuLimitPerDay",
+          "label": null,
+          "extracted": "none",
+          "correct": null
+        },
+        {
+          "field": "copayPercent",
+          "label": null,
+          "extracted": 0,
+          "correct": null
+        },
+        {
+          "field": "copayFromAge",
+          "label": null,
+          "extracted": "none",
+          "correct": null
+        },
+        {
+          "field": "proportionateDeduction",
+          "label": null,
+          "extracted": true,
+          "correct": null
+        },
+        {
+          "field": "deductible",
+          "label": null,
+          "extracted": 0,
+          "correct": null
+        },
+        {
+          "field": "initialWaitingDays",
+          "label": null,
+          "extracted": "none",
+          "correct": null
+        },
+        {
+          "field": "pedWaitingMonths",
+          "label": null,
+          "extracted": "none",
+          "correct": null
+        },
+        {
+          "field": "specificWaitingMonths",
+          "label": null,
+          "extracted": "none",
+          "correct": null
+        },
+        {
+          "field": "nonPayables",
+          "label": null,
+          "extracted": false,
+          "correct": null
+        }
+      ]
+    },
+    {
+      "uin": "HDFHLIP22021V042122",
+      "insurer": "HDFC ERGO General Insurance Co. Ltd.",
+      "product": "my:health Medisure Super Top Up Insurance",
+      "segment": "super_top_up",
+      "status": "read",
+      "humanChecked": false,
+      "fields": [
+        {
+          "field": "roomRentLimitPerDay",
+          "label": null,
+          "extracted": "none",
+          "correct": null
+        },
+        {
+          "field": "icuLimitPerDay",
+          "label": null,
+          "extracted": "none",
+          "correct": null
+        },
+        {
+          "field": "copayPercent",
+          "label": null,
+          "extracted": 0,
+          "correct": null
+        },
+        {
+          "field": "copayFromAge",
+          "label": null,
+          "extracted": "none",
+          "correct": null
+        },
+        {
+          "field": "proportionateDeduction",
+          "label": null,
+          "extracted": true,
+          "correct": null
+        },
+        {
+          "field": "deductible",
+          "label": null,
+          "extracted": 0,
+          "correct": null
+        },
+        {
+          "field": "initialWaitingDays",
+          "label": null,
+          "extracted": "none",
+          "correct": null
+        },
+        {
+          "field": "pedWaitingMonths",
+          "label": null,
+          "extracted": "none",
+          "correct": null
+        },
+        {
+          "field": "specificWaitingMonths",
+          "label": null,
+          "extracted": "none",
+          "correct": null
+        },
+        {
+          "field": "nonPayables",
+          "label": null,
+          "extracted": false,
+          "correct": null
+        }
+      ]
+    },
+    {
+      "uin": "SBIHLIP23050V012223",
+      "insurer": "SBI General Insurance Co. Ltd.",
+      "product": "Super Health Insurance",
+      "segment": "individual",
+      "status": "read",
+      "humanChecked": false,
+      "fields": [
+        {
+          "field": "roomRentLimitPerDay",
+          "label": null,
+          "extracted": "none",
+          "correct": null
+        },
+        {
+          "field": "icuLimitPerDay",
+          "label": null,
+          "extracted": "none",
+          "correct": null
+        },
+        {
+          "field": "copayPercent",
+          "label": null,
+          "extracted": 0,
+          "correct": null
+        },
+        {
+          "field": "copayFromAge",
+          "label": null,
+          "extracted": "none",
+          "correct": null
+        },
+        {
+          "field": "proportionateDeduction",
+          "label": null,
+          "extracted": true,
+          "correct": null
+        },
+        {
+          "field": "deductible",
+          "label": null,
+          "extracted": 0,
+          "correct": null
+        },
+        {
+          "field": "initialWaitingDays",
+          "label": null,
+          "extracted": "none",
+          "correct": null
+        },
+        {
+          "field": "pedWaitingMonths",
+          "label": null,
+          "extracted": "none",
+          "correct": null
+        },
+        {
+          "field": "specificWaitingMonths",
+          "label": null,
+          "extracted": "none",
+          "correct": null
+        },
+        {
+          "field": "nonPayables",
+          "label": null,
+          "extracted": false,
+          "correct": null
+        }
+      ]
+    },
+    {
+      "uin": "UNIHLIP23006V032223",
+      "insurer": "Universal Sompo General Insurance Co. Ltd.",
+      "product": "Complete Healthcare Insurance",
+      "segment": "floater",
+      "status": "read",
+      "humanChecked": false,
+      "fields": [
+        {
+          "field": "roomRentLimitPerDay",
+          "label": null,
+          "extracted": "none",
+          "correct": null
+        },
+        {
+          "field": "icuLimitPerDay",
+          "label": null,
+          "extracted": "none",
+          "correct": null
+        },
+        {
+          "field": "copayPercent",
+          "label": null,
+          "extracted": 0,
+          "correct": null
+        },
+        {
+          "field": "copayFromAge",
+          "label": null,
+          "extracted": "none",
+          "correct": null
+        },
+        {
+          "field": "proportionateDeduction",
+          "label": null,
+          "extracted": true,
+          "correct": null
+        },
+        {
+          "field": "deductible",
+          "label": null,
+          "extracted": 0,
+          "correct": null
+        },
+        {
+          "field": "initialWaitingDays",
+          "label": null,
+          "extracted": "none",
+          "correct": null
+        },
+        {
+          "field": "pedWaitingMonths",
+          "label": null,
+          "extracted": "none",
+          "correct": null
+        },
+        {
+          "field": "specificWaitingMonths",
+          "label": null,
+          "extracted": "none",
+          "correct": null
+        },
+        {
+          "field": "nonPayables",
+          "label": null,
+          "extracted": false,
+          "correct": null
+        }
+      ]
+    },
+    {
+      "uin": "ICIHLGP22207V032122",
+      "insurer": "ICICI Lombard General Insurance Co. Ltd.",
+      "product": "Group Health Insurance",
+      "segment": "group",
+      "status": "read",
+      "humanChecked": false,
+      "fields": [
+        {
+          "field": "roomRentLimitPerDay",
+          "label": null,
+          "extracted": "none",
+          "correct": null
+        },
+        {
+          "field": "icuLimitPerDay",
+          "label": null,
+          "extracted": "none",
+          "correct": null
+        },
+        {
+          "field": "copayPercent",
+          "label": null,
+          "extracted": 0,
+          "correct": null
+        },
+        {
+          "field": "copayFromAge",
+          "label": null,
+          "extracted": "none",
+          "correct": null
+        },
+        {
+          "field": "proportionateDeduction",
+          "label": null,
+          "extracted": true,
+          "correct": null
+        },
+        {
+          "field": "deductible",
+          "label": null,
+          "extracted": 0,
+          "correct": null
+        },
+        {
+          "field": "initialWaitingDays",
+          "label": null,
+          "extracted": "none",
+          "correct": null
+        },
+        {
+          "field": "pedWaitingMonths",
+          "label": null,
+          "extracted": "none",
+          "correct": null
+        },
+        {
+          "field": "specificWaitingMonths",
+          "label": null,
+          "extracted": "none",
+          "correct": null
+        },
+        {
+          "field": "nonPayables",
+          "label": null,
+          "extracted": false,
+          "correct": null
+        }
+      ]
+    },
+    {
+      "uin": "UIIHLGP21226V022021",
+      "insurer": "United India Insurance Co. Ltd.",
+      "product": "Group Health Policy",
+      "segment": "group",
+      "status": "read",
+      "humanChecked": false,
+      "fields": [
+        {
+          "field": "roomRentLimitPerDay",
+          "label": null,
+          "extracted": "none",
+          "correct": null
+        },
+        {
+          "field": "icuLimitPerDay",
+          "label": null,
+          "extracted": "none",
+          "correct": null
+        },
+        {
+          "field": "copayPercent",
+          "label": null,
+          "extracted": 0,
+          "correct": null
+        },
+        {
+          "field": "copayFromAge",
+          "label": null,
+          "extracted": "none",
+          "correct": null
+        },
+        {
+          "field": "proportionateDeduction",
+          "label": null,
+          "extracted": true,
+          "correct": null
+        },
+        {
+          "field": "deductible",
+          "label": null,
+          "extracted": 0,
+          "correct": null
+        },
+        {
+          "field": "initialWaitingDays",
+          "label": null,
+          "extracted": "none",
+          "correct": null
+        },
+        {
+          "field": "pedWaitingMonths",
+          "label": null,
+          "extracted": "none",
+          "correct": null
+        },
+        {
+          "field": "specificWaitingMonths",
+          "label": null,
+          "extracted": "none",
+          "correct": null
+        },
+        {
+          "field": "nonPayables",
+          "label": null,
+          "extracted": false,
+          "correct": null
+        }
+      ]
+    },
+    {
+      "uin": "FGIHLGP21165V022021",
+      "insurer": "Future Generali India Insurance Co. Ltd.",
+      "product": "Group Health Insurance (Revised)",
+      "segment": "group",
+      "status": "read",
+      "humanChecked": false,
+      "fields": [
+        {
+          "field": "roomRentLimitPerDay",
+          "label": null,
+          "extracted": "none",
+          "correct": null
+        },
+        {
+          "field": "icuLimitPerDay",
+          "label": null,
+          "extracted": "none",
+          "correct": null
+        },
+        {
+          "field": "copayPercent",
+          "label": null,
+          "extracted": 0,
+          "correct": null
+        },
+        {
+          "field": "copayFromAge",
+          "label": null,
+          "extracted": "none",
+          "correct": null
+        },
+        {
+          "field": "proportionateDeduction",
+          "label": null,
+          "extracted": true,
+          "correct": null
+        },
+        {
+          "field": "deductible",
+          "label": null,
+          "extracted": 0,
+          "correct": null
+        },
+        {
+          "field": "initialWaitingDays",
+          "label": null,
+          "extracted": "none",
+          "correct": null
+        },
+        {
+          "field": "pedWaitingMonths",
+          "label": null,
+          "extracted": "none",
+          "correct": null
+        },
+        {
+          "field": "specificWaitingMonths",
+          "label": null,
+          "extracted": "none",
+          "correct": null
+        },
+        {
+          "field": "nonPayables",
+          "label": null,
+          "extracted": false,
+          "correct": null
+        }
+      ]
+    }
+  ]
+}
