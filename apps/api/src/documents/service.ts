@@ -170,7 +170,9 @@ function findExisting(policies: Policy[], draft: Partial<Policy>, covered: strin
     policies.find((p) => {
       if (p.kind !== draft.kind) return false;
       if (draft.source === 'employer') return sameEmployer(p.employer, draft.employer);
-      return p.startDate === draft.startDate && covered.every((m) => p.coveredMemberIds.includes(m));
+      return (
+        p.startDate === draft.startDate && covered.every((m) => p.coveredMemberIds.includes(m))
+      );
     })
   );
 }

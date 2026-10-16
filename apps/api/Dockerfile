@@ -17,5 +17,7 @@ COPY --from=build /out/node_modules ./node_modules
 COPY --from=build /out/package.json ./
 COPY --from=build /repo/apps/api/dist ./dist
 COPY --from=build /repo/apps/api/fixtures ./fixtures
+# Sample documents for the S07 "Use sample documents" button (read from <repo>/data/samples).
+COPY --from=build /repo/data/samples /data/samples
 EXPOSE 8080
 CMD ["node", "dist/index.js"]

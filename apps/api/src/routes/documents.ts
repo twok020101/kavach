@@ -10,12 +10,7 @@ import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod';
 import { z } from 'zod';
 import { loadHousehold, requireUser } from '../auth';
 import { addSampleDocuments } from '../documents/samples';
-import {
-  addDocument,
-  confirmDocument,
-  getDocument,
-  listDocuments,
-} from '../documents/service';
+import { addDocument, confirmDocument, getDocument, listDocuments } from '../documents/service';
 import { blobs } from '../lib/blobs';
 import { getClause, searchClauses, seedClauses } from '../retrieval/clauses';
 

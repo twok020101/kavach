@@ -5,7 +5,9 @@ import { genai, models } from '../lib/gemini';
 export const EMBED_DIMENSIONS = 768;
 
 /** Which embedder produced a vector. Vectors from different embedders are not comparable. */
-export const embedderId = env.FAKE_LLM ? 'fake-bag-of-words-v1' : `${models.embed}@${EMBED_DIMENSIONS}`;
+export const embedderId = env.FAKE_LLM
+  ? 'fake-bag-of-words-v1'
+  : `${models.embed}@${EMBED_DIMENSIONS}`;
 
 type Task = 'RETRIEVAL_DOCUMENT' | 'RETRIEVAL_QUERY';
 

@@ -115,9 +115,12 @@ export function useClause(clauseId: string | undefined) {
  */
 export async function openDocumentFile(householdId: string, documentId: string, page?: number) {
   const tab = window.open('', '_blank');
-  const response = await fetch(`${apiUrl}/v1/households/${householdId}/documents/${documentId}/file`, {
-    headers: await authHeader(),
-  });
+  const response = await fetch(
+    `${apiUrl}/v1/households/${householdId}/documents/${documentId}/file`,
+    {
+      headers: await authHeader(),
+    },
+  );
   if (!response.ok) {
     tab?.close();
     return;

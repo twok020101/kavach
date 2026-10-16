@@ -18,7 +18,12 @@ export async function addSampleDocuments(household: Household) {
   for (const filename of SAMPLE_DOCUMENTS) {
     const bytes = await readFile(resolve(samplesDir, filename));
     documents.push(
-      await addDocument(household, { filename, mimeType: 'application/pdf', bytes, isSample: true }),
+      await addDocument(household, {
+        filename,
+        mimeType: 'application/pdf',
+        bytes,
+        isSample: true,
+      }),
     );
   }
   return documents;

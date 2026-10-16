@@ -1,39 +1,28 @@
 'use client';
 
 import type { Citation } from '@kavach/schemas';
-import { ExternalLink, FileText, X } from 'lucide-react';
+import { ExternalLink, X } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
+import { CitationChip } from '../kavach/citation-chip';
+import { Button } from '../ui/button';
 import { openDocumentFile, useClause } from './api';
 
-/** S07/S15: a chip on a fact that opens the clause it came from. */
-export function CitationChip({
-  citation,
-  householdId,
-}: {
-  citation: Citation;
-  householdId: string;
-}) {
+/** S07/S15: a citation chip on a fact that opens the clause it came from (S16). */
+export function ClauseChip({ citation, householdId }: { citation: Citation; householdId: string }) {
+  const t = useTranslations('documents');
   const [open, setOpen] = useState(false);
-  const label = [citation.clauseRef && `§${citation.clauseRef}`, citation.page && `p${citation.page}`]
+  const label = [
+    citation.clauseRef && `§${citation.clauseRef}`,
+    citation.page && `p${citation.page}`,
+  ]
     .filter(Boolean)
     .join(' · ');
   return (
     <>
-      <button
-        type="button"
-        onClick={() => setOpen(true)}
-        className="inline-flex shrink-0 items-center gap-1 rounded-sm bg-citation-bg px-2 py-0.5 font-mono text-xs text-citation hover:underline focus-visible:outline-2 focus-visible:outline-primary"
-      >
-        <FileText aria-hidden className="size-3" />
-        {label || '¶'}
-      </button>
+      <CitationChip label={label || t('clause.fromDocument')} onClick={() => setOpen(true)} />
       {open && (
-        <ClauseSheet
-          citation={citation}
-          householdId={householdId}
-          onClose={() => setOpen(false)}
-        />
+        <ClauseSheet citation={citation} householdId={householdId} onClose={() => setOpen(false)} />
       )}
     </>
   );
@@ -109,13 +98,13 @@ export function ClauseSheet({
           </p>
         )}
 
-        <button
+        <Button
+          variant="secondary"
           onClick={() => openDocumentFile(householdId, citation.documentId, page)}
-          className="flex items-center justify-center gap-2 rounded-md border border-primary px-4 py-3 font-semibold text-primary hover:bg-primary-soft"
         >
           <ExternalLink aria-hidden className="size-4" />
           {t('clause.open')}
-        </button>
+        </Button>
       </section>
     </div>
   );

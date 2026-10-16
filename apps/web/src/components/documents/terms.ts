@@ -72,7 +72,5 @@ export function keyTerms(policy: PolicyDraft, t: T): Term[] {
 }
 
 export function memberNames(household: Household, memberIds: string[]) {
-  return memberIds
-    .map((id) => household.members.find((m) => m.id === id)?.name ?? id)
-    .join(', ');
+  return memberIds.map((id) => household.members.find((m) => m.id === id)?.name ?? id).join(', ');
 }
