@@ -1,0 +1,26 @@
+{
+  "$comment": "LifeEventAgent on: \"Joining Orbit Labs, a startup, on 1 Dec. They cover me, Priya and Anaya for ₹3 lakh.\" (Sharma household, today 2026-10-14).",
+  "summary": "Rahul leaves Acme Software on 30 Nov and joins Orbit Labs, a startup, on 1 Dec 2026.",
+  "effectiveDate": "2026-12-01",
+  "changes": [
+    {
+      "type": "employment_ended",
+      "memberId": "mem_rahul",
+      "employer": "Acme Software",
+      "lastDay": "2026-11-30"
+    },
+    {
+      "type": "employment_started",
+      "memberId": "mem_rahul",
+      "employer": "Orbit Labs",
+      "startDate": "2026-12-01",
+      "groupHealth": {
+        "offered": "yes",
+        "sumInsured": 300000,
+        "coveredMemberIds": ["mem_rahul", "mem_priya", "mem_anaya"]
+      }
+    }
+  ],
+  "needsConfirmation": false,
+  "unrecognised": []
+}
