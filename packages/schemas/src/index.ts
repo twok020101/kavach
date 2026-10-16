@@ -9,3 +9,4 @@ export * from './plan';
 export * from './document';
 export * from './proof';
 export * from './live';
+export * from './whatsapp';

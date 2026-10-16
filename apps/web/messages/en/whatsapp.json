@@ -1,0 +1,8 @@
+{
+  "page": {
+    "title": "Kavach’s answer for {patient}",
+    "notFound": "This card link has expired or doesn’t exist.",
+    "disclaimer": "Guidance, not a policy recommendation. Confirm with your insurer or the TPA desk.",
+    "openApp": "Open Kavach"
+  }
+}

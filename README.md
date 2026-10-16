@@ -44,6 +44,19 @@ The defaults in `.env.example` let everything run with no Google, Firebase, Meta
 
 Fill in the keys in `.env` to switch each one to the real service.
 
+## WhatsApp door
+
+WhatsApp is a second door to the same agent: messages go through `apps/api/src/channels/whatsapp/` into the same desk core (`answer()`) as the app. Kavach replies with text, a card image (`/v1/public/cards/{token}/card.png`), a link to the full card (`/{locale}/c/{token}`) and, for a voice note, a Hindi voice note (Gemini TTS → `ffmpeg` OGG/Opus).
+
+- **Webhooks:** Meta Cloud API at `GET/POST /v1/whatsapp/meta` (verify token, `X-Hub-Signature-256`) and Twilio at `POST /v1/whatsapp/twilio` (`X-Twilio-Signature`, computed on `PUBLIC_API_URL` + path). Unsigned or badly signed posts get `401`.
+- **Consent and data:** the first message from a number gets the consent text; nothing is downloaded or read until the sender replies YES/HAAN. STOP opts out. Inbound media is held in memory only (Twilio's copy is deleted after processing); estimate photos from WhatsApp are not stored.
+- **Limits:** 20 messages per number per 10 minutes; off-topic messages get a polite insurance-only reply.
+- **The 24-hour window (honest limits).** WhatsApp lets a business send free-form messages only within 24 hours of the person's last message. Kavach tracks each number's last inbound time and, for proactive messages (Rahul's household alert, the dated job-change reminder), picks: free-form inside the window; outside it, the Meta utility templates `household_alert` (body variables: patient, hospital, room) and `dated_reminder` (date, action), **only once Meta has approved them**; otherwise the message is shown in the app only (`GET /v1/households/{hid}/notifications`). It never sends free-form outside a window.
+- **Twilio sandbox (judges):** custom templates are not allowed, so alerts reach a phone only inside its own window. Send `RAHUL` first: it gives your number its own demo family as Rahul, so the household alert comes to you. Sandbox membership lasts 3 days, and the sandbox sends at most one message every 3 seconds, so replies can arrive a few seconds apart.
+- **Meta test number (video):** sends only to up to 5 pre-verified numbers.
+- **Without keys:** with no Meta/Twilio keys (or for simulated numbers) messages are recorded instead of sent. Dev only: `POST /v1/dev/whatsapp/inbound` takes Twilio's fields (`From`, `Body`, `MediaUrl0`, or multipart files; `HouseholdId` to link a number), `GET /v1/dev/whatsapp/outbox` lists what Kavach would have sent, and `POST /v1/dev/whatsapp/nudges` `{householdId, date}` sends the reminders due on a demo date. In production, Cloud Scheduler calls `POST /v1/admin/whatsapp/nudges` with `x-admin-key`.
+- Settlement letters forwarded on WhatsApp are recognised, but reading them there is not built yet (they get a "coming soon" reply).
+
 ## Deploying
 
 1. `PROJECT=<id> REGION=asia-south1 ./infra/bootstrap.sh` (once): enables APIs, creates Firestore, the bucket, the image repository and empty secrets.

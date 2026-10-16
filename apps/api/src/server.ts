@@ -15,6 +15,7 @@ import { deskRoutes } from './routes/desk';
 import { documentRoutes } from './routes/documents';
 import { healthRoutes } from './routes/health';
 import { householdRoutes } from './routes/households';
+import { whatsappRoutes } from './routes/whatsapp';
 import { actionRoutes } from './routes/actions';
 import { lifeChangeRoutes } from './routes/life-changes';
 import { planRoutes } from './routes/plans';
@@ -54,6 +55,7 @@ export async function buildServer() {
   await app.register(proofRoutes);
   await app.register(claimRoutes);
   await app.register(liveRoutes);
+  await app.register(whatsappRoutes);
 
   return app;
 }

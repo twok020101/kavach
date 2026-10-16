@@ -3,17 +3,24 @@ import { getTranslations } from 'next-intl/server';
 import QRCode from 'qrcode';
 import { Card } from '../ui/card';
 
+/** The sandbox number and join message, or null when not configured. */
+function sandboxJoin() {
+  const number = process.env.NEXT_PUBLIC_TWILIO_SANDBOX_NUMBER?.trim();
+  const join = process.env.NEXT_PUBLIC_TWILIO_SANDBOX_JOIN?.trim();
+  return number && join ? { number, join } : null;
+}
+
 /** wa.me link that opens WhatsApp with the sandbox join message, or null when not configured. */
 function sandboxLink() {
-  const number = process.env.NEXT_PUBLIC_TWILIO_SANDBOX_NUMBER?.replace(/\D/g, '');
-  const join = process.env.NEXT_PUBLIC_TWILIO_SANDBOX_JOIN?.trim();
-  if (!number || !join) return null;
-  return `https://wa.me/${number}?text=${encodeURIComponent(join)}`;
+  const sandbox = sandboxJoin();
+  if (!sandbox) return null;
+  return `https://wa.me/${sandbox.number.replace(/\D/g, '')}?text=${encodeURIComponent(sandbox.join)}`;
 }
 
 /** The WhatsApp door on the landing page: a QR code that joins the Twilio sandbox. */
 export async function WhatsAppCard() {
   const t = await getTranslations('landing.whatsapp');
+  const sandbox = sandboxJoin();
   const link = sandboxLink();
   const svg = link
     ? await QRCode.toString(link, {
@@ -63,6 +70,11 @@ export async function WhatsAppCard() {
           <li>{t('step3')}</li>
         </ol>
       </div>
+      {sandbox && (
+        <p className="font-semibold">
+          {t('joinText', { join: sandbox.join, number: sandbox.number })}
+        </p>
+      )}
       <p className="text-sm text-muted">{t('note')}</p>
     </Card>
   );
