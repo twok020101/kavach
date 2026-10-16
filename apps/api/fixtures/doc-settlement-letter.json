@@ -1,0 +1,21 @@
+{
+  "kind": "settlement_letter",
+  "documentId": "doc-settlement-letter",
+  "summary": "Suraksha settlement letter for Suresh Sharma's angioplasty claim SHI/CL/2027/0047815.",
+  "insuredPersons": [
+    {
+      "name": "Suresh Sharma",
+      "age": 62
+    }
+  ],
+  "citations": [
+    {
+      "documentId": "doc-settlement-letter",
+      "page": 1,
+      "quote": "Proportionate deduction as per room rent eligibility (Clause 3.2)"
+    }
+  ],
+  "notes": [
+    "Open Claims to check each deduction against the policy."
+  ]
+}

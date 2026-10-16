@@ -1,0 +1,32 @@
+{
+  "clauses": [
+    {
+      "ref": "2.1",
+      "title": "Aggregate deductible",
+      "text": "Aggregate deductible. The Company shall be liable to pay only that part of the aggregate of all admissible claims in a policy year that exceeds the Aggregate Deductible stated in the Schedule. The Aggregate Deductible may be met by payments under any other health insurance policy or by the Insured Persons themselves.",
+      "page": 2,
+      "category": "deductible"
+    },
+    {
+      "ref": "2.2",
+      "title": "Claims",
+      "text": "Claims. To claim, the Insured Person submits the settlement letters of other policies and the bills that together exceed the Aggregate Deductible in the policy year. Keep all hospital bills and settlement letters for this purpose.",
+      "page": 2,
+      "category": "claim_procedure"
+    },
+    {
+      "ref": "2.3",
+      "title": "Room rent",
+      "text": "Room rent. No room rent limit applies; accordingly, no proportionate deduction is made under this policy.",
+      "page": 2,
+      "category": "limit"
+    },
+    {
+      "ref": "2.4",
+      "title": "Co-payment",
+      "text": "Co-payment. No co-payment applies under this policy.",
+      "page": 2,
+      "category": "copay"
+    }
+  ]
+}

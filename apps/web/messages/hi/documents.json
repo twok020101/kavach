@@ -1,0 +1,110 @@
+{
+  "loading": "लोड हो रहा है…",
+  "error": "कवच से जुड़ नहीं पाए. क्या API चल रहा है?",
+  "retry": "फिर से कोशिश करें",
+  "back": "वापस",
+  "sample": "नमूना",
+  "setup": {
+    "step": "चरण 3 / 4",
+    "title": "जो काग़ज़ हैं, जोड़ें",
+    "intro": "पॉलिसी, कंपनी का बीमा सारांश, ई-कार्ड. कवच इन्हें पढ़ता है और दिखाता है कि हर बात कहाँ लिखी है.",
+    "drop": "PDF या फ़ोटो यहाँ छोड़ें",
+    "choose": "फ़ाइल चुनें",
+    "photo": "फ़ोटो लें",
+    "useSamples": "शर्मा परिवार के नमूना काग़ज़ इस्तेमाल करें",
+    "uploading": "{name} अपलोड हो रहा है… {percent}%",
+    "uploadFailed": "{name} अपलोड नहीं हुआ. फिर से कोशिश करें.",
+    "none": "कोई काग़ज़ नहीं?",
+    "skip": "अभी छोड़ें",
+    "continue": "आगे बढ़ें"
+  },
+  "steps": {
+    "queued": "पढ़ने की बारी का इंतज़ार",
+    "reading_pages": "पेज {done} / {total} पढ़ रहे हैं",
+    "reading": "काग़ज़ पढ़ रहे हैं",
+    "matching_family": "लोगों को परिवार से मिला रहे हैं",
+    "linking_clauses": "हर शर्त को उसके क्लॉज़ से जोड़ रहे हैं",
+    "done": "पढ़ लिया"
+  },
+  "failed": "यह काग़ज़ पढ़ा नहीं जा सका: {error}",
+  "kinds": {
+    "benefits_summary": "कंपनी का बीमा सारांश",
+    "policy_schedule": "पॉलिसी शेड्यूल",
+    "wording": "पॉलिसी वर्डिंग",
+    "estimate": "अस्पताल का एस्टिमेट",
+    "settlement_letter": "क्लेम सेटलमेंट पत्र",
+    "other": "काग़ज़"
+  },
+  "check": "देखें हमें क्या मिला",
+  "confirm": "परिवार की पॉलिसियों में जोड़ें",
+  "confirming": "जोड़ रहे हैं…",
+  "confirmed": "परिवार की पॉलिसियों में जुड़ गया",
+  "viewPolicy": "पॉलिसी देखें",
+  "covers": "{names} कवर",
+  "facts": {
+    "sumInsured": "बीमा राशि",
+    "roomRent": "कमरे का किराया",
+    "icu": "ICU",
+    "proportionateDeduction": "आनुपातिक कटौती",
+    "copay": "को-पे",
+    "deductible": "डिडक्टिबल",
+    "nonPayables": "जो चीज़ें नहीं मिलतीं"
+  },
+  "values": {
+    "perDay": "{amount} प्रति दिन",
+    "noRoomLimit": "कोई सीमा नहीं",
+    "icuAsBilled": "बिल के अनुसार, कोई आनुपातिक कटौती नहीं",
+    "applies": "कमरे की सीमा से ऊपर लागू",
+    "waived": "लागू नहीं",
+    "copay": "{percent}%",
+    "copayFromAge": "{age}+ उम्र वालों पर {percent}%",
+    "none": "कोई नहीं",
+    "perYear": "{amount} प्रति वर्ष",
+    "nonPayables": "सूची की चीज़ों का पैसा नहीं मिलता"
+  },
+  "notCited": "अभी किसी काग़ज़ से नहीं",
+  "vault": {
+    "title": "पॉलिसियाँ",
+    "intro": "परिवार की हर पॉलिसी, उन शर्तों के साथ जिनसे क्लेम तय होता है.",
+    "health": "स्वास्थ्य",
+    "other": "जीवन और अन्य",
+    "add": "काग़ज़ जोड़ें",
+    "empty": "अभी कोई पॉलिसी नहीं. शेड्यूल या कंपनी का सारांश जोड़ें.",
+    "documents": "{count, plural, =0 {कोई काग़ज़ नहीं} one {1 काग़ज़} other {# काग़ज़}}",
+    "renews": "{date} को रिन्यू",
+    "starts": "{date} से शुरू",
+    "status": {
+      "active": "चालू",
+      "ending": "{date} को ख़त्म",
+      "planned": "आगे शुरू होगी",
+      "ended": "ख़त्म"
+    }
+  },
+  "policy": {
+    "notFound": "यह पॉलिसी अब परिवार में नहीं है.",
+    "covers": "{names} कवर",
+    "sumInsured": "{amount} बीमा राशि",
+    "premium": "{amount} सालाना",
+    "validTill": "{date} तक मान्य",
+    "keyTerms": "मुख्य शर्तें",
+    "openDocument": "पूरा काग़ज़ खोलें",
+    "noDocument": "हर शर्त कहाँ लिखी है, देखने के लिए शेड्यूल जोड़ें."
+  },
+  "clause": {
+    "title": "§{ref} {title}",
+    "fromDocument": "काग़ज़ से",
+    "page": "पेज {page}",
+    "fullClause": "पूरा क्लॉज़",
+    "open": "काग़ज़ में यह पेज खोलें",
+    "close": "बंद करें"
+  },
+  "kindsPolicy": {
+    "group_health": "कंपनी का स्वास्थ्य बीमा",
+    "retail_health": "स्वास्थ्य बीमा",
+    "super_top_up": "सुपर टॉप-अप",
+    "term_life": "टर्म लाइफ़",
+    "personal_accident": "दुर्घटना बीमा",
+    "endowment": "एंडोमेंट",
+    "motor": "मोटर"
+  }
+}

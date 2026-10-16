@@ -1,26 +1,42 @@
 {
   "kind": "policy_schedule",
   "documentId": "doc-schedule-parents",
-  "policyNumber": "SHI/IND/2026/118342",
   "insuredPersons": [
-    { "name": "Suresh Sharma", "relation": "self", "age": 62 },
-    { "name": "Kamala Sharma", "relation": "spouse", "age": 58 }
+    {
+      "name": "Suresh Sharma",
+      "relation": "self",
+      "age": 62
+    },
+    {
+      "name": "Kamala Sharma",
+      "relation": "spouse",
+      "age": 58
+    }
   ],
   "policy": {
     "kind": "retail_health",
     "insurer": "Suraksha Health Insurance Ltd (SAMPLE)",
     "productName": "Suraksha Family Health Plan",
     "uin": "SAMPLE-SHI-FHP-001",
+    "policyNumber": "SHI/IND/2026/118342",
     "source": "personal",
     "sumInsured": 500000,
+    "premiumAnnual": 38450,
+    "continuousCoverSince": "2022-04-01",
     "startDate": "2026-12-01",
     "endDate": "2027-11-30",
     "terms": {
       "roomRentLimitPerDay": 5000,
       "copayPercent": 20,
+      "copayFromAge": 61,
       "deductible": 0,
       "proportionateDeduction": true,
       "citations": {
+        "sumInsured": {
+          "documentId": "doc-schedule-parents",
+          "page": 1,
+          "quote": "Sum insured ₹5,00,000 (floater)"
+        },
         "roomRentLimitPerDay": {
           "documentId": "doc-schedule-parents",
           "page": 2,
@@ -44,18 +60,22 @@
           "page": 3,
           "clauseRef": "5.3",
           "quote": "Each admissible claim in respect of an Insured Person aged 61 years or above shall be subject to a co-payment of 20% of the admissible claim amount"
+        },
+        "nonPayables": {
+          "documentId": "doc-schedule-parents",
+          "page": 2,
+          "clauseRef": "3.5",
+          "quote": "Items listed in Annexure I (items for which coverage is not available in the policy) are not payable."
         }
       }
     }
   },
-  "premium": 38450,
   "notes": [
     "Co-pay of 20% applies only to insured persons aged 61 or above (Suresh, 62); Kamala (58) has none.",
     "Migrated from group policy SHI/GMC/2026/ACME/0021; continuous cover since 01-04-2022.",
     "ICU charges are paid as billed, with no ICU limit and no proportionate deduction."
   ],
   "citations": [
-    { "documentId": "doc-schedule-parents", "page": 1, "quote": "Sum insured ₹5,00,000 (floater)" },
     {
       "documentId": "doc-schedule-parents",
       "page": 1,

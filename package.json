@@ -12,7 +12,8 @@
     "typecheck": "turbo run typecheck",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "samples": "pnpm --filter @kavach/samples render"
+    "samples": "pnpm --filter @kavach/samples render",
+    "ingest": "pnpm --filter @kavach/api exec tsx ../../scripts/ingest-wordings.ts"
   },
   "devDependencies": {
     "prettier": "^3.9.10",

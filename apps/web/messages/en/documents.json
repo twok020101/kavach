@@ -1,0 +1,110 @@
+{
+  "loading": "Loading…",
+  "error": "Couldn't reach Kavach. Is the API running?",
+  "retry": "Try again",
+  "back": "Back",
+  "sample": "SAMPLE",
+  "setup": {
+    "step": "Step 3 of 4",
+    "title": "Add what you have",
+    "intro": "Policies, your employer's insurance summary, e-cards. Kavach reads them and shows where each fact comes from.",
+    "drop": "Drop PDFs or photos here",
+    "choose": "Choose files",
+    "photo": "Take photo",
+    "useSamples": "Use the Sharma family's sample documents",
+    "uploading": "Uploading {name}… {percent}%",
+    "uploadFailed": "Couldn't upload {name}. Try again.",
+    "none": "No documents?",
+    "skip": "Skip for now",
+    "continue": "Continue"
+  },
+  "steps": {
+    "queued": "Waiting to read",
+    "reading_pages": "Reading page {done} of {total}",
+    "reading": "Reading the document",
+    "matching_family": "Matching people to your family",
+    "linking_clauses": "Linking each term to its clause",
+    "done": "Read"
+  },
+  "failed": "Couldn't read this document: {error}",
+  "kinds": {
+    "benefits_summary": "Employer benefits summary",
+    "policy_schedule": "Policy schedule",
+    "wording": "Policy wording",
+    "estimate": "Hospital estimate",
+    "settlement_letter": "Claim settlement letter",
+    "other": "Document"
+  },
+  "check": "Check what we found",
+  "confirm": "Add to the family's policies",
+  "confirming": "Adding…",
+  "confirmed": "Added to the family's policies",
+  "viewPolicy": "View policy",
+  "covers": "Covers {names}",
+  "facts": {
+    "sumInsured": "Sum insured",
+    "roomRent": "Room rent",
+    "icu": "ICU",
+    "proportionateDeduction": "Proportionate deduction",
+    "copay": "Co-pay",
+    "deductible": "Deductible",
+    "nonPayables": "Non-payable items"
+  },
+  "values": {
+    "perDay": "{amount} per day",
+    "noRoomLimit": "No limit",
+    "icuAsBilled": "As billed, no proportionate deduction",
+    "applies": "Applies above the room limit",
+    "waived": "Does not apply",
+    "copay": "{percent}%",
+    "copayFromAge": "{percent}% for those aged {age}+",
+    "none": "None",
+    "perYear": "{amount} per year",
+    "nonPayables": "Listed items are not paid"
+  },
+  "notCited": "Not from a document yet",
+  "vault": {
+    "title": "Policies",
+    "intro": "Every policy in the family, with the terms that decide a claim.",
+    "health": "Health",
+    "other": "Life and other",
+    "add": "Add a document",
+    "empty": "No policies yet. Add a schedule or your employer's summary.",
+    "documents": "{count, plural, =0 {No documents} one {1 document} other {# documents}}",
+    "renews": "Renews {date}",
+    "starts": "Starts {date}",
+    "status": {
+      "active": "Active",
+      "ending": "Ends {date}",
+      "planned": "Planned",
+      "ended": "Ended"
+    }
+  },
+  "policy": {
+    "notFound": "This policy isn't in the family any more.",
+    "covers": "Covers {names}",
+    "sumInsured": "{amount} sum insured",
+    "premium": "{amount} a year",
+    "validTill": "Valid till {date}",
+    "keyTerms": "Key terms",
+    "openDocument": "Open full document",
+    "noDocument": "Add the schedule to see where each term comes from."
+  },
+  "clause": {
+    "title": "§{ref} {title}",
+    "fromDocument": "From the document",
+    "page": "page {page}",
+    "fullClause": "Full clause",
+    "open": "Open page in document",
+    "close": "Close"
+  },
+  "kindsPolicy": {
+    "group_health": "Employer health",
+    "retail_health": "Health",
+    "super_top_up": "Super top-up",
+    "term_life": "Term life",
+    "personal_accident": "Personal accident",
+    "endowment": "Endowment",
+    "motor": "Motor"
+  }
+}

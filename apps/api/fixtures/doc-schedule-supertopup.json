@@ -1,21 +1,42 @@
 {
   "kind": "policy_schedule",
   "documentId": "doc-schedule-supertopup",
-  "policyNumber": "NGI/STU/2026/552019",
   "insuredPersons": [
-    { "name": "Rahul Sharma", "relation": "self", "age": 34 },
-    { "name": "Priya Sharma", "relation": "spouse", "age": 32 },
-    { "name": "Anaya Sharma", "relation": "child", "age": 5 },
-    { "name": "Suresh Sharma", "relation": "parent", "age": 62 },
-    { "name": "Kamala Sharma", "relation": "parent", "age": 58 }
+    {
+      "name": "Rahul Sharma",
+      "relation": "self",
+      "age": 34
+    },
+    {
+      "name": "Priya Sharma",
+      "relation": "spouse",
+      "age": 32
+    },
+    {
+      "name": "Anaya Sharma",
+      "relation": "child",
+      "age": 5
+    },
+    {
+      "name": "Suresh Sharma",
+      "relation": "parent",
+      "age": 62
+    },
+    {
+      "name": "Kamala Sharma",
+      "relation": "parent",
+      "age": 58
+    }
   ],
   "policy": {
     "kind": "super_top_up",
     "insurer": "Nidhi General Insurance Co. Ltd (SAMPLE)",
     "productName": "Nidhi Super Top-Up Health",
     "uin": "SAMPLE-NGI-STU-002",
+    "policyNumber": "NGI/STU/2026/552019",
     "source": "personal",
     "sumInsured": 500000,
+    "premiumAnnual": 14200,
     "startDate": "2026-06-15",
     "endDate": "2027-06-14",
     "terms": {
@@ -23,11 +44,22 @@
       "deductible": 500000,
       "proportionateDeduction": false,
       "citations": {
+        "sumInsured": {
+          "documentId": "doc-schedule-supertopup",
+          "page": 1,
+          "quote": "Sum insured ₹5,00,000 (floater)"
+        },
         "deductible": {
           "documentId": "doc-schedule-supertopup",
           "page": 2,
           "clauseRef": "2.1",
           "quote": "The Company shall be liable to pay only that part of the aggregate of all admissible claims in a policy year that exceeds the Aggregate Deductible stated in the Schedule."
+        },
+        "roomRentLimitPerDay": {
+          "documentId": "doc-schedule-supertopup",
+          "page": 2,
+          "clauseRef": "2.3",
+          "quote": "No room rent limit applies; accordingly, no proportionate deduction is made under this policy."
         },
         "proportionateDeduction": {
           "documentId": "doc-schedule-supertopup",
@@ -44,7 +76,6 @@
       }
     }
   },
-  "premium": 14200,
   "citations": [
     {
       "documentId": "doc-schedule-supertopup",
