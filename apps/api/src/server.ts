@@ -9,6 +9,7 @@ import {
   type ZodTypeProvider,
 } from 'fastify-type-provider-zod';
 import { env } from './env';
+import { claimRoutes } from './routes/claims';
 import { demoRoutes } from './routes/demo';
 import { deskRoutes } from './routes/desk';
 import { documentRoutes } from './routes/documents';
@@ -44,6 +45,7 @@ export async function buildServer() {
   await app.register(actionRoutes);
   await app.register(deskRoutes);
   await app.register(documentRoutes);
+  await app.register(claimRoutes);
 
   return app;
 }
