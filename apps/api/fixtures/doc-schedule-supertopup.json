@@ -1,0 +1,66 @@
+{
+  "kind": "policy_schedule",
+  "documentId": "doc-schedule-supertopup",
+  "policyNumber": "NGI/STU/2026/552019",
+  "insuredPersons": [
+    { "name": "Rahul Sharma", "relation": "self", "age": 34 },
+    { "name": "Priya Sharma", "relation": "spouse", "age": 32 },
+    { "name": "Anaya Sharma", "relation": "child", "age": 5 },
+    { "name": "Suresh Sharma", "relation": "parent", "age": 62 },
+    { "name": "Kamala Sharma", "relation": "parent", "age": 58 }
+  ],
+  "policy": {
+    "kind": "super_top_up",
+    "insurer": "Nidhi General Insurance Co. Ltd (SAMPLE)",
+    "productName": "Nidhi Super Top-Up Health",
+    "uin": "SAMPLE-NGI-STU-002",
+    "source": "personal",
+    "sumInsured": 500000,
+    "startDate": "2026-06-15",
+    "endDate": "2027-06-14",
+    "terms": {
+      "copayPercent": 0,
+      "deductible": 500000,
+      "proportionateDeduction": false,
+      "citations": {
+        "deductible": {
+          "documentId": "doc-schedule-supertopup",
+          "page": 2,
+          "clauseRef": "2.1",
+          "quote": "The Company shall be liable to pay only that part of the aggregate of all admissible claims in a policy year that exceeds the Aggregate Deductible stated in the Schedule."
+        },
+        "proportionateDeduction": {
+          "documentId": "doc-schedule-supertopup",
+          "page": 2,
+          "clauseRef": "2.3",
+          "quote": "No room rent limit applies; accordingly, no proportionate deduction is made under this policy."
+        },
+        "copayPercent": {
+          "documentId": "doc-schedule-supertopup",
+          "page": 2,
+          "clauseRef": "2.4",
+          "quote": "No co-payment applies under this policy."
+        }
+      }
+    }
+  },
+  "premium": 14200,
+  "citations": [
+    {
+      "documentId": "doc-schedule-supertopup",
+      "page": 1,
+      "quote": "Aggregate deductible ₹5,00,000 per policy year"
+    },
+    {
+      "documentId": "doc-schedule-supertopup",
+      "page": 1,
+      "quote": "Premium ₹14,200 (incl. GST) · Renewal due 14-06-2027"
+    },
+    {
+      "documentId": "doc-schedule-supertopup",
+      "page": 2,
+      "clauseRef": "2.1",
+      "quote": "The Aggregate Deductible may be met by payments under any other health insurance policy or by the Insured Persons themselves."
+    }
+  ]
+}

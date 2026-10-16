@@ -4,3 +4,4 @@ export * from './hospital';
 export * from './desk';
 export * from './claim';
 export * from './action';
+export * from './demo';

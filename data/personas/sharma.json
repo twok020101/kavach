@@ -1,0 +1,227 @@
+{
+  "$comment": "The Sharma demo household. `household` is the state at the `setup` checkpoint; each later checkpoint lists the policies in force and any field changes. Read by apps/api/src/demo/sharma.ts. All people, numbers and companies are made up; phone numbers are placeholders.",
+  "household": {
+    "id": "hh_sharma",
+    "name": "Sharma family",
+    "city": "Bengaluru",
+    "country": "IN",
+    "isDemo": true,
+    "createdAt": "2026-10-14T09:00:00.000Z",
+    "members": [
+      {
+        "id": "mem_rahul",
+        "name": "Rahul",
+        "relation": "self",
+        "age": 34,
+        "language": "en",
+        "phone": "+910000000001",
+        "earning": true
+      },
+      {
+        "id": "mem_priya",
+        "name": "Priya",
+        "relation": "spouse",
+        "age": 32,
+        "language": "en",
+        "earning": false
+      },
+      {
+        "id": "mem_anaya",
+        "name": "Anaya",
+        "relation": "child",
+        "age": 5,
+        "language": "en"
+      },
+      {
+        "id": "mem_suresh",
+        "name": "Suresh",
+        "relation": "parent",
+        "age": 62,
+        "language": "hi",
+        "conditions": ["diabetes_t2"]
+      },
+      {
+        "id": "mem_kamala",
+        "name": "Kamala",
+        "relation": "parent",
+        "age": 58,
+        "language": "hi",
+        "phone": "+910000000002"
+      }
+    ],
+    "finances": {
+      "takeHomeMonthly": 185000,
+      "emiMonthly": 28000,
+      "fixedSpendMonthly": 70000,
+      "emergencyFund": 400000
+    }
+  },
+  "policies": {
+    "pol_gmc_acme": {
+      "id": "pol_gmc_acme",
+      "kind": "group_health",
+      "insurer": "Sample Insurer A",
+      "productName": "Acme Software Group Mediclaim",
+      "source": "employer",
+      "employer": "Acme Software",
+      "holderMemberId": "mem_rahul",
+      "coveredMemberIds": ["mem_rahul", "mem_priya", "mem_anaya", "mem_suresh", "mem_kamala"],
+      "sumInsured": 500000,
+      "startDate": "2026-04-01",
+      "endDate": "2027-03-31",
+      "terms": {
+        "roomRentLimitPerDay": 5000,
+        "copayPercent": 0,
+        "proportionateDeduction": true
+      }
+    },
+    "pol_gmc_startup": {
+      "id": "pol_gmc_startup",
+      "kind": "group_health",
+      "insurer": "Sample Insurer D",
+      "productName": "Orbit Labs Group Health",
+      "source": "employer",
+      "employer": "Orbit Labs",
+      "holderMemberId": "mem_rahul",
+      "coveredMemberIds": ["mem_rahul", "mem_priya", "mem_anaya"],
+      "sumInsured": 300000,
+      "startDate": "2026-12-01",
+      "endDate": "2027-11-30",
+      "terms": {
+        "roomRentLimitPerDay": 3000,
+        "copayPercent": 0,
+        "proportionateDeduction": true
+      }
+    },
+    "pol_parents_migrated": {
+      "id": "pol_parents_migrated",
+      "kind": "retail_health",
+      "insurer": "Sample Insurer A",
+      "productName": "Individual Health (migrated from group)",
+      "source": "personal",
+      "holderMemberId": "mem_rahul",
+      "coveredMemberIds": ["mem_suresh", "mem_kamala"],
+      "sumInsured": 500000,
+      "premiumAnnual": 38500,
+      "continuousCoverSince": "2022-04-01",
+      "startDate": "2026-12-01",
+      "endDate": "2027-11-30",
+      "terms": {
+        "roomRentLimitPerDay": 5000,
+        "copayPercent": 20,
+        "copayFromAge": 61,
+        "proportionateDeduction": true
+      }
+    },
+    "pol_supertopup": {
+      "id": "pol_supertopup",
+      "kind": "super_top_up",
+      "insurer": "Sample Insurer B",
+      "productName": "Super Top-up Floater",
+      "source": "personal",
+      "holderMemberId": "mem_rahul",
+      "coveredMemberIds": ["mem_rahul", "mem_priya", "mem_anaya", "mem_suresh", "mem_kamala"],
+      "sumInsured": 500000,
+      "premiumAnnual": 14200,
+      "startDate": "2026-06-15",
+      "endDate": "2027-06-14",
+      "terms": {
+        "deductible": 500000,
+        "copayPercent": 0,
+        "proportionateDeduction": false
+      }
+    },
+    "pol_lic_endow": {
+      "id": "pol_lic_endow",
+      "kind": "endowment",
+      "insurer": "Sample Life Insurer C",
+      "productName": "Endowment Plan",
+      "source": "personal",
+      "holderMemberId": "mem_rahul",
+      "coveredMemberIds": ["mem_rahul"],
+      "sumInsured": 1000000,
+      "premiumAnnual": 48000,
+      "startDate": "2021-08-21",
+      "endDate": "2041-08-20",
+      "terms": {
+        "proportionateDeduction": false
+      }
+    },
+    "pol_motor": {
+      "id": "pol_motor",
+      "kind": "motor",
+      "insurer": "Sample Insurer E",
+      "productName": "Comprehensive Car Policy (Hyundai Creta 2023)",
+      "source": "personal",
+      "holderMemberId": "mem_rahul",
+      "coveredMemberIds": ["mem_rahul"],
+      "sumInsured": 1100000,
+      "premiumAnnual": 21500,
+      "startDate": "2026-01-10",
+      "endDate": "2027-01-09",
+      "terms": {
+        "proportionateDeduction": false
+      }
+    }
+  },
+  "checkpoints": {
+    "setup": {
+      "asOf": "2026-10-14",
+      "policies": ["pol_gmc_acme", "pol_supertopup", "pol_lic_endow", "pol_motor"]
+    },
+    "job_change": {
+      "$comment": "Rahul has recorded 'Joining a startup on 1 Dec'. Acme cover ends 30 Nov; the startup cover and the parents' migrated policy start 1 Dec.",
+      "asOf": "2026-11-10",
+      "policies": [
+        "pol_gmc_acme",
+        "pol_gmc_startup",
+        "pol_parents_migrated",
+        "pol_supertopup",
+        "pol_lic_endow",
+        "pol_motor"
+      ],
+      "changes": {
+        "pol_gmc_acme": {
+          "endDate": "2026-11-30"
+        }
+      }
+    },
+    "hospital": {
+      "$comment": "Suresh's planned angioplasty at City Heart Hospital; Kamala opens Kavach.",
+      "asOf": "2027-02-08",
+      "policies": [
+        "pol_gmc_startup",
+        "pol_parents_migrated",
+        "pol_supertopup",
+        "pol_lic_endow",
+        "pol_motor"
+      ],
+      "changes": {
+        "pol_motor": {
+          "startDate": "2027-01-10",
+          "endDate": "2028-01-09"
+        }
+      }
+    },
+    "claim": {
+      "$comment": "After the hospital stay: the parents' policy paid ₹2,04,640 (CX-1) and the settlement letter has arrived.",
+      "asOf": "2027-03-02",
+      "policies": [
+        "pol_gmc_startup",
+        "pol_parents_migrated",
+        "pol_supertopup",
+        "pol_lic_endow",
+        "pol_motor"
+      ],
+      "changes": {
+        "pol_parents_migrated": {
+          "claimsUsedThisYear": 204640
+        },
+        "pol_motor": {
+          "startDate": "2027-01-10",
+          "endDate": "2028-01-09"
+        }
+      }
+    }
+  }
+}

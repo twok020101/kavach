@@ -12,6 +12,9 @@ export const Member = z.object({
   /** E.164, e.g. +919800000000. Used to recognise the member on WhatsApp. */
   phone: z.string().optional(),
   whatsappConsentAt: z.string().datetime().optional(),
+  /** Known health conditions, e.g. `diabetes_t2`. */
+  conditions: z.array(z.string()).default([]),
+  earning: z.boolean().optional(),
 });
 export type Member = z.infer<typeof Member>;
 
@@ -21,6 +24,8 @@ export const PolicyKind = z.enum([
   'super_top_up',
   'term_life',
   'personal_accident',
+  'endowment',
+  'motor',
 ]);
 
 /** The terms of a policy that the engine needs. Each may carry a citation to the wording. */
@@ -28,6 +33,8 @@ export const PolicyTerms = z.object({
   roomRentLimitPerDay: Rupees.optional(),
   icuLimitPerDay: Rupees.optional(),
   copayPercent: z.number().min(0).max(100).default(0),
+  /** When set, the co-pay applies only to members of this age or older. */
+  copayFromAge: z.number().int().optional(),
   /** Super top-up / deductible: the policy pays only above this amount per year. */
   deductible: Rupees.default(0),
   proportionateDeduction: z.boolean().default(true),
@@ -48,6 +55,9 @@ export const Policy = z.object({
   coveredMemberIds: z.array(z.string()),
   sumInsured: Rupees,
   claimsUsedThisYear: Rupees.default(0),
+  premiumAnnual: Rupees.optional(),
+  /** Continuous cover since this date (e.g. carried over on migration); waiting periods count from here. */
+  continuousCoverSince: z.string().date().optional(),
   startDate: z.string().date(),
   endDate: z.string().date(),
   terms: PolicyTerms,
