@@ -1,0 +1,47 @@
+{
+  "title": "डेमो परिवार",
+  "intro": "शर्मा परिवार की आपकी अपनी कॉपी. कहानी के किसी भी पल पर लौटें.",
+  "loading": "डेमो परिवार तैयार हो रहा है…",
+  "error": "परिवार की जानकारी नहीं मिली. क्या API चल रहा है?",
+  "retry": "फिर से कोशिश करें",
+  "demoDate": "डेमो तारीख: {date}",
+  "checkpointsHeading": "किसी पल पर जाएँ",
+  "checkpoints": {
+    "setup": "शुरुआत",
+    "job_change": "नौकरी बदली",
+    "hospital": "अस्पताल",
+    "claim": "क्लेम"
+  },
+  "membersHeading": "परिवार",
+  "age": "{age} साल",
+  "relations": {
+    "self": "खुद",
+    "spouse": "पति/पत्नी",
+    "child": "बच्चा",
+    "parent": "माता/पिता",
+    "parent_in_law": "सास/ससुर",
+    "other": "अन्य"
+  },
+  "speaksHindi": "हिंदी बोलती/बोलते हैं",
+  "conditions": {
+    "diabetes_t2": "टाइप 2 डायबिटीज़"
+  },
+  "policiesHeading": "पॉलिसियाँ",
+  "kinds": {
+    "group_health": "ग्रुप हेल्थ",
+    "retail_health": "हेल्थ",
+    "super_top_up": "सुपर टॉप-अप",
+    "term_life": "टर्म लाइफ़",
+    "personal_accident": "पर्सनल एक्सीडेंट",
+    "endowment": "एंडोमेंट",
+    "motor": "मोटर"
+  },
+  "sumInsured": "कवर {amount}",
+  "covers": "{names} के लिए",
+  "validTill": "{date} तक",
+  "roomLimit": "कमरा {amount}/दिन तक",
+  "copay": "{percent}% को-पे",
+  "copayFromAge": "{age} साल से {percent}% को-पे",
+  "deductible": "{amount} से ऊपर देती है",
+  "claimsUsed": "इस साल इस्तेमाल {amount}"
+}

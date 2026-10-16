@@ -9,7 +9,9 @@ import {
   type ZodTypeProvider,
 } from 'fastify-type-provider-zod';
 import { env } from './env';
+import { demoRoutes } from './routes/demo';
 import { healthRoutes } from './routes/health';
+import { householdRoutes } from './routes/households';
 
 export async function buildServer() {
   const app = Fastify({
@@ -30,6 +32,8 @@ export async function buildServer() {
 
   // Feature routes register here, one plugin per area, all under /v1.
   await app.register(healthRoutes);
+  await app.register(demoRoutes);
+  await app.register(householdRoutes);
 
   return app;
 }
