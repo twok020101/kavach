@@ -1,0 +1,176 @@
+/* Shared print styles for the sample documents. Each .page is one A4 sheet. */
+@page {
+  size: A4;
+  margin: 0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: #fff;
+  color: #1d1d1f;
+  font-family: 'DejaVu Sans', 'Liberation Sans', Arial, sans-serif;
+  font-size: 10.5pt;
+  line-height: 1.4;
+}
+
+.page {
+  position: relative;
+  width: 210mm;
+  height: 297mm;
+  padding: 16mm 16mm 22mm;
+  overflow: hidden;
+  break-after: page;
+  background: #fff;
+}
+
+.page:last-child {
+  break-after: auto;
+}
+
+/* Letterhead */
+.head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 8px;
+  border-bottom: 3px solid var(--brand, #333);
+}
+.logo {
+  width: 54px;
+  height: 54px;
+  flex: none;
+}
+.org {
+  font-size: 17pt;
+  font-weight: 700;
+  color: var(--brand, #333);
+  letter-spacing: 0.2px;
+}
+.org-sub {
+  font-size: 8.5pt;
+  color: #555;
+}
+.head-right {
+  white-space: nowrap;
+  margin-left: auto;
+  text-align: right;
+  font-size: 8.5pt;
+  color: #555;
+}
+
+h1 {
+  font-size: 13.5pt;
+  margin: 14px 0 8px;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+h2 {
+  font-size: 11pt;
+  margin: 14px 0 6px;
+  color: var(--brand, #333);
+}
+p {
+  margin: 4px 0 6px;
+}
+
+/* Key/value grid for patient, policy and claim details */
+.kv {
+  display: grid;
+  grid-template-columns: 34% 66%;
+  border: 1px solid #bbb;
+  font-size: 9.5pt;
+}
+.kv.two {
+  grid-template-columns: 20% 30% 20% 30%;
+}
+.kv > div {
+  padding: 4px 7px;
+  border-bottom: 1px solid #ddd;
+}
+.kv > div:nth-last-child(-n + 2) {
+  border-bottom: none;
+}
+.kv.two > div:nth-last-child(-n + 4) {
+  border-bottom: none;
+}
+.kv .k {
+  background: #f3f3f3;
+  color: #444;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 9.5pt;
+  margin: 6px 0;
+}
+th,
+td {
+  border: 1px solid #aaa;
+  padding: 4px 7px;
+  vertical-align: top;
+}
+th {
+  background: var(--brand-soft, #eee);
+  text-align: left;
+}
+td.n,
+th.n {
+  text-align: right;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+tr.total td {
+  font-weight: 700;
+  background: #f6f6f6;
+}
+
+.small {
+  font-size: 8.5pt;
+  color: #444;
+}
+.clause {
+  margin: 6px 0 8px;
+}
+.clause b.ref {
+  color: var(--brand, #333);
+}
+
+.sign {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 26px;
+  font-size: 9pt;
+}
+.sign div {
+  width: 42%;
+  border-top: 1px solid #555;
+  padding-top: 4px;
+  text-align: center;
+}
+
+/* Footer on every page: sample marking and page number for citations */
+.foot {
+  position: absolute;
+  left: 16mm;
+  right: 16mm;
+  bottom: 9mm;
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid #bbb;
+  padding-top: 4px;
+  font-size: 8pt;
+  color: #555;
+}
+.foot .sample {
+  font-weight: 700;
+  color: #b00020;
+  letter-spacing: 0.5px;
+}
