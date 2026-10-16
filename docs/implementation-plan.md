@@ -178,7 +178,11 @@ Owner key: **K** = Kshitij, **J** = Jai, **A** = a Claude agent (one agent per p
 - **Layer 0:** photo + text in → `answer()` → text reply + card PNG (from `apps/web/app/api/og/card`) + link to the full card.
 - **Layer 1:** voice note (OGG/Opus) → Gemini audio understanding → `answer()`; reply voice note via Gemini TTS → PCM → `ffmpeg` OGG/Opus. **Household alert** to Rahul when Kamala uses either door ("Mummy is at City Heart Hospital. Kavach told her to ask for the ₹5,000 room. Tap to see.").
 - **Layer 2:** job-change nudge ("15 Nov: ask Acme HR to migrate Mummy and Papa's cover… reply YES") and settlement-letter forwarding → claim verdict + appeal PDF.
-- **Limits:** per-sender rate limit; off-topic messages get a polite insurance-only reply; replies only inside the 24-hour window (README says so honestly).
+- **Proactive messages (alert and nudge) need a delivery path of their own.** Kamala's message opens a 24-hour window only for Kamala, not for Rahul, and the dated nudge is business-initiated. So:
+  - **Meta (video):** submit two utility templates in hour one, `household_alert` and `dated_reminder`, with the hospital, room and date as variables; send them through the template API. Until they are approved, Rahul's number messages the bot first before each take, so a free-form reply inside his own window is valid.
+  - **Twilio sandbox (judges):** custom templates aren't allowed, so the alert and nudge are sent only to numbers inside their own 24-hour window. The judge flow on the landing page has the judge message the sandbox as Rahul ("RAHUL") before trying the desk, so the alert reaches their own phone; anyone outside a window sees the alert in the app instead.
+  - The sender checks the recipient's last inbound time and picks template, free-form, or in-app only; it never sends free-form outside a window.
+- **Limits:** per-sender rate limit; off-topic messages get a polite insurance-only reply; the README states the window and template limits honestly.
 - **Done when:** from a fresh phone that joined the Twilio sandbox, a photo + Hindi voice note returns the Hindi voice note and card; Rahul's number receives the alert.
 
 ### WP-6 Live desk (audio-only)
@@ -243,7 +247,7 @@ Revised shot list (red-team-response §4–§5: hook 10 s, setup 10 s, job chang
 | 2 | List Gemini Pro, Flash, Live native-audio, TTS and embedding models available on Vertex in asia-south1 (else nearest region / global / Developer API) | A + K | Model IDs and region in `settings.py` and README |
 | 3 | Live spike: audio echo through Cloud Run WebSocket on an Android phone | A + K | Go / fallback decision for WP-6 |
 | 4 | Hindi voice audition: two voices, five script lines with English insurance words | K | `KAVACH_LIVE_VOICE` and TTS voice |
-| 5 | Meta test number and Twilio sandbox both reach one hello-world webhook | K | Webhook URL, both senders verified |
+| 5 | Meta test number and Twilio sandbox both reach one hello-world webhook; submit the `household_alert` and `dated_reminder` utility templates to Meta | K | Webhook URL, both senders verified, templates pending approval |
 | 6 | Open the IRDAI 2024 master circular PDF; copy the proportionate-deduction, ICU and multiple-policy paragraph numbers | J | `sources[]` in `data/rules/IN` |
 
 ## 7. Human-only work (the real critical path)
@@ -298,6 +302,7 @@ Cloud Run and App Hosting min instances 1; per-IP and per-WhatsApp-number rate l
 | Parallel agents collide | Path ownership in §4, shapes first, fixtures, gates |
 | Wrong regulatory rule | J's sign-off; hero rules must be `verified` before G1; UI shows "check with your insurer" only on rules still `to_verify` |
 | Meta test number limits (5 recipients) | Video uses Meta; judges use the Twilio sandbox QR |
+| Proactive WhatsApp messages blocked outside the 24-hour window | Meta utility templates for the video; recipient messages first in the sandbox; in-app alert as the fallback (WP-5) |
 | Scope creep after Saturday 18:00 | G2 freezes features; only the Layer 3 list continues |
 | Cut-off earlier than assumed | Shift gates back; cut from the end of the Layer 3 list |
 
