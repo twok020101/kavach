@@ -1,0 +1,71 @@
+{
+  "linkFromLanding": "See how accurately Kavach reads real policies",
+  "back": "Back to home",
+  "title": "How accurately Kavach reads real policies",
+  "intro": "We run Kavach's document reader on real, public Indian health insurance wordings and compare every term it reads with labels a person checked against the PDF.",
+  "fixtureBanner": "This run used recorded test answers, not the live model. It proves the pipeline works; it is not an accuracy score. Real numbers appear after the next live run.",
+  "overall": "Field accuracy",
+  "notMeasured": "Not measured yet",
+  "overallDetail": "{correct} of {labelled} labelled fields read correctly",
+  "noLabels": "No field has a checked label yet, so there is nothing to score.",
+  "stats": {
+    "wordings": "Policy wordings",
+    "wordingsValue": "{count} wordings",
+    "read": "Read in this run",
+    "checked": "Labels checked by a person",
+    "checkedValue": "{checked} of {total}",
+    "date": "Run date",
+    "model": "Model",
+    "fixtures": "Recorded test answers"
+  },
+  "perFieldTitle": "Accuracy per field",
+  "perFieldIntro": "Each bar is the share of wordings where Kavach read that term exactly as labelled.",
+  "fieldScore": "{correct}/{labelled}",
+  "fieldNoLabels": "no labels yet",
+  "fields": {
+    "roomRentLimitPerDay": "Room rent limit per day",
+    "icuLimitPerDay": "ICU limit per day",
+    "copayPercent": "Co-pay percent",
+    "copayFromAge": "Age the co-pay starts",
+    "proportionateDeduction": "Proportionate deduction applies",
+    "deductible": "Deductible",
+    "initialWaitingDays": "Initial waiting period",
+    "pedWaitingMonths": "Pre-existing disease waiting period",
+    "specificWaitingMonths": "Specific illness waiting period",
+    "nonPayables": "Non-payable items list"
+  },
+  "wordingsTitle": "The wordings",
+  "wordingsIntro": "Public documents filed with IRDAI or published by the insurer, identified by their UIN.",
+  "segment": {
+    "individual": "Individual",
+    "floater": "Family floater",
+    "senior": "Senior citizen",
+    "super_top_up": "Super top-up",
+    "group": "Group (employer)",
+    "standard": "IRDAI standard product"
+  },
+  "status": {
+    "read": "Read",
+    "missing_pdf": "PDF not fetched",
+    "failed": "Read failed"
+  },
+  "labelChecked": "Label checked",
+  "labelUnchecked": "Label not checked yet",
+  "rulesTitle": "The rules behind every rupee",
+  "rulesIntro": "Every amount Kavach shows comes from these rules, not from the AI. A rule is marked verified only after a person checks it against the primary source.",
+  "ruleVerified": "Verified",
+  "ruleToVerify": "To verify",
+  "rulesCount": "{verified} of {total} rules verified",
+  "methodTitle": "How we measure",
+  "method": {
+    "dataset": "Dataset: {count} public policy wordings from {insurers} insurers, including group, senior citizen, super top-up and the IRDAI standard product. The PDFs are not stored in our repository; a script fetches them by URL and checks their fingerprint.",
+    "labels": "Labels: for each wording an AI pre-fills about ten terms with the page and a quote; a person then checks every one against the PDF. Only checked labels count.",
+    "scoring": "Scoring: exact match per field. Limits written as a percentage of the sum insured are compared at a sum insured of ₹5,00,000.",
+    "spoken": "Spoken amounts: rehearsal recordings are transcribed and every rupee amount spoken is compared with the engine's answer, offline.",
+    "code": "The eval code, labels and results are in the evals folder on GitHub."
+  },
+  "codeLink": "Open the evals on GitHub",
+  "honestTitle": "What this does not show yet",
+  "honest": "Eight wordings is a small set; we say so rather than round it up. Citation accuracy and the verifier catch rate are not measured on this page yet.",
+  "error": "The results could not be loaded. Please try again in a moment."
+}

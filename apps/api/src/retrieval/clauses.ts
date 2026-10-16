@@ -44,6 +44,15 @@ export async function getClause(id: string): Promise<Clause | undefined> {
   return stored && withoutEmbedding(stored);
 }
 
+/** Every clause in the library, optionally of one product, in clause order. */
+export async function listClauses(productKey?: string): Promise<Clause[]> {
+  const stored = await store.list<StoredClause>(COLLECTION);
+  return stored
+    .filter((c) => !productKey || c.productKey === productKey)
+    .map(withoutEmbedding)
+    .sort((a, b) => a.id.localeCompare(b.id, 'en', { numeric: true }));
+}
+
 /** Clauses most similar to the query (cosine), optionally within one product. */
 export async function searchClauses(query: string, productKey?: string, limit = 5) {
   const [queryVector] = await embed([query], 'RETRIEVAL_QUERY');

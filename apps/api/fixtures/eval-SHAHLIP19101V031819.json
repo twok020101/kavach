@@ -1,0 +1,25 @@
+{
+  "kind": "wording",
+  "documentId": "SHAHLIP19101V031819",
+  "insuredPersons": [],
+  "policy": {
+    "kind": "retail_health",
+    "insurer": "Star Health and Allied Insurance Co. Ltd.",
+    "productName": "Senior Citizens Red Carpet Health Insurance Policy",
+    "uin": "SHAHLIP19101V031819",
+    "source": "personal",
+    "sumInsured": 500000,
+    "startDate": "2026-04-01",
+    "endDate": "2027-03-31",
+    "terms": {
+      "copayPercent": 0,
+      "deductible": 0,
+      "proportionateDeduction": true,
+      "citations": {}
+    }
+  },
+  "citations": [],
+  "notes": [
+    "Placeholder fixture so `pnpm eval` runs with FAKE_LLM=1. It is not a model answer: replace it with a recorded real run once Vertex keys are in."
+  ]
+}

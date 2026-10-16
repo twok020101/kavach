@@ -151,13 +151,11 @@ async function converse(input: {
   if (docs.length > 0) {
     const kind = await classifyMedia(docs, text);
     if (kind === 'settlement_letter') {
-      const verdict = await readForwardedClaimLetter({
-        household,
-        member,
-        files: docs,
-        locale: lang,
-      });
-      return reply({ kind: 'text', text: verdict.text });
+      await reply({ kind: 'text', text: t().readingLetter });
+      for (const message of await readForwardedClaimLetter({ household, member, files: docs })) {
+        await reply(message);
+      }
+      return;
     }
     if (kind === 'other') return reply({ kind: 'text', text: t().notADocument });
   }

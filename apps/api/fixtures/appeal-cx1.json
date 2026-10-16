@@ -1,0 +1,27 @@
+{
+  "subject": "Request for review of deductions in Claim No. SHI/CL/2027/0047815",
+  "summary": "I was admitted to City Heart Hospital, Bengaluru, from 08-02-2027 to 12-02-2027 for an angioplasty. Against a bill of ₹2,80,000, your settlement letter dated 02-03-2027 approved and paid ₹2,04,640. Two of the deductions in that letter are not in line with my policy, and I request that you review them.",
+  "items": [
+    {
+      "label": "Proportionate deduction",
+      "paragraph": "Your letter deducts ₹9,600 as a proportionate deduction for room rent. I stayed in a Single Standard room at ₹5,000 per day, which is within the room-rent limit of ₹5,000 per day under my policy. Clause 3.2 allows a proportionate deduction only when the room rent per day is higher than the eligible limit, so it does not apply to this claim. After the 20% co-payment, ₹7,680 of this deduction is payable.",
+      "clauseId": "SAMPLE-SHI-FHP-001__3.2",
+      "quote": "If the Insured Person is admitted in a room category with a rent per day higher than the eligible limit specified in the Schedule, the Company shall reduce the amount payable for Associated Medical Expenses",
+      "ruleIds": ["R-CLM-001"]
+    },
+    {
+      "label": "Consumables",
+      "paragraph": "Your letter deducts ₹8,600 for consumables without naming the clause relied on. Under Clause 3.5, only the items listed in Annexure I are not payable, and consumables used as part of the procedure are payable. Please show which of these items appear in Annexure I, or pay this amount. After the 20% co-payment, ₹6,880 of this deduction is payable.",
+      "clauseId": "SAMPLE-SHI-FHP-001__3.5",
+      "quote": "Items listed in Annexure I (items for which coverage is not available in the policy) are not payable.",
+      "ruleIds": ["R-CLM-004"]
+    }
+  ],
+  "request": "I request that you review these deductions and pay the balance of ₹14,560, and send me a written reply within 14 days, as your settlement letter provides.",
+  "enclosures": [
+    "Claim settlement letter dated 02-03-2027",
+    "Final hospital bill with itemised breakup",
+    "Discharge summary",
+    "Policy schedule"
+  ]
+}

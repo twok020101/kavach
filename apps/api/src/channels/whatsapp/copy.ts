@@ -25,8 +25,7 @@ export const WA_COPY = {
     fullCard: 'Full card',
     letterNotApproved:
       'The letter isn’t approved yet. Open Kavach, check it and tap Approve; then reply YES again.',
-    claimSoon:
-      'Thanks, I got the settlement letter. Claim reading on WhatsApp is coming soon; for now, open the Kavach app to check it.',
+    readingLetter: 'Reading the settlement letter…',
   },
   hi: {
     consent:
@@ -48,8 +47,7 @@ export const WA_COPY = {
     fullCard: 'पूरा कार्ड',
     letterNotApproved:
       'लेटर अभी मंज़ूर नहीं हुआ है। Kavach खोलकर देखिए और Approve दबाइए; फिर दोबारा HAAN लिखिए।',
-    claimSoon:
-      'धन्यवाद, सेटलमेंट लेटर मिल गया। WhatsApp पर क्लेम पढ़ना जल्द आ रहा है; अभी Kavach ऐप में खोलकर देखिए।',
+    readingLetter: 'सेटलमेंट पत्र पढ़ रही हूँ…',
   },
 } satisfies Record<Locale, unknown>;
 

@@ -1,0 +1,41 @@
+{
+  "talk": "Talk to Kavach",
+  "talkHint": "Speak in Hindi or English. Kavach answers aloud.",
+  "badge": "Live voice",
+  "orb": {
+    "connecting": "Connecting…",
+    "listening": "Kavach is listening",
+    "thinking": "Kavach is checking",
+    "speaking": "Kavach is speaking",
+    "reconnecting": "Reconnecting…",
+    "muted": "Mic off: tap the mic to speak"
+  },
+  "greeting": "Namaste. Tell me what is happening, and show me the hospital estimate with the camera.",
+  "mute": "Mute the mic (Kavach answers)",
+  "unmute": "Turn the mic on",
+  "showEstimate": "Show the estimate",
+  "typeInstead": "Type instead",
+  "billing": {
+    "question": "What did the desk say?",
+    "differ": "Charges differ by room",
+    "same": "Same in every room",
+    "differText": "The desk says the charges are different for each room",
+    "sameText": "The desk says the charges are the same in every room"
+  },
+  "camera": {
+    "title": "Camera",
+    "hint": "Keep the whole page in the frame",
+    "capture": "Take photo",
+    "back": "Back",
+    "sample": "Use the sample estimate"
+  },
+  "fallback": {
+    "title": "Switched to text mode",
+    "connection_lost": "The live voice connection dropped. Kavach switched to text mode: the answers are the same.",
+    "mic_denied": "The microphone isn't available. Kavach switched to text mode: the answers are the same.",
+    "time_limit": "The live session reached its 5-minute limit. Carry on in text mode: the answers are the same.",
+    "other": "Live voice isn't working right now. Kavach switched to text mode: the answers are the same.",
+    "retry": "Try voice again",
+    "dismiss": "Dismiss"
+  }
+}

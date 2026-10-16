@@ -1,17 +1,31 @@
-import type { Household, Locale, Member } from '@kavach/schemas';
-import { WA_COPY } from './copy';
-import type { Media } from './types';
+import type { Household, Member } from '@kavach/schemas';
+import { handleSettlementLetter } from '../../claims/door';
+import { blobs } from '../../lib/blobs';
+import type { Media, Outgoing } from './types';
 
 /**
- * Settlement letter forwarded on WhatsApp (W5). Stub until the claim reader (WP-10,
- * apps/api/src/claims) lands: it should open a claim case, assess it and return the verdict text
- * and appeal PDF. For now it only acknowledges the letter.
+ * Settlement letter forwarded on WhatsApp (W5): runs the same claim pipeline as the app's
+ * claim screens and returns the verdict text, plus the verified appeal PDF when one was made.
  */
 export async function readForwardedClaimLetter(input: {
   household: Household;
   member: Member;
   files: Media[];
-  locale: Locale;
-}): Promise<{ text: string }> {
-  return { text: WA_COPY[input.locale].claimSoon };
+}): Promise<Outgoing[]> {
+  const [file] = input.files;
+  if (!file) return [];
+  const verdict = await handleSettlementLetter(input.household.id, input.member.id, {
+    filename: file.filename ?? 'settlement-letter',
+    mimeType: file.mimeType,
+    bytes: file.data,
+  });
+  const out: Outgoing[] = [{ kind: 'text', text: verdict.text }];
+  if (verdict.pdfPath) {
+    out.push({
+      kind: 'document',
+      data: await blobs.get(verdict.pdfPath),
+      filename: verdict.pdfFilename ?? 'kavach-appeal.pdf',
+    });
+  }
+  return out;
 }

@@ -13,7 +13,10 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "samples": "pnpm --filter @kavach/samples render",
-    "ingest": "pnpm --filter @kavach/api exec tsx ../../scripts/ingest-wordings.ts"
+    "ingest": "pnpm --filter @kavach/api exec tsx ../../scripts/ingest-wordings.ts",
+    "eval": "pnpm --filter @kavach/api exec tsx ../../evals/run-eval.ts",
+    "wordings:fetch": "pnpm --filter @kavach/api exec tsx ../../scripts/fetch-wordings.ts",
+    "transcript:check": "pnpm --filter @kavach/api exec tsx ../../evals/check-transcript.ts"
   },
   "devDependencies": {
     "prettier": "^3.9.10",
@@ -21,7 +24,8 @@
     "typescript": "~6.0.3",
     "@eslint/js": "^9.39.0",
     "eslint": "^9.39.0",
-    "typescript-eslint": "^8.71.2"
+    "typescript-eslint": "^8.71.2",
+    "yaml": "^2.9.1"
   },
   "pnpm": {
     "onlyBuiltDependencies": [
