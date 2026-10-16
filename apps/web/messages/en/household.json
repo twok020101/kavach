@@ -1,0 +1,47 @@
+{
+  "title": "Demo household",
+  "intro": "Your own copy of the Sharma family. Reset it to any moment of the story.",
+  "loading": "Setting up the demo household…",
+  "error": "Couldn't load the household. Is the API running?",
+  "retry": "Try again",
+  "demoDate": "Demo date: {date}",
+  "checkpointsHeading": "Jump to a moment",
+  "checkpoints": {
+    "setup": "Setup",
+    "job_change": "Job change",
+    "hospital": "Hospital",
+    "claim": "Claim"
+  },
+  "membersHeading": "Family",
+  "age": "{age} yrs",
+  "relations": {
+    "self": "Self",
+    "spouse": "Spouse",
+    "child": "Child",
+    "parent": "Parent",
+    "parent_in_law": "Parent-in-law",
+    "other": "Other"
+  },
+  "speaksHindi": "Speaks Hindi",
+  "conditions": {
+    "diabetes_t2": "Type 2 diabetes"
+  },
+  "policiesHeading": "Policies",
+  "kinds": {
+    "group_health": "Group health",
+    "retail_health": "Health",
+    "super_top_up": "Super top-up",
+    "term_life": "Term life",
+    "personal_accident": "Personal accident",
+    "endowment": "Endowment",
+    "motor": "Motor"
+  },
+  "sumInsured": "Cover {amount}",
+  "covers": "Covers {names}",
+  "validTill": "Till {date}",
+  "roomLimit": "Room up to {amount}/day",
+  "copay": "{percent}% co-pay",
+  "copayFromAge": "{percent}% co-pay from age {age}",
+  "deductible": "Pays above {amount}",
+  "claimsUsed": "Used this year {amount}"
+}
