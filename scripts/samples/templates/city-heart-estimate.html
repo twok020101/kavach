@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>City Heart Hospital – Estimate</title>
+    <link rel="stylesheet" href="base.css" />
+    <style>
+      :root {
+        --brand: #b3122e;
+        --brand-soft: #fbe9ec;
+      }
+      .tariff td,
+      .tariff th {
+        text-align: center;
+      }
+      .tariff .chosen {
+        font-weight: 700;
+      }
+      .note {
+        border: 1px dashed #b3122e;
+        padding: 6px 8px;
+        margin-top: 8px;
+        font-size: 8.8pt;
+      }
+    </style>
+  </head>
+  <body>
+    <section class="page">
+      <header class="head">
+        <svg class="logo" viewBox="0 0 54 54" aria-hidden="true">
+          <circle cx="27" cy="27" r="26" fill="#b3122e" />
+          <path
+            d="M27 41 C14 32 11 25 14 19 C17 13 24 14 27 19 C30 14 37 13 40 19 C43 25 40 32 27 41 Z"
+            fill="#fff"
+          />
+          <path d="M15 27 h7 l3 -5 l4 10 l3 -5 h7" stroke="#b3122e" stroke-width="2" fill="none" />
+        </svg>
+        <div>
+          <div class="org">City Heart Hospital</div>
+          <div class="org-sub">
+            A unit of City Heart Healthcare (fictional) · 14, 100 Feet Road, Indiranagar, Bengaluru
+            560038
+          </div>
+        </div>
+        <div class="head-right">
+          Billing &amp; Insurance Desk<br />
+          Ph: 080-0000-0000<br />
+          NABH accredited (sample)
+        </div>
+      </header>
+
+      <h1>Estimate of Hospitalisation Charges</h1>
+
+      <div class="kv two">
+        <div class="k">Estimate No.</div>
+        <div>CHH/EST/2027/00418</div>
+        <div class="k">Date</div>
+        <div>06-02-2027</div>
+        <div class="k">Patient name</div>
+        <div>Mr. Suresh Sharma</div>
+        <div class="k">Age / Sex</div>
+        <div>62 Y / Male</div>
+        <div class="k">UHID</div>
+        <div>CHH-2219034</div>
+        <div class="k">Consultant</div>
+        <div>Dr. A. Rao (Interventional Cardiology)</div>
+        <div class="k">Procedure</div>
+        <div>PTCA with one drug-eluting stent (coronary angioplasty)</div>
+        <div class="k">Admission</div>
+        <div>Planned · expected stay 4 days</div>
+        <div class="k">Payment mode</div>
+        <div>Cashless (TPA) / Self</div>
+        <div class="k">Proposed date</div>
+        <div>08-02-2027</div>
+      </div>
+
+      <h2>Room tariff (per day)</h2>
+      <table class="tariff">
+        <tr>
+          <th>General Ward</th>
+          <th>Twin Sharing</th>
+          <th>Single Standard</th>
+          <th>Deluxe Single</th>
+          <th>Suite</th>
+        </tr>
+        <tr>
+          <td>₹2,500</td>
+          <td>₹3,500</td>
+          <td class="chosen">₹5,000</td>
+          <td class="chosen">₹9,000</td>
+          <td>₹15,000</td>
+        </tr>
+      </table>
+
+      <h2>Estimated charges by room category (4 days)</h2>
+      <table>
+        <tr>
+          <th style="width: 6%">#</th>
+          <th>Particulars</th>
+          <th class="n">Deluxe Single<br />₹9,000/day</th>
+          <th class="n">Single Standard<br />₹5,000/day</th>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td>Room charges × 4 days</td>
+          <td class="n">36,000</td>
+          <td class="n">20,000</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>Nursing &amp; RMO charges × 4 days</td>
+          <td class="n">8,000</td>
+          <td class="n">6,000</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>Surgeon / procedure charges (PTCA)</td>
+          <td class="n">1,20,000</td>
+          <td class="n">90,000</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>Cath lab / OT charges</td>
+          <td class="n">40,000</td>
+          <td class="n">26,000</td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td>Doctor visits / consultations</td>
+          <td class="n">12,000</td>
+          <td class="n">8,000</td>
+        </tr>
+        <tr>
+          <td>6</td>
+          <td>Stent (implant) – 1 DES</td>
+          <td class="n">45,000</td>
+          <td class="n">45,000</td>
+        </tr>
+        <tr>
+          <td>7</td>
+          <td>Pharmacy &amp; consumables</td>
+          <td class="n">55,000</td>
+          <td class="n">55,000</td>
+        </tr>
+        <tr>
+          <td>8</td>
+          <td>Diagnostics (lab, ECG, echo, X-ray)</td>
+          <td class="n">24,000</td>
+          <td class="n">24,000</td>
+        </tr>
+        <tr>
+          <td>9</td>
+          <td>Non-payable items (admission kit, registration, attendant food)</td>
+          <td class="n">6,000</td>
+          <td class="n">6,000</td>
+        </tr>
+        <tr class="total">
+          <td></td>
+          <td>Total estimated amount (₹)</td>
+          <td class="n">3,46,000</td>
+          <td class="n">2,80,000</td>
+        </tr>
+      </table>
+
+      <div class="note">
+        <b>Tariff note:</b> Nursing &amp; RMO, surgeon / procedure, cath lab / OT and doctor visit
+        charges are levied as per the room category occupied (differential tariff). Stent, pharmacy,
+        consumables and diagnostics are charged at actuals irrespective of room category.
+      </div>
+
+      <p class="small" style="margin-top: 8px">
+        1. This is an estimate only; the final bill depends on the actual length of stay, clinical
+        course and items used. 2. Any change of room category during the stay will change the
+        charges at items 1–5. 3. For cashless treatment, the insurer / TPA approves amounts as per
+        policy terms; amounts not approved are payable by the patient at discharge. 4. Deposit at
+        admission: ₹50,000.
+      </p>
+
+      <div class="sign">
+        <div>Prepared by: Billing Executive</div>
+        <div>Patient / Attendant signature</div>
+      </div>
+
+      <footer class="foot">
+        <span class="sample">SAMPLE – FOR DEMONSTRATION · fictional hospital and patient</span>
+        <span>Page 1 of 1</span>
+      </footer>
+    </section>
+  </body>
+</html>

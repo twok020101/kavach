@@ -1,0 +1,28 @@
+{
+  "insurer": "Suraksha Health Insurance Ltd (SAMPLE)",
+  "claimNumber": "SHI/CL/2027/0047815",
+  "policyNumber": "SHI/IND/2026/118342",
+  "patientName": "Suresh Sharma",
+  "hospitalName": "City Heart Hospital, Bengaluru",
+  "billAmount": 280000,
+  "approvedAmount": 204640,
+  "deductions": [
+    {
+      "label": "Non-payable items",
+      "amount": 6000,
+      "reasonGiven": "Items excluded as per List I – Items for which coverage is not available"
+    },
+    {
+      "label": "Proportionate deduction",
+      "amount": 9600,
+      "reasonGiven": "Proportionate deduction as per room rent eligibility (Clause 3.2)"
+    },
+    {
+      "label": "Consumables",
+      "amount": 8600,
+      "reasonGiven": "Consumables not payable under the policy"
+    }
+  ],
+  "copayApplied": 51160,
+  "letterDate": "2027-03-02"
+}

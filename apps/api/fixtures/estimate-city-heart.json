@@ -1,0 +1,73 @@
+{
+  "hospitalName": "City Heart Hospital, Bengaluru",
+  "patientName": "Suresh Sharma",
+  "procedure": "PTCA with one drug-eluting stent (coronary angioplasty)",
+  "admissionType": "planned",
+  "days": 4,
+  "billingType": "differential",
+  "roomCategories": [
+    { "id": "deluxe", "label": "Deluxe Single", "rentPerDay": 9000 },
+    { "id": "standard", "label": "Single Standard", "rentPerDay": 5000 }
+  ],
+  "lines": [
+    {
+      "head": "room",
+      "label": "Room charges × 4 days",
+      "pricedByRoom": true,
+      "amounts": { "deluxe": 36000, "standard": 20000 }
+    },
+    {
+      "head": "nursing",
+      "label": "Nursing & RMO charges × 4 days",
+      "pricedByRoom": true,
+      "amounts": { "deluxe": 8000, "standard": 6000 }
+    },
+    {
+      "head": "surgeon",
+      "label": "Surgeon / procedure charges (PTCA)",
+      "pricedByRoom": true,
+      "amounts": { "deluxe": 120000, "standard": 90000 }
+    },
+    {
+      "head": "ot",
+      "label": "Cath lab / OT charges",
+      "pricedByRoom": true,
+      "amounts": { "deluxe": 40000, "standard": 26000 }
+    },
+    {
+      "head": "doctor_visits",
+      "label": "Doctor visits / consultations",
+      "pricedByRoom": true,
+      "amounts": { "deluxe": 12000, "standard": 8000 }
+    },
+    {
+      "head": "implant",
+      "label": "Stent (implant) – 1 DES",
+      "pricedByRoom": false,
+      "amounts": { "deluxe": 45000, "standard": 45000 }
+    },
+    {
+      "head": "pharmacy",
+      "label": "Pharmacy & consumables",
+      "pricedByRoom": false,
+      "amounts": { "deluxe": 55000, "standard": 55000 }
+    },
+    {
+      "head": "diagnostics",
+      "label": "Diagnostics (lab, ECG, echo, X-ray)",
+      "pricedByRoom": false,
+      "amounts": { "deluxe": 24000, "standard": 24000 }
+    },
+    {
+      "head": "non_payable",
+      "label": "Non-payable items (admission kit, registration, attendant food)",
+      "pricedByRoom": false,
+      "amounts": { "deluxe": 6000, "standard": 6000 }
+    }
+  ],
+  "needsConfirmation": false,
+  "notes": [
+    "Estimate CHH/EST/2027/00418 dated 06-02-2027; printed totals ₹3,46,000 (Deluxe Single) and ₹2,80,000 (Single Standard) match the lines.",
+    "Tariff note on the estimate: nursing & RMO, surgeon, cath lab / OT and doctor visits are charged by room category; stent, pharmacy, consumables and diagnostics at actuals."
+  ]
+}
