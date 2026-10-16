@@ -75,6 +75,10 @@ export function draftJobChangeActions(
     const dueDate = addDays(end.lastDay, -MIGRATION_NOTICE_DAYS);
     const names = losing.map((m) => `${m.name} ${surname(household)}`);
     const nameList = names.join(' and ');
+    const allParents = losing.every((m) => m.relation === 'parent');
+    const coveredPeople = allParents
+      ? `My ${losing.length > 1 ? 'parents' : 'parent'}, ${nameList}, ${losing.length > 1 ? 'are' : 'is'}`
+      : `${nameList} ${losing.length > 1 ? 'are' : 'is'}`;
     const employer = group.employer ?? end.employer;
     const letterId = `act_${randomUUID()}`;
     actions.push({
@@ -90,7 +94,7 @@ export function draftJobChangeActions(
         '',
         'Dear Sir/Madam,',
         '',
-        `I am leaving ${employer}; my last working day is ${longDate(end.lastDay)} (employee ID ${BLANK}). ${nameList} ${losing.length > 1 ? 'are' : 'is'} covered under the ${group.productName} policy with ${group.insurer} (policy number ${BLANK}), sum insured ${formatInr(group.sumInsured).replace('₹', 'Rs ')} family floater.`,
+        `I am leaving ${employer}; my last working day is ${longDate(end.lastDay)} (employee ID ${BLANK}). ${coveredPeople} covered under the ${group.productName} policy with ${group.insurer} (policy number ${BLANK}), sum insured ${formatInr(group.sumInsured).replace('₹', 'Rs ')} family floater.`,
         '',
         `I request that ${losing.length > 1 ? 'their' : 'this'} cover be migrated to an individual health policy with ${group.insurer} from ${longDate(addDays(end.lastDay, 1))}, with credit for the time already covered under the group policy for waiting periods. Please send me the migration form and the premium, so that the request reaches the insurer at least ${MIGRATION_NOTICE_DAYS} days before my last working day.`,
         '',
@@ -102,9 +106,8 @@ export function draftJobChangeActions(
       ].join('\n'),
     });
 
-    const parents = losing.filter((m) => m.relation === 'parent');
     const who =
-      parents.length === 2 && losing.length === 2
+      allParents && losing.length === 2
         ? 'Mummy and Papa'
         : losing.map((m) => m.name).join(' and ');
     actions.push({

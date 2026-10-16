@@ -4,7 +4,7 @@ import { store } from '../store';
 import { sharmaAt } from './sharma';
 
 /** Per-household collections a reset clears, so every checkpoint starts clean. */
-const HOUSEHOLD_COLLECTIONS = ['deskSessions', 'claimCases', 'actions', 'documents'];
+const HOUSEHOLD_COLLECTIONS = ['deskSessions', 'claimCases', 'actions', 'documents', 'lifeChanges'];
 
 /** Clones the Sharma household at a checkpoint into a new household only `uid` can access. */
 export async function createDemoHousehold(uid: string, checkpoint: DemoCheckpoint) {

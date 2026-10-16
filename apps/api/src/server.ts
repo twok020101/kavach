@@ -12,6 +12,9 @@ import { env } from './env';
 import { demoRoutes } from './routes/demo';
 import { healthRoutes } from './routes/health';
 import { householdRoutes } from './routes/households';
+import { actionRoutes } from './routes/actions';
+import { lifeChangeRoutes } from './routes/life-changes';
+import { planRoutes } from './routes/plans';
 
 export async function buildServer() {
   const app = Fastify({
@@ -34,6 +37,9 @@ export async function buildServer() {
   await app.register(healthRoutes);
   await app.register(demoRoutes);
   await app.register(householdRoutes);
+  await app.register(planRoutes);
+  await app.register(lifeChangeRoutes);
+  await app.register(actionRoutes);
 
   return app;
 }
