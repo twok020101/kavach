@@ -13,7 +13,7 @@ import { Link, useRouter } from '@/i18n/navigation';
 import { deskClient } from '@/lib/desk-client';
 import { CloseIcon, DeskHeader } from './desk-header';
 
-const DEMO_PATIENT = 'm_suresh';
+const DEMO_PATIENT = 'mem_suresh';
 
 export function DeskStart({ demo }: { demo: boolean }) {
   const t = useTranslations('desk.start');

@@ -14,8 +14,10 @@ Work packages (WP) refer to [`docs/implementation-plan.md`](docs/implementation-
 
 ## Dependency re-tests
 
-| Feature | Dependency | Re-tested after it merged | Result |
-| ------- | ---------- | ------------------------- | ------ |
+| Feature       | Dependency                                        | Re-tested after it merged                                                   | Result                                                         |
+| ------------- | ------------------------------------------------- | --------------------------------------------------------------------------- | -------------------------------------------------------------- |
+| Engine        | Demo household (`copayFromAge`, persona policies) | Yes: merged main, reran the engine check                                    | All HX-1/CX-1 numbers still match; co-pay applies only from 61 |
+| Design system | Demo household, engine                            | Yes: merged main, lint/typecheck/build, landing and desk loaded in Chromium | Works on mock data; real data arrives with the desk core       |
 
 ## Waiting on keys or people
 
