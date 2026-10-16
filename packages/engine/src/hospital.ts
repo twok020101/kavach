@@ -16,8 +16,13 @@ import { fire } from './rules';
 /** Who is in hospital and which policies cover them. */
 export type HospitalContext = {
   patient: { age: number; memberId?: string };
+  /** The household's policies; only health cover for this patient, in force on asOf, is used. */
   policies: Policy[];
+  /** ISO date of the admission. When set, policies not in force on this date are ignored. */
+  asOf?: string;
 };
+
+const HEALTH_KINDS: readonly Policy['kind'][] = ['group_health', 'retail_health', 'super_top_up'];
 
 type Mode = Exclude<BillingType, 'unknown'>;
 type Deduction = RoomOptionResult['deductions'][number];
@@ -346,8 +351,14 @@ function copayRate(policy: Policy, age: number): number {
 }
 
 function coveringPolicies(ctx: HospitalContext): Policy[] {
-  const id = ctx.patient.memberId;
-  return ctx.policies.filter((p) => id === undefined || p.coveredMemberIds.includes(id));
+  const { memberId } = ctx.patient;
+  const { asOf } = ctx;
+  return ctx.policies.filter(
+    (p) =>
+      HEALTH_KINDS.includes(p.kind) &&
+      (memberId === undefined || p.coveredMemberIds.includes(memberId)) &&
+      (asOf === undefined || (p.startDate <= asOf && p.endDate >= asOf)),
+  );
 }
 
 /** Preferred order on ties: employer cover first (keeps the personal bonus), super top-ups last. */

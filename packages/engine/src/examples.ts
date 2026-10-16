@@ -1,6 +1,7 @@
 /**
  * Worked examples from docs/research/red-team-response.md §3 (HX-1, CX-1), as engine inputs.
  * Reused by the check script, demo seeding and fixtures. All names are fictional samples.
+ * Policies mirror pol_parents_migrated and pol_supertopup in data/personas/sharma.json.
  */
 import type {
   BillingType,
@@ -18,12 +19,14 @@ export const SURESH = { memberId: 'mem_suresh', name: 'Suresh', age: 62 };
 export const PARENTS_POLICY: Policy = {
   id: 'pol_parents_migrated',
   kind: 'retail_health',
-  insurer: 'Sample General Insurance',
-  productName: 'Sample Individual Health (migrated from group)',
+  insurer: 'Sample Insurer A',
+  productName: 'Individual Health (migrated from group)',
   source: 'personal',
   holderMemberId: 'mem_rahul',
   coveredMemberIds: ['mem_suresh', 'mem_kamala'],
   sumInsured: 5_00_000,
+  premiumAnnual: 38_500,
+  continuousCoverSince: '2022-04-01',
   claimsUsedThisYear: 0,
   startDate: '2026-12-01',
   endDate: '2027-11-30',
@@ -40,21 +43,26 @@ export const PARENTS_POLICY: Policy = {
 export const SUPER_TOP_UP: Policy = {
   id: 'pol_supertopup',
   kind: 'super_top_up',
-  insurer: 'Sample General Insurance',
-  productName: 'Sample Super Top-up',
+  insurer: 'Sample Insurer B',
+  productName: 'Super Top-up Floater',
   source: 'personal',
   holderMemberId: 'mem_rahul',
   coveredMemberIds: ['mem_rahul', 'mem_priya', 'mem_anaya', 'mem_suresh', 'mem_kamala'],
   sumInsured: 5_00_000,
+  premiumAnnual: 14_200,
   claimsUsedThisYear: 0,
-  startDate: '2026-04-01',
-  endDate: '2027-03-31',
-  terms: { copayPercent: 0, deductible: 5_00_000, proportionateDeduction: true, citations: {} },
+  startDate: '2026-06-15',
+  endDate: '2027-06-14',
+  terms: { copayPercent: 0, deductible: 5_00_000, proportionateDeduction: false, citations: {} },
 };
+
+/** Admission date of the hospital checkpoint in sharma.json. */
+export const HX1_AS_OF = '2027-02-08';
 
 export const HX1_CONTEXT: HospitalContext = {
   patient: { age: SURESH.age, memberId: SURESH.memberId },
   policies: [PARENTS_POLICY, SUPER_TOP_UP],
+  asOf: HX1_AS_OF,
 };
 
 const DELUXE = { id: 'deluxe', label: 'Deluxe', rentPerDay: 9_000 };
@@ -147,7 +155,7 @@ export const ICU_ESTIMATE: HospitalEstimate = {
 
 /** CX-1: the settlement letter for the Option B stay (bill ₹2,80,000). */
 export const CX1_LETTER: SettlementLetter = {
-  insurer: 'Sample General Insurance',
+  insurer: 'Sample Insurer A',
   claimNumber: 'CLM-2027-000417',
   policyNumber: 'SAMPLE-PARENTS-001',
   patientName: SURESH.name,
@@ -168,7 +176,7 @@ export const CX1_LETTER: SettlementLetter = {
     { label: 'Consumables (gloves, PPE kit, syringes)', amount: 8_600, reasonGiven: 'Not payable' },
   ],
   copayApplied: 51_160,
-  letterDate: '2027-03-12',
+  letterDate: '2027-02-26',
 };
 
 export const CX1_BILL: ClaimBill = {

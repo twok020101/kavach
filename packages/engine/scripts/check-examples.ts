@@ -12,6 +12,7 @@ import {
   ICU_CONTEXT,
   ICU_ESTIMATE,
   PARENTS_POLICY,
+  SUPER_TOP_UP,
   hx1Estimate,
 } from '../src/examples';
 
@@ -91,6 +92,29 @@ expect('hi says A in words', sayHi.includes('ek lakh pachaas hazaar aath sau rup
 expect('hi says B in words', sayHi.includes('saath hazaar aath sau rupaye'), true);
 expect('hi ends with TPA confirm', sayHi.endsWith('TPA desk se confirm kar lijiye.'), true);
 expect('en ends with TPA confirm', sayEn.endsWith('confirm with the TPA desk.'), true);
+
+// ---------------------------------------------------------------- context handling
+heading('Context: co-pay age and policies in force');
+const young = evaluateHospital(
+  { ...HX1_CONTEXT, patient: { ...HX1_CONTEXT.patient, age: 58 } },
+  hx1Estimate(),
+);
+expect(
+  'no co-pay under copayFromAge (61) for a 58-year-old',
+  option(young.primary, 'standard').copay,
+  0,
+);
+const expiredTopUp = { ...SUPER_TOP_UP, id: 'pol_old_topup', endDate: '2027-01-31' };
+const motor = { ...SUPER_TOP_UP, id: 'pol_motor', kind: 'motor' as const };
+const filtered = evaluateHospital(
+  { ...HX1_CONTEXT, policies: [...HX1_CONTEXT.policies, expiredTopUp, motor] },
+  hx1Estimate(),
+);
+expect(
+  'expired and non-health policies ignored',
+  filtered.policyOrder.join(' > '),
+  'pol_parents_migrated > pol_supertopup',
+);
 
 // ---------------------------------------------------------------- HX-1 flat
 heading('HX-1 flat billing (same charges in every room)');
