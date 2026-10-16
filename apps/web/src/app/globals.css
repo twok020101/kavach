@@ -1,0 +1,112 @@
+@import 'tailwindcss';
+
+/* Design tokens from docs/plan/07-design-system.md §11. */
+:root {
+  --bg: #fbfaf7;
+  --surface: #ffffff;
+  --surface-sunken: #f5f3ee;
+  --border: #ddd8ce;
+  --border-strong: #a39d90;
+  --text: #1c1a17;
+  --text-muted: #5e6472;
+  --primary: #2e45a0;
+  --primary-hover: #23357a;
+  --primary-soft: #e3e8f8;
+  --on-primary: #ffffff;
+  --accent: #f4a62a;
+  --accent-ink: #0f1b3d;
+  --status-safe: #1f7a4d;
+  --status-safe-bg: #e4f3ea;
+  --status-partial: #9a5b00;
+  --status-partial-bg: #fdf1dc;
+  --status-gap: #b42318;
+  --status-gap-bg: #fde8e6;
+  --status-na: #6b665c;
+  --status-na-bg: #ece9e2;
+  --citation: #23357a;
+  --citation-bg: #f2f4fc;
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+}
+
+[data-theme='dark'] {
+  --bg: #12141c;
+  --surface: #1a1d28;
+  --surface-sunken: #151821;
+  --border: #3a3f55;
+  --border-strong: #5e6472;
+  --text: #edebe6;
+  --text-muted: #9aa0b4;
+  --primary: #8fa3f0;
+  --primary-hover: #a9b9f4;
+  --primary-soft: #23294a;
+  --on-primary: #12141c;
+  --accent: #f4a62a;
+  --accent-ink: #12141c;
+  --status-safe: #5bc48a;
+  --status-safe-bg: #173326;
+  --status-partial: #f0b44c;
+  --status-partial-bg: #3a2a10;
+  --status-gap: #f28b7d;
+  --status-gap-bg: #3d1d1a;
+  --status-na: #9aa0b4;
+  --status-na-bg: #23263a;
+}
+
+/* Hospital desk: always light, maximum contrast, bigger type. */
+[data-mode='desk'] {
+  --bg: #ffffff;
+  --surface: #ffffff;
+  --text: #0b0b0c;
+  --text-muted: #34312b;
+  font-size: 125%;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-sunken: var(--surface-sunken);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-text: var(--text);
+  --color-muted: var(--text-muted);
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-soft: var(--primary-soft);
+  --color-on-primary: var(--on-primary);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-safe: var(--status-safe);
+  --color-safe-bg: var(--status-safe-bg);
+  --color-partial: var(--status-partial);
+  --color-partial-bg: var(--status-partial-bg);
+  --color-gap: var(--status-gap);
+  --color-gap-bg: var(--status-gap-bg);
+  --color-na: var(--status-na);
+  --color-na-bg: var(--status-na-bg);
+  --color-citation: var(--citation);
+  --color-citation-bg: var(--citation-bg);
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --font-sans: var(--font-inter), var(--font-noto-deva), system-ui, sans-serif;
+  --font-display: var(--font-jakarta), var(--font-noto-deva), sans-serif;
+  --font-serif: var(--font-source-serif), serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, monospace;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+}
+
+/* All amounts use tabular figures so columns line up. */
+.amount {
+  font-feature-settings: 'tnum';
+}
+
+:lang(hi) {
+  line-height: 1.7;
+}
