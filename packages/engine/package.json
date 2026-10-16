@@ -1,0 +1,17 @@
+{
+  "name": "@kavach/engine",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Deterministic rules engine. No I/O, no network, no LLM: every rupee Kavach shows comes from here.",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "lint": "eslint src",
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@kavach/schemas": "workspace:*"
+  }
+}
