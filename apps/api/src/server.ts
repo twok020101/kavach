@@ -19,6 +19,7 @@ import { actionRoutes } from './routes/actions';
 import { lifeChangeRoutes } from './routes/life-changes';
 import { planRoutes } from './routes/plans';
 import { proofRoutes } from './routes/proof';
+import { liveRoutes } from './routes/live';
 
 export async function buildServer() {
   const app = Fastify({
@@ -52,6 +53,7 @@ export async function buildServer() {
   await app.register(documentRoutes);
   await app.register(proofRoutes);
   await app.register(claimRoutes);
+  await app.register(liveRoutes);
 
   return app;
 }

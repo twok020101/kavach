@@ -8,3 +8,4 @@ export * from './demo';
 export * from './plan';
 export * from './document';
 export * from './proof';
+export * from './live';
