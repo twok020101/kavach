@@ -1,19 +1,24 @@
 import { Quote } from 'lucide-react';
 import { cn } from '../ui/cn';
 
-/** Where a fact came from, e.g. "Policy wording §4.2.1 · p14". Opens the source when it has a link. */
+/**
+ * Where a fact came from, e.g. "Policy wording §4.2.1 · p14". Opens the source when it has a
+ * link, or calls `onClick` (e.g. to open the clause viewer sheet).
+ */
 export function CitationChip({
   label,
   href,
+  onClick,
   className,
 }: {
   label: string;
   href?: string;
+  onClick?: () => void;
   className?: string;
 }) {
   const classes = cn(
     'inline-flex min-h-8 items-center gap-1 rounded-sm bg-citation-bg px-2 text-xs font-medium text-citation',
-    href && 'underline-offset-2 hover:underline',
+    (href || onClick) && 'underline-offset-2 hover:underline',
     className,
   );
   const content = (
@@ -22,6 +27,13 @@ export function CitationChip({
       <span>{label}</span>
     </>
   );
+  if (onClick) {
+    return (
+      <button type="button" onClick={onClick} className={classes}>
+        {content}
+      </button>
+    );
+  }
   return href ? (
     <a href={href} target="_blank" rel="noopener noreferrer" className={classes}>
       {content}

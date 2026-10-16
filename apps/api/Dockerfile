@@ -18,7 +18,7 @@ COPY --from=build /out/package.json ./
 COPY --from=build /repo/apps/api/dist ./dist
 COPY --from=build /repo/apps/api/fixtures ./fixtures
 COPY --from=build /repo/apps/api/src/agents/prompts ./src/agents/prompts
-# repoRoot resolves to / in this image; the desk's sample estimate photo lives there.
+# repoRoot resolves to / in this image; sample documents and the sample estimate photo live there.
 COPY --from=build /repo/data/samples /data/samples
 EXPOSE 8080
 CMD ["node", "dist/index.js"]

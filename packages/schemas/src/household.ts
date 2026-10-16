@@ -48,6 +48,8 @@ export const Policy = z.object({
   insurer: z.string(),
   productName: z.string(),
   uin: z.string().optional(),
+  /** As printed on the schedule or benefits summary. */
+  policyNumber: z.string().optional(),
   source: z.enum(['employer', 'personal']),
   /** For employer cover: the employer whose employment the cover depends on. */
   employer: z.string().optional(),
@@ -61,6 +63,8 @@ export const Policy = z.object({
   startDate: z.string().date(),
   endDate: z.string().date(),
   terms: PolicyTerms,
+  /** Household documents this policy was read from (S15 "Open full document"). */
+  documentIds: z.array(z.string()).optional(),
 });
 export type Policy = z.infer<typeof Policy>;
 
