@@ -24,7 +24,7 @@ export async function readForwardedClaimLetter(input: {
     out.push({
       kind: 'document',
       data: await blobs.get(verdict.pdfPath),
-      filename: verdict.pdfFilename ?? 'kavach-appeal.pdf',
+      filename: (verdict.pdfFilename ?? 'kavach-appeal.pdf').replaceAll('/', '-'),
     });
   }
   return out;
