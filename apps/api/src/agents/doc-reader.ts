@@ -41,6 +41,10 @@ export async function readDocument(input: {
   mimeType: string;
   bytes: Buffer;
   members: Member[];
+  /** Overrides the fixture picked from the file name (evals use one per wording). */
+  fixture?: string;
+  /** Extra instructions for this document, e.g. how to read a full wording (evals). */
+  instructions?: string;
 }) {
   const family = input.members.map(({ name, relation, age }) => ({ name, relation, age }));
   return generateStructured({
@@ -53,11 +57,17 @@ export async function readDocument(input: {
         parts: [
           { inlineData: { mimeType: input.mimeType, data: input.bytes.toString('base64') } },
           {
-            text: `Document id: ${input.documentId}. File name: ${input.filename}.\nHousehold members: ${JSON.stringify(family)}`,
+            text: [
+              `Document id: ${input.documentId}. File name: ${input.filename}.`,
+              `Household members: ${JSON.stringify(family)}`,
+              input.instructions,
+            ]
+              .filter(Boolean)
+              .join('\n'),
           },
         ],
       },
     ],
-    fixture: fixtureFor(input.filename),
+    fixture: input.fixture ?? fixtureFor(input.filename),
   });
 }
