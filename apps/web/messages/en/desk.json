@@ -1,0 +1,72 @@
+{
+  "modeNote": "Hospital mode: large text and high contrast.",
+  "start": {
+    "title": "Help at the hospital",
+    "demoNote": "Demo: the Sharma family at City Heart Hospital. Suresh is admitted for a planned angioplasty, and his answers come in Hindi. You can change both.",
+    "who": "Who is admitted?",
+    "language": "Answers in",
+    "start": "Start",
+    "pickFirst": "Pick who is admitted to start.",
+    "privacy": "The camera is used only when you take a photo of the estimate. Nothing is shared without you."
+  },
+  "session": {
+    "title": "Helping with {name}",
+    "titleLoading": "Help at the hospital",
+    "end": "End",
+    "orb": { "thinking": "Kavach is checking", "ready": "Ready: show the estimate or type" },
+    "textMode": "Text mode",
+    "greeting": "Namaste. Take a photo of the hospital estimate, then ask me your question.",
+    "sampleSent": "Using the sample estimate",
+    "photoSent": "Photo of the estimate",
+    "estimateRead": "I have read the {hospital} estimate: {days, plural, one {# day} other {# days}}, {rooms} room types. Now ask me which room to take.",
+    "captureFailed": "I couldn’t read that photo. Please take it again with the whole page in the frame.",
+    "steps": {
+      "reading": "Reading the estimate",
+      "tariff": "Finding the room tariff",
+      "policies": "Checking the family’s policies",
+      "rooms": "Comparing the rooms",
+      "verify": "Checking every number"
+    },
+    "capture": {
+      "title": "Show the hospital estimate",
+      "hint": "Keep the whole page in the frame, in good light.",
+      "photo": "Take a photo of the estimate",
+      "sample": "Use the sample estimate"
+    },
+    "estimate": {
+      "photoAlt": "Your photo of the estimate",
+      "days": "{days, plural, one {# day} other {# days}}",
+      "rooms": "Room types on the estimate",
+      "check": "Does this look right?",
+      "retake": "Retake"
+    },
+    "answers": "Answer",
+    "compareRooms": "Compare rooms",
+    "why": "Why these numbers?",
+    "share": "Send to family",
+    "copied": "Copied. Paste it in WhatsApp.",
+    "endAndSummary": "End and see summary",
+    "suggestions": "Suggested questions",
+    "suggest": {
+      "room": "Which room should we take?",
+      "card": "Which policy card do I give first?"
+    },
+    "questionLabel": "Your question",
+    "questionPlaceholder": "Type your question",
+    "send": "Send"
+  },
+  "summary": {
+    "title": "Session summary",
+    "heading": "What Kavach advised for {name}",
+    "otherLanguage": "Read it in the other language",
+    "empty": "No answer was given in this session.",
+    "saved": "Saved to the family timeline",
+    "cards": "Answer cards",
+    "claimHint": "If the claim is later reduced,",
+    "claimLink": "upload the settlement letter here.",
+    "share": "Send summary to family",
+    "copied": "Copied. Paste it in WhatsApp.",
+    "newSession": "Start again",
+    "home": "Back to home"
+  }
+}
