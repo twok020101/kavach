@@ -11,6 +11,8 @@ Written 14 Oct 2026, revised twice that evening. It combines [brief.md](brief.md
 | Adopt Kavach with three moments and the hospital desk as the hero | **Yes** |
 | User interviews and letters of interest | **Not now.** The first goal is the hackathon and judges won't see them. They return as a business step after the hackathon |
 | Start implementation | **Not yet.** Stay on problem and product design |
+| Hero at the hospital desk (16 Oct) | **Claude's call:** Rahul's mother Kamala, alone, in Hindi |
+| Claim appeal in the video (16 Oct) | **One quick frame** (recommended option) |
 
 ---
 
@@ -137,7 +139,7 @@ Prizes are overall, so Kavach competes with all six themes: BFSI, Retail & Comme
 
 ---
 
-## 10. Open questions for Kshitij
+## 10. Open questions for Kshitij (answered 16 Oct)
 
-1. Is Rahul the right persona, or do you want the hero at the hospital desk to be someone else (for example a parent using it alone)?
-2. Should moment 3 (claim appeal) stay in the video as one frame, or move to the deck only?
+1. **Who is the hero at the hospital desk?** Kshitij left it to Claude ("decide according to whatever is necessary"). **Decision: Rahul's mother, Kamala, using Kavach alone at the desk, in Hindi.** Rahul set up the household earlier, so Kavach already knows the family. This keeps the emotional, accessible scene and the memory payoff, and red-team-response.md supports it: Kamala and Suresh moved from Lucknow, and WhatsApp is her fallback door, not the hero.
+2. **Claim appeal in the video?** Kshitij chose the recommended option: **one quick frame in the video** (about 15 seconds). The full flow stays in the app and the deck.
