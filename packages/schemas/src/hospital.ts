@@ -58,6 +58,8 @@ export const HospitalEstimate = z.object({
   roomCategories: z.array(RoomCategory).min(1),
   lines: z.array(EstimateLine),
   packagePrices: z.record(z.string(), Rupees).optional(),
+  /** Totals printed on the estimate, keyed by RoomCategory.id; the reader checks the lines add up to them. */
+  printedTotals: z.record(z.string(), Rupees).optional(),
   /** Set when the numbers don't add up or a field was unreadable; the user must confirm. */
   needsConfirmation: z.boolean().default(false),
   notes: z.array(z.string()).default([]),
