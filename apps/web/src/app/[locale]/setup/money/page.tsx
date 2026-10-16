@@ -215,7 +215,8 @@ function AmountInput({
         value={grouped(value)}
         placeholder="0"
         onChange={(e) => onChange(digits(e.target.value))}
-        className="amount w-full bg-transparent pl-1 text-lg font-semibold tabular-nums outline-none"
+        style={{ outline: 'none' }}
+        className="amount w-full bg-transparent pl-1 text-lg font-semibold tabular-nums"
       />
     </span>
   );

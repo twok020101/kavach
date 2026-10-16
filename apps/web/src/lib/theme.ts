@@ -5,14 +5,9 @@ import { useCallback, useSyncExternalStore } from 'react';
 export type ThemePref = 'system' | 'light' | 'dark';
 export type TextScale = 'normal' | 'large';
 
+// Keep in step with public/theme.js, which applies these before the first paint.
 const THEME_KEY = 'kavach.theme';
 const SCALE_KEY = 'kavach.textScale';
-
-/**
- * Runs in <head> before the first paint, so the page never flashes the wrong theme.
- * Kept as a string because it must work before React loads.
- */
-export const themeScript = `try{var t=localStorage.getItem('${THEME_KEY}');var m=window.matchMedia('(prefers-color-scheme: dark)');var d=t==='dark'||(t!=='light'&&m.matches);var e=document.documentElement;if(d)e.dataset.theme='dark';if(localStorage.getItem('${SCALE_KEY}')==='large')e.dataset.textScale='large'}catch(_){}`;
 
 const listeners = new Set<() => void>();
 const subscribe = (fn: () => void) => {

@@ -203,7 +203,9 @@ function FamilyConfirm({ household }: { household: Household }) {
               <li key={i} className="flex flex-wrap gap-1">
                 <span className="text-muted">{t('assumed')}</span>
                 <span>
-                  {t('assumedEarning', { name: displayName(d), earning: String(d.earning) })}
+                  {d.relation === 'self' && d.earning
+                    ? t('assumedSelf')
+                    : t('assumedEarning', { name: displayName(d), earning: String(d.earning) })}
                 </span>
                 ·
                 <button

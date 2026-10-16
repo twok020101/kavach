@@ -73,7 +73,7 @@
     "assumedEarning": "{name} {earning, select, true {is earning} other {isn't earning}}",
     "change": "change",
     "add": "Add someone",
-    "needAges": "Add {count, plural, one {an age} other {# ages}} to continue",
+    "needAges": "Fill in {count, plural, one {# detail} other {# details}} to continue",
     "looksRight": "Looks right",
     "edit": {
       "title": "Edit person",
@@ -82,7 +82,11 @@
       "relation": "Relation",
       "age": "Age",
       "earning": "Earns money",
-      "earningOptions": { "yes": "Yes", "no": "No", "unknown": "Not sure" },
+      "earningOptions": {
+        "yes": "Yes",
+        "no": "No",
+        "unknown": "Not sure"
+      },
       "conditions": "Health conditions",
       "conditionsHint": "Only kept because you allowed health details.",
       "language": "Language Kavach speaks with them",
@@ -102,7 +106,8 @@
       "parent": "Parent",
       "parent_in_law": "Parent-in-law",
       "other": "Family member"
-    }
+    },
+    "assumedSelf": "You earn the family's income"
   },
   "money": {
     "title": "Four numbers. Rough is fine.",
@@ -126,12 +131,19 @@
     "spouse_earning": {
       "q": "Does {name} earn?",
       "why": "Decides whose income the family depends on.",
-      "options": { "no": "No", "part_time": "Yes, part-time", "yes": "Yes" }
+      "options": {
+        "no": "No",
+        "part_time": "Yes, part-time",
+        "yes": "Yes"
+      }
     },
     "other_cover": {
       "q": "{employer, select, none {Do you have any health or life policy you haven't added?} other {Is {employer} your only employer cover?}}",
       "why": "Decides if your parents are safe if you change jobs.",
-      "options": { "only": "That's all", "another": "I have another" }
+      "options": {
+        "only": "That's all",
+        "another": "I have another"
+      }
     },
     "parents_health": {
       "q": "Does {name} have a long-term health condition?",
@@ -145,5 +157,9 @@
     },
     "impact": "Changes your life cover by about <amount></amount>",
     "see": "See my family's cover"
+  },
+  "landing": {
+    "signIn": "Sign in",
+    "start": "Start with my family"
   }
 }

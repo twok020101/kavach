@@ -19,6 +19,7 @@ export default async function LandingPage({ params }: PageProps<'/[locale]'>) {
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations('landing');
+  const ts = await getTranslations('setup.landing');
   const tProof = await getTranslations('proof');
   const roomCard = mockAnswer(locale as Locale).cards.find((c) => c.kind === 'room_compare');
 
@@ -27,6 +28,9 @@ export default async function LandingPage({ params }: PageProps<'/[locale]'>) {
       <header className="mx-auto flex max-w-5xl items-center gap-3 px-4 py-3">
         <Logo />
         <LanguageSwitch className="ml-auto" />
+        <Link href="/sign-in" className={buttonClasses({ variant: 'ghost', size: 'sm' })}>
+          {ts('signIn')}
+        </Link>
       </header>
 
       <main className="mx-auto flex max-w-5xl flex-col gap-12 px-4 pb-16 pt-6">
@@ -50,6 +54,9 @@ export default async function LandingPage({ params }: PageProps<'/[locale]'>) {
                 <span className="text-sm font-medium">{t('tryHospitalSub')}</span>
               </span>
               <ArrowRight aria-hidden className="size-6 shrink-0" />
+            </Link>
+            <Link href="/sign-in" className="self-start font-semibold text-primary underline">
+              {ts('start')}
             </Link>
           </div>
           {roomCard && (
