@@ -53,8 +53,19 @@
       "takeHomeMonthly": 185000,
       "emiMonthly": 28000,
       "fixedSpendMonthly": 70000,
-      "emergencyFund": 400000
-    }
+      "emergencyFund": 400000,
+      "annualIncome": 3000000,
+      "loansOutstanding": 650000
+    },
+    "assets": [
+      {
+        "id": "asset_phone",
+        "kind": "device",
+        "label": "iPhone",
+        "value": 180000,
+        "purchasedOn": "2025-09-26"
+      }
+    ]
   },
   "policies": {
     "pol_gmc_acme": {

@@ -73,8 +73,22 @@ export const Finances = z.object({
   emiMonthly: Rupees.default(0),
   fixedSpendMonthly: Rupees.default(0),
   emergencyFund: Rupees.default(0),
+  /** Gross annual income of the earning members, for the life-cover need (R-LF-001). */
+  annualIncome: Rupees.optional(),
+  /** Loans still to repay (home, car…), for the life-cover need. */
+  loansOutstanding: Rupees.default(0),
 });
 export type Finances = z.infer<typeof Finances>;
+
+/** Things the family owns that may need cover (R-DV-001). */
+export const Asset = z.object({
+  id: z.string(),
+  kind: z.enum(['device', 'vehicle']),
+  label: z.string(),
+  value: Rupees,
+  purchasedOn: z.string().date().optional(),
+});
+export type Asset = z.infer<typeof Asset>;
 
 export const Household = z.object({
   id: z.string(),
@@ -83,6 +97,7 @@ export const Household = z.object({
   country: z.literal('IN').default('IN'),
   members: z.array(Member),
   policies: z.array(Policy),
+  assets: z.array(Asset).default([]),
   finances: Finances.optional(),
   /** Uids allowed to read and change this household. */
   accessUids: z.array(z.string()).default([]),
