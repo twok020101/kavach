@@ -148,6 +148,13 @@ importers:
       '@kavach/schemas':
         specifier: workspace:*
         version: link:../schemas
+    devDependencies:
+      '@types/node':
+        specifier: ^24.19.2
+        version: 24.19.2
+      tsx:
+        specifier: ^4.23.15
+        version: 4.23.15
 
   packages/schemas:
     dependencies:

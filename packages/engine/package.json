@@ -8,10 +8,15 @@
     ".": "./src/index.ts"
   },
   "scripts": {
-    "lint": "eslint src",
+    "check": "tsx scripts/check-examples.ts",
+    "lint": "eslint src scripts",
     "typecheck": "tsc -p tsconfig.json"
   },
   "dependencies": {
     "@kavach/schemas": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^24.19.2",
+    "tsx": "^4.23.15"
   }
 }

@@ -28,6 +28,8 @@ export const PolicyTerms = z.object({
   roomRentLimitPerDay: Rupees.optional(),
   icuLimitPerDay: Rupees.optional(),
   copayPercent: z.number().min(0).max(100).default(0),
+  /** When set, the co-pay applies only to insured members of at least this age (e.g. 61). */
+  copayFromAge: z.number().int().nonnegative().optional(),
   /** Super top-up / deductible: the policy pays only above this amount per year. */
   deductible: Rupees.default(0),
   proportionateDeduction: z.boolean().default(true),
