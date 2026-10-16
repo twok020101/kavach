@@ -3,8 +3,18 @@
  * prints the results and exits non-zero if any number differs from the plan.
  * Run: pnpm --filter @kavach/engine check
  */
-import type { BranchResult, DeskEvaluation } from '@kavach/schemas';
-import { assessClaim, buildDeskSay, evaluateHospital, formatInr, hindiWords } from '../src/index';
+import { Household, type BranchResult, type ChangeSet, type DeskEvaluation, type Plan } from '@kavach/schemas';
+import persona from '../../../data/personas/sharma.json' with { type: 'json' };
+import {
+  applyChangeSet,
+  assessClaim,
+  buildDeskSay,
+  diff as planDiff,
+  evaluateHospital,
+  formatInr,
+  hindiWords,
+  plan,
+} from '../src/index';
 import {
   CX1_BILL,
   CX1_LETTER,
@@ -227,6 +237,87 @@ expect(
   `${differentialAbove.deductions[1]?.verdict} ${differentialAbove.deductions[1]?.ruleId}`,
   'valid R-HL-001',
 );
+
+// ---------------------------------------------------------------- PX-1 (docs/plan/05 §11)
+heading('PX-1 Sharma plan before and after the job change');
+const sharma = Household.parse({
+  ...persona.household,
+  asOf: persona.checkpoints.setup.asOf,
+  policies: persona.checkpoints.setup.policies.map(
+    (id) => persona.policies[id as keyof typeof persona.policies],
+  ),
+});
+const JOB_CHANGE: ChangeSet = {
+  summary: 'Rahul leaves Acme Software on 30 Nov and joins Orbit Labs on 1 Dec',
+  effectiveDate: '2026-12-01',
+  needsConfirmation: false,
+  unrecognised: [],
+  changes: [
+    { type: 'employment_ended', memberId: 'mem_rahul', employer: 'Acme Software', lastDay: '2026-11-30' },
+    {
+      type: 'employment_started',
+      memberId: 'mem_rahul',
+      employer: 'Orbit Labs',
+      startDate: '2026-12-01',
+      groupHealth: {
+        offered: 'yes',
+        sumInsured: 3_00_000,
+        coveredMemberIds: ['mem_rahul', 'mem_priya', 'mem_anaya'],
+      },
+    },
+  ],
+};
+const printPlan = (p: Plan) => {
+  console.log(`  [${p.asOf}] score ${p.coverMap.score}, spend ${formatInr(p.monthlySpend)} of ${formatInr(p.budget.forNewMonthly)}`);
+  for (const r of p.recommendations)
+    console.log(
+      `    ${r.status.padEnd(8)} ${r.id.padEnd(48)} ${formatInr(r.cover).padStart(12)}  ${formatInr(r.premiumMonthly).padStart(7)}/mo  urgency ${r.urgency}${r.deferReason ? `  (${r.deferReason})` : ''}`,
+    );
+};
+const cellStatus = (p: Plan, memberId: string, risk: string) =>
+  p.coverMap.cells.find((c) => c.memberId === memberId && c.risk === risk)?.status;
+const rec = (p: Plan, id: string) => p.recommendations.find((r) => r.id === id);
+
+const v1 = plan(sharma, '2026-10-14');
+printPlan(v1);
+expect('budget total', v1.budget.totalMonthly, 17_400);
+expect('existing personal premiums', v1.budget.existingPremiumsMonthly, 6_975);
+expect('budget for new', v1.budget.forNewMonthly, 10_425);
+expect('term life cover (R-LF-001)', rec(v1, 'term_life:mem_rahul')?.cover, 4_00_00_000);
+expect('term life ₹/mo', rec(v1, 'term_life:mem_rahul')?.premiumMonthly, 4_000);
+expect('v1 spend', v1.monthlySpend, 7_000);
+expect('v1 device selected', rec(v1, 'device:asset_phone')?.status, 'selected');
+expect(
+  'v1 parents deferred (employer cover)',
+  `${rec(v1, 'parents_health:mem_suresh+mem_kamala')?.status} ${rec(v1, 'parents_health:mem_suresh+mem_kamala')?.deferReason}`,
+  'deferred employer_cover',
+);
+expect('v1 Suresh health', cellStatus(v1, 'mem_suresh', 'health'), 'contingent');
+expect('v1 Priya life', cellStatus(v1, 'mem_priya', 'life'), 'na');
+
+const changed = applyChangeSet(sharma, JOB_CHANGE);
+const v2 = plan(changed, '2026-12-01');
+printPlan(v2);
+expect('1 Dec Suresh health', cellStatus(v2, 'mem_suresh', 'health'), 'gap');
+expect('1 Dec Kamala health', cellStatus(v2, 'mem_kamala', 'health'), 'gap');
+expect(
+  'top-up without base',
+  v2.coverMap.cells.find((c) => c.memberId === 'mem_suresh' && c.risk === 'health')?.issues.join(),
+  'topup_without_base',
+);
+expect('1 Dec Rahul health (startup ₹3L)', cellStatus(v2, 'mem_rahul', 'health'), 'partial');
+expect('30 Nov Suresh still on Acme', cellStatus(plan(changed, '2026-11-30'), 'mem_suresh', 'health'), 'contingent');
+expect('v2 parents ₹/mo', rec(v2, 'parents_health:mem_suresh+mem_kamala')?.premiumMonthly, 4_167);
+expect('v2 parents via migration', rec(v2, 'parents_health:mem_suresh+mem_kamala')?.via, 'migration');
+expect('v2 spend', v2.monthlySpend, 10_417);
+expect('v2 device deferred (budget)', rec(v2, 'device:asset_phone')?.deferReason, 'budget');
+
+const d = planDiff(v1, v2);
+console.log(`  diff: +${d.added.map((r) => r.id).join(', +')}  -${d.removed.map((r) => r.id).join(', -')}; score ${d.score.before} → ${d.score.after}`);
+expect('diff adds parents', d.added.map((r) => r.id).join(), 'parents_health:mem_suresh+mem_kamala');
+expect('diff removes device', d.removed.map((r) => r.id).join(), 'device:asset_phone');
+expect('diff spend', `${d.monthlySpend.before} → ${d.monthlySpend.after}`, '7000 → 10417');
+expect('score drops', d.score.after < d.score.before, true);
 
 console.log(failures ? `\n${failures} check(s) FAILED` : '\nAll checks passed');
 process.exit(failures ? 1 : 0);
