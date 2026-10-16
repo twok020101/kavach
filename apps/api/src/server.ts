@@ -14,6 +14,7 @@ import { deskRoutes } from './routes/desk';
 import { documentRoutes } from './routes/documents';
 import { healthRoutes } from './routes/health';
 import { householdRoutes } from './routes/households';
+import { liveRoutes } from './routes/live';
 
 export async function buildServer() {
   const app = Fastify({
@@ -38,6 +39,7 @@ export async function buildServer() {
   await app.register(householdRoutes);
   await app.register(deskRoutes);
   await app.register(documentRoutes);
+  await app.register(liveRoutes);
 
   return app;
 }
