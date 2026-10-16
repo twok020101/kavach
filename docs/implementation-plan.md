@@ -31,6 +31,7 @@
 | D8 | **Full scope, built as layers** with integration gates; defer only infrastructure judges never see (no event sourcing, no separate contracts package, one API service, one web app) | red-team-response §1, §4 |
 | D9 | Latest stable libraries and an industry-standard monorepo | Kshitij, 14 Oct |
 | D10 | Must use Gemini / Google agent tools, deployed on Cloud Run or Firebase. Submit live link, video < 3 min, public repo, PDF deck | Hackathon rules |
+| D11 | **API in TypeScript on Node with Fastify**, not Python/FastAPI: one language across web, API and engine; the live desk uses the Gemini Live API through the official `@google/genai` SDK, with a Python fallback only for the live bridge if the hour-one spike fails (§3.4) | Kshitij asked, 16 Oct; tradeoff in §3.4 |
 
 ## 2. What changes from the plan docs (build simplifications)
 
@@ -39,9 +40,9 @@ These keep everything the judges see and remove work they never see.
 | Area | Plan docs said | We build | Why |
 |---|---|---|---|
 | Household storage | Event-sourced `events` + `projection` | Plain Firestore documents: `households/{hid}` with members, policies, finances as fields; `plans`, `actions`, `deskSessions`, `claimCases` subcollections. A small `timeline` subcollection is written alongside for the Timeline screen | Event store + projector is ~a day of work with no visible gain; event sourcing moves to the roadmap slide |
-| Shared types | `packages/contracts` (Pydantic → JSON Schema → TS) | Pydantic v2 models in `services/api/app/schemas/` and the engine's own models; FastAPI's OpenAPI → **`openapi-typescript`** generates `apps/web/lib/api/types.ts` in CI | Same guarantee (web and API never disagree), one generator, no extra package |
+| Shared types | `packages/contracts` (Pydantic → JSON Schema → TS) | **Zod v4 schemas in `packages/schemas`**, imported directly by web, API and engine; `z.toJSONSchema()` gives Gemini its structured-output schemas | One language means no code generation at all |
 | Reads | Firestore listeners from the browser | API reads with TanStack Query; **one** Firestore listener for the desk session cards and Rahul's alert view | Fewer security rules to get right; listener only where "live" is visible |
-| Worker | Separate `kavach-worker` + Cloud Tasks | FastAPI `BackgroundTasks` in the same service for ingest; wordings for the demo are **pre-ingested** by a script | Demo documents are known in advance |
+| Worker | Separate `kavach-worker` + Cloud Tasks | An in-process job (fire-and-forget promise with status in Firestore) in the same service for ingest; wordings for the demo are **pre-ingested** by a script | Demo documents are known in advance |
 | Live desk | Audio + camera frames to Gemini Live | Audio only to Gemini Live; camera shown on screen; "Capture" sends a still to the estimate reader (Pro), result injected as a tool result | Session cap and exact amounts |
 | Verifier on live path | Transcript number matching per card | Cards carry engine `say` strings and an engine-trace ✓; the Pro verifier runs only on free text (explanations, appeal letter), off the live path | Latency |
 | Agents | 15 | **5 carry the video** (estimate reader, desk live agent, life-change parser, claim letter reader + appeal drafter, document/schedule reader). The rest (intake, question planner, advisor, action drafter beyond the migration letter) are Layer 3 | Order, not cut |
@@ -57,11 +58,11 @@ These keep everything the judges see and remove work they never see.
 |---|---|
 | Web | Next.js 16 (App Router), React 19.2, TypeScript 5.9+, Tailwind CSS v4, shadcn/ui, Motion, lucide-react, TanStack Query v5, react-hook-form + Zod v4, next-intl (`en`, `hi`), Firebase JS SDK v12 |
 | Card images for WhatsApp | Next.js `ImageResponse` (`next/og`) route rendering the same card design to PNG, with Noto Sans Devanagari loaded for Hindi |
-| API | Python 3.13, FastAPI, Uvicorn, Pydantic v2, firebase-admin, `google-genai` (Vertex AI), `google-adk` (live desk) |
-| Engine | Pure Python package `kavach_engine`, Pydantic models, pytest + hypothesis, mypy strict |
+| API | Node.js 24 LTS, **Fastify 5** with `fastify-type-provider-zod`, `@fastify/websocket`, `@fastify/multipart`, `@fastify/rate-limit`; `firebase-admin`; **`@google/genai`** (Vertex AI) for all Gemini calls including the Live API; `@google/adk` (TypeScript) for the multi-step agents where it helps (life change, claim) |
+| Engine | Pure TypeScript package `@kavach/engine` (no I/O), money as integer rupees with one explicit rounding rule, Vitest + fast-check property tests, `strict` TypeScript. Imported by the API **and** the web app (instant room comparison and Why panel without a round trip) |
 | Audio | Browser `AudioWorklet` (16 kHz PCM capture, 24 kHz playback); server `ffmpeg` in the API image for WhatsApp OGG/Opus ↔ PCM |
-| Letters | WeasyPrint (HTML template → PDF), Noto fonts |
-| Tooling | pnpm workspaces + Turborepo (JS), uv workspace (Python), ruff, mypy, Vitest, Playwright, GitHub Actions |
+| Letters | `@react-pdf/renderer` (English letters to HR and the insurer), Noto fonts |
+| Tooling | pnpm workspaces + Turborepo, `tsx` for scripts, ESLint + Prettier, Vitest, Playwright, GitHub Actions |
 | Google Cloud | Cloud Run (`kavach-api`), Firebase App Hosting (`apps/web`), Firestore (Native), Cloud Storage, Secret Manager, Artifact Registry, Cloud Build, Cloud Logging, budget alert |
 | Models (env vars) | `KAVACH_MODEL_PRO`, `KAVACH_MODEL_FLASH`, `KAVACH_MODEL_LIVE` (native-audio), `KAVACH_MODEL_TTS` (Gemini TTS, for WhatsApp voice notes), `KAVACH_MODEL_EMBED`, `KAVACH_LIVE_VOICE`. Exact IDs chosen in the first-hour check (§6) |
 | WhatsApp | Meta WhatsApp Cloud API (test number) and Twilio WhatsApp Sandbox, both hitting one webhook |
@@ -78,22 +79,22 @@ kavach/
 │   ├── app/api/og/card/[cardId]/route.tsx                    # WhatsApp card PNG
 │   ├── components/{ui,kavach}/  lib/{api,firebase,audio,live,i18n}/  messages/{en,hi}.json
 │   └── styles/tokens.css   apphosting.yaml
-├── services/api/
-│   ├── app/main.py  settings.py  auth.py  store.py           # Firestore access in one module
-│   ├── app/schemas/            # Pydantic request/response models (OpenAPI source)
-│   ├── app/core/answer.py      # channel-agnostic desk core (§3.3)
-│   ├── app/agents/             # estimate_reader, desk_live, life_event, claim_reader, appeal_drafter, doc_reader, verifier, prompts/*.md
-│   ├── app/live/               # WebSocket ↔ ADK run_live bridge
-│   ├── app/channels/whatsapp/  # meta.py, twilio.py, webhook.py, media.py, tts.py
-│   ├── app/routers/            # demo, households, documents, plans, life_changes, actions, desk, claims, proof
-│   ├── app/templates/          # letter HTML
-│   ├── tests/  fixtures/       # recorded model outputs for FAKE_LLM=1
-│   └── Dockerfile  pyproject.toml
-├── packages/engine/kavach_engine/{hospital,claim,cover_map,needs,budget,optimise,diff,score,calendar,say,rules}.py + tests/
+├── apps/api/                  # Fastify 5 on Cloud Run
+│   ├── src/server.ts  settings.ts  auth.ts  store.ts         # Firestore access in one module
+│   ├── src/core/answer.ts      # channel-agnostic desk core (§3.3)
+│   ├── src/agents/             # estimate-reader, desk-live, life-event, claim-reader, appeal-drafter, doc-reader, verifier; prompts/*.md
+│   ├── src/live/               # browser WebSocket ↔ Gemini Live session bridge
+│   ├── src/channels/whatsapp/  # meta.ts, twilio.ts, webhook.ts, media.ts, tts.ts
+│   ├── src/routes/             # demo, households, documents, plans, life-changes, actions, desk, claims, proof
+│   ├── src/letters/            # react-pdf letter templates
+│   ├── test/  fixtures/        # recorded model outputs for FAKE_LLM=1
+│   └── Dockerfile
+├── packages/schemas/          # Zod v4 schemas shared by web, API and engine
+├── packages/engine/src/{hospital,claim,cover-map,needs,budget,optimise,diff,score,calendar,say,rules}.ts + test/
 ├── data/{rules/IN, personas, samples, wordings, catalog}/
-├── evals/{labels, run_eval.py, results}/
+├── evals/{labels, run-eval.ts, results}/
 ├── infra/{firebase.json, firestore.rules, firestore.indexes.json, storage.rules, bootstrap.sh, deploy.sh}
-├── scripts/{seed_demo.py, ingest_wordings.py, fetch_wordings.py}
+├── scripts/{seed-demo.ts, ingest-wordings.ts, fetch-wordings.ts}
 └── .github/workflows/{ci.yml, deploy.yml}
 ```
 
@@ -101,18 +102,35 @@ kavach/
 
 All three doors (live desk, text-and-photo desk, WhatsApp) call **one function**:
 
-```python
-# services/api/app/core/answer.py
-async def answer(household: Household, patient_id: str, inputs: DeskInputs, locale: str) -> DeskAnswer
-#   DeskInputs: estimate: HospitalEstimate | None, utterance_text: str | None,
-#               room_options: list[RoomOption] | None, billing_type_answer: str | None
-#   DeskAnswer: text (short, for captions/WhatsApp text), say (engine-built Hindi/English line),
-#               cards: list[DeskCard], question_for_desk: str | None, trace: list[RuleFiring]
+```ts
+// apps/api/src/core/answer.ts
+export async function answer(household: Household, patientId: string, inputs: DeskInputs, locale: Locale): Promise<DeskAnswer>
+//   DeskInputs: { estimate?: HospitalEstimate; utteranceText?: string;
+//                 roomOptions?: RoomOption[]; billingTypeAnswer?: BillingType }
+//   DeskAnswer: { text (short, for captions/WhatsApp text); say (engine-built Hindi/English line);
+//                 cards: DeskCard[]; questionForDesk?: string; trace: RuleFiring[] }
 ```
 
 - The live agent's `evaluate_options` tool is a thin wrapper over `answer()`; the agent must speak `say` verbatim for any rupee amount.
 - The WhatsApp webhook turns a voice note into text (Gemini audio understanding), a photo into an estimate (estimate reader), calls `answer()`, then sends `text`, a TTS voice note of `say`, and the card PNG.
 - Nothing in `channels/` or `live/` computes a number or decides a rule.
+
+### 3.4 Why TypeScript + Fastify for the API (and the one risk)
+
+Kshitij asked why the API was Python. Checked on 16 Oct against the published packages:
+
+| | Python (FastAPI + ADK) | TypeScript (Fastify) |
+|---|---|---|
+| Gemini SDK | `google-genai` | `@google/genai` 2.30: full Live API (`ai.live.connect`) on Vertex, with session resumption and context-window compression |
+| ADK | `google-adk` 2.12; live bidi streaming is its most documented path, with FastAPI samples | `@google/adk` 2.3; `Runner.runLive` exists but is marked **experimental** |
+| Rules engine | Separate language from the UI; numbers reach the web only through the API | **Same package runs in the browser**: room comparison and the Why panel recompute instantly |
+| Shared types | Pydantic → OpenAPI → generated TS | One set of Zod schemas, no generator |
+| WhatsApp, Firebase, PDF | All mature | All mature (official `twilio`, `firebase-admin`; Meta is plain HTTPS) |
+| Parallel agents | Two toolchains (uv + pnpm), two test runners | One toolchain, one test runner, one lint config |
+
+**Decision:** TypeScript + Fastify. The only thing Python did better is ADK's live streaming. We don't need ADK for the live desk: it is one agent with five tools, so WP-6 talks to the Gemini Live API directly through `@google/genai` (stable, Google's own SDK) and writes the tool-call loop itself (about 150 lines). This still meets the "Gemini or Google agent tools" rule. ADK TypeScript is used only for the non-live multi-step agents, where its `runAsync` path is not experimental.
+
+**The risk and its fallback:** if the hour-one live spike (§6 #3) fails on Node (audio relay, tool calls mid-stream or Hindi transcription), only the live bridge moves to a small Python service (`services/desk-live`, ADK `run_live`) that calls the TypeScript API's `evaluate` endpoint for every number. Nothing else changes.
 
 ## 4. Work packages
 
@@ -122,23 +140,23 @@ Owner key: **K** = Kshitij, **J** = Jai, **A** = a Claude agent (one agent per p
 |---|---|---|---|---|---|
 | 0 | Scaffold, infra, CI/CD | A + K (GCP, billing, accounts) | repo root, `infra/`, `.github/`, Dockerfile, app shells | – | G0 |
 | 1 | Rules engine: hospital + claim | A; J signs off rules | `packages/engine` (hospital, claim, say, rules), `data/rules/IN` | – | G0 |
-| 2 | Estimate reader + sample estimate | A; K prints/photographs | `agents/estimate_reader.py`, `data/samples/estimate_*` | WP-1 models | G0 |
-| 3 | Desk core `answer()` + text-and-photo desk API | A | `app/core`, `routers/desk.py` | 1, 2 | G0 |
+| 2 | Estimate reader + sample estimate | A; K prints/photographs | `agents/estimate-reader.ts`, `data/samples/estimate_*` | WP-1 models | G0 |
+| 3 | Desk core `answer()` + text-and-photo desk API | A | `src/core`, `routes/desk.ts` | 1, 2 | G0 |
 | 4 | Web: design system + desk screens + landing | A | `apps/web` tokens, S01, S21–S24, S09m | 0, 3 (fixtures first) | G0/G1 |
-| 5 | WhatsApp door | A; K owns Meta/Twilio accounts | `app/channels/whatsapp`, `app/api/og/card` | 3 | G0 (text+photo) / G1 (voice) |
-| 6 | Live desk (audio-only) | A; K tests on phone | `app/live`, `agents/desk_live.py`, `apps/web/lib/{audio,live}` | 3 | G1 |
-| 7 | Demo data, seeding, demo mode | A | `data/personas`, `scripts/seed_demo.py`, `routers/demo.py` | 0, 1 | G0 |
-| 8 | Documents and citations | A | `agents/doc_reader.py`, ingest, clause store + viewer API, S14–S16 | 0 | G2 |
-| 9 | Job change (moment 1) | A | engine cover_map/needs/budget/optimise/diff, `agents/life_event.py`, migration letter, S09, S17–S20, WhatsApp nudge | 1, 5, 8 | G2 |
-| 10 | Claim appeal (moment 3) | A | `agents/{claim_reader,appeal_drafter,verifier}.py`, letter PDF, S30–S32 | 1, 8 | G2 |
+| 5 | WhatsApp door | A; K owns Meta/Twilio accounts | `src/channels/whatsapp`, `app/api/og/card` | 3 | G0 (text+photo) / G1 (voice) |
+| 6 | Live desk (audio-only) | A; K tests on phone | `src/live`, `agents/desk-live.ts`, `apps/web/lib/{audio,live}` | 3 | G1 |
+| 7 | Demo data, seeding, demo mode | A | `data/personas`, `scripts/seed-demo.ts`, `routes/demo.ts` | 0, 1 | G0 |
+| 8 | Documents and citations | A | `agents/doc-reader.ts`, ingest, clause store + viewer API, S14–S16 | 0 | G2 |
+| 9 | Job change (moment 1) | A | engine cover_map/needs/budget/optimise/diff, `agents/life-event.ts`, migration letter, S09, S17–S20, WhatsApp nudge | 1, 5, 8 | G2 |
+| 10 | Claim appeal (moment 3) | A | `agents/{claim-reader,appeal-drafter,verifier}.ts`, letter PDF, S30–S32 | 1, 8 | G2 |
 | 11 | Proof page and evals | J labels; A builds harness | `evals/`, `data/wordings`, S26 | 8 | G3 |
 | 12 | Remaining screens and onboarding | A | S02–S08, S10–S13, S25, S27–S29, desktop layouts, Hindi strings | 4, 9 | G3 |
 | 13 | Plan-doc updates | A (docs) | `docs/plan/*` per red-team-response §9 | – | G3 |
 | 14 | Video, deck, README, submission | K + J | `docs/deck/`, README, video files outside git | all | Submit |
 
 ### WP-0 Scaffold, infra, CI/CD
-- **Build:** pnpm + Turborepo + uv workspace; Next.js 16 app shell with tokens; FastAPI app with `/health`; Dockerfile (Python 3.13 slim + ffmpeg + WeasyPrint deps); Firebase config; `infra/bootstrap.sh` enabling APIs (run, aiplatform, firestore, storage, secretmanager, artifactregistry, cloudbuild, firebase, firebaseapphosting); `deploy.sh`.
-- **CI:** on PR: ruff, mypy (strict on engine), pytest, `openapi-typescript` drift check, web typecheck/lint/build, Vitest, Playwright smoke with `FAKE_LLM=1`. On merge to `main`: Cloud Build → Artifact Registry → Cloud Run `kavach-api` (asia-south1 unless the model check says otherwise; min 1, max 5, timeout 3600 s, session affinity, CPU always allocated); App Hosting deploys `apps/web` from `main` (min instances 1).
+- **Build:** pnpm + Turborepo workspace; Next.js 16 app shell with tokens; Fastify app with `/health`; `packages/schemas` and `packages/engine` stubs; Dockerfile (Node 24 slim + ffmpeg); Firebase config; `infra/bootstrap.sh` enabling APIs (run, aiplatform, firestore, storage, secretmanager, artifactregistry, cloudbuild, firebase, firebaseapphosting); `deploy.sh`.
+- **CI:** on PR: ESLint, `tsc` across the workspace, Vitest (engine, API, web), web build, Playwright smoke with `FAKE_LLM=1`. On merge to `main`: Cloud Build → Artifact Registry → Cloud Run `kavach-api` (asia-south1 unless the model check says otherwise; min 1, max 5, timeout 3600 s, session affinity, CPU always allocated); App Hosting deploys `apps/web` from `main` (min instances 1).
 - **Secrets:** Meta token, Meta app secret, webhook verify token, Twilio auth token, demo admin key in Secret Manager. GitHub secret scanning on before the repo goes public.
 - **K only:** create the GCP project and billing, Firebase project, budget alert, Workload Identity Federation for GitHub Actions, Meta developer app + test number, Twilio account + sandbox.
 - **Done when:** an empty app and `/health` are live on their public URLs from a merge to `main`.
@@ -146,7 +164,7 @@ Owner key: **K** = Kshitij, **J** = Jai, **A** = a Claude agent (one agent per p
 ### WP-1 Rules engine: hospital and claim
 - **Build:** `hospital.evaluate(ctx, estimate, room_options) -> DeskEvaluation` and `claim.assess(letter, bill, terms) -> ClaimAssessment`, both returning a `trace`. Inputs carry `pricedByRoom` per head and `billingType ∈ {differential, flat, package, unknown}`.
 - **Rules:** R-HL-001 (ratio only on room-priced heads; never pharmacy, consumables, implants, devices, diagnostics, ICU), R-HL-002 (ICU never proportionately deducted; ICU limit still caps ICU rent), R-HL-006 (policy order), R-HL-010 (unknown billing → both branches + one question), package branch (no ratio; ask for the package price in the lower category), R-CLM-002, R-CLM-008, co-pay, deductible, non-payables. Rules pack YAML with `sources[]` and `status`.
-- **`say.py`:** formats amounts the Indian way (₹1,50,800) and in Hindi words for speech ("ek lakh pachaas hazaar aath sau"), and builds the spoken line from the evaluation, so the agent never composes a number.
+- **`say.ts`:** formats amounts the Indian way (₹1,50,800) and in Hindi words for speech ("ek lakh pachaas hazaar aath sau"), and builds the spoken line from the evaluation, so the agent never composes a number.
 - **Tests first** (these are the contract):
   - `test_hx1_differential`: Option A OOP **₹1,50,800**, Option B OOP **₹60,800**, saving **₹90,000**; Option A deduction ₹80,000 on room-priced heads.
   - `test_hx1_flat_billing`: OOP ₹86,800 vs ₹70,800, saving **₹16,000**.
@@ -154,7 +172,7 @@ Owner key: **K** = Kshitij, **J** = Jai, **A** = a Claude agent (one agent per p
   - `test_hx1_package`: no ratio applied; returns the package question.
   - `test_icu_never_deducted`.
   - `test_cx1`: approved **₹2,04,640**, recoverable **₹14,560**, and approved + recoverable = ₹2,19,200 = Option B expected payout.
-  - Hypothesis property tests: deduction never touches excluded heads; OOP ≥ 0; payout ≤ sum insured.
+  - fast-check property tests: deduction never touches excluded heads; OOP ≥ 0; payout ≤ sum insured.
 - **J signs off** R-HL-001/002/006/010 and R-CLM-008 against the circular paragraph numbers (§7) and flips `status` to `verified`.
 
 ### WP-2 Estimate reader and sample estimate
@@ -163,7 +181,7 @@ Owner key: **K** = Kshitij, **J** = Jai, **A** = a Claude agent (one agent per p
 - **Done when:** all 5 photos parse to the exact HX-1 numbers, or flag `needs_confirmation` rather than return a wrong number.
 
 ### WP-3 Desk core and text-and-photo desk
-- **Build:** `core/answer.py` (§3.3); routes from [plan/06-api.md](plan/06-api.md) "Moment 2" (sessions, captures, turns, evaluate, end); context pack (patient, covering policies with terms, claims YTD); short Hindi and English replies built from `say`; the super top-up line (no card).
+- **Build:** `core/answer.ts` (§3.3); routes from [plan/06-api.md](plan/06-api.md) "Moment 2" (sessions, captures, turns, evaluate, end); context pack (patient, covering policies with terms, claims YTD); short Hindi and English replies built from `say`; the super top-up line (no card).
 - **Guards:** insurance-only scope; no medical advice; every answer ends with "confirm with the TPA desk"; per-IP and per-household rate limits; daily live-minutes ceiling in Firestore that flips the desk to text mode.
 - **Done when:** `POST captures` with a sample photo then `POST turns` "kaun sa room lein?" returns the ₹60,800 / ₹1,50,800 cards and the Hindi `say` line, in under 10 s.
 
@@ -186,21 +204,21 @@ Owner key: **K** = Kshitij, **J** = Jai, **A** = a Claude agent (one agent per p
 - **Done when:** from a fresh phone that joined the Twilio sandbox, a photo + Hindi voice note returns the Hindi voice note and card; Rahul's number receives the alert.
 
 ### WP-6 Live desk (audio-only)
-- **Build:** WebSocket `/v1/live/{sessionId}` bridging the browser to ADK `run_live` with `LiveRequestQueue`; `RunConfig` with audio response, chosen Hindi voice, input/output transcription, VAD tuned for noise, session resumption and context-window compression. Tools: `get_patient_context`, `read_estimate` (returns the latest capture or `needs_capture`), `evaluate_options` (→ `answer()`), `search_clauses`, `emit_card`. System prompt from [plan/03-gemini-and-agents.md](plan/03-gemini-and-agents.md) §4.6, updated: speak `say` strings verbatim, ask the R-HL-010 question when billing is unknown, insurance-only.
+- **Build:** WebSocket `/v1/live/{sessionId}` (`@fastify/websocket`) bridging the browser to a Gemini Live session opened with `@google/genai` `ai.live.connect` (Vertex); config with audio response, chosen Hindi voice, input/output transcription, VAD tuned for noise, session resumption and context-window compression. Tools: `get_patient_context`, `read_estimate` (returns the latest capture or `needs_capture`), `evaluate_options` (→ `answer()`), `search_clauses`, `emit_card`. System prompt from [plan/03-gemini-and-agents.md](plan/03-gemini-and-agents.md) §4.6, updated: speak `say` strings verbatim, ask the R-HL-010 question when billing is unknown, insurance-only.
 - **Browser:** mic `AudioWorklet` 16 kHz PCM chunks; 24 kHz playback ring buffer; flush on `interrupted`; camera preview with a Capture button that uploads a still; captions; reconnect with backoff; automatic fallback to the WP-3 text mode on error, with a banner.
 - **First spike (hour one):** echo audio through Cloud Run WebSocket to the live model and back on an Android phone. If the native-audio model isn't on Vertex in our region, use the nearest region or the Gemini Developer API path (still Google).
 - **Done when:** the 10-scenario spoken rehearsal ([plan/03](plan/03-gemini-and-agents.md) §11) passes on a real phone, first audio in ≤ 1.5 s typical, barge-in works, and every spoken rupee amount matches the card.
 
 ### WP-7 Demo data, seeding, demo mode
-- **Build:** `data/personas/sharma.json` (Rahul, Priya, Kamala, Suresh; Kamala and Suresh moved from Lucknow; Acme group cover with parents, retail parents' policy with ₹5,000 room limit and 20% co-pay, super top-up with ₹5,00,000 deductible); `seed_demo.py`; `POST /v1/public/demo` (anonymous auth → clone Sharma household per visitor); demo checkpoints (setup, job_change, hospital, claim) and demo clock; S29 controls.
+- **Build:** `data/personas/sharma.json` (Rahul, Priya, Kamala, Suresh; Kamala and Suresh moved from Lucknow; Acme group cover with parents, retail parents' policy with ₹5,000 room limit and 20% co-pay, super top-up with ₹5,00,000 deductible); `seed-demo.ts`; `POST /v1/public/demo` (anonymous auth → clone Sharma household per visitor); demo checkpoints (setup, job_change, hospital, claim) and demo clock; S29 controls.
 - **Done when:** each checkpoint resets in under 3 s and every screen reads from the clone, so judges never collide.
 
 ### WP-8 Documents and citations
-- **Build:** document upload to Storage → classify → schedule/benefits extraction (Pro) with evidence → policy facts with citations; wording ingest (segment clauses, embed, Firestore vector index) via `scripts/ingest_wordings.py` for the Sharma policies and the eval wordings; clause search and clause viewer API; S07 documents, S14 vault, S15 policy detail, S16 clause viewer (quote + page number; highlight boxes are Layer 3).
+- **Build:** document upload to Storage → classify → schedule/benefits extraction (Pro) with evidence → policy facts with citations; wording ingest (segment clauses, embed, Firestore vector index) via `scripts/ingest-wordings.ts` for the Sharma policies and the eval wordings; clause search and clause viewer API; S07 documents, S14 vault, S15 policy detail, S16 clause viewer (quote + page number; highlight boxes are Layer 3).
 - **Done when:** the three Sharma sample documents produce the household's policies with a citation chip on every term the hero and claim depend on (room limit, co-pay, proportionate deduction clause, ICU, non-payables).
 
 ### WP-9 Job change (moment 1)
-- **Build:** engine `cover_map`, `needs`, `budget`, `optimise`, `diff` and test PX-1 ([plan/05](plan/05-rules-engine.md) §11); `LifeEventAgent` (text → change set with dates); S09 cover map with date scrubber, S17–S20 (change, confirm, re-plan diff, action review); migration letter (WeasyPrint PDF) approved by Rahul; the dated WhatsApp nudge (WP-5).
+- **Build:** engine `cover_map`, `needs`, `budget`, `optimise`, `diff` and test PX-1 ([plan/05](plan/05-rules-engine.md) §11); `LifeEventAgent` (text → change set with dates); S09 cover map with date scrubber, S17–S20 (change, confirm, re-plan diff, action review); migration letter (react-pdf) approved by Rahul; the dated WhatsApp nudge (WP-5).
 - **Migration window:** keep "check with HR" on screen unless J verifies the rule.
 - **Done when:** "Joining a startup on 1 Dec" turns the parents' cells red on 1 Dec, shows the diff and budget change, and produces the letter and the nudge.
 
@@ -209,7 +227,7 @@ Owner key: **K** = Kshitij, **J** = Jai, **A** = a Claude agent (one agent per p
 - **Done when:** the sample letter yields "Up to ₹14,560 may be recoverable" and a verified appeal PDF.
 
 ### WP-11 Proof page and evals
-- **Build (A):** `data/wordings/manifest.yaml` (public wordings by UIN + URL, fetched by script, PDFs not committed); `evals/run_eval.py` comparing extracted terms with labels; results JSON + markdown; S26 Proof page reading the latest results; offline transcript check of the rehearsal recordings (spoken amounts vs engine).
+- **Build (A):** `data/wordings/manifest.yaml` (public wordings by UIN + URL, fetched by script, PDFs not committed); `evals/run-eval.ts` comparing extracted terms with labels; results JSON + markdown; S26 Proof page reading the latest results; offline transcript check of the rehearsal recordings (spoken amounts vs engine).
 - **Labels (J):** 8 wordings; agents pre-fill each label file, J checks and corrects (~10 min each).
 - **Done when:** S26 shows accuracy per field on 8 wordings with the date and the honest count.
 
@@ -244,8 +262,8 @@ Revised shot list (red-team-response §4–§5: hook 10 s, setup 10 s, job chang
 | # | Check | Owner | Output |
 |---|---|---|---|
 | 1 | Read the exact cut-off time and time zone from the dashboard | K | Update T in §5 |
-| 2 | List Gemini Pro, Flash, Live native-audio, TTS and embedding models available on Vertex in asia-south1 (else nearest region / global / Developer API) | A + K | Model IDs and region in `settings.py` and README |
-| 3 | Live spike: audio echo through Cloud Run WebSocket on an Android phone | A + K | Go / fallback decision for WP-6 |
+| 2 | List Gemini Pro, Flash, Live native-audio, TTS and embedding models available on Vertex in asia-south1 (else nearest region / global / Developer API) | A + K | Model IDs and region in `settings.ts` and README |
+| 3 | Live spike on Node: browser audio → Fastify WebSocket on Cloud Run → Gemini Live (`@google/genai`) → audio back on an Android phone, plus one tool call mid-conversation and Hindi transcription | A + K | Go, or move only the live bridge to Python (§3.4) |
 | 4 | Hindi voice audition: two voices, five script lines with English insurance words | K | `KAVACH_LIVE_VOICE` and TTS voice |
 | 5 | Meta test number and Twilio sandbox both reach one hello-world webhook; submit the `household_alert` and `dated_reminder` utility templates to Meta | K | Webhook URL, both senders verified, templates pending approval |
 | 6 | Open the IRDAI 2024 master circular PDF; copy the proportionate-deduction, ICU and multiple-policy paragraph numbers | J | `sources[]` in `data/rules/IN` |
@@ -271,7 +289,7 @@ Book the person playing Kamala tonight.
 
 - **One package, one agent, one branch, one PR.** Branch `feat/wp-<n>-<slug>`; small commits; PR to `main` with CI green before merge. No squashing (honest history).
 - **Brief = this file's WP section + the plan docs it cites + the paths it owns.** An agent never edits paths owned by another package; if it needs a change there, it opens an issue or asks through the thread.
-- **Shapes first.** WP-1 publishes `DeskEvaluation`, `HospitalEstimate`, `ClaimAssessment` models in the first hour; WP-3 publishes `DeskInputs`/`DeskAnswer` and the OpenAPI spec. Web and WhatsApp work against those with fixtures until the real thing lands.
+- **Shapes first.** WP-1 publishes the `DeskEvaluation`, `HospitalEstimate`, `ClaimAssessment` Zod schemas in `packages/schemas` in the first hour; WP-3 publishes `DeskInputs`/`DeskAnswer` there too. Web and WhatsApp work against those with fixtures until the real thing lands.
 - **Fixtures for every model call** (`FAKE_LLM=1`) recorded from one real run, so UI and tests don't need live Gemini.
 - **Merge order** follows the dependency column in §4. Humans merge at gates; between gates an agent may merge its own PR only if CI is green and it doesn't touch the demo path.
 - **Parallelism by layer:** Layer 0 runs WP-0, 1, 2, 4, 7 at once (WP-3 and WP-5 start once WP-1's models exist); Layer 1 runs WP-5 and WP-6 together; Layer 2 runs WP-8, 9, 10 together; Layer 3 runs WP-11, 12, 13 together.
@@ -280,9 +298,9 @@ Book the person playing Kamala tonight.
 
 | Level | What | Tool |
 |---|---|---|
-| Engine | HX-1 (all four branches), ICU, CX-1, PX-1, properties | pytest, hypothesis |
-| Agents | Golden outputs on fixtures; 5 estimate photos; adversarial inputs (blurry, wrong document, off-topic, prompt injection in a document) | pytest + one live nightly run |
-| API | Desk, demo, claims, WhatsApp signature verification, rate limits, authz (non-member can't read) | pytest + Firebase emulators |
+| Engine | HX-1 (all four branches), ICU, CX-1, PX-1, properties | Vitest, fast-check |
+| Agents | Golden outputs on fixtures; 5 estimate photos; adversarial inputs (blurry, wrong document, off-topic, prompt injection in a document) | Vitest + one live nightly run |
+| API | Desk, demo, claims, WhatsApp signature verification, rate limits, authz (non-member can't read) | Vitest + Fastify `inject` + Firebase emulators |
 | Web | Components, i18n keys present in `en` and `hi`, ₹-literal guard | Vitest + Testing Library |
 | E2E | Demo path with fixtures | Playwright on CI and against the live URL |
 | Live | 10-scenario spoken rehearsal; spoken amounts vs cards | Manual checklist + offline transcript check |
