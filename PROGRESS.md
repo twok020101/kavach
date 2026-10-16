@@ -8,16 +8,31 @@ Work packages (WP) refer to [`docs/implementation-plan.md`](docs/implementation-
 
 ## Features
 
-| Feature            | WP  | Branch                         | State | Depends on | Notes                                                   |
-| ------------------ | --- | ------------------------------ | ----- | ---------- | ------------------------------------------------------- |
-| Base project setup | 0   | `claude/project-thread-azp2sp` | ✅    | –          | Monorepo, web, API, schemas, engine skeleton, infra, CI |
+| Feature                              | WP   | Branch                         | State | Depends on                                         | Notes                                                                                           |
+| ------------------------------------ | ---- | ------------------------------ | ----- | -------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| Base project setup                   | 0    | `claude/project-thread-azp2sp` | ✅    | –                                                  | Monorepo, web, API, schemas, engine skeleton, infra, CI                                         |
+| Rules engine                         | 1    | `feat/engine`                  | ✅    | Demo household                                     | PR #6. Hospital and claim rules, HX-1/CX-1 checks (`pnpm --filter @kavach/engine check`)        |
+| Demo household                       | 7    | `feat/demo-household`          | ✅    | –                                                  | PR #4. Sharma persona, demo checkpoints and clock                                               |
+| Sample documents                     | 7    | `feat/samples`                 | ✅    | –                                                  | PR #5. Estimate, letters, schedules in `data/samples`                                           |
+| Design system, landing, desk screens | 2, 3 | `feat/web-design`              | ✅    | Demo household, engine                             | PR #7                                                                                           |
+| Plan-doc updates                     | 13   | `docs/plan-updates`            | ✅    | –                                                  | PR #9                                                                                           |
+| Desk core and estimate reader        | 3, 4 | `feat/desk-core`               | ⚠️    | Engine, demo household, design system              | PR #10. Estimate reader needs a real Gemini Pro check                                           |
+| Documents and citations              | 8    | `feat/documents`               | ⚠️    | Design system                                      | PR #11. Doc reader, clause segmentation and embeddings need real keys; then rerun `pnpm ingest` |
+| Job change                           | 9    | `feat/job-change`              | 🔨    | Engine, design system, documents                   | Dated WhatsApp nudge plugs into the WhatsApp door                                               |
+| WhatsApp door                        | 5    | `feat/whatsapp`                | 🔨    | Desk core; job change and claim appeal for layer 2 | Needs Meta/Twilio keys for a real send                                                          |
+| Live desk (audio)                    | 6    | `feat/live-desk`               | 🔨    | Desk core, documents                               | Real phone check needs Vertex live model                                                        |
+| Claim appeal                         | 10   | `feat/claim-appeal`            | 🔨    | Engine, documents, samples                         |                                                                                                 |
+| Proof page and evals                 | 11   | `feat/proof-evals`             | 🔨    | Documents                                          | Labels need Jai's check                                                                         |
+| Remaining screens and onboarding     | 12   | –                              | ⏳    | Design system, job change                          | Starts when job change merges                                                                   |
 
 ## Dependency re-tests
 
-| Feature       | Dependency                                        | Re-tested after it merged                                                   | Result                                                         |
-| ------------- | ------------------------------------------------- | --------------------------------------------------------------------------- | -------------------------------------------------------------- |
-| Engine        | Demo household (`copayFromAge`, persona policies) | Yes: merged main, reran the engine check                                    | All HX-1/CX-1 numbers still match; co-pay applies only from 61 |
-| Design system | Demo household, engine                            | Yes: merged main, lint/typecheck/build, landing and desk loaded in Chromium | Works on mock data; real data arrives with the desk core       |
+| Feature       | Dependency                                        | Re-tested after it merged                                                    | Result                                                                           |
+| ------------- | ------------------------------------------------- | ---------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| Engine        | Demo household (`copayFromAge`, persona policies) | Yes: merged main, reran the engine check                                     | All HX-1/CX-1 numbers still match; co-pay applies only from 61                   |
+| Design system | Demo household, engine                            | Yes: merged main, lint/typecheck/build, landing and desk loaded in Chromium  | Works on mock data; real data arrives with the desk core                         |
+| Desk core     | Design system, plan docs                          | Yes: merged main, built, ran API with FAKE_LLM                               | Sample capture for Suresh in Hindi returns ₹90,000 saving and the Hindi line     |
+| Documents     | Desk core                                         | Yes: merged main (server.ts, Dockerfile conflicts kept both), built, ran API | Three samples read, clause search ranks ICU §3.3 first, desk sessions still work |
 
 ## Waiting on keys or people
 
