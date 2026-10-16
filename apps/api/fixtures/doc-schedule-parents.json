@@ -1,0 +1,83 @@
+{
+  "kind": "policy_schedule",
+  "documentId": "doc-schedule-parents",
+  "policyNumber": "SHI/IND/2026/118342",
+  "insuredPersons": [
+    { "name": "Suresh Sharma", "relation": "self", "age": 62 },
+    { "name": "Kamala Sharma", "relation": "spouse", "age": 58 }
+  ],
+  "policy": {
+    "kind": "retail_health",
+    "insurer": "Suraksha Health Insurance Ltd (SAMPLE)",
+    "productName": "Suraksha Family Health Plan",
+    "uin": "SAMPLE-SHI-FHP-001",
+    "source": "personal",
+    "sumInsured": 500000,
+    "startDate": "2026-12-01",
+    "endDate": "2027-11-30",
+    "terms": {
+      "roomRentLimitPerDay": 5000,
+      "copayPercent": 20,
+      "deductible": 0,
+      "proportionateDeduction": true,
+      "citations": {
+        "roomRentLimitPerDay": {
+          "documentId": "doc-schedule-parents",
+          "page": 2,
+          "clauseRef": "3.1",
+          "quote": "up to 1% of the Sum Insured per day, or the actual charges, whichever is lower"
+        },
+        "proportionateDeduction": {
+          "documentId": "doc-schedule-parents",
+          "page": 2,
+          "clauseRef": "3.2",
+          "quote": "the Company shall reduce the amount payable for Associated Medical Expenses in the same proportion as the eligible rate per day bears to the actual rate per day of the room charges"
+        },
+        "icu": {
+          "documentId": "doc-schedule-parents",
+          "page": 2,
+          "clauseRef": "3.3",
+          "quote": "Proportionate deductions shall not be applied in respect of ICU charges, as ICU charges do not differ by room category."
+        },
+        "copayPercent": {
+          "documentId": "doc-schedule-parents",
+          "page": 3,
+          "clauseRef": "5.3",
+          "quote": "Each admissible claim in respect of an Insured Person aged 61 years or above shall be subject to a co-payment of 20% of the admissible claim amount"
+        }
+      }
+    }
+  },
+  "premium": 38450,
+  "notes": [
+    "Co-pay of 20% applies only to insured persons aged 61 or above (Suresh, 62); Kamala (58) has none.",
+    "Migrated from group policy SHI/GMC/2026/ACME/0021; continuous cover since 01-04-2022.",
+    "ICU charges are paid as billed, with no ICU limit and no proportionate deduction."
+  ],
+  "citations": [
+    { "documentId": "doc-schedule-parents", "page": 1, "quote": "Sum insured ₹5,00,000 (floater)" },
+    {
+      "documentId": "doc-schedule-parents",
+      "page": 1,
+      "quote": "Business type: Migration from group policy · Previous policy SHI/GMC/2026/ACME/0021"
+    },
+    {
+      "documentId": "doc-schedule-parents",
+      "page": 2,
+      "clauseRef": "3.2",
+      "quote": "Associated Medical Expenses shall not include (i) cost of pharmacy and consumables, (ii) cost of implants and medical devices, and (iii) cost of diagnostics. Proportionate deduction shall not apply in respect of Hospitals where differential billing is not followed based on room category, or in respect of expenses that are not differentially charged based on room category."
+    },
+    {
+      "documentId": "doc-schedule-parents",
+      "page": 3,
+      "clauseRef": "4.1",
+      "quote": "the period of continuous coverage under that group policy shall be credited against the waiting periods of this policy"
+    },
+    {
+      "documentId": "doc-schedule-parents",
+      "page": 3,
+      "clauseRef": "5.2",
+      "quote": "the Insured Person may choose the policy under which the claim is to be settled first"
+    }
+  ]
+}
