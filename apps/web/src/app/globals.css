@@ -663,31 +663,133 @@ html.booting .landing {
   .boot__foot {
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    opacity: 0;
-    animation: boot-in 500ms var(--ease-out-strong) 400ms forwards;
+    gap: 12px;
   }
   .boot__tagline {
     margin: 0;
-    font-size: 0.95rem;
-    color: rgba(237, 235, 230, 0.75);
+    font-size: 1rem;
+    line-height: 1.5;
+    color: rgba(237, 235, 230, 0.78);
   }
-  .boot__rail {
-    height: 2px;
+  /* Each word rises through its own mask, 45 ms after the one before. */
+  .boot__tw {
+    display: inline-block;
     overflow: hidden;
-    border-radius: 99px;
-    background: rgba(237, 235, 230, 0.15);
+    margin-right: 0.3em;
+    vertical-align: bottom;
   }
-  .boot__rail i {
-    display: block;
-    height: 100%;
-    background: var(--accent);
+  .boot__tw > span {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(110%);
+    animation: boot-word 640ms var(--ease-out-strong) calc(420ms + var(--i, 0) * 45ms) forwards;
+  }
+  /* The rail: a 3 px track, the fill scaled from the left, a lit head at its tip, and three
+     ticks that light up as the lines above them land. Transform and opacity only. */
+  .boot__rail {
+    --p: 0;
+    position: relative;
+    height: 3px;
+    border-radius: 99px;
+    background: rgba(237, 235, 230, 0.14);
+    opacity: 0;
+    animation: boot-in 500ms var(--ease-out-strong) 520ms forwards;
+  }
+  .boot__fill {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    border-radius: inherit;
+    background: linear-gradient(90deg, #d98c12, var(--accent) 60%, #ffcf7a);
+    transform: scaleX(var(--p));
     transform-origin: left;
+    transition: background-color 200ms;
+  }
+  /* A soft light sweeps along the fill every 1.8 s. */
+  .boot__fill::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.55), transparent);
+    transform: translateX(-100%);
+    animation: boot-sweep 1.8s var(--ease-in-out-strong) 0.6s infinite;
+  }
+  .boot__head {
+    position: absolute;
+    inset: 0;
+    transform: translateX(calc(-100% + var(--p) * 100%));
+    pointer-events: none;
+  }
+  .boot__head > i {
+    position: absolute;
+    right: -5px;
+    top: 50%;
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: #ffd98a;
+    box-shadow:
+      0 0 0 4px rgba(244, 166, 42, 0.28),
+      0 0 16px 2px rgba(244, 166, 42, 0.6);
+    transform: translateY(-50%);
+    animation: boot-breathe 1.6s ease-in-out infinite;
+  }
+  .boot__mark {
+    position: absolute;
+    top: 50%;
+    width: 2px;
+    height: 9px;
+    margin-left: -1px;
+    border-radius: 2px;
+    background: rgba(237, 235, 230, 0.3);
+    transform: translateY(-50%) scaleY(0.6);
+    transition:
+      background-color 200ms,
+      transform 320ms var(--ease-out-strong),
+      box-shadow 200ms;
+  }
+  .boot__mark.is-lit {
+    background: #ffd98a;
+    transform: translateY(-50%) scaleY(1);
+    box-shadow: 0 0 10px 1px rgba(244, 166, 42, 0.7);
+  }
+  /* Full: the fill brightens for the moment before the lift. */
+  .boot__rail.is-done .boot__fill {
+    background: linear-gradient(90deg, var(--accent), #ffe2a8);
+  }
+  .boot__rail.is-done .boot__head > i {
+    animation: none;
+    transform: translateY(-50%) scale(1.25);
+    box-shadow:
+      0 0 0 6px rgba(244, 166, 42, 0.3),
+      0 0 22px 4px rgba(244, 166, 42, 0.7);
   }
   .boot__skip {
     margin: 0;
     font-size: 0.8rem;
     color: rgba(237, 235, 230, 0.5);
+    opacity: 0;
+    animation: boot-in 500ms var(--ease-out-strong) 900ms forwards;
+  }
+  @keyframes boot-word {
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes boot-sweep {
+    to {
+      transform: translateX(100%);
+    }
+  }
+  @keyframes boot-breathe {
+    0%,
+    100% {
+      transform: translateY(-50%) scale(1);
+    }
+    50% {
+      transform: translateY(-50%) scale(1.18);
+    }
   }
   @keyframes boot-in {
     from {
@@ -854,8 +956,17 @@ html.booting .landing {
   .wr-word > span,
   .aurora::before,
   .aurora::after,
-  .boot__line {
+  .boot__line,
+  .boot__fill::after,
+  .boot__head > i {
     animation: none;
+  }
+  .boot__tw > span,
+  .boot__rail,
+  .boot__skip {
+    animation: none;
+    opacity: 1;
+    transform: none;
   }
   .wr-word > span {
     transform: none;

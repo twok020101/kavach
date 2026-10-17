@@ -195,9 +195,32 @@ export function Boot() {
         </ol>
 
         <div className="boot__foot">
-          <p className="boot__tagline">{t('tagline')}</p>
-          <div className="boot__rail">
-            <i style={{ transform: `scaleX(${progress})` }} />
+          {/* The tagline's words rise one by one, 45 ms apart */}
+          <p className="boot__tagline">
+            {t('tagline')
+              .split(' ')
+              .map((word, i) => (
+                <span key={i} className="boot__tw" style={{ '--i': i } as React.CSSProperties}>
+                  <span>{word}</span>
+                </span>
+              ))}
+          </p>
+          {/* The rail: a marigold fill with a lit head, and a tick that lights as each line lands */}
+          <div
+            className={`boot__rail${progress >= 1 ? ' is-done' : ''}`}
+            style={{ '--p': progress } as React.CSSProperties}
+          >
+            <i className="boot__fill" />
+            {lines.map((line) => (
+              <b
+                key={line.at}
+                className={`boot__mark${elapsed >= line.at ? ' is-lit' : ''}`}
+                style={{ left: `${(line.at / RUN_MS) * 100}%` }}
+              />
+            ))}
+            <span className="boot__head">
+              <i />
+            </span>
           </div>
           <p className="boot__skip">{t('skip')}</p>
         </div>
