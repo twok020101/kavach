@@ -93,12 +93,12 @@ function Home({ household }: { household: Household }) {
           <p className="mt-1 text-muted">{t('asOf', { date: date(asOf, true) })}</p>
         </div>
         {household.isDemo && (
-          <div className="flex items-center gap-1 rounded-full bg-accent-soft py-1 pl-3 pr-1 text-sm font-medium text-accent-ink dark:text-text">
+          <div className="flex items-center gap-1 rounded-md border border-border py-1 pl-3 pr-1 text-sm font-medium text-accent-ink dark:text-text">
             <span>{t('demoDate', { date: date(today, true) })}</span>
             <Button
               variant="ghost"
               size="sm"
-              className="min-h-9 rounded-full px-2.5 text-sm"
+              className="min-h-9 px-2.5 text-sm"
               loading={reset.isPending}
               onClick={() => {
                 setAsOf(today);
@@ -141,11 +141,8 @@ function Home({ household }: { household: Household }) {
           <Reveal delay={0.05} className="lg:col-start-2">
             {drafts.length > 0 ? (
               <Link href="/actions" className="block">
-                <Card
-                  interactive
-                  className="flex items-center gap-3 border-accent/60 bg-accent-soft"
-                >
-                  <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-accent text-accent-ink">
+                <Card interactive className="panel panel-partial flex items-center gap-3 border-0">
+                  <span className="flex size-11 shrink-0 items-center justify-center rounded-md bg-partial-bg text-partial">
                     <PenLine aria-hidden className="size-5" />
                   </span>
                   <span className="flex flex-1 flex-col">
@@ -157,8 +154,8 @@ function Home({ household }: { household: Household }) {
               </Link>
             ) : (
               <Link href="/plan" className="block">
-                <Card interactive className="flex items-center gap-3">
-                  <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-primary-soft text-primary">
+                <Card interactive className="panel flex items-center gap-3 border-0">
+                  <span className="flex size-11 shrink-0 items-center justify-center rounded-md bg-primary-soft text-primary">
                     <ArrowRight aria-hidden className="size-5" />
                   </span>
                   <span className="flex flex-1 flex-col">
@@ -181,7 +178,7 @@ function Home({ household }: { household: Household }) {
             <div className="flex items-center justify-between gap-3">
               <h2 className="font-display text-xl font-bold">{t('mapTitle')}</h2>
               {onJob > 0 && (
-                <span className="inline-flex items-center gap-1 rounded-full bg-partial-bg px-2.5 py-1 text-xs font-semibold text-partial">
+                <span className="inline-flex items-center gap-1 rounded-sm bg-partial-bg px-2.5 py-1 text-xs font-semibold text-partial">
                   <Briefcase aria-hidden className="size-3.5" />
                   {t('onJob', { count: onJob, name: earner })}
                 </span>

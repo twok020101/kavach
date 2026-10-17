@@ -5,6 +5,7 @@ import { ChevronRight, Wallet } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { Amount } from '@/components/kavach/amount';
+import { DisclaimerBar } from '@/components/kavach/disclaimer-bar';
 import { Reveal } from '@/components/kavach/reveal';
 import { Card } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -93,7 +94,7 @@ function PlanView({ household }: { household: Household }) {
                 className="press flex w-full flex-col gap-3 rounded-md p-4 text-left hover:bg-sunken sm:p-5"
               >
                 <span className="flex items-center gap-3">
-                  <span className="flex size-10 items-center justify-center rounded-full bg-primary-soft text-primary">
+                  <span className="flex size-10 items-center justify-center rounded-md bg-primary-soft text-primary">
                     <Wallet aria-hidden className="size-5" />
                   </span>
                   <span className="flex flex-1 flex-col">
@@ -112,10 +113,10 @@ function PlanView({ household }: { household: Household }) {
                   aria-valuemin={0}
                   aria-valuemax={budget.forNewMonthly}
                   aria-valuenow={plan.monthlySpend}
-                  className="block h-2.5 w-full overflow-hidden rounded-full bg-sunken"
+                  className="block h-2.5 w-full overflow-hidden rounded-sm bg-sunken"
                 >
                   <span
-                    className="block h-full rounded-full bg-primary transition-[width] duration-700 ease-out"
+                    className="block h-full rounded-sm bg-primary transition-[width] duration-700 ease-out"
                     style={{ width: `${Math.round(used * 100)}%` }}
                   />
                 </span>
@@ -140,7 +141,7 @@ function PlanView({ household }: { household: Household }) {
             </Reveal>
           )}
 
-          <p className="text-xs text-muted">{t('disclaimer')}</p>
+          <DisclaimerBar kind="plan" />
         </aside>
       </div>
 

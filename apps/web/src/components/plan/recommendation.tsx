@@ -52,12 +52,11 @@ export function RecommendationRow({
   const Icon = ICONS[rec.category];
   const deferred = rec.status === 'deferred';
   const className = cn(
-    'flex items-center gap-3 rounded-md border border-border bg-surface p-3 shadow-1 sm:p-4',
+    'flex items-center gap-3 rounded-md border border-border bg-surface p-3 sm:p-4',
     sign === '+' && 'border-l-4 border-l-safe',
     sign === '−' && 'border-l-4 border-l-border-strong opacity-80',
     deferred && 'bg-sunken shadow-none',
-    onSelect &&
-      'press w-full text-left hover:-translate-y-0.5 hover:border-primary/50 hover:shadow-2',
+    onSelect && 'press w-full text-left hover:border-primary',
   );
   const content = (
     <>

@@ -36,7 +36,7 @@ export function DeskStart({ demo }: { demo: boolean }) {
 
   const tile =
     'press relative flex cursor-pointer items-center gap-3 rounded-md border-2 bg-surface p-3 has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-primary';
-  const selectedTile = 'border-primary bg-primary-soft shadow-1';
+  const selectedTile = 'border-primary bg-primary-soft';
   const idleTile = 'border-border hover:border-border-strong';
 
   return (
@@ -56,7 +56,7 @@ export function DeskStart({ demo }: { demo: boolean }) {
       />
       <main className="mx-auto flex max-w-2xl flex-col gap-7 px-4 pb-40 pt-5">
         {demo && (
-          <p className="flex gap-2 rounded-md bg-citation-bg p-3 text-base text-citation">
+          <p className="panel flex gap-2 text-base">
             <Info aria-hidden className="mt-1 size-5 shrink-0" />
             {t('demoNote')}
           </p>
@@ -92,7 +92,7 @@ export function DeskStart({ demo }: { demo: boolean }) {
                       </span>
                     </span>
                     {on && (
-                      <span className="absolute right-2 top-2 flex size-6 items-center justify-center rounded-full bg-primary text-on-primary">
+                      <span className="absolute right-2 top-2 flex size-6 items-center justify-center rounded-md bg-primary text-on-primary">
                         <Check aria-hidden className="size-4" strokeWidth={3} />
                       </span>
                     )}
@@ -137,7 +137,7 @@ export function DeskStart({ demo }: { demo: boolean }) {
         <p className="text-base text-muted">{t('privacy')}</p>
       </main>
 
-      <div className="fixed inset-x-0 bottom-0 z-20 border-t border-border bg-bg/95 pb-[env(safe-area-inset-bottom)] backdrop-blur-md">
+      <div className="fixed inset-x-0 bottom-0 z-20 border-t border-border bg-bg pb-[env(safe-area-inset-bottom)]">
         <div className="mx-auto flex max-w-2xl flex-col gap-2 px-4 py-3">
           <Button
             variant="accent"

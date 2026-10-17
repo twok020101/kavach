@@ -20,6 +20,7 @@ import { AgentSteps, type AgentStep } from '@/components/kavach/agent-steps';
 import { AnswerCard } from '@/components/kavach/answer-card';
 import { Amount } from '@/components/kavach/amount';
 import { Captions, type CaptionLine } from '@/components/kavach/captions';
+import { DisclaimerBar } from '@/components/kavach/disclaimer-bar';
 import { ListeningOrb } from '@/components/kavach/listening-orb';
 import { RoomCompare } from '@/components/kavach/room-compare';
 import { WhyPanel } from '@/components/kavach/why-panel';
@@ -399,6 +400,8 @@ export function DeskSessionScreen({ sid, demo }: { sid: string; demo: boolean })
               </Disclosure>
             </Card>
 
+            <DisclaimerBar kind="hospital" className="text-base" />
+
             <div className="flex flex-col gap-3">
               <Button variant="secondary" size="desk" onClick={share}>
                 <Share2 aria-hidden className="size-6" />
@@ -439,7 +442,7 @@ export function DeskSessionScreen({ sid, demo }: { sid: string; demo: boolean })
         />
       )}
 
-      <div className="fixed inset-x-0 bottom-0 z-20 border-t border-border bg-bg/95 pb-[env(safe-area-inset-bottom)] backdrop-blur-md">
+      <div className="fixed inset-x-0 bottom-0 z-20 border-t border-border bg-bg pb-[env(safe-area-inset-bottom)]">
         {live ? (
           <div className="mx-auto grid max-w-2xl grid-cols-[auto_minmax(0,1fr)_auto] items-stretch gap-2 px-4 py-3">
             <Button
@@ -514,7 +517,7 @@ export function DeskSessionScreen({ sid, demo }: { sid: string; demo: boolean })
                     type="button"
                     disabled={busy}
                     onClick={() => ask.mutate(s)}
-                    className="min-h-12 shrink-0 rounded-full border-2 border-primary bg-surface px-4 font-semibold text-primary hover:bg-primary-soft disabled:opacity-50"
+                    className="min-h-12 shrink-0 rounded-sm border-2 border-primary bg-surface px-4 font-semibold text-primary hover:bg-primary-soft disabled:opacity-50"
                   >
                     {s}
                   </button>
