@@ -1,6 +1,7 @@
 import { randomUUID } from 'node:crypto';
 import { formatInr } from '@kavach/engine';
 import type {
+  HospitalEstimate,
   CreateDeskSessionBody,
   DeskAnswer,
   DeskSession,
@@ -83,6 +84,29 @@ export async function captureEstimate(
   };
   await save(household, updated);
   await alertHouseholdOwner(household, updated);
+  return { estimate, answer: reply };
+}
+
+/**
+ * An estimate the family told the desk aloud (room rents, days, the quoted total) when no photo
+ * is possible yet. Stored like a capture, so evaluate_options and the Why panel work on it.
+ */
+export async function recordSpokenEstimate(
+  household: Household,
+  sid: string,
+  estimate: HospitalEstimate,
+) {
+  const session = await activeSession(household, sid);
+  const reply = answer(household, session.patientMemberId, { estimate }, session.language);
+  const updated: DeskSession = {
+    ...session,
+    estimate,
+    hospitalName: session.hospitalName ?? estimate.hospitalName,
+    billingTypeAnswer: undefined,
+    lastAnswer: reply,
+    language: reply.locale ?? session.language,
+  };
+  await save(household, updated);
   return { estimate, answer: reply };
 }
 

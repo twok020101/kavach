@@ -28,7 +28,7 @@ export function deskLiveInstruction(context: DeskContext, language: Locale): str
   return template.replace(/\{\{(\w+)\}\}/g, (_, key: string) => values[key] ?? '');
 }
 
-/** The five live tools, as Gemini function declarations (JSON Schema parameters). */
+/** The six live tools, as Gemini function declarations (JSON Schema parameters). */
 export const deskLiveTools = [
   {
     name: 'get_patient_context',
@@ -41,6 +41,44 @@ export const deskLiveTools = [
     description:
       'The latest hospital estimate captured in this session, or status needs_capture when there is none yet.',
     parametersJsonSchema: { type: 'object', properties: {} },
+  },
+  {
+    name: 'record_spoken_estimate',
+    description:
+      'When the family tells you the room rents aloud (and maybe the quoted total and the days) because no printed estimate or photo is available yet, record them here so the rules engine can run. Call it as soon as the figures are spoken; never ask for figures you were already told.',
+    parametersJsonSchema: {
+      type: 'object',
+      properties: {
+        hospitalName: { type: 'string' },
+        procedure: { type: 'string', description: 'What the admission is for, as said.' },
+        admissionType: { type: 'string', enum: ['planned', 'emergency'] },
+        days: { type: 'integer', description: 'Expected days of stay; 1 if not known.' },
+        rooms: {
+          type: 'array',
+          description: 'Every room category mentioned with its rent per day in rupees.',
+          items: {
+            type: 'object',
+            properties: { label: { type: 'string' }, rentPerDay: { type: 'number' } },
+            required: ['label', 'rentPerDay'],
+          },
+        },
+        quotedTotal: {
+          type: 'number',
+          description: 'The total the hospital quoted in rupees, if any.',
+        },
+        quotedRoom: {
+          type: 'string',
+          description: 'Which room the quoted total was for, if said.',
+        },
+        billingType: {
+          type: 'string',
+          enum: ['differential', 'flat', 'package', 'unknown'],
+          description:
+            'flat if the person said the other charges are the same in every room; differential if they change with the room; unknown if not said.',
+        },
+      },
+      required: ['rooms'],
+    },
   },
   {
     name: 'evaluate_options',
