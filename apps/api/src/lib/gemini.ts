@@ -17,14 +17,44 @@ export function genai(): GoogleGenAI {
   return client;
 }
 
-let liveClient: GoogleGenAI | undefined;
+const regional = new Map<string, GoogleGenAI>();
+
+/** A client for another region (some models are served from fewer regions than the main one). */
+export function genaiIn(location: string | undefined): GoogleGenAI {
+  if (!location || location === env.GOOGLE_CLOUD_LOCATION) return genai();
+  let client = regional.get(location);
+  if (!client) {
+    client = new GoogleGenAI({ vertexai: true, project: env.GOOGLE_CLOUD_PROJECT, location });
+    regional.set(location, client);
+  }
+  return client;
+}
 
 /** The client for Gemini Live sessions, which may live in a different region (`GOOGLE_CLOUD_LIVE_LOCATION`). */
-export function genaiLive(): GoogleGenAI {
-  const location = env.GOOGLE_CLOUD_LIVE_LOCATION ?? env.GOOGLE_CLOUD_LOCATION;
-  if (location === env.GOOGLE_CLOUD_LOCATION) return genai();
-  liveClient ??= new GoogleGenAI({ vertexai: true, project: env.GOOGLE_CLOUD_PROJECT, location });
-  return liveClient;
+export const genaiLive = () => genaiIn(env.GOOGLE_CLOUD_LIVE_LOCATION);
+
+/**
+ * Plain text from a prompt and parts (no JSON schema): used for transcription, where a schema
+ * made the model return nothing. With FAKE_LLM=1 it returns `fixtures/<fixture>.txt`.
+ */
+export async function generateText(opts: {
+  model: string;
+  location?: string;
+  contents: ContentListUnion;
+  systemInstruction?: string;
+  fixture: string;
+}): Promise<string> {
+  if (env.FAKE_LLM)
+    return (await readFile(resolve(fixturesDir, `${opts.fixture}.txt`), 'utf8')).trim();
+  const response = await withOneRetryOn429(() =>
+    genaiIn(opts.location).models.generateContent({
+      model: opts.model,
+      contents: opts.contents,
+      config: { systemInstruction: opts.systemInstruction },
+    }),
+  );
+  if (!response.text) throw new Error(`Empty response from ${opts.model}`);
+  return response.text.trim();
 }
 
 export const models = {
@@ -33,7 +63,11 @@ export const models = {
   live: env.KAVACH_MODEL_LIVE,
   tts: env.KAVACH_MODEL_TTS,
   embed: env.KAVACH_MODEL_EMBED,
+  /** Audio understanding (voice notes): a faster regional model when configured. */
+  audio: env.KAVACH_MODEL_AUDIO ?? env.KAVACH_MODEL_FLASH,
 } as const;
+
+export const audioLocation = env.GOOGLE_CLOUD_AUDIO_LOCATION;
 
 const fixturesDir = resolve(appRoot, 'fixtures');
 

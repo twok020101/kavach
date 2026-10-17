@@ -29,6 +29,10 @@ const Env = z.object({
   KAVACH_MODEL_LIVE: z.string().default('gemini-live-native-audio-placeholder'),
   KAVACH_MODEL_TTS: z.string().default('gemini-tts-placeholder'),
   KAVACH_MODEL_EMBED: z.string().default('gemini-embedding-placeholder'),
+  /** Model for audio understanding (voice notes); empty = KAVACH_MODEL_FLASH. */
+  KAVACH_MODEL_AUDIO: z.string().optional(),
+  /** Region for audio understanding; empty = GOOGLE_CLOUD_LOCATION. */
+  GOOGLE_CLOUD_AUDIO_LOCATION: z.string().optional(),
   KAVACH_LIVE_VOICE: z.string().default('voice-name-placeholder'),
 
   STORE: z.enum(['memory', 'firestore']).default('memory'),

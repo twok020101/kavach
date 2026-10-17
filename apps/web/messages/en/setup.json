@@ -107,7 +107,8 @@
       "parent_in_law": "Parent-in-law",
       "other": "Family member"
     },
-    "assumedSelf": "You earn the family's income"
+    "assumedSelf": "You earn the family's income",
+    "heard": "We heard: “{text}”"
   },
   "money": {
     "title": "Four numbers. Rough is fine.",

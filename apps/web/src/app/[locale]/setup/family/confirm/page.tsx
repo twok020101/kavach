@@ -148,7 +148,16 @@ function FamilyConfirm({ household }: { household: Household }) {
       step={1}
       back="/setup/family"
       title={t('title')}
-      intro={t('intro')}
+      intro={
+        <>
+          {t('intro')}
+          {intake?.transcript && (
+            <span className="mt-2 block text-base text-muted">
+              {t('heard', { text: intake.transcript })}
+            </span>
+          )}
+        </>
+      }
       footer={
         <Button size="lg" disabled={missing > 0} loading={save.isPending} onClick={confirm}>
           {missing > 0 ? t('needAges', { count: missing }) : t('looksRight')}
