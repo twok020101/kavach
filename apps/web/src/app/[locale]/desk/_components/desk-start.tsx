@@ -71,7 +71,7 @@ export function DeskStart({ demo }: { demo: boolean }) {
               ))}
             </div>
           ) : (
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+            <div className="grid grid-cols-2 gap-3">
               {household.data?.members.map((m) => {
                 const on = patientId === m.id;
                 return (
@@ -84,18 +84,22 @@ export function DeskStart({ demo }: { demo: boolean }) {
                       onChange={() => setPatientId(m.id)}
                       className="sr-only"
                     />
-                    <MemberAvatar member={m} />
+                    <MemberAvatar member={m} className="size-10 text-base" />
                     <span className="flex min-w-0 flex-col">
-                      <span className="truncate font-semibold">{m.name.split(' ')[0]}</span>
+                      <span className="flex items-center gap-1 font-semibold">
+                        {on && (
+                          <Check
+                            aria-hidden
+                            className="size-4 shrink-0 text-primary"
+                            strokeWidth={3}
+                          />
+                        )}
+                        <span className="truncate">{m.name.split(' ')[0]}</span>
+                      </span>
                       <span className="text-sm text-muted">
                         {tc(`relation.${m.relation}`)}, {m.age}
                       </span>
                     </span>
-                    {on && (
-                      <span className="absolute right-2 top-2 flex size-6 items-center justify-center rounded-md bg-primary text-on-primary">
-                        <Check aria-hidden className="size-4" strokeWidth={3} />
-                      </span>
-                    )}
                   </label>
                 );
               })}

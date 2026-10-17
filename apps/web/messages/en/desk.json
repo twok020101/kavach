@@ -13,7 +13,10 @@
     "title": "Helping with {name}",
     "titleLoading": "Help at the hospital",
     "end": "End",
-    "orb": { "thinking": "Kavach is checking", "ready": "Ready: show the estimate or type" },
+    "orb": {
+      "thinking": "Kavach is checking",
+      "ready": "Ready: show the estimate or type"
+    },
     "textMode": "Text mode",
     "greeting": "Namaste. Take a photo of the hospital estimate, then ask me your question.",
     "sampleSent": "Using the sample estimate",
@@ -53,7 +56,8 @@
     },
     "questionLabel": "Your question",
     "questionPlaceholder": "Type your question",
-    "send": "Send"
+    "send": "Send",
+    "askTitle": "Common questions"
   },
   "summary": {
     "title": "Session summary",

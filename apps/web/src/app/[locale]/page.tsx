@@ -3,12 +3,10 @@ import { ArrowRight, FileWarning, GitBranch, Hospital, type LucideIcon } from 'l
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import type { ReactNode } from 'react';
 import { Amount } from '@/components/kavach/amount';
-import { AnimatedAmount } from '@/components/kavach/animated-amount';
 import { EvidenceBand } from '@/components/kavach/evidence-band';
 import { IsIsNot } from '@/components/kavach/is-is-not';
 import { LanguageSwitch } from '@/components/kavach/language-switch';
 import { Logo } from '@/components/kavach/logo';
-import { Reveal } from '@/components/kavach/reveal';
 import { ThemeToggle } from '@/components/kavach/theme-toggle';
 import { WhatsAppCard } from '@/components/kavach/whatsapp-card';
 import { buttonClasses } from '@/components/ui/button';
@@ -82,10 +80,10 @@ export default async function LandingPage({ params }: PageProps<'/[locale]'>) {
         </section>
 
         {/* The ₹90,000 moment as a panel, not a phone mock */}
-        <Reveal as="section" aria-labelledby="moment-title" className="panel max-w-3xl">
+        <section aria-labelledby="moment-title" className="panel max-w-3xl">
           <h2 id="moment-title" className="font-display text-xl font-bold">
             {t.rich('moment.title', {
-              saving: () => <AnimatedAmount value={landingNumbers.hospitalSaving} />,
+              saving: () => <Amount value={landingNumbers.hospitalSaving} />,
             })}
           </h2>
           <p className="mt-2 text-base leading-relaxed">
@@ -96,7 +94,7 @@ export default async function LandingPage({ params }: PageProps<'/[locale]'>) {
               ),
             })}
           </p>
-        </Reveal>
+        </section>
 
         {/* Three moments */}
         <section id="moments" aria-labelledby="moments-title" className="flex flex-col gap-5">
@@ -120,7 +118,7 @@ export default async function LandingPage({ params }: PageProps<'/[locale]'>) {
               title={t('moments.hospital.title')}
               body={t('moments.hospital.body')}
               stat={t.rich('moments.hospital.stat', {
-                amount: () => <AnimatedAmount value={landingNumbers.hospitalSaving} />,
+                amount: () => <Amount value={landingNumbers.hospitalSaving} />,
               })}
             />
             <Moment
@@ -129,22 +127,22 @@ export default async function LandingPage({ params }: PageProps<'/[locale]'>) {
               title={t('moments.claim.title')}
               body={t('moments.claim.body')}
               stat={t.rich('moments.claim.stat', {
-                amount: () => <AnimatedAmount value={landingNumbers.claimRecoverable} />,
+                amount: () => <Amount value={landingNumbers.claimRecoverable} />,
               })}
             />
           </ol>
         </section>
 
         {/* What Kavach is / is not */}
-        <Reveal as="section" aria-label={t('trust.title')} className="max-w-3xl">
+        <section aria-label={t('trust.title')} className="max-w-3xl">
           <IsIsNot />
-        </Reveal>
+        </section>
 
-        <Reveal as="section" className="max-w-3xl">
+        <section className="max-w-3xl">
           <WhatsAppCard />
-        </Reveal>
+        </section>
 
-        <Reveal as="section" className="flex max-w-3xl flex-col gap-3 border-t border-border pt-6">
+        <section className="flex max-w-3xl flex-col gap-3 border-t border-border pt-6">
           <h2 className="font-display text-xl font-bold">{t('trust.title')}</h2>
           <p className="text-muted">{t('trust.body')}</p>
           <Link
@@ -155,7 +153,7 @@ export default async function LandingPage({ params }: PageProps<'/[locale]'>) {
             <ArrowRight aria-hidden className="size-4" />
           </Link>
           <p className="text-sm text-muted">{t('trustLine')}</p>
-        </Reveal>
+        </section>
       </main>
 
       <EvidenceBand wordings={counts.wordings} checked={counts.checked} />
