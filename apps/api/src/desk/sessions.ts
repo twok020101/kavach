@@ -94,13 +94,20 @@ export async function takeTurn(household: Household, sid: string, body: DeskTurn
   const reply: DeskAnswer = answer(
     household,
     session.patientMemberId,
-    { estimate, utteranceText: body.text, billingTypeAnswer },
+    {
+      estimate,
+      utteranceText: body.text,
+      billingTypeAnswer,
+      // The first question gets the opening answer; later ones get the per-room follow-up.
+      followUp: Boolean(session.lastQuestion && session.lastAnswer?.cards.length),
+    },
     body.language ?? session.language,
   );
   const updated: DeskSession = {
     ...session,
     estimate,
     billingTypeAnswer,
+    lastQuestion: body.text?.trim() || session.lastQuestion,
     lastAnswer: reply,
     language: reply.locale ?? session.language,
   };

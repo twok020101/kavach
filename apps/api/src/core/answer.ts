@@ -15,7 +15,7 @@ import type {
 } from '@kavach/schemas';
 import { deskPatient, policyName, policyNickname, type DeskPatient } from './context';
 import { COPY, type Copy } from './copy';
-import { detectBillingAnswer, detectLocale } from './intent';
+import { detectBillingAnswer, detectLocale, detectRoomMention } from './intent';
 
 /**
  * The desk core. Every door (text-and-photo desk, live session, WhatsApp) calls this one
@@ -44,7 +44,15 @@ export function answer(
     billingTypeAnswer,
     roomOptions: inputs.roomOptions,
   });
-  return explain(household, patient, estimate, evaluation, t, lang);
+  return explain(
+    household,
+    patient,
+    estimate,
+    evaluation,
+    t,
+    lang,
+    inputs.followUp ? inputs.utteranceText : undefined,
+  );
 }
 
 /** The engine result for a patient and estimate, with the family's billing answer applied. */
@@ -70,6 +78,8 @@ function explain(
   ev: DeskEvaluation,
   t: Copy,
   lang: Locale,
+  /** What the family typed or said this turn, when the session already had an answer. */
+  utterance?: string,
 ): DeskAnswer {
   const byId = new Map(patient.policies.map((p) => [p.id, p]));
   const order = ev.policyOrder.map((id) => byId.get(id)!);
@@ -181,22 +191,45 @@ function explain(
     });
   }
 
-  const text = [
-    primary.saving > 0 && worst.roomCategoryId !== rec.roomCategoryId
-      ? t.text.switchRoom(
-          asRoom(rec),
-          rec.outOfPocket,
-          asRoom(worst),
-          worst.outOfPocket,
-          primary.saving,
-        )
-      : t.text.youPay(rec.outOfPocket),
-    t.text.firstCard(nick(order[0]!)),
-    capFiring ? t.text.capped(Number(capFiring.inputs.limit)) : undefined,
-    alternate ? t.text.ifFlat(alternate.saving) : undefined,
-  ]
-    .filter(Boolean)
-    .join(' ');
+  // A follow-up question ("can we take the twin sharing?", "general ward allows one attendant,
+  // which room then?") gets the per-room figures, not the opening paragraph again. Numbers
+  // still come only from the engine result; the question itself is not interpreted beyond
+  // which room it names.
+  const rooms = primary.options.map((o) => asRoom(o));
+  const named = utterance ? detectRoomMention(utterance, rooms) : undefined;
+  const isFollowUp = Boolean(utterance?.trim()) && !billingAnswerIn(utterance);
+  const byRoom = (id: string) => primary.options.find((o) => o.roomCategoryId === id)!;
+  const text = isFollowUp
+    ? [
+        named
+          ? t.text.roomPick(named, byRoom(named.id).outOfPocket, asRoom(rec), rec.outOfPocket)
+          : undefined,
+        t.text.eachRoom(
+          [...primary.options]
+            .sort((a, b) => a.outOfPocket - b.outOfPocket)
+            .map((o) => ({ room: asRoom(o), pays: o.outOfPocket })),
+        ),
+        capFiring ? t.text.capped(Number(capFiring.inputs.limit)) : undefined,
+        t.text.hospitalRules,
+      ]
+        .filter(Boolean)
+        .join(' ')
+    : [
+        primary.saving > 0 && worst.roomCategoryId !== rec.roomCategoryId
+          ? t.text.switchRoom(
+              asRoom(rec),
+              rec.outOfPocket,
+              asRoom(worst),
+              worst.outOfPocket,
+              primary.saving,
+            )
+          : t.text.youPay(rec.outOfPocket),
+        t.text.firstCard(nick(order[0]!)),
+        capFiring ? t.text.capped(Number(capFiring.inputs.limit)) : undefined,
+        alternate ? t.text.ifFlat(alternate.saving) : undefined,
+      ]
+        .filter(Boolean)
+        .join(' ');
 
   return {
     text,
@@ -288,6 +321,10 @@ function unclearEstimate(estimate: HospitalEstimate, t: Copy, lang: Locale): Des
     locale: lang,
   };
 }
+
+/** True when the utterance was the family's answer to the desk's billing question. */
+const billingAnswerIn = (utterance: string | undefined) =>
+  detectBillingAnswer(utterance) !== undefined;
 
 const warning = (id: string, title: string, body: string): DeskCard => ({
   id,

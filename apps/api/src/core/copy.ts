@@ -57,6 +57,12 @@ export type Copy = {
     firstCard: (policy: string) => string;
     ifFlat: (saving: number) => string;
     capped: (limit: number) => string;
+    /** A follow-up about one named room: what it costs against the cheapest option. */
+    roomPick: (room: RoomCategory, pays: number, best: RoomCategory, bestPays: number) => string;
+    /** A follow-up that names no room: what each room costs. */
+    eachRoom: (items: { room: RoomCategory; pays: number }[]) => string;
+    /** Room rules (attendants, visitors, food) are the hospital's, not the policy's. */
+    hospitalRules: string;
   };
 };
 
@@ -126,6 +132,14 @@ const en: Copy = {
       `If every room has the same charges, the difference is only ${formatInr(saving)}; ask the desk.`,
     capped: (limit) =>
       `This policy pays at most ${formatInr(limit)} for the delivery, whichever room.`,
+    roomPick: (room, pays, best, bestPays) =>
+      room.id === best.id
+        ? `${room.label} (${formatInr(room.rentPerDay)}/day) is the cheapest for you: about ${formatInr(pays)}.`
+        : `${room.label} (${formatInr(room.rentPerDay)}/day): you pay about ${formatInr(pays)}, which is ${formatInr(pays - bestPays)} more than the ${best.label} (${formatInr(bestPays)}).`,
+    eachRoom: (items) =>
+      `What you pay in each room: ${items.map((i) => `${i.room.label} ${formatInr(i.pays)}`).join(' · ')}.`,
+    hospitalRules:
+      'Rules about attendants, visitors or food are set by the hospital, not the policy; any of these rooms works with your cover, only what you pay changes.',
   },
 };
 
@@ -195,6 +209,14 @@ const hi: Copy = {
       `अगर हर कमरे में चार्ज एक जैसे हैं, तो फ़र्क़ सिर्फ़ ${formatInr(saving)} का है; डेस्क से पूछिए।`,
     capped: (limit) =>
       `यह पॉलिसी डिलीवरी के लिए ज़्यादा से ज़्यादा ${formatInr(limit)} देगी, कमरा कोई भी हो।`,
+    roomPick: (room, pays, best, bestPays) =>
+      room.id === best.id
+        ? `${room.label} (${formatInr(room.rentPerDay)}/दिन) आपके लिए सबसे सस्ता है: लगभग ${formatInr(pays)}।`
+        : `${room.label} (${formatInr(room.rentPerDay)}/दिन): आपको लगभग ${formatInr(pays)} देने होंगे, यानी ${best.label} (${formatInr(bestPays)}) से ${formatInr(pays - bestPays)} ज़्यादा।`,
+    eachRoom: (items) =>
+      `हर कमरे में आपको कितना देना होगा: ${items.map((i) => `${i.room.label} ${formatInr(i.pays)}`).join(' · ')}।`,
+    hospitalRules:
+      'अटेंडेंट, विज़िटर या खाने के नियम अस्पताल तय करता है, पॉलिसी नहीं; इनमें से कोई भी कमरा आपके कवर में चलेगा, बस आपका ख़र्च बदलेगा।',
   },
 };
 
