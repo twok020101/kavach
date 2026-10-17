@@ -4,8 +4,8 @@ import { motion } from 'motion/react';
 import { useTranslations } from 'next-intl';
 import { useEffect, useState, useSyncExternalStore } from 'react';
 
-const RUN_MS = 2600;
-const LIFT_MS = 640;
+const RUN_MS = 1800;
+const LIFT_MS = 560;
 const EASE_OUT: [number, number, number, number] = [0.23, 1, 0.32, 1];
 const root = () => document.documentElement;
 
@@ -40,7 +40,7 @@ const readWanted = () => (wanted ??= decide());
  * motion: two arcs, two people, draw up from the base towards each other and meet as the shield
  * while a warm light rises behind them; the name settles up through a mask; three quiet lines
  * say what is already in place, each tick drawing itself; then the panel lifts, its content
- * lagging a little for depth, and the page rises underneath. About two and a half seconds, once
+ * lagging a little for depth, and the page rises underneath. Under two seconds, once
  * per tab, never on app or hospital routes. A tap, a key or reduced motion skips it. Nothing
  * counts, flashes or hurries anyone. A refresh of the landing page plays it again.
  */
@@ -82,8 +82,8 @@ export function Boot() {
       if (ms < RUN_MS) frame = requestAnimationFrame(tick);
       else {
         const fonts = document.fonts ? document.fonts.ready : Promise.resolve();
-        Promise.race([fonts, new Promise((r) => timers.push(window.setTimeout(r, 800)))]).then(() =>
-          timers.push(window.setTimeout(finish, 200)),
+        Promise.race([fonts, new Promise((r) => timers.push(window.setTimeout(r, 400)))]).then(() =>
+          timers.push(window.setTimeout(finish, 120)),
         );
       }
     };
@@ -93,7 +93,7 @@ export function Boot() {
     window.addEventListener('pointerdown', skip, { once: true });
     window.addEventListener('keydown', skip, { once: true });
     // Whatever happens, the page is never held for long.
-    timers.push(window.setTimeout(finish, RUN_MS + 2000));
+    timers.push(window.setTimeout(finish, RUN_MS + 1200));
 
     return () => {
       cancelAnimationFrame(frame);
@@ -106,9 +106,9 @@ export function Boot() {
   if (!active || gone) return null;
 
   const lines = [
-    { at: 950, text: t('policies') },
-    { at: 1450, text: t('rules') },
-    { at: 1950, text: t('beside') },
+    { at: 600, text: t('policies') },
+    { at: 850, text: t('rules') },
+    { at: 1100, text: t('beside') },
   ];
   const progress = Math.min(1, elapsed / RUN_MS);
 
@@ -123,7 +123,7 @@ export function Boot() {
           <svg viewBox="0 0 32 32" className="boot__shield" aria-hidden>
             {/* The left person, drawn from the base up towards the meeting point */}
             <motion.path
-              d="M15 28C9.2 26 5 21.6 5 15V7.5L15 4"
+              d="M15 4 5 7.5V15c0 6.6 4.2 11 10 13"
               fill="none"
               stroke="#8FA3F0"
               strokeWidth="2.6"
@@ -131,11 +131,11 @@ export function Boot() {
               strokeLinejoin="round"
               initial={{ pathLength: 0, opacity: 0.4 }}
               animate={{ pathLength: 1, opacity: 1 }}
-              transition={{ duration: 1.1, ease: EASE_OUT }}
+              transition={{ duration: 0.75, ease: EASE_OUT }}
             />
             {/* The right person, drawn to meet the left */}
             <motion.path
-              d="M17 28c5.8-2 10-6.4 10-13V7.5L17 4"
+              d="M17 4l10 3.5V15c0 6.6-4.2 11-10 13"
               fill="none"
               stroke="#F4A62A"
               strokeWidth="2.6"
@@ -143,7 +143,7 @@ export function Boot() {
               strokeLinejoin="round"
               initial={{ pathLength: 0, opacity: 0.4 }}
               animate={{ pathLength: 1, opacity: 1 }}
-              transition={{ duration: 1.1, delay: 0.1, ease: EASE_OUT }}
+              transition={{ duration: 0.75, delay: 0.08, ease: EASE_OUT }}
             />
             <motion.circle
               cx="12"
@@ -152,7 +152,7 @@ export function Boot() {
               fill="#8FA3F0"
               initial={{ scale: 0.6, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              transition={{ delay: 0.9, duration: 0.35, ease: EASE_OUT }}
+              transition={{ delay: 0.55, duration: 0.3, ease: EASE_OUT }}
             />
             <motion.circle
               cx="20"
@@ -161,7 +161,7 @@ export function Boot() {
               fill="#F4A62A"
               initial={{ scale: 0.6, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              transition={{ delay: 1.0, duration: 0.35, ease: EASE_OUT }}
+              transition={{ delay: 0.63, duration: 0.3, ease: EASE_OUT }}
             />
           </svg>
           <div className="boot__name">
@@ -195,16 +195,7 @@ export function Boot() {
         </ol>
 
         <div className="boot__foot">
-          {/* The tagline's words rise one by one, 45 ms apart */}
-          <p className="boot__tagline">
-            {t('tagline')
-              .split(' ')
-              .map((word, i) => (
-                <span key={i} className="boot__tw" style={{ '--i': i } as React.CSSProperties}>
-                  <span>{word}</span>
-                </span>
-              ))}
-          </p>
+          <p className="boot__tagline">{t('tagline')}</p>
           {/* The rail: a marigold fill with a lit head, and a tick that lights as each line lands */}
           <div
             className={`boot__rail${progress >= 1 ? ' is-done' : ''}`}
