@@ -3,10 +3,11 @@
 import { useTranslations } from 'next-intl';
 import { useEffect, useRef } from 'react';
 import { cn } from '../ui/cn';
+import { LogoMark } from './logo';
 
 export type CaptionLine = { id: string; who: 'user' | 'agent'; text: string };
 
-/** Always-on captions: agent lines bold, the user's lines muted. */
+/** Always-on captions as a conversation: Kavach on the left with its mark, the person on the right. */
 export function Captions({ lines, className }: { lines: CaptionLine[]; className?: string }) {
   const t = useTranslations('common.captions');
   const end = useRef<HTMLLIElement>(null);
@@ -17,18 +18,29 @@ export function Captions({ lines, className }: { lines: CaptionLine[]; className
 
   return (
     <ol role="log" aria-live="polite" className={cn('flex flex-col gap-3', className)}>
-      {lines.map((line, i) => (
-        <li
-          key={line.id}
-          ref={i === lines.length - 1 ? end : undefined}
-          className={cn('text-lg', line.who === 'agent' ? 'font-semibold text-text' : 'text-muted')}
-        >
-          <span className="block text-sm font-medium text-muted">
-            {line.who === 'agent' ? t('agent') : t('user')}
-          </span>
-          {line.text}
-        </li>
-      ))}
+      {lines.map((line, i) => {
+        const agent = line.who === 'agent';
+        return (
+          <li
+            key={line.id}
+            ref={i === lines.length - 1 ? end : undefined}
+            className={cn('flex items-end gap-2', agent ? 'justify-start' : 'justify-end')}
+          >
+            {agent && <LogoMark className="mb-1 size-6 shrink-0" />}
+            <div
+              className={cn(
+                'max-w-[88%] rounded-lg px-4 py-2.5 text-lg',
+                agent
+                  ? 'rounded-bl-sm bg-surface font-semibold text-text shadow-1'
+                  : 'rounded-br-sm bg-primary-soft text-text',
+              )}
+            >
+              <span className="sr-only">{agent ? t('agent') : t('user')}: </span>
+              {line.text}
+            </div>
+          </li>
+        );
+      })}
     </ol>
   );
 }

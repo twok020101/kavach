@@ -4,6 +4,7 @@ import type { Household, TimelineEntry, TimelineKind } from '@kavach/schemas';
 import {
   BellRing,
   CalendarClock,
+  ChevronRight,
   FileText,
   GitBranch,
   Hospital,
@@ -15,11 +16,12 @@ import {
 } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 import { useState } from 'react';
+import { Reveal } from '@/components/kavach/reveal';
 import { PlanFrame } from '@/components/plan/plan-frame';
 import { useDate } from '@/components/plan/format';
 import { Chip } from '@/components/setup/member-sheet';
 import { cn } from '@/components/ui/cn';
-import { Spinner } from '@/components/ui/spinner';
+import { Skeleton } from '@/components/ui/skeleton';
 import { Link } from '@/i18n/navigation';
 import { useTimeline } from '@/lib/setup';
 
@@ -73,7 +75,7 @@ function TimelineView({ household }: { household: Household }) {
   return (
     <div className="mx-auto flex max-w-3xl flex-col gap-5">
       <header className="flex flex-col gap-1">
-        <h1 className="font-display text-2xl font-bold">{t('title')}</h1>
+        <h1 className="font-display text-3xl font-bold tracking-tight">{t('title')}</h1>
         <p className="text-muted">{t('intro')}</p>
       </header>
 
@@ -86,50 +88,80 @@ function TimelineView({ household }: { household: Household }) {
       </div>
 
       {!data && (
-        <p className="flex items-center gap-2 text-muted">
-          <Spinner /> …
-        </p>
+        <div className="flex flex-col gap-3" aria-busy>
+          <Skeleton className="h-16" />
+          <Skeleton className="h-16" />
+          <Skeleton className="h-16" />
+        </div>
       )}
       {data && entries.length === 0 && (
         <p className="rounded-md bg-sunken p-6 text-center text-muted">{t('empty')}</p>
       )}
 
-      {upcoming.length > 0 && (
-        <section className="flex flex-col gap-2">
-          <h2 className="text-sm font-semibold uppercase tracking-wide text-muted">{t('ahead')}</h2>
-          <ol className="flex flex-col gap-2">
-            {upcoming.map((e) => (
-              <Entry key={e.id} entry={e} />
-            ))}
-          </ol>
-        </section>
-      )}
+      {/* The line runs down the left; each entry's icon sits on it. */}
+      <div className="relative flex flex-col gap-6 pl-2">
+        <span
+          aria-hidden
+          className="absolute bottom-2 left-[1.45rem] top-2 w-0.5 rounded-full bg-border"
+        />
 
-      {data && (upcoming.length > 0 || past.length > 0) && (
-        <div className="flex items-center gap-3" role="separator">
-          <span className="h-px flex-1 bg-primary" />
-          <span className="rounded-full bg-primary px-3 py-0.5 text-sm font-semibold text-on-primary">
-            {t('today')}
-          </span>
-          <span className="h-px flex-1 bg-primary" />
-        </div>
-      )}
-
-      {[...byMonth].map(([label, items]) => (
-        <section key={label} className="flex flex-col gap-2">
-          <h2 className="text-sm font-semibold uppercase tracking-wide text-muted">{label}</h2>
-          <ol className="flex flex-col gap-2">
-            {items.map((e) => (
-              <Entry key={e.id} entry={e} />
+        {upcoming.length > 0 && (
+          <Group label={t('ahead')} tone="partial">
+            {upcoming.map((e, i) => (
+              <Entry key={e.id} entry={e} delay={i * 0.04} />
             ))}
-          </ol>
-        </section>
-      ))}
+          </Group>
+        )}
+
+        {data && (upcoming.length > 0 || past.length > 0) && (
+          <div className="relative z-10 flex items-center gap-3" role="separator">
+            <span className="ml-1.5 flex size-8 items-center justify-center rounded-full bg-primary text-on-primary ring-4 ring-bg">
+              <span className="size-2.5 rounded-full bg-on-primary" />
+            </span>
+            <span className="rounded-full bg-primary px-3 py-0.5 text-sm font-semibold text-on-primary">
+              {t('today')}
+            </span>
+            <span className="h-px flex-1 bg-primary/40" />
+          </div>
+        )}
+
+        {[...byMonth].map(([label, items]) => (
+          <Group key={label} label={label}>
+            {items.map((e, i) => (
+              <Entry key={e.id} entry={e} delay={i * 0.04} />
+            ))}
+          </Group>
+        ))}
+      </div>
     </div>
   );
 }
 
-function Entry({ entry }: { entry: TimelineEntry }) {
+function Group({
+  label,
+  tone = 'muted',
+  children,
+}: {
+  label: string;
+  tone?: 'muted' | 'partial';
+  children: React.ReactNode;
+}) {
+  return (
+    <section className="flex flex-col gap-3">
+      <h2
+        className={cn(
+          'relative z-10 ml-14 text-xs font-semibold uppercase tracking-wide',
+          tone === 'partial' ? 'text-partial' : 'text-muted',
+        )}
+      >
+        {label}
+      </h2>
+      <ol className="flex flex-col gap-3">{children}</ol>
+    </section>
+  );
+}
+
+function Entry({ entry, delay }: { entry: TimelineEntry; delay: number }) {
   const t = useTranslations('settings.timeline');
   const date = useDate();
   const Icon = ICONS[entry.kind];
@@ -154,39 +186,42 @@ function Entry({ entry }: { entry: TimelineEntry }) {
     <>
       <span
         className={cn(
-          'flex size-10 shrink-0 items-center justify-center rounded-full',
+          'relative z-10 flex size-10 shrink-0 items-center justify-center rounded-full ring-4 ring-bg',
           entry.upcoming ? 'bg-partial-bg text-partial' : 'bg-primary-soft text-primary',
         )}
       >
         <Icon aria-hidden className="size-5" />
       </span>
-      <span className="flex min-w-0 flex-1 flex-col">
-        <span className="font-semibold">{title}</span>
-        {entry.kind === 'notification' && entry.text && (
-          <span className="line-clamp-2 text-sm">{entry.text}</span>
+      <span
+        className={cn(
+          'flex min-w-0 flex-1 items-center gap-3 rounded-md border border-border bg-surface p-3 shadow-1',
+          entry.href && 'press hover:-translate-y-0.5 hover:border-primary/50 hover:shadow-2',
         )}
-        <span className="text-sm text-muted">
-          {date(entry.at.slice(0, 10), true)} · {t(`by.${entry.by}`)}
-          {detail && ` · ${detail}`}
+      >
+        <span className="flex min-w-0 flex-1 flex-col">
+          <span className="font-semibold">{title}</span>
+          {entry.kind === 'notification' && entry.text && (
+            <span className="line-clamp-2 text-sm">{entry.text}</span>
+          )}
+          <span className="text-sm text-muted">
+            {date(entry.at.slice(0, 10), true)} · {t(`by.${entry.by}`)}
+            {detail && ` · ${detail}`}
+          </span>
         </span>
+        {entry.href && <ChevronRight aria-hidden className="size-5 shrink-0 text-muted" />}
       </span>
     </>
   );
 
   return (
-    <li>
+    <Reveal as="li" delay={delay}>
       {entry.href ? (
-        <Link
-          href={entry.href}
-          className="flex items-center gap-3 rounded-md border border-border bg-surface p-3 hover:border-primary"
-        >
+        <Link href={entry.href} className="flex items-center gap-3">
           {body}
         </Link>
       ) : (
-        <div className="flex items-center gap-3 rounded-md border border-border bg-surface p-3">
-          {body}
-        </div>
+        <div className="flex items-center gap-3">{body}</div>
       )}
-    </li>
+    </Reveal>
   );
 }

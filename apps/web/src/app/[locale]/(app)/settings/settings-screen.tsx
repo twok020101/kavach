@@ -1,7 +1,18 @@
 'use client';
 
 import type { ConsentPurpose, Household } from '@kavach/schemas';
-import { ChevronRight, Download, LogOut, Trash2 } from 'lucide-react';
+import {
+  ChevronRight,
+  Clock,
+  Download,
+  Eye,
+  FileWarning,
+  ListChecks,
+  LogOut,
+  type LucideIcon,
+  Trash2,
+  Users,
+} from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { type ReactNode, useState } from 'react';
 import { LanguageSwitch } from '@/components/kavach/language-switch';
@@ -12,9 +23,9 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Link, useRouter } from '@/i18n/navigation';
 import { signOutUser } from '@/lib/firebase';
-import { rememberHouseholdId } from '@/lib/session';
+import { rememberHouseholdId, rememberMemberId } from '@/lib/session';
 import { downloadExport, useDeleteHousehold, useSetConsents } from '@/lib/setup';
-import { type TextScale, type ThemePref, useAppearance } from '@/lib/theme';
+import { TEXT_SCALES, type ThemePref, useAppearance } from '@/lib/theme';
 
 export function SettingsScreen() {
   return <PlanFrame>{(household) => <Settings household={household} />}</PlanFrame>;
@@ -24,10 +35,41 @@ function Settings({ household }: { household: Household }) {
   const t = useTranslations('settings');
   const router = useRouter();
   const { theme, setTheme, textScale, setTextScale } = useAppearance();
+  // The demo lets anyone see the member home: a Hindi-speaking parent first (Kamala), else any adult.
+  const adults = household.members.filter((m) => m.relation !== 'self' && m.age >= 18);
+  const memberToPreview = household.isDemo
+    ? (adults.find((m) => m.relation === 'parent' && m.language === 'hi' && m.age < 60) ??
+      adults.find((m) => m.relation === 'parent') ??
+      adults[0])
+    : undefined;
 
   return (
     <div className="mx-auto flex max-w-3xl flex-col gap-5">
-      <h1 className="font-display text-2xl font-bold">{t('title')}</h1>
+      <h1 className="font-display text-3xl font-bold tracking-tight">{t('title')}</h1>
+
+      {/* Phone: the sections that are not tabs live here. */}
+      <Card className="p-0 sm:p-0 lg:hidden">
+        <ul className="hairline">
+          <NavRow
+            href="/timeline"
+            icon={Clock}
+            label={t('family.timeline')}
+            hint={t('family.timelineHint')}
+          />
+          <NavRow
+            href="/claims"
+            icon={FileWarning}
+            label={t('family.claims')}
+            hint={t('family.claimsHint')}
+          />
+          <NavRow
+            href="/actions"
+            icon={ListChecks}
+            label={t('family.actions')}
+            hint={t('family.actionsHint')}
+          />
+        </ul>
+      </Card>
 
       <Section title={t('appearance.title')}>
         <Row label={t('appearance.language')}>
@@ -43,28 +85,64 @@ function Settings({ household }: { household: Household }) {
           </div>
         </Row>
         <Row label={t('appearance.textSize')}>
-          <div className="flex gap-2">
-            {(['normal', 'large'] as TextScale[]).map((scale) => (
+          <div className="flex flex-wrap gap-2">
+            {TEXT_SCALES.map((scale) => (
               <Chip key={scale} selected={textScale === scale} onClick={() => setTextScale(scale)}>
-                {t(`appearance.textSizes.${scale}`)}
+                <span
+                  className={
+                    scale === 'normal' ? 'text-base' : scale === 'large' ? 'text-lg' : 'text-xl'
+                  }
+                >
+                  {t(`appearance.textSizes.${scale}`)}
+                </span>
               </Chip>
             ))}
           </div>
         </Row>
       </Section>
 
-      <Section title={t('family.title')}>
-        <NavRow href="/settings/access" label={t('family.access')} hint={t('family.accessHint')} />
-        {!household.isDemo && (
+      <Section title={t('family.title')} flush>
+        <ul className="hairline">
           <NavRow
-            href="/setup/family/confirm"
-            label={t('family.edit')}
-            hint={t('family.editHint')}
+            href="/settings/access"
+            icon={Users}
+            label={t('family.access')}
+            hint={t('family.accessHint')}
           />
-        )}
-        {household.isDemo && (
-          <NavRow href="/demo" label={t('family.demo')} hint={t('family.demoHint')} />
-        )}
+          {!household.isDemo && (
+            <NavRow
+              href="/setup/family/confirm"
+              label={t('family.edit')}
+              hint={t('family.editHint')}
+            />
+          )}
+          {household.isDemo && (
+            <NavRow href="/demo" label={t('family.demo')} hint={t('family.demoHint')} />
+          )}
+          {memberToPreview && (
+            <li>
+              <button
+                type="button"
+                onClick={() => {
+                  rememberMemberId(memberToPreview.id);
+                  router.push('/home');
+                }}
+                className="press flex w-full items-center gap-3 p-4 text-left hover:bg-sunken"
+              >
+                <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-accent-soft text-accent-ink dark:text-text">
+                  <Eye aria-hidden className="size-5" />
+                </span>
+                <span className="flex flex-1 flex-col">
+                  <span className="font-semibold">
+                    {t('family.viewAs', { name: memberToPreview.name.split(' ')[0] ?? '' })}
+                  </span>
+                  <span className="text-sm text-muted">{t('family.viewAsHint')}</span>
+                </span>
+                <ChevronRight aria-hidden className="size-5 text-muted" />
+              </button>
+            </li>
+          )}
+        </ul>
       </Section>
 
       <Consents household={household} />
@@ -86,7 +164,7 @@ function Settings({ household }: { household: Household }) {
 
       <Section title={t('about.title')}>
         <p className="text-sm">{t('about.body')}</p>
-        <Link href="/proof" className="font-medium text-primary underline">
+        <Link href="/proof" className="font-medium text-primary underline underline-offset-4">
           {t('about.proof')}
         </Link>
       </Section>
@@ -97,6 +175,7 @@ function Settings({ household }: { household: Household }) {
         onClick={async () => {
           await signOutUser();
           rememberHouseholdId(undefined);
+          rememberMemberId(undefined);
           router.push('/');
         }}
       >
@@ -169,10 +248,27 @@ function DeleteHousehold({ household }: { household: Household }) {
   );
 }
 
-function Section({ title, children }: { title: string; children: ReactNode }) {
+function Section({
+  title,
+  flush = false,
+  children,
+}: {
+  title: string;
+  /** Rows that run edge to edge (nav lists). */
+  flush?: boolean;
+  children: ReactNode;
+}) {
   return (
-    <Card as="section" className="flex flex-col gap-4">
-      <h2 className="font-display text-lg font-semibold">{title}</h2>
+    <Card as="section" className={flush ? 'flex flex-col gap-0 p-0 sm:p-0' : 'flex flex-col gap-4'}>
+      <h2
+        className={
+          flush
+            ? 'px-4 pt-4 font-display text-lg font-semibold'
+            : 'font-display text-lg font-semibold'
+        }
+      >
+        {title}
+      </h2>
       {children}
     </Card>
   );
@@ -187,14 +283,32 @@ function Row({ label, children }: { label: string; children: ReactNode }) {
   );
 }
 
-function NavRow({ href, label, hint }: { href: string; label: string; hint: string }) {
+function NavRow({
+  href,
+  icon: Icon,
+  label,
+  hint,
+}: {
+  href:
+    '/timeline' | '/claims' | '/actions' | '/settings/access' | '/setup/family/confirm' | '/demo';
+  icon?: LucideIcon;
+  label: string;
+  hint: string;
+}) {
   return (
-    <Link href={href} className="-mx-2 flex items-center gap-3 rounded-md p-2 hover:bg-sunken">
-      <span className="flex flex-1 flex-col">
-        <span className="font-semibold">{label}</span>
-        <span className="text-sm text-muted">{hint}</span>
-      </span>
-      <ChevronRight aria-hidden className="size-5 text-muted" />
-    </Link>
+    <li>
+      <Link href={href} className="press flex items-center gap-3 p-4 hover:bg-sunken">
+        {Icon && (
+          <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary-soft text-primary">
+            <Icon aria-hidden className="size-5" />
+          </span>
+        )}
+        <span className="flex flex-1 flex-col">
+          <span className="font-semibold">{label}</span>
+          <span className="text-sm text-muted">{hint}</span>
+        </span>
+        <ChevronRight aria-hidden className="size-5 text-muted" />
+      </Link>
+    </li>
   );
 }

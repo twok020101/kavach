@@ -21,15 +21,18 @@ export function DeskHeader({
 }) {
   const t = useTranslations('desk');
   return (
-    <header className="sticky top-0 z-20 border-b border-border bg-bg">
-      <div className="mx-auto max-w-2xl px-4 py-2">
+    <header className="sticky top-0 z-20 border-b border-border bg-bg/95 backdrop-blur-md">
+      <div className="mx-auto flex max-w-2xl flex-col gap-1 px-4 py-2">
         <div className="flex items-center gap-2">
-          <LogoMark className="size-7 shrink-0" />
-          <LanguageSwitch query={query} className="ml-auto" />
+          <LogoMark className="size-8 shrink-0" />
+          <h1 className="hidden min-w-0 flex-1 truncate font-display text-lg font-bold sm:block">
+            {title}
+          </h1>
+          <LanguageSwitch query={query} compact className="ml-auto" />
           {action}
         </div>
-        <h1 className="mt-1 font-display text-xl font-bold leading-tight">{title}</h1>
-        {subtitle && <p className="text-sm text-muted">{subtitle}</p>}
+        <h1 className="font-display text-lg font-bold leading-tight sm:hidden">{title}</h1>
+        {subtitle && <p className="truncate text-sm text-muted">{subtitle}</p>}
       </div>
       <p className="sr-only">{t('modeNote')}</p>
     </header>

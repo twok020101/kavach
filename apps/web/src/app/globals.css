@@ -8,7 +8,7 @@
   --bg: #fbfaf7;
   --surface: #ffffff;
   --surface-sunken: #f5f3ee;
-  --border: #ddd8ce;
+  --border: #e4e0d7;
   --border-strong: #a39d90;
   --text: #1c1a17;
   --text-muted: #5e6472;
@@ -29,9 +29,17 @@
   --status-na-bg: #ece9e2;
   --citation: #23357a;
   --citation-bg: #f2f4fc;
-  --radius-sm: 6px;
-  --radius-md: 12px;
-  --radius-lg: 20px;
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 22px;
+  /* Elevation (07 §5): 1 for raised cards, 2 for sheets and popovers. */
+  --shadow-1: 0 1px 2px rgba(28, 26, 23, 0.06), 0 1px 1px rgba(28, 26, 23, 0.04);
+  --shadow-2: 0 8px 24px rgba(15, 27, 61, 0.12);
+  --shadow-accent: 0 10px 24px -10px rgba(217, 139, 18, 0.7);
+  /* The soft wash behind the top of a page: indigo on the left, marigold on the right. */
+  --wash:
+    radial-gradient(60% 40% at 0% 0%, rgba(69, 96, 196, 0.1), transparent 70%),
+    radial-gradient(50% 35% at 100% 0%, rgba(244, 166, 42, 0.16), transparent 70%);
 }
 
 [data-theme='dark'] {
@@ -39,7 +47,7 @@
   --bg: #12141c;
   --surface: #1a1d28;
   --surface-sunken: #151821;
-  --border: #3a3f55;
+  --border: #2d3245;
   --border-strong: #5e6472;
   --text: #edebe6;
   --text-muted: #9aa0b4;
@@ -58,6 +66,14 @@
   --status-gap-bg: #3d1d1a;
   --status-na: #9aa0b4;
   --status-na-bg: #23263a;
+  --citation: #b8c4f5;
+  --citation-bg: #1f2540;
+  --shadow-1: 0 0 0 1px rgba(255, 255, 255, 0.04);
+  --shadow-2: 0 12px 32px rgba(0, 0, 0, 0.5);
+  --shadow-accent: 0 10px 24px -10px rgba(244, 166, 42, 0.5);
+  --wash:
+    radial-gradient(60% 40% at 0% 0%, rgba(143, 163, 240, 0.12), transparent 70%),
+    radial-gradient(50% 35% at 100% 0%, rgba(244, 166, 42, 0.1), transparent 70%);
 }
 
 /* Hospital desk: always light, maximum contrast, bigger type. */
@@ -66,11 +82,16 @@
   --surface: #ffffff;
   --text: #0b0b0c;
   --text-muted: #34312b;
+  --border: #ddd8ce;
+  --wash: none;
 }
 
 /* Larger text (S27 Settings). The desk sets its own size. */
 html[data-text-scale='large']:not(:has([data-mode='desk'])) {
   font-size: 112.5%;
+}
+html[data-text-scale='xlarge']:not(:has([data-mode='desk'])) {
+  font-size: 125%;
 }
 
 /* Desk mode scales the whole page (rem units) to a 20 px base. */
@@ -106,22 +127,132 @@ html:has([data-mode='desk']) {
   --radius-sm: var(--radius-sm);
   --radius-md: var(--radius-md);
   --radius-lg: var(--radius-lg);
+  --shadow-1: var(--shadow-1);
+  --shadow-2: var(--shadow-2);
+  --shadow-accent: var(--shadow-accent);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-brand: cubic-bezier(0.2, 0.8, 0.2, 1);
   --font-sans: var(--font-inter), var(--font-noto-deva), system-ui, sans-serif;
   --font-display: var(--font-jakarta), var(--font-noto-deva), sans-serif;
   --font-serif: var(--font-source-serif), serif;
   --font-mono: var(--font-jetbrains), ui-monospace, monospace;
 }
 
-body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: var(--font-sans);
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scrollbar-color: var(--border-strong) var(--bg);
+    accent-color: var(--primary);
+    caret-color: var(--primary);
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-sans);
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  a,
+  button {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  ::selection {
+    background: var(--accent);
+    color: var(--accent-ink);
+  }
+
+  /* One visible focus ring everywhere: 2 px + 2 px offset. */
+  :focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+    border-radius: 6px;
+  }
 }
 
-/* One visible focus ring everywhere: 2 px + 2 px offset. */
-:focus-visible {
-  outline: 2px solid var(--primary);
-  outline-offset: 2px;
+@layer components {
+  /* The faint colour wash at the top of a page (landing, home, setup). */
+  .wash {
+    background-image: var(--wash);
+    background-repeat: no-repeat;
+    background-size: 100% 520px;
+  }
+
+  /* Pressing a control should feel like it gives. */
+  .press {
+    transition:
+      transform 160ms var(--ease-brand),
+      background-color 200ms,
+      border-color 200ms,
+      box-shadow 200ms,
+      color 200ms;
+  }
+  .press:active:not(:disabled) {
+    transform: scale(0.97);
+  }
+
+  /* Fades content up once as it scrolls into view (see Reveal). */
+  .rv {
+    opacity: 0;
+    transform: translateY(14px);
+    transition:
+      opacity 0.7s var(--ease-out-expo),
+      transform 0.7s var(--ease-out-expo);
+  }
+  .rv.in {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* Words of a heading rise out of their baseline one after another (landing hero). */
+  .wr-word {
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: bottom;
+    padding-bottom: 0.08em;
+    margin-bottom: -0.08em;
+  }
+  .wr-word > span {
+    display: inline-block;
+    transform: translateY(110%);
+    animation: wr-rise 0.9s var(--ease-out-expo) forwards;
+    animation-delay: calc(var(--w, 0) * 60ms + 80ms);
+  }
+  @keyframes wr-rise {
+    to {
+      transform: none;
+    }
+  }
+
+  /* A marigold underline swept under a phrase. */
+  .mark {
+    background: linear-gradient(var(--accent), var(--accent)) no-repeat 0 90% / 100% 0.3em;
+    padding-inline: 0.04em;
+    margin-inline: -0.04em;
+  }
+
+  /* The raised hospital button in the middle of the bottom bar. */
+  .tab-hero {
+    box-shadow: var(--shadow-accent);
+  }
+
+  /* Thin hairline used between stacked rows. */
+  .hairline > * + * {
+    border-top: 1px solid var(--border);
+  }
 }
 
 /* All amounts use tabular figures so columns line up. */
@@ -138,7 +269,16 @@ body {
   *::before,
   *::after {
     animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
     transition-duration: 0.01ms !important;
+  }
+  .rv {
+    opacity: 1;
+    transform: none;
+  }
+  .wr-word > span {
+    transform: none;
+    animation: none;
   }
 }
 

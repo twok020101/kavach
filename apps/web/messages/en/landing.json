@@ -43,5 +43,15 @@
     "disclaimer": "Guidance, not a policy recommendation. Confirm with your insurer or the TPA desk.",
     "sample": "Everything in this demo is made-up sample data.",
     "built": "Built on Gemini and Google Cloud."
-  }
+  },
+  "headlineMark": "every insurance moment",
+  "eyebrow": "Hindi and English · voice first · built for the whole family",
+  "tryFamily": "Try with the Sharma family",
+  "statsLabel": "What Kavach has found in the sample family",
+  "stats": {
+    "desk": "less to pay, by asking for the right room at the hospital desk",
+    "claim": "found to appeal in one settlement letter",
+    "cited": "of rupee amounts come from tested rules, each with its clause"
+  },
+  "momentsIntro": "Kavach learns the household once, in about two minutes. Then it acts at the three moments where Indian families lose money."
 }

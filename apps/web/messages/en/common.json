@@ -6,7 +6,10 @@
   "error": "Something went wrong. Please try again, or type your question instead.",
   "close": "Close",
   "language": "Language",
-  "languages": { "en": "English", "hi": "हिंदी" },
+  "languages": {
+    "en": "English",
+    "hi": "हिंदी"
+  },
   "skipToContent": "Skip to content",
   "mainNav": "Main",
   "atHospital": "At the hospital",
@@ -16,7 +19,8 @@
     "policies": "Policies",
     "timeline": "Timeline",
     "claims": "Claims",
-    "more": "More"
+    "more": "More",
+    "hospital": "Hospital"
   },
   "status": {
     "covered": "Covered",
@@ -33,7 +37,10 @@
     "parent_in_law": "Parent-in-law",
     "other": "Family"
   },
-  "captions": { "agent": "Kavach", "user": "You" },
+  "captions": {
+    "agent": "Kavach",
+    "user": "You"
+  },
   "why": {
     "rulesTitle": "Rules behind the answer",
     "tariffTitle": "The hospital’s room tariff",
@@ -66,5 +73,12 @@
     "policyPays": "Policy pays",
     "youPay": "You pay",
     "none": "None"
+  },
+  "statusShort": {
+    "covered": "Covered",
+    "partial": "Partly",
+    "contingent": "On job",
+    "gap": "Gap",
+    "na": "–"
   }
 }

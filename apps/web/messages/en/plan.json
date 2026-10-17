@@ -4,7 +4,11 @@
   "retry": "Try again",
   "close": "Close",
   "why": "How we worked this out",
-  "risk": { "health": "Health", "life": "Life", "accident": "Accident" },
+  "risk": {
+    "health": "Health",
+    "life": "Life",
+    "accident": "Accident"
+  },
   "layer": {
     "employer": "From the employer",
     "personal": "Your own",
@@ -26,7 +30,26 @@
     "next": "Next: {count, plural, one {# step} other {# steps}} for <amount></amount>/mo",
     "nextHint": "Within your budget · see your plan",
     "drafts": "{count, plural, one {# step is} other {# steps are}} waiting for you",
-    "whatsChanging": "What's changing?"
+    "whatsChanging": "What's changing?",
+    "hello": "Hello, {name}",
+    "asOf": "Your family’s cover as of {date}",
+    "mapTitle": "Who is covered for what",
+    "onJob": "{count} depend on {name}’s job",
+    "tapHint": "Tap any cell to see what is covered, what is missing and why.",
+    "stats": {
+      "covered": "Covered",
+      "partial": "Partly",
+      "gaps": "Gaps"
+    },
+    "draftsHint": "Letters and reminders Kavach prepared. Review and approve.",
+    "short": "<amount></amount> short",
+    "helloMember": "Namaste, {name}",
+    "hospitalSub": "Tap this at the hospital desk. Kavach will talk you through it.",
+    "yourCover": "Your cover",
+    "noCover": "No policy covers you yet.",
+    "call": "Call {name}",
+    "whatsappLine": "If the app won’t open, message Kavach on WhatsApp",
+    "fullView": "Show everything"
   },
   "scrubber": {
     "asOf": "As of {date}",

@@ -3,7 +3,8 @@
 import { useCallback, useSyncExternalStore } from 'react';
 
 export type ThemePref = 'system' | 'light' | 'dark';
-export type TextScale = 'normal' | 'large';
+export type TextScale = 'normal' | 'large' | 'xlarge';
+export const TEXT_SCALES: TextScale[] = ['normal', 'large', 'xlarge'];
 
 // Keep in step with public/theme.js, which applies these before the first paint.
 const THEME_KEY = 'kavach.theme';
@@ -58,8 +59,8 @@ export function useAppearance() {
   }, []);
   const setTextScale = useCallback((scale: TextScale) => {
     write(SCALE_KEY, scale);
-    if (scale === 'large') document.documentElement.dataset.textScale = 'large';
-    else delete document.documentElement.dataset.textScale;
+    if (scale === 'normal') delete document.documentElement.dataset.textScale;
+    else document.documentElement.dataset.textScale = scale;
     listeners.forEach((fn) => fn());
   }, []);
   return { theme, setTheme, textScale, setTextScale };

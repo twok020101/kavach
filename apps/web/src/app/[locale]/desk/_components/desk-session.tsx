@@ -256,24 +256,29 @@ export function DeskSessionScreen({ sid, demo }: { sid: string; demo: boolean })
       />
 
       <main className="mx-auto flex max-w-2xl flex-col gap-5 px-4 pb-56 pt-4">
-        <div className="flex items-center justify-between gap-3">
-          {live ? (
+        {live ? (
+          <div className="relative flex flex-col items-center gap-3 py-4">
+            <Badge icon={RadioTower} tone="primary" className="absolute right-0 top-0">
+              {tl('badge')}
+            </Badge>
             <ListeningOrb
-              size={voice.status === 'off' ? 'sm' : 'md'}
+              size={voice.status === 'off' ? 'md' : 'lg'}
               state={voice.muted ? 'idle' : orbState(voice.status)}
               label={voice.muted ? tl('orb.muted') : tl(`orb.${liveLabel(voice.status)}`)}
             />
-          ) : (
+          </div>
+        ) : (
+          <div className="flex items-center justify-between gap-3">
             <ListeningOrb
               size="sm"
               state={busy ? 'thinking' : 'idle'}
               label={busy ? t('orb.thinking') : t('orb.ready')}
             />
-          )}
-          <Badge icon={live ? RadioTower : Keyboard} className="shrink-0">
-            {live ? tl('badge') : t('textMode')}
-          </Badge>
-        </div>
+            <Badge icon={Keyboard} className="shrink-0">
+              {t('textMode')}
+            </Badge>
+          </div>
+        )}
 
         <Captions lines={captions} />
 
@@ -434,7 +439,7 @@ export function DeskSessionScreen({ sid, demo }: { sid: string; demo: boolean })
         />
       )}
 
-      <div className="fixed inset-x-0 bottom-0 z-20 border-t border-border bg-bg pb-[env(safe-area-inset-bottom)]">
+      <div className="fixed inset-x-0 bottom-0 z-20 border-t border-border bg-bg/95 pb-[env(safe-area-inset-bottom)] backdrop-blur-md">
         {live ? (
           <div className="mx-auto grid max-w-2xl grid-cols-[auto_minmax(0,1fr)_auto] items-stretch gap-2 px-4 py-3">
             <Button

@@ -161,5 +161,27 @@
   "landing": {
     "signIn": "Sign in",
     "start": "Start with my family"
+  },
+  "stepNames": {
+    "family": "Family",
+    "money": "Money",
+    "documents": "Documents",
+    "questions": "Questions"
+  },
+  "brand": {
+    "tagline": "Standing beside your family at every insurance moment.",
+    "promise": "We never sell your data and never contact insurers for you.",
+    "change": {
+      "title": "When life changes",
+      "body": "A new job, a baby, parents moving in: see what cover you lose and keep it."
+    },
+    "hospital": {
+      "title": "At the hospital desk",
+      "body": "Hindi or English, by voice. Which card to give, which room to ask for."
+    },
+    "claim": {
+      "title": "When a claim goes wrong",
+      "body": "Every deduction checked against the policy, the appeal drafted."
+    }
   }
 }

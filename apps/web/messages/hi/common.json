@@ -6,7 +6,10 @@
   "error": "कुछ गड़बड़ हुई। फिर से कोशिश कीजिए, या अपना सवाल लिखकर पूछिए।",
   "close": "बंद करें",
   "language": "भाषा",
-  "languages": { "en": "English", "hi": "हिंदी" },
+  "languages": {
+    "en": "English",
+    "hi": "हिंदी"
+  },
   "skipToContent": "सीधे मुख्य हिस्से पर जाएँ",
   "mainNav": "मुख्य",
   "atHospital": "अस्पताल में मदद",
@@ -16,7 +19,8 @@
     "policies": "पॉलिसी",
     "timeline": "टाइमलाइन",
     "claims": "क्लेम",
-    "more": "और"
+    "more": "और",
+    "hospital": "अस्पताल"
   },
   "status": {
     "covered": "कवर है",
@@ -33,7 +37,10 @@
     "parent_in_law": "सास/ससुर",
     "other": "परिवार"
   },
-  "captions": { "agent": "कवच", "user": "आप" },
+  "captions": {
+    "agent": "कवच",
+    "user": "आप"
+  },
   "why": {
     "rulesTitle": "जवाब के पीछे के नियम",
     "tariffTitle": "अस्पताल का कमरा टैरिफ़",
@@ -66,5 +73,12 @@
     "policyPays": "पॉलिसी देगी",
     "youPay": "आप देंगे",
     "none": "कुछ नहीं"
+  },
+  "statusShort": {
+    "covered": "कवर है",
+    "partial": "आधा",
+    "contingent": "नौकरी पर",
+    "gap": "कमी",
+    "na": "–"
   }
 }

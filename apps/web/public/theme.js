@@ -5,5 +5,6 @@ try {
   var d = t === 'dark' || (t !== 'light' && m.matches);
   var e = document.documentElement;
   if (d) e.dataset.theme = 'dark';
-  if (localStorage.getItem('kavach.textScale') === 'large') e.dataset.textScale = 'large';
+  var s = localStorage.getItem('kavach.textScale');
+  if (s === 'large' || s === 'xlarge') e.dataset.textScale = s;
 } catch {}

@@ -24,6 +24,7 @@ Work packages (WP) refer to [`docs/implementation-plan.md`](docs/implementation-
 | Claim appeal                         | 10   | `feat/claim-appeal`            | ⚠️    | Engine, documents, samples                     | PR #16. Letter reader and appeal drafter need a real Gemini check                                                                                                      |
 | Proof page and evals                 | 11   | `feat/proof-evals`             | ⚠️    | Documents                                      | PR #15. Wording PDFs must be fetched outside the sandbox (`pnpm wordings:fetch`); all 8 labels need Jai; real run needs Vertex                                         |
 | Remaining screens and onboarding     | 12   | `feat/screens`                 | ⚠️    | Design system, job change, documents, WhatsApp | PR #20. Google sign-in needs Firebase keys; intake parsing needs Gemini                                                                                                |
+| UI/UX polish                         | 2    | `feat/ui-polish`               | 🔨    | Remaining screens                              | Spec in `docs/superpowers/specs/2026-10-17-ui-polish-design.md`. Hospital button in the bottom bar, member home (S09m), landing, desk, plan, timeline, settings; EN/HI, light/dark; lint, typecheck, build pass |
 
 ## Dependency re-tests
 

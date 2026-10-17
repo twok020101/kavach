@@ -1,11 +1,27 @@
 'use client';
 
 import type { Household, Plan, Recommendation } from '@kavach/schemas';
+import {
+  Bandage,
+  ChevronRight,
+  HeartPulse,
+  type LucideIcon,
+  Smartphone,
+  Users,
+} from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { Amount } from '@/components/kavach/amount';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/components/ui/cn';
 import type { Pin } from './date-scrubber';
+
+const ICONS: Record<Recommendation['category'], LucideIcon> = {
+  term_life: Users,
+  family_health: HeartPulse,
+  parents_health: HeartPulse,
+  personal_accident: Bandage,
+  device: Smartphone,
+};
 
 /** "Term life for Rahul", "Parents' own health", "Phone protection (iPhone)". */
 export function useRecommendationTitle(household: Household) {
@@ -33,29 +49,41 @@ export function RecommendationRow({
 }) {
   const t = useTranslations('plan.rec');
   const title = useRecommendationTitle(household);
+  const Icon = ICONS[rec.category];
+  const deferred = rec.status === 'deferred';
   const className = cn(
-    'flex gap-3 rounded-md border border-border bg-surface p-3',
+    'flex items-center gap-3 rounded-md border border-border bg-surface p-3 shadow-1 sm:p-4',
     sign === '+' && 'border-l-4 border-l-safe',
     sign === '−' && 'border-l-4 border-l-border-strong opacity-80',
-    onSelect && 'w-full text-left hover:border-primary',
+    deferred && 'bg-sunken shadow-none',
+    onSelect &&
+      'press w-full text-left hover:-translate-y-0.5 hover:border-primary/50 hover:shadow-2',
   );
   const content = (
     <>
-      {index !== undefined && (
-        <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-primary-soft text-sm font-bold text-primary">
-          {index}
-        </span>
-      )}
-      {sign && (
-        <span aria-hidden className="w-4 shrink-0 text-lg font-bold leading-6">
-          {sign}
-        </span>
-      )}
-      <div className="flex min-w-0 flex-1 flex-col gap-1">
-        <div className="flex items-baseline justify-between gap-2">
-          <span className="font-semibold">{title(rec)}</span>
-          <Amount value={rec.cover} className="text-sm font-semibold" />
-        </div>
+      <span
+        className={cn(
+          'relative flex size-11 shrink-0 items-center justify-center rounded-full',
+          deferred ? 'bg-surface text-muted' : 'bg-primary-soft text-primary',
+        )}
+      >
+        <Icon aria-hidden className="size-5" />
+        {index !== undefined && (
+          <span className="absolute -left-1 -top-1 flex size-5 items-center justify-center rounded-full bg-primary font-display text-[11px] font-bold text-on-primary">
+            {index}
+          </span>
+        )}
+        {sign && (
+          <span
+            aria-hidden
+            className="absolute -left-1 -top-1 flex size-5 items-center justify-center rounded-full bg-text text-xs font-bold text-bg"
+          >
+            {sign}
+          </span>
+        )}
+      </span>
+      <div className="flex min-w-0 flex-1 flex-col gap-0.5">
+        <span className="font-semibold leading-snug">{title(rec)}</span>
         <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-muted">
           <span>{t.rich('perMonth', { amount: () => <Amount value={rec.premiumMonthly} /> })}</span>
           {rec.via === 'migration' && (
@@ -65,11 +93,15 @@ export function RecommendationRow({
             {t('illustrative')}
           </Badge>
         </div>
-        {rec.status === 'deferred' && rec.deferReason && (
+        {deferred && rec.deferReason && (
           <p className="text-sm text-partial">
             {t(`defer.${rec.deferReason}`, { employer: rec.employer ?? '' })}
           </p>
         )}
+      </div>
+      <div className="flex shrink-0 items-center gap-1">
+        <Amount value={rec.cover} className="font-display text-base font-bold sm:text-lg" />
+        {onSelect && <ChevronRight aria-hidden className="size-5 text-muted" />}
       </div>
     </>
   );
