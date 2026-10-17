@@ -49,10 +49,26 @@ export function checkEstimate(reading: HospitalEstimate): HospitalEstimate {
     unsure = true;
   };
 
-  const rooms = reading.roomCategories;
+  if (reading.lines.length === 0) flag('No charges could be read from the estimate.');
+
+  // Estimates often print a rent-only tariff table (General Ward … Suite) next to charges
+  // priced for two or three rooms. A category with no charge in any line and no printed
+  // total is tariff-only: the desk cannot compare it, so it is set aside with a note rather
+  // than flagged as unreadable. The quoted room (first) always stays.
+  const priced = (id: string) =>
+    reading.lines.some((l) => l.amounts[id] !== undefined) ||
+    reading.printedTotals?.[id] !== undefined ||
+    reading.packagePrices?.[id] !== undefined;
+  const tariffOnly = reading.roomCategories.filter((r, i) => i > 0 && !priced(r.id));
+  const rooms = reading.roomCategories.filter((r) => !tariffOnly.includes(r));
+  if (tariffOnly.length > 0) {
+    notes.push(
+      `Tariff lists ${tariffOnly.map((r) => `${r.label} (${formatInr(r.rentPerDay)}/day)`).join(', ')} without estimated charges; ask the desk for an estimate in that room if needed.`,
+    );
+  }
+
   const roomIds = new Set(rooms.map((r) => r.id));
   if (roomIds.size !== rooms.length) flag('Two room categories have the same id.');
-  if (reading.lines.length === 0) flag('No charges could be read from the estimate.');
 
   const lines = reading.lines.map((line) => withConsistentPricing(line, rooms.length, notes));
 
@@ -95,7 +111,7 @@ export function checkEstimate(reading: HospitalEstimate): HospitalEstimate {
     }
   }
 
-  return { ...reading, lines, needsConfirmation: unsure, notes };
+  return { ...reading, roomCategories: rooms, lines, needsConfirmation: unsure, notes };
 }
 
 /** A head's amount in one room: its own column, or the single amount when it isn't priced by room. */

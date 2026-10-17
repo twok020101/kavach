@@ -31,6 +31,9 @@ export async function buildServer() {
         ? { transport: { target: 'pino-pretty', options: { singleLine: true } } }
         : true,
     bodyLimit: 2 * 1024 * 1024,
+    // documentRoutes embeds the clause library on boot; with a real embedder the first
+    // call also pays for credential exchange, which exceeds Fastify's default 10 s.
+    pluginTimeout: 60_000,
   }).withTypeProvider<ZodTypeProvider>();
 
   app.setValidatorCompiler(validatorCompiler);
