@@ -45,7 +45,7 @@ export function Sheet({
             initial={reduce ? { opacity: 0 } : { y: '100%' }}
             animate={reduce ? { opacity: 1 } : { y: 0 }}
             exit={reduce ? { opacity: 0 } : { y: '100%' }}
-            transition={{ duration: 0.25, ease: [0.2, 0.8, 0.2, 1] }}
+            transition={{ duration: 0.3, ease: [0.32, 0.72, 0, 1] }}
           >
             <div className="sticky -top-4 z-10 -mx-4 -mt-4 mb-3 flex items-start gap-3 bg-surface px-4 pb-2 pt-4">
               <h2 className="flex-1 font-display text-xl font-bold">{title}</h2>

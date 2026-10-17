@@ -21,3 +21,6 @@ apps/web/AGENTS.md
 
 # Brainstorming mockups (superpowers visual companion)
 .superpowers/
+
+# Locally installed third-party design skills (not part of the repo)
+.claude/skills/

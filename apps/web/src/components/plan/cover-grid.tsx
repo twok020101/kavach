@@ -106,7 +106,7 @@ export function CoverGrid({
                         className="hidden w-full text-xs leading-tight sm:inline-flex"
                       />
                       {missing > 0 && (
-                        <span className="hidden px-1 text-[11px] font-medium text-muted lg:block">
+                        <span className="hidden px-1 text-xs font-medium text-muted lg:block">
                           {t.rich('home.short', {
                             amount: () => <Amount value={missing} />,
                           })}

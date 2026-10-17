@@ -116,7 +116,7 @@ function PlanView({ household }: { household: Household }) {
                   className="block h-2.5 w-full overflow-hidden rounded-sm bg-sunken"
                 >
                   <span
-                    className="block h-full rounded-sm bg-primary transition-[width] duration-700 ease-out"
+                    className="block h-full rounded-sm bg-primary transition-[width] duration-600 ease-[var(--ease-out-strong)]"
                     style={{ width: `${Math.round(used * 100)}%` }}
                   />
                 </span>

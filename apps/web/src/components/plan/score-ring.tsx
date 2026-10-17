@@ -26,7 +26,7 @@ export function ScoreRing({ score, size = 96 }: { score: number; size?: number }
         strokeWidth="9"
         strokeLinecap="round"
         stroke="currentColor"
-        className={`${tone} transition-[stroke-dasharray] duration-700 ease-out`}
+        className={`${tone} transition-[stroke-dasharray] duration-600 ease-[var(--ease-out-strong)]`}
         strokeDasharray={`${(shown / 100) * circumference} ${circumference}`}
         transform="rotate(-90 50 50)"
       />

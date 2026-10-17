@@ -36,7 +36,10 @@ export function Disclosure({
         <span className="flex-1">{label}</span>
         <ChevronDown
           aria-hidden
-          className={cn('size-5 transition-transform duration-200', open && 'rotate-180')}
+          className={cn(
+            'size-5 transition-transform duration-150 ease-[var(--ease-out-strong)]',
+            open && 'rotate-180',
+          )}
         />
       </button>
       <AnimatePresence initial={false}>
@@ -46,7 +49,7 @@ export function Disclosure({
             initial={reduce ? { opacity: 0 } : { opacity: 0, height: 0 }}
             animate={reduce ? { opacity: 1 } : { opacity: 1, height: 'auto' }}
             exit={reduce ? { opacity: 0 } : { opacity: 0, height: 0 }}
-            transition={{ duration: 0.2, ease: [0.2, 0.8, 0.2, 1] }}
+            transition={{ duration: 0.2, ease: [0.23, 1, 0.32, 1] }}
             className="overflow-hidden"
           >
             <div className="pt-2">{children}</div>

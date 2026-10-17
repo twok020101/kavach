@@ -170,7 +170,7 @@ export function MomentStoryboard({
               setPaused(true);
             }}
             className={cn(
-              'press h-2.5 rounded-full transition-all',
+              'press h-2.5 rounded-full transition-colors',
               i === index ? 'w-8 bg-primary' : 'w-2.5 bg-border hover:bg-border-strong',
             )}
           />

@@ -50,7 +50,7 @@ export function AnswerCard({
     <motion.article
       initial={{ opacity: 0, y: reduce ? 0 : 10 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.25, delay: index * 0.08, ease: [0.2, 0.8, 0.2, 1] }}
+      transition={{ duration: 0.25, delay: index * 0.08, ease: [0.23, 1, 0.32, 1] }}
       aria-labelledby={`${card.id}-title`}
       className={cn(
         'relative rounded-md border p-4 sm:p-5',
