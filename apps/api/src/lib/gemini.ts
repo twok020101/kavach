@@ -17,6 +17,16 @@ export function genai(): GoogleGenAI {
   return client;
 }
 
+let liveClient: GoogleGenAI | undefined;
+
+/** The client for Gemini Live sessions, which may live in a different region (`GOOGLE_CLOUD_LIVE_LOCATION`). */
+export function genaiLive(): GoogleGenAI {
+  const location = env.GOOGLE_CLOUD_LIVE_LOCATION ?? env.GOOGLE_CLOUD_LOCATION;
+  if (location === env.GOOGLE_CLOUD_LOCATION) return genai();
+  liveClient ??= new GoogleGenAI({ vertexai: true, project: env.GOOGLE_CLOUD_PROJECT, location });
+  return liveClient;
+}
+
 export const models = {
   pro: env.KAVACH_MODEL_PRO,
   flash: env.KAVACH_MODEL_FLASH,

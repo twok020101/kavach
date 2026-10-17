@@ -8,7 +8,7 @@ import {
 } from '@google/genai';
 import { deskLiveTools } from '../agents/desk-live';
 import { env } from '../env';
-import { genai, models } from '../lib/gemini';
+import { genaiLive, models } from '../lib/gemini';
 import { notes, type BackendOptions, type LiveBackend } from './backend';
 
 /**
@@ -25,9 +25,15 @@ export async function connectGeminiLive(opts: BackendOptions): Promise<LiveBacke
   // Transcription arrives in pieces; captions show the turn so far.
   let userText = '';
   let agentText = '';
+  // Each connect() gets a generation number, so a close or error from an older model socket
+  // (replaced by a reconnect) is ignored, while one from the socket being opened is handled.
+  // Checking the session object itself would throw if the socket closes mid-handshake,
+  // before `connect` has returned it.
+  let generation = 0;
 
   async function connect() {
-    const next = await genai().live.connect({
+    const mine = ++generation;
+    const next = await genaiLive().live.connect({
       model: models.live,
       config: {
         responseModalities: [Modality.AUDIO],
@@ -54,9 +60,12 @@ export async function connectGeminiLive(opts: BackendOptions): Promise<LiveBacke
       },
       callbacks: {
         onmessage: (message) => void onMessage(message),
-        onerror: (event) => opts.onFatal(`Gemini Live error: ${event.message}`),
+        onerror: (event) => {
+          if (closed || mine !== generation) return;
+          opts.onFatal(`Gemini Live error: ${event.message}`);
+        },
         onclose: (event) => {
-          if (closed || next !== session) return;
+          if (closed || mine !== generation) return;
           if (handle) void reconnect();
           else opts.onFatal(`Gemini Live closed: ${event.code} ${event.reason}`);
         },
