@@ -32,6 +32,8 @@ const Env = z.object({
   KAVACH_LIVE_VOICE: z.string().default('voice-name-placeholder'),
 
   STORE: z.enum(['memory', 'firestore']).default('memory'),
+  /** Where the memory store is mirrored (relative to the repo); 'off' keeps it in memory only. */
+  MEMORY_STORE_FILE: z.string().optional(),
   GCS_BUCKET: z.string().optional(),
 
   META_WHATSAPP_TOKEN: z.string().optional(),

@@ -35,12 +35,12 @@ Other commands: `pnpm build`, `pnpm lint`, `pnpm typecheck`, `pnpm format`.
 
 The defaults in `.env.example` let everything run with no Google, Firebase, Meta or Twilio keys:
 
-| Setting            | Local default | What it does                                                           |
-| ------------------ | ------------- | ---------------------------------------------------------------------- |
-| `FAKE_LLM=1`       | on            | Every Gemini call returns a recorded fixture from `apps/api/fixtures/` |
-| `STORE=memory`     | on            | Data lives in the API process instead of Firestore (lost on restart)   |
-| `AUTH_DISABLED=1`  | on            | The API accepts requests without a Firebase sign-in                    |
-| `GCS_BUCKET` empty | –             | Uploaded and generated files go to `.data/blobs/`                      |
+| Setting            | Local default | What it does                                                                          |
+| ------------------ | ------------- | ------------------------------------------------------------------------------------- |
+| `FAKE_LLM=1`       | on            | Every Gemini call returns a recorded fixture from `apps/api/fixtures/`                |
+| `STORE=memory`     | on            | Data lives in the API process, mirrored to `.data/store.json` so it survives restarts |
+| `AUTH_DISABLED=1`  | on            | The API accepts requests without a Firebase sign-in                                   |
+| `GCS_BUCKET` empty | –             | Uploaded and generated files go to `.data/blobs/`                                     |
 
 Fill in the keys in `.env` to switch each one to the real service.
 
