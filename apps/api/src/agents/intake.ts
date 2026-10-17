@@ -1,5 +1,5 @@
 import { IntakeResult, type Locale } from '@kavach/schemas';
-import { audioLocation, generateStructured, generateText, models } from '../lib/gemini';
+import { generateStructured, generateText, models, quickLocation } from '../lib/gemini';
 import { toGeminiAudio } from '../lib/speech';
 
 /** IntakeAgent system instruction (S04, FR-H-01). */
@@ -40,8 +40,8 @@ export async function parseFamily(input: {
   if (input.audio) {
     const audio = await toGeminiAudio(input.audio);
     const heard = await generateText({
-      model: models.audio,
-      location: audioLocation,
+      model: models.quick,
+      location: quickLocation,
       contents: [{ role: 'user', parts: [{ inlineData: audio }, { text: TRANSCRIBE_SYSTEM }] }],
       fixture: 'intake-transcript',
     });

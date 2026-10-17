@@ -4,6 +4,10 @@ import { BillingType } from './hospital';
 
 /** What the claim letter reader extracts from a settlement letter. */
 export const SettlementLetter = z.object({
+  /** False when the document is not a claim settlement letter at all (a brochure, an estimate, an ID card). */
+  isSettlementLetter: z.boolean().optional(),
+  /** What the document looks like instead, when `isSettlementLetter` is false. */
+  documentDescription: z.string().optional(),
   insurer: z.string(),
   claimNumber: z.string(),
   policyNumber: z.string().optional(),

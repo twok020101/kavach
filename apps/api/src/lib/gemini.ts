@@ -63,11 +63,11 @@ export const models = {
   live: env.KAVACH_MODEL_LIVE,
   tts: env.KAVACH_MODEL_TTS,
   embed: env.KAVACH_MODEL_EMBED,
-  /** Audio understanding (voice notes): a faster regional model when configured. */
-  audio: env.KAVACH_MODEL_AUDIO ?? env.KAVACH_MODEL_FLASH,
+  /** Voice notes and document classification: a faster regional model when configured. */
+  quick: env.KAVACH_MODEL_QUICK ?? env.KAVACH_MODEL_FLASH,
 } as const;
 
-export const audioLocation = env.GOOGLE_CLOUD_AUDIO_LOCATION;
+export const quickLocation = env.GOOGLE_CLOUD_QUICK_LOCATION;
 
 const fixturesDir = resolve(appRoot, 'fixtures');
 
@@ -79,6 +79,8 @@ const fixturesDir = resolve(appRoot, 'fixtures');
  */
 export async function generateStructured<S extends z.ZodType>(opts: {
   model: string;
+  /** Another region's client, for models served only there. */
+  location?: string;
   schema: S;
   contents: ContentListUnion;
   systemInstruction?: string;
@@ -102,7 +104,7 @@ export async function generateStructured<S extends z.ZodType>(opts: {
   }
 
   const call = () =>
-    genai().models.generateContent({
+    genaiIn(opts.location).models.generateContent({
       model: opts.model,
       contents: opts.contents,
       config: {
