@@ -376,7 +376,7 @@ export function DeskSessionScreen({
 
         {estimate && !answer && !live && (
           <section
-            ref={ask}
+            ref={askSection}
             aria-labelledby="ask-title"
             className="flex scroll-mt-28 flex-col gap-2"
           >
