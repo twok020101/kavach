@@ -22,7 +22,7 @@ export function DeskHeader({
   const t = useTranslations('desk');
   return (
     <header className="sticky top-0 z-20 border-b border-border bg-bg">
-      <div className="mx-auto flex max-w-2xl flex-col gap-1 px-4 py-2">
+      <div className="mx-auto flex max-w-2xl flex-col gap-1 px-4 py-2 lg:max-w-6xl lg:px-6 lg:py-3">
         <div className="flex items-center gap-2">
           <LogoMark className="size-8 shrink-0" />
           <h1 className="hidden min-w-0 flex-1 truncate font-display text-lg font-bold sm:block">

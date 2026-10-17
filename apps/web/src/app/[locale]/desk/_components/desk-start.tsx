@@ -59,107 +59,116 @@ export function DeskStart({ demo, scene }: { demo: boolean; scene?: DeskScene })
           </Link>
         }
       />
-      <main className="mx-auto flex max-w-2xl flex-col gap-7 px-4 pb-40 pt-5">
-        {demo && (
-          <p className="panel flex gap-2 text-base">
-            <Info aria-hidden className="mt-1 size-5 shrink-0" />
-            {scene === 'maternity' ? t('demoNoteMaternity') : t('demoNote')}
-          </p>
-        )}
+      <div className="mx-auto w-full max-w-6xl lg:grid lg:grid-cols-[minmax(0,1fr)_380px] lg:items-start lg:gap-10 lg:px-6">
+        <main className="mx-auto flex max-w-2xl flex-col gap-7 px-4 pb-40 pt-5 lg:mx-0 lg:max-w-none lg:px-0 lg:pb-12 lg:pt-6">
+          {demo && (
+            <p className="panel flex gap-2 text-base">
+              <Info aria-hidden className="mt-1 size-5 shrink-0" />
+              {scene === 'maternity' ? t('demoNoteMaternity') : t('demoNote')}
+            </p>
+          )}
 
-        <fieldset>
-          <legend className="mb-3 font-display text-2xl font-bold">{t('who')}</legend>
-          {household.isPending ? (
+          <fieldset>
+            <legend className="mb-3 font-display text-2xl font-bold">{t('who')}</legend>
+            {household.isPending ? (
+              <div className="grid grid-cols-2 gap-3">
+                {Array.from({ length: 4 }, (_, i) => (
+                  <Skeleton key={i} className="h-20" />
+                ))}
+              </div>
+            ) : (
+              <div className="flex flex-col gap-2">
+                {household.data?.members.map((m) => {
+                  const on = patientId === m.id;
+                  return (
+                    <label
+                      key={m.id}
+                      className={cn(tile, 'min-h-14', on ? selectedTile : idleTile)}
+                    >
+                      <input
+                        type="radio"
+                        name="patient"
+                        value={m.id}
+                        checked={on}
+                        onChange={() => setPatientId(m.id)}
+                        className="sr-only"
+                      />
+                      <MemberAvatar member={m} className="size-10 text-base" />
+                      <span className="flex min-w-0 flex-1 flex-wrap items-baseline gap-x-2">
+                        <span className="font-semibold">{m.name.split(' ')[0]}</span>
+                        <span className="text-sm text-muted">
+                          {tc(`relation.${m.relation}`)}, {m.age}
+                        </span>
+                      </span>
+                      {on && (
+                        <Check
+                          aria-hidden
+                          className="size-5 shrink-0 text-primary"
+                          strokeWidth={3}
+                        />
+                      )}
+                    </label>
+                  );
+                })}
+              </div>
+            )}
+          </fieldset>
+
+          <fieldset>
+            <legend className="mb-3 font-display text-2xl font-bold">{t('language')}</legend>
             <div className="grid grid-cols-2 gap-3">
-              {Array.from({ length: 4 }, (_, i) => (
-                <Skeleton key={i} className="h-20" />
-              ))}
-            </div>
-          ) : (
-            <div className="flex flex-col gap-2">
-              {household.data?.members.map((m) => {
-                const on = patientId === m.id;
+              {(['hi', 'en'] as const).map((l) => {
+                const on = language === l;
                 return (
-                  <label key={m.id} className={cn(tile, 'min-h-14', on ? selectedTile : idleTile)}>
+                  <label
+                    key={l}
+                    lang={l}
+                    className={cn(
+                      tile,
+                      'min-h-16 justify-center text-lg font-semibold',
+                      on ? selectedTile : idleTile,
+                    )}
+                  >
                     <input
                       type="radio"
-                      name="patient"
-                      value={m.id}
+                      name="language"
+                      value={l}
                       checked={on}
-                      onChange={() => setPatientId(m.id)}
+                      onChange={() => setLanguage(l)}
                       className="sr-only"
                     />
-                    <MemberAvatar member={m} className="size-10 text-base" />
-                    <span className="flex min-w-0 flex-1 flex-wrap items-baseline gap-x-2">
-                      <span className="font-semibold">{m.name.split(' ')[0]}</span>
-                      <span className="text-sm text-muted">
-                        {tc(`relation.${m.relation}`)}, {m.age}
-                      </span>
-                    </span>
-                    {on && (
-                      <Check aria-hidden className="size-5 shrink-0 text-primary" strokeWidth={3} />
-                    )}
+                    {on && <Check aria-hidden className="size-5 text-primary" strokeWidth={3} />}
+                    {tc(`languages.${l}`)}
                   </label>
                 );
               })}
             </div>
-          )}
-        </fieldset>
+          </fieldset>
 
-        <fieldset>
-          <legend className="mb-3 font-display text-2xl font-bold">{t('language')}</legend>
-          <div className="grid grid-cols-2 gap-3">
-            {(['hi', 'en'] as const).map((l) => {
-              const on = language === l;
-              return (
-                <label
-                  key={l}
-                  lang={l}
-                  className={cn(
-                    tile,
-                    'min-h-16 justify-center text-lg font-semibold',
-                    on ? selectedTile : idleTile,
-                  )}
-                >
-                  <input
-                    type="radio"
-                    name="language"
-                    value={l}
-                    checked={on}
-                    onChange={() => setLanguage(l)}
-                    className="sr-only"
-                  />
-                  {on && <Check aria-hidden className="size-5 text-primary" strokeWidth={3} />}
-                  {tc(`languages.${l}`)}
-                </label>
-              );
-            })}
+          <p className="text-base text-muted">{t('privacy')}</p>
+        </main>
+
+        <aside className="fixed inset-x-0 bottom-0 z-20 border-t border-border bg-bg pb-[env(safe-area-inset-bottom)] lg:sticky lg:top-24 lg:border-0 lg:bg-transparent lg:pb-0 lg:pt-6">
+          <div className="mx-auto flex max-w-2xl flex-col gap-2 px-4 py-3 lg:px-0 lg:py-0">
+            <Button
+              variant="accent"
+              size="desk"
+              disabled={!patientId}
+              loading={start.isPending}
+              onClick={() => start.mutate()}
+            >
+              <Mic aria-hidden className="size-6" />
+              {t('start')}
+              <ArrowRight aria-hidden className="size-6" />
+            </Button>
+            {!patientId && <p className="text-center text-base text-muted">{t('pickFirst')}</p>}
+            {start.isError && (
+              <p role="alert" className="text-center text-gap">
+                {tc('error')}
+              </p>
+            )}
           </div>
-        </fieldset>
-
-        <p className="text-base text-muted">{t('privacy')}</p>
-      </main>
-
-      <div className="fixed inset-x-0 bottom-0 z-20 border-t border-border bg-bg pb-[env(safe-area-inset-bottom)]">
-        <div className="mx-auto flex max-w-2xl flex-col gap-2 px-4 py-3">
-          <Button
-            variant="accent"
-            size="desk"
-            disabled={!patientId}
-            loading={start.isPending}
-            onClick={() => start.mutate()}
-          >
-            <Mic aria-hidden className="size-6" />
-            {t('start')}
-            <ArrowRight aria-hidden className="size-6" />
-          </Button>
-          {!patientId && <p className="text-center text-base text-muted">{t('pickFirst')}</p>}
-          {start.isError && (
-            <p role="alert" className="text-center text-gap">
-              {tc('error')}
-            </p>
-          )}
-        </div>
+        </aside>
       </div>
     </>
   );
