@@ -563,39 +563,38 @@ export function DeskSessionScreen({
 
         <aside className="fixed inset-x-0 bottom-0 z-20 border-t border-border bg-bg pb-[env(safe-area-inset-bottom)] lg:sticky lg:top-24 lg:border-0 lg:bg-transparent lg:pb-0 lg:pt-6">
           {live ? (
-            <div className="mx-auto grid max-w-2xl grid-cols-[auto_minmax(0,1fr)_auto] items-stretch gap-2 px-4 py-3 lg:px-0 lg:py-0">
-              <Button
-                variant={voice.muted ? 'secondary' : 'primary'}
-                className="min-h-16 min-w-16 shrink-0 px-0"
-                aria-label={voice.muted ? tl('unmute') : tl('mute')}
-                aria-pressed={voice.muted}
-                disabled={voice.status === 'connecting'}
-                onClick={voice.toggleMute}
-              >
-                {voice.muted ? (
-                  <MicOff aria-hidden className="size-7" />
-                ) : (
-                  <Mic aria-hidden className="size-7" />
-                )}
-              </Button>
+            // The one action on top, full width; mute and "type instead" below it.
+            <div className="mx-auto flex max-w-2xl flex-col gap-2 px-4 py-3 lg:px-0 lg:py-0">
               <Button
                 variant="accent"
                 size="desk"
-                className="min-w-0 whitespace-nowrap px-3"
+                className="px-4 text-center"
                 disabled={busy}
                 onClick={showEstimate}
               >
                 <Camera aria-hidden className="size-6 shrink-0" />
                 {tl('showEstimate')}
               </Button>
-              <Button
-                variant="secondary"
-                className="min-h-16 min-w-16 shrink-0 px-0"
-                aria-label={tl('typeInstead')}
-                onClick={stopLive}
-              >
-                <Keyboard aria-hidden className="size-7" />
-              </Button>
+              <div className="grid grid-cols-2 gap-2">
+                <Button
+                  variant={voice.muted ? 'secondary' : 'primary'}
+                  className="min-h-14"
+                  aria-pressed={voice.muted}
+                  disabled={voice.status === 'connecting'}
+                  onClick={voice.toggleMute}
+                >
+                  {voice.muted ? (
+                    <MicOff aria-hidden className="size-6" />
+                  ) : (
+                    <Mic aria-hidden className="size-6" />
+                  )}
+                  <span className="truncate">{voice.muted ? tl('unmute') : tl('muteShort')}</span>
+                </Button>
+                <Button variant="secondary" className="min-h-14" onClick={stopLive}>
+                  <Keyboard aria-hidden className="size-6" />
+                  <span className="truncate">{tl('typeInstead')}</span>
+                </Button>
+              </div>
             </div>
           ) : (
             <div className="mx-auto flex max-w-2xl flex-col gap-2 px-4 py-3 lg:px-0 lg:py-0">
