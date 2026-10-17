@@ -56,6 +56,7 @@ export function DeskSessionScreen({
   const router = useRouter();
   const fileInput = useRef<HTMLInputElement>(null);
   const answers = useRef<HTMLElement>(null);
+  const ask = useRef<HTMLElement>(null);
   const lineId = useRef(0);
 
   const [captions, setCaptions] = useState<CaptionLine[]>([
@@ -223,6 +224,11 @@ export function DeskSessionScreen({
   useEffect(() => {
     if (answer) answers.current?.scrollIntoView({ block: 'start', behavior: 'smooth' });
   }, [answer]);
+  // Once the estimate is read, the next step is the question: bring the two buttons into view.
+  useEffect(() => {
+    if (estimate && !answer && !live)
+      ask.current?.scrollIntoView({ block: 'start', behavior: 'smooth' });
+  }, [estimate, answer, live]);
 
   function submit(event: FormEvent) {
     event.preventDefault();
@@ -369,7 +375,11 @@ export function DeskSessionScreen({
         )}
 
         {estimate && !answer && !live && (
-          <section aria-labelledby="ask-title" className="flex flex-col gap-2">
+          <section
+            ref={ask}
+            aria-labelledby="ask-title"
+            className="flex scroll-mt-28 flex-col gap-2"
+          >
             <h2 id="ask-title" className="font-display text-lg font-bold">
               {t('askTitle')}
             </h2>
