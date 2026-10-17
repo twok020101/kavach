@@ -49,10 +49,22 @@ export async function generateStructured<S extends z.ZodType>(opts: {
   contents: ContentListUnion;
   systemInstruction?: string;
   fixture: string;
+  /**
+   * Turns the model's raw JSON into a value the schema accepts, when a plain parse fails.
+   * Used where the model may legitimately return something off-schema (a photo that is not
+   * an estimate) and a friendly result beats a 500.
+   */
+  repair?: (raw: unknown, issues: z.ZodError) => z.infer<S>;
 }): Promise<z.infer<S>> {
+  const parse = (raw: unknown): z.infer<S> => {
+    const result = opts.schema.safeParse(raw);
+    if (result.success) return result.data;
+    if (opts.repair) return opts.repair(raw, result.error);
+    throw result.error;
+  };
   if (env.FAKE_LLM) {
     const raw = await readFile(resolve(fixturesDir, `${opts.fixture}.json`), 'utf8');
-    return opts.schema.parse(JSON.parse(raw));
+    return parse(JSON.parse(raw));
   }
 
   const call = () =>
@@ -67,7 +79,7 @@ export async function generateStructured<S extends z.ZodType>(opts: {
     });
   const response = await withOneRetryOn429(call);
   if (!response.text) throw new Error(`Empty response from ${opts.model}`);
-  return opts.schema.parse(JSON.parse(response.text));
+  return parse(JSON.parse(response.text));
 }
 
 /**

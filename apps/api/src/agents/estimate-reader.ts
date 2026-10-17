@@ -2,6 +2,7 @@ import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { formatInr } from '@kavach/engine';
 import { HospitalEstimate, type EstimateLine } from '@kavach/schemas';
+import type { z } from 'zod';
 import { generateStructured, models } from '../lib/gemini';
 import { appRoot } from '../paths';
 
@@ -36,8 +37,61 @@ export async function readEstimate(
       },
     ],
     fixture,
+    repair: repairReading,
   });
   return checkEstimate(reading);
+}
+
+/**
+ * The model's JSON did not fit the schema. That happens for a photo that is not an estimate
+ * (it answers with `days: 0` and no lines, as the prompt asks, which the strict schema rejects)
+ * or for decimals and odd types. Round the numbers and make the stay at least a day, and if it
+ * still does not fit, hand back an empty estimate that must be confirmed, with the reason, so
+ * the desk says "check the estimate first" instead of failing.
+ */
+export function repairReading(raw: unknown, issues: z.ZodError): HospitalEstimate {
+  const fixed = roundNumbers(raw) as Record<string, unknown>;
+  if (typeof fixed.days !== 'number' || !(fixed.days >= 1)) fixed.days = 1;
+  const second = HospitalEstimate.safeParse({ ...fixed, needsConfirmation: true });
+  const notes = Array.isArray(fixed.notes) ? fixed.notes.filter((n) => typeof n === 'string') : [];
+  const hasLines = Array.isArray(fixed.lines) && fixed.lines.length > 0;
+  if (second.success && hasLines) {
+    return {
+      ...second.data,
+      notes: [...second.data.notes, 'Some fields were adjusted while reading; please check them.'],
+    };
+  }
+  const reason = issues.issues
+    .slice(0, 3)
+    .map((i) => `${i.path.join('.') || 'estimate'}: ${i.message}`)
+    .join('; ');
+  return {
+    hospitalName: typeof fixed.hospitalName === 'string' ? fixed.hospitalName : 'Unknown hospital',
+    procedure: typeof fixed.procedure === 'string' ? fixed.procedure : 'Unknown',
+    treatment: 'general',
+    admissionType: 'planned',
+    days: 1,
+    billingType: 'unknown',
+    roomCategories: [{ id: 'unknown', label: 'Unknown room', rentPerDay: 0 }],
+    lines: [],
+    needsConfirmation: true,
+    notes: [
+      ...(notes as string[]),
+      `This could not be read as a hospital estimate (${reason}). Take a photo of the printed estimate with the room charges, or type the numbers.`,
+    ],
+  };
+}
+
+/** Whole rupees everywhere: rounds every number in the model's JSON (estimates print no paise). */
+function roundNumbers(value: unknown): unknown {
+  if (typeof value === 'number') return Number.isFinite(value) ? Math.round(value) : 0;
+  if (Array.isArray(value)) return value.map(roundNumbers);
+  if (value && typeof value === 'object') {
+    return Object.fromEntries(
+      Object.entries(value as Record<string, unknown>).map(([k, v]) => [k, roundNumbers(v)]),
+    );
+  }
+  return value;
 }
 
 /** Deterministic checks on what the model read. Fixes only what is certain; flags the rest. */
@@ -49,7 +103,11 @@ export function checkEstimate(reading: HospitalEstimate): HospitalEstimate {
     unsure = true;
   };
 
-  if (reading.lines.length === 0) flag('No charges could be read from the estimate.');
+  if (reading.lines.length === 0) {
+    // Nothing to check: say so once (the reader's own note says what the photo shows).
+    flag('No charges could be read from the estimate.');
+    return { ...reading, needsConfirmation: true, notes };
+  }
 
   // Estimates often print a rent-only tariff table (General Ward … Suite) next to charges
   // priced for two or three rooms. A category with no charge in any line and no printed
