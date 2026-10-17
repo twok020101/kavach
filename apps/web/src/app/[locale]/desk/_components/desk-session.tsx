@@ -15,7 +15,7 @@ import {
   TriangleAlert,
 } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
-import { useCallback, useRef, useState, type FormEvent } from 'react';
+import { useCallback, useEffect, useRef, useState, type FormEvent } from 'react';
 import { AgentSteps, type AgentStep } from '@/components/kavach/agent-steps';
 import { AnswerCard } from '@/components/kavach/answer-card';
 import { Amount } from '@/components/kavach/amount';
@@ -55,6 +55,7 @@ export function DeskSessionScreen({
   const locale = useLocale() as Locale;
   const router = useRouter();
   const fileInput = useRef<HTMLInputElement>(null);
+  const answers = useRef<HTMLElement>(null);
   const lineId = useRef(0);
 
   const [captions, setCaptions] = useState<CaptionLine[]>([
@@ -218,6 +219,11 @@ export function DeskSessionScreen({
 
   const busy = capture.isPending || ask.isPending;
 
+  // The cards are the answer: bring the first one into view when they arrive.
+  useEffect(() => {
+    if (answer) answers.current?.scrollIntoView({ block: 'start', behavior: 'smooth' });
+  }, [answer]);
+
   function submit(event: FormEvent) {
     event.preventDefault();
     const text = question.trim();
@@ -287,7 +293,7 @@ export function DeskSessionScreen({
 
         {live && liveSteps.length > 0 && <AgentSteps steps={liveSteps} />}
 
-        {!live && operation && (
+        {!live && operation && busy && (
           <AgentStepsTicker key={operation.id} labels={operation.labels} running={busy} />
         )}
 
@@ -335,26 +341,30 @@ export function DeskSessionScreen({
                 </p>
               </div>
             </div>
-            <ul className="flex flex-wrap gap-2" aria-label={t('estimate.rooms')}>
-              {estimate.roomCategories.map((room) => (
-                <li key={room.id} className="rounded-sm bg-sunken px-2 py-1">
-                  <Amount value={room.rentPerDay} className="font-semibold" /> {room.label}
-                </li>
-              ))}
-            </ul>
-            <div className="flex flex-wrap items-center justify-between gap-2">
-              <p className="text-muted">{t('estimate.check')}</p>
-              <Button
-                variant="ghost"
-                size="sm"
+            {!answer && (
+              <>
+                <ul className="flex flex-wrap gap-2" aria-label={t('estimate.rooms')}>
+                  {estimate.roomCategories.map((room) => (
+                    <li key={room.id} className="rounded-sm bg-sunken px-2 py-1">
+                      <Amount value={room.rentPerDay} className="font-semibold" /> {room.label}
+                    </li>
+                  ))}
+                </ul>
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <p className="text-muted">{t('estimate.check')}</p>
+                  <Button
+                    variant="ghost"
+                    size="sm"
 
-                disabled={busy}
-                onClick={showEstimate}
-              >
-                <Camera aria-hidden className="size-5" />
-                {t('estimate.retake')}
-              </Button>
-            </div>
+                    disabled={busy}
+                    onClick={showEstimate}
+                  >
+                    <Camera aria-hidden className="size-5" />
+                    {t('estimate.retake')}
+                  </Button>
+                </div>
+              </>
+            )}
           </Card>
         )}
 
@@ -378,7 +388,11 @@ export function DeskSessionScreen({
         )}
 
         {answer && (
-          <section aria-label={t('answers')} className="flex flex-col gap-4">
+          <section
+            ref={answers}
+            aria-label={t('answers')}
+            className="flex scroll-mt-28 flex-col gap-4"
+          >
             {answer.questionForDesk && answer.cards.some((c) => c.kind === 'billing_branch') && (
               <Card className="flex flex-col gap-3 border-2 border-primary">
                 <p className="font-semibold">{tl('billing.question')}</p>
