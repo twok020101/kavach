@@ -169,7 +169,7 @@ export function DeskSessionScreen({
         scene === 'maternity' ? 'estimate-lotus-maternity' : undefined,
       ),
     onMutate: (photo) => {
-      setPhotoUrl(photo === 'sample' ? undefined : URL.createObjectURL(photo));
+      setPhotoUrl(photo === 'sample' ? sampleThumb(scene) : URL.createObjectURL(photo));
       say('user', photo === 'sample' ? t('sampleSent') : t('photoSent'));
       setCameraOpen(false);
       if (!live) begin([t('steps.reading'), t('steps.tariff'), t('steps.policies')]);
@@ -207,7 +207,8 @@ export function DeskSessionScreen({
       begin([t('steps.policies'), t('steps.rooms'), t('steps.verify')]);
     },
     onSuccess: (reply) => {
-      say('agent', reply.text);
+      // The cards carry the detail, so the caption keeps only the opening sentence.
+      say('agent', reply.cards.length ? firstSentence(reply.text) : reply.text);
       setShownCards('all');
       if (reply.cards.length) setAnswer(reply);
     },
@@ -591,6 +592,18 @@ export function DeskSessionScreen({
     </>
   );
 }
+
+/** A small JPEG of the sample estimate photo, so the card shows what was "captured". */
+const sampleThumb = (scene?: 'maternity') =>
+  scene === 'maternity'
+    ? '/samples/lotus-maternity-estimate-thumb.jpg'
+    : '/samples/city-heart-estimate-thumb.jpg';
+
+/** The first sentence of an answer, in English (.!?) or Hindi (।). */
+const firstSentence = (text: string) => {
+  const match = /^[^.!?।]*[.!?।]/.exec(text.trim());
+  return match ? match[0] : text;
+};
 
 const orbState = (status: LiveStatus) =>
   status === 'speaking' ? 'speaking' : status === 'listening' ? 'listening' : 'thinking';
