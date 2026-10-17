@@ -199,7 +199,7 @@ export function Chip({
       aria-pressed={selected}
       onClick={onClick}
       className={cn(
-        'min-h-12 rounded-full border-2 px-4 font-medium transition-colors',
+        'press min-h-12 rounded-full border-2 px-4 font-medium',
         selected
           ? 'border-primary bg-primary text-on-primary'
           : 'border-border-strong bg-surface text-text hover:border-primary',

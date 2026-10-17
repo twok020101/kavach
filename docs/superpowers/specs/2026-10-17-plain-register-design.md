@@ -154,3 +154,7 @@ Jai asked, after seeing his portfolio site again, for Kavach's landing page to o
 - a statement whose words rise, sections that rise in order, two slow colour fields behind the opening section, a soft pointer light, the sample family appearing one person at a time, and the hospital moment told in three self-advancing frames with the ₹90,000 counted up.
 
 The trust rules still govern how it moves: slow, no glows, no urgency, nothing that interrupts, marigold only on the hospital control and the shield. Every app screen, the desk above all, stays as this spec says: still.
+
+## Addendum, 17 Oct 2026 evening: controls
+
+Solid buttons (primary, secondary, hospital) now use the hard 2 px base that §Button above describes: `box-shadow: 0 2px 0 <base>`, gone as the button moves down 2 px on `:active`; on a mouse the button lifts 1 px on hover. Ghost and soft buttons, chips, rows and cards keep the 160 ms `scale(0.97)` press from the design skills. Text fields take the primary border and a 3 px soft halo on focus; checkboxes, radios and the "as of" slider are drawn in the brand. Loading blocks shimmer; the theme toggle turns the moon into the sun; the active nav tab slides. All of it is transform, opacity and box-shadow; reduced motion keeps colour changes only.

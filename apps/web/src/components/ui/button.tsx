@@ -5,13 +5,18 @@ import { Spinner } from './spinner';
 export type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'accent' | 'soft';
 export type ButtonSize = 'sm' | 'md' | 'lg' | 'desk' | 'hero';
 
+/**
+ * Solid buttons stand on a hard 2 px base and press down onto it (`.btn-solid` in globals.css);
+ * ghost and soft ones only give a little under the finger (`.press`). Hover darkens by a step.
+ */
 const variants: Record<ButtonVariant, string> = {
-  primary: 'bg-primary text-on-primary hover:bg-primary-hover',
-  secondary: 'border-2 border-primary bg-surface text-primary hover:bg-primary-soft',
-  soft: 'bg-primary-soft text-primary-hover hover:bg-primary/15',
-  ghost: 'text-primary hover:bg-primary-soft',
+  primary: 'btn-solid bg-primary text-on-primary hover:bg-primary-hover',
+  secondary:
+    'btn-solid btn-outline border-2 border-primary bg-surface text-primary hover:bg-primary-soft',
+  soft: 'press bg-primary-soft text-primary-hover hover:bg-primary/15',
+  ghost: 'press text-primary hover:bg-primary-soft',
   // Marigold is reserved for the hospital button and brand moments.
-  accent: 'bg-accent text-accent-ink hover:brightness-95',
+  accent: 'btn-solid btn-accent bg-accent text-accent-ink hover:bg-accent-hover',
 };
 
 const sizes: Record<ButtonSize, string> = {
@@ -31,7 +36,7 @@ export function buttonClasses({
   className,
 }: { variant?: ButtonVariant; size?: ButtonSize; className?: string } = {}) {
   return cn(
-    'press inline-flex items-center justify-center gap-2 font-semibold',
+    'btn inline-flex items-center justify-center gap-2 font-semibold select-none',
     'disabled:cursor-not-allowed disabled:opacity-50',
     variants[variant],
     sizes[size],

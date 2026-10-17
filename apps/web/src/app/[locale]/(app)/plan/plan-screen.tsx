@@ -129,10 +129,7 @@ function PlanView({ household }: { household: Household }) {
               <h2 className="font-display text-lg font-semibold text-muted">{t('review')}</h2>
               <ul className="flex flex-col gap-2">
                 {plan.reviews.map((r) => (
-                  <li
-                    key={r.policyId + r.issue}
-                    className="rounded-md border-l-4 border-partial bg-partial-bg p-3"
-                  >
+                  <li key={r.policyId + r.issue} className="panel panel-partial">
                     <p className="font-semibold">{policy(r.policyId)?.productName}</p>
                     <p className="text-sm text-partial">{t(`reviewIssue.${r.issue}`)}</p>
                   </li>

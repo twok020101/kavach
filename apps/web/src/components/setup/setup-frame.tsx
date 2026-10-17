@@ -6,6 +6,7 @@ import type { ReactNode } from 'react';
 import { Link } from '@/i18n/navigation';
 import { LanguageSwitch } from '../kavach/language-switch';
 import { Logo, LogoMark } from '../kavach/logo';
+import { Reveal } from '../kavach/reveal';
 import { ThemeToggle } from '../kavach/theme-toggle';
 import { cn } from '../ui/cn';
 
@@ -26,12 +27,15 @@ export function StepProgress({ step }: { step: number }) {
             aria-current={state === 'current' ? 'step' : undefined}
             className="flex flex-1 flex-col gap-1.5"
           >
-            <span
-              className={cn(
-                'h-1.5 rounded-sm transition-colors',
-                state === 'todo' ? 'bg-border' : 'bg-primary',
-              )}
-            />
+            {/* Each bar fills from the left as the step is reached (transform only, 500 ms). */}
+            <span className="h-1.5 overflow-hidden rounded-sm bg-border">
+              <i
+                className={cn(
+                  'block h-full origin-left bg-primary transition-transform duration-500 ease-[var(--ease-out-strong)]',
+                  state === 'todo' ? 'scale-x-0' : 'scale-x-100',
+                )}
+              />
+            </span>
             <span
               className={cn(
                 'truncate text-xs font-medium',
@@ -119,20 +123,24 @@ function BrandPanel() {
     { icon: FileWarning, key: 'claim' },
   ] as const;
   return (
-    <aside className="hidden w-[42%] max-w-xl flex-col justify-between bg-primary p-10 text-on-primary lg:flex">
-      <Link href="/" className="inline-flex items-center gap-3" aria-label="Kavach">
+    <aside className="relative hidden w-[42%] max-w-xl flex-col justify-between overflow-hidden bg-primary p-10 text-on-primary lg:flex">
+      {/* The mark, large and quiet, behind the words: the two arcs that hold the family. */}
+      <LogoMark className="pointer-events-none absolute -bottom-20 -right-16 size-[26rem] opacity-[0.09] [--primary:#fff]" />
+      <Link href="/" className="relative inline-flex items-center gap-3" aria-label="Kavach">
         <span className="rounded-md bg-surface p-1.5">
           <LogoMark className="size-8" />
         </span>
         <span className="font-display text-2xl font-bold">Kavach</span>
       </Link>
-      <div className="flex flex-col gap-8">
-        <p className="font-display text-4xl font-bold leading-tight tracking-tight">
-          {t('tagline')}
-        </p>
+      <div className="relative flex flex-col gap-8">
+        <Reveal as="div">
+          <p className="font-display text-4xl font-bold leading-tight tracking-tight">
+            {t('tagline')}
+          </p>
+        </Reveal>
         <ul className="flex flex-col gap-4">
-          {moments.map(({ icon: Icon, key }) => (
-            <li key={key} className="flex items-start gap-3">
+          {moments.map(({ icon: Icon, key }, i) => (
+            <Reveal as="li" key={key} delay={0.08 + i * 0.06} className="flex items-start gap-3">
               <span
                 className={cn(
                   'flex size-10 shrink-0 items-center justify-center rounded-md',
@@ -145,11 +153,11 @@ function BrandPanel() {
                 <span className="block font-semibold">{t(`${key}.title`)}</span>
                 <span className="block text-sm opacity-80">{t(`${key}.body`)}</span>
               </span>
-            </li>
+            </Reveal>
           ))}
         </ul>
       </div>
-      <p className="text-sm opacity-70">{t('promise')}</p>
+      <p className="relative text-sm opacity-70">{t('promise')}</p>
     </aside>
   );
 }

@@ -5,7 +5,7 @@ type CardProps = HTMLAttributes<HTMLElement> & {
   as?: 'div' | 'section' | 'article' | 'li' | 'aside';
   /** `raised` and `flat` are both a bordered box (07 elevation 0); `soft` is a sunken panel with no border. */
   tone?: 'raised' | 'flat' | 'soft';
-  /** Shows a pointer and a stronger border on hover: for cards that are links or buttons. */
+  /** For cards that are links or buttons: the border takes the primary on hover and the card gives on press. */
   interactive?: boolean;
 };
 

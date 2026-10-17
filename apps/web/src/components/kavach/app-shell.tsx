@@ -10,6 +10,7 @@ import {
   ListChecks,
   type LucideIcon,
 } from 'lucide-react';
+import { motion, useReducedMotion } from 'motion/react';
 import { useTranslations } from 'next-intl';
 import type { ReactNode } from 'react';
 import { Link, usePathname } from '@/i18n/navigation';
@@ -37,6 +38,19 @@ const desktopTabs: Tab[] = [
 /** Phone: four tabs around the hospital cell in the middle. */
 const phoneLeft: Tab[] = [desktopTabs[0]!, desktopTabs[1]!];
 const phoneRight: Tab[] = [desktopTabs[2]!, desktopTabs[5]!];
+
+/** The soft indigo pill that slides from the old tab to the new one (250 ms, strong ease-out). */
+function ActivePill({ id, className }: { id: string; className?: string }) {
+  const reduce = useReducedMotion();
+  return (
+    <motion.span
+      aria-hidden
+      layoutId={id}
+      className={cn('absolute inset-0 rounded-md bg-primary-soft', className)}
+      transition={reduce ? { duration: 0 } : { duration: 0.25, ease: [0.23, 1, 0.32, 1] }}
+    />
+  );
+}
 
 /**
  * Signed-in app frame. Phone: a slim top bar and a bottom bar whose centre cell is the
@@ -102,14 +116,19 @@ export function AppShell({
                   href={href}
                   aria-current={isActive(href) ? 'page' : undefined}
                   className={cn(
-                    'press flex min-h-12 items-center gap-3 rounded-md px-3 font-medium',
+                    'press relative flex min-h-12 items-center gap-3 rounded-md px-3 font-medium',
                     isActive(href)
-                      ? 'bg-primary-soft text-primary-hover'
+                      ? 'text-primary-hover'
                       : 'text-muted hover:bg-sunken hover:text-text',
                   )}
                 >
-                  <Icon aria-hidden className="size-5" strokeWidth={isActive(href) ? 2.25 : 1.75} />
-                  {t(`nav.${key}`)}
+                  {isActive(href) && <ActivePill id="nav-pill" />}
+                  <Icon
+                    aria-hidden
+                    className="relative size-5"
+                    strokeWidth={isActive(href) ? 2.25 : 1.75}
+                  />
+                  <span className="relative">{t(`nav.${key}`)}</span>
                 </Link>
               </li>
             ))}
@@ -145,7 +164,7 @@ export function AppShell({
           <li className="flex items-stretch justify-center p-1.5">
             <Link
               href="/desk"
-              className="press flex min-h-14 w-full flex-col items-center justify-center gap-0.5 rounded-md bg-accent text-xs font-bold text-accent-ink"
+              className="btn btn-solid btn-accent flex min-h-14 w-full flex-col items-center justify-center gap-0.5 rounded-md bg-accent text-xs font-bold text-accent-ink"
             >
               <Hospital aria-hidden className="size-6" strokeWidth={2} />
               {t('nav.hospital')}
@@ -177,13 +196,9 @@ function PhoneTab({ tab, active, label }: { tab: Tab; active: boolean; label: st
           active ? 'text-primary' : 'text-muted hover:text-text',
         )}
       >
-        <span
-          className={cn(
-            'flex h-7 w-12 items-center justify-center rounded-md',
-            active && 'bg-primary-soft',
-          )}
-        >
-          <Icon aria-hidden className="size-6" strokeWidth={active ? 2.25 : 1.75} />
+        <span className="relative flex h-7 w-12 items-center justify-center rounded-md">
+          {active && <ActivePill id="tab-pill" />}
+          <Icon aria-hidden className="relative size-6" strokeWidth={active ? 2.25 : 1.75} />
         </span>
         {label}
       </Link>

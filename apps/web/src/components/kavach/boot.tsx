@@ -1,12 +1,12 @@
 'use client';
 
-import { Check } from 'lucide-react';
 import { motion } from 'motion/react';
 import { useTranslations } from 'next-intl';
 import { useEffect, useState, useSyncExternalStore } from 'react';
 
-const RUN_MS = 2400;
-const LIFT_MS = 720;
+const RUN_MS = 2600;
+const LIFT_MS = 640;
+const EASE_OUT: [number, number, number, number] = [0.23, 1, 0.32, 1];
 const root = () => document.documentElement;
 
 /**
@@ -32,10 +32,13 @@ function decide(): boolean {
 const readWanted = () => (wanted ??= decide());
 
 /**
- * The opening on a first visit to the landing page: the shield draws itself, three quiet lines
- * say what is already in place, and the panel lifts into the page. About two and a half seconds,
- * once per tab, never on app or hospital routes (public/theme.js decides before first paint).
- * A tap, a key or reduced motion skips it. Nothing here counts, flashes or hurries anyone.
+ * The opening on a first visit to the landing page. One authored moment, the brand story told in
+ * motion: two arcs, two people, draw up from the base towards each other and meet as the shield
+ * while a warm light rises behind them; the name settles up through a mask; three quiet lines
+ * say what is already in place, each tick drawing itself; then the panel lifts, its content
+ * lagging a little for depth, and the page rises underneath. About two and a half seconds, once
+ * per tab, never on app or hospital routes. A tap, a key or reduced motion skips it. Nothing
+ * counts, flashes or hurries anyone.
  */
 export function Boot() {
   const t = useTranslations('landing.boot');
@@ -76,7 +79,7 @@ export function Boot() {
       else {
         const fonts = document.fonts ? document.fonts.ready : Promise.resolve();
         Promise.race([fonts, new Promise((r) => timers.push(window.setTimeout(r, 800)))]).then(() =>
-          timers.push(window.setTimeout(finish, 240)),
+          timers.push(window.setTimeout(finish, 200)),
         );
       }
     };
@@ -99,9 +102,9 @@ export function Boot() {
   if (!active || gone) return null;
 
   const lines = [
-    { at: 700, text: t('policies') },
-    { at: 1300, text: t('rules') },
-    { at: 1900, text: t('beside') },
+    { at: 950, text: t('policies') },
+    { at: 1450, text: t('rules') },
+    { at: 1950, text: t('beside') },
   ];
   const progress = Math.min(1, elapsed / RUN_MS);
 
@@ -109,70 +112,78 @@ export function Boot() {
     <div
       aria-hidden
       className={`boot${leaving ? ' is-leaving' : ''}`}
-      style={{ transitionDuration: `${LIFT_MS}ms` }}
+      style={{ '--lift': `${LIFT_MS}ms` } as React.CSSProperties}
     >
       <div className="boot__inner">
         <div className="boot__brand">
           <svg viewBox="0 0 32 32" className="boot__shield" aria-hidden>
+            {/* The left person, drawn from the base up towards the meeting point */}
             <motion.path
-              d="M15 4 5 7.5V15c0 6.6 4.2 11 10 13"
+              d="M15 28C9.2 26 5 21.6 5 15V7.5L15 4"
               fill="none"
               stroke="#8FA3F0"
               strokeWidth="2.6"
               strokeLinecap="round"
               strokeLinejoin="round"
-              initial={{ pathLength: 0, opacity: 0 }}
+              initial={{ pathLength: 0, opacity: 0.4 }}
               animate={{ pathLength: 1, opacity: 1 }}
-              transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ duration: 1.1, ease: EASE_OUT }}
             />
+            {/* The right person, drawn to meet the left */}
             <motion.path
-              d="M17 4l10 3.5V15c0 6.6-4.2 11-10 13"
+              d="M17 28c5.8-2 10-6.4 10-13V7.5L17 4"
               fill="none"
               stroke="#F4A62A"
               strokeWidth="2.6"
               strokeLinecap="round"
               strokeLinejoin="round"
-              initial={{ pathLength: 0, opacity: 0 }}
+              initial={{ pathLength: 0, opacity: 0.4 }}
               animate={{ pathLength: 1, opacity: 1 }}
-              transition={{ duration: 0.9, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ duration: 1.1, delay: 0.1, ease: EASE_OUT }}
             />
             <motion.circle
               cx="12"
               cy="13"
               r="2.2"
               fill="#8FA3F0"
-              initial={{ scale: 0, opacity: 0 }}
+              initial={{ scale: 0.6, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              transition={{ delay: 0.8, duration: 0.3 }}
+              transition={{ delay: 0.9, duration: 0.35, ease: EASE_OUT }}
             />
             <motion.circle
               cx="20"
               cy="13"
               r="2.2"
               fill="#F4A62A"
-              initial={{ scale: 0, opacity: 0 }}
+              initial={{ scale: 0.6, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              transition={{ delay: 0.95, duration: 0.3 }}
+              transition={{ delay: 1.0, duration: 0.35, ease: EASE_OUT }}
             />
           </svg>
-          <motion.div
-            className="boot__name"
-            initial={{ opacity: 0, y: 6 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5, duration: 0.5 }}
-          >
-            <span className="boot__word">Kavach</span>
+          <div className="boot__name">
+            <span className="boot__word">
+              <span>Kavach</span>
+            </span>
             <span className="boot__deva" lang="hi">
               कवच
             </span>
-          </motion.div>
+          </div>
         </div>
 
         <ol className="boot__lines">
           {lines.map((line) =>
             elapsed >= line.at ? (
               <li key={line.text} className="boot__line">
-                <Check aria-hidden className="size-4 shrink-0" strokeWidth={3} />
+                <svg viewBox="0 0 20 20" className="boot__tick" aria-hidden>
+                  <path
+                    d="M4 10.5l4 4 8-9"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.4"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
                 <span>{line.text}</span>
               </li>
             ) : null,

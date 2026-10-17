@@ -30,7 +30,7 @@ export function Disclosure({
         aria-expanded={open}
         aria-controls={id}
         onClick={() => setOpen((o) => !o)}
-        className="flex min-h-12 w-full items-center gap-2 rounded-md px-1 text-left font-semibold text-primary hover:bg-primary-soft"
+        className="press flex min-h-12 w-full items-center gap-2 rounded-md px-1 text-left font-semibold text-primary hover:bg-primary-soft"
       >
         {icon}
         <span className="flex-1">{label}</span>

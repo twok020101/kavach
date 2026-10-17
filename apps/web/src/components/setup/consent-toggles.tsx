@@ -23,13 +23,15 @@ export function ConsentToggles({
           <li key={purpose}>
             <label
               className={cn(
-                'flex cursor-pointer items-start gap-3 rounded-md border bg-surface p-4',
-                on ? 'border-primary' : 'border-border',
+                'press flex cursor-pointer items-start gap-3 rounded-md border bg-surface p-4',
+                on
+                  ? 'border-primary bg-primary-soft/40'
+                  : 'border-border hover:border-border-strong',
               )}
             >
               <input
                 type="checkbox"
-                className="mt-1 size-5 shrink-0 accent-[var(--primary)]"
+                className="mt-0.5"
                 checked={on}
                 disabled={disabled}
                 onChange={(e) =>
