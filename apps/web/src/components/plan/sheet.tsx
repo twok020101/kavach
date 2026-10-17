@@ -29,7 +29,7 @@ export function Sheet({
   return (
     <AnimatePresence>
       {open && (
-        <div className="fixed inset-0 z-40 flex items-end justify-center">
+        <div className="fixed inset-0 z-40 flex items-end justify-center sm:items-center sm:p-6">
           <motion.button
             aria-label={t('close')}
             className="absolute inset-0 bg-black/40"
@@ -41,13 +41,13 @@ export function Sheet({
           <motion.div
             role="dialog"
             aria-modal="true"
-            className="relative max-h-[85dvh] w-full max-w-xl overflow-y-auto rounded-t-lg bg-surface p-4 pb-8 shadow-2"
+            className="relative max-h-[85dvh] w-full max-w-xl overflow-y-auto rounded-t-lg bg-surface p-4 pb-8 shadow-2 sm:max-h-[90dvh] sm:rounded-lg"
             initial={reduce ? { opacity: 0 } : { y: '100%' }}
             animate={reduce ? { opacity: 1 } : { y: 0 }}
             exit={reduce ? { opacity: 0 } : { y: '100%' }}
             transition={{ duration: 0.25, ease: [0.2, 0.8, 0.2, 1] }}
           >
-            <div className="mb-3 flex items-start gap-3">
+            <div className="sticky -top-4 z-10 -mx-4 -mt-4 mb-3 flex items-start gap-3 bg-surface px-4 pb-2 pt-4">
               <h2 className="flex-1 font-display text-xl font-bold">{title}</h2>
               <button
                 onClick={onClose}

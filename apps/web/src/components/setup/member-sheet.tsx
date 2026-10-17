@@ -165,7 +165,7 @@ function MemberForm({
         </div>
       </fieldset>
 
-      <div className="flex items-center justify-between gap-3 pt-2">
+      <div className="sticky -bottom-8 -mx-4 -mb-8 mt-2 flex items-center justify-between gap-3 border-t border-border bg-surface px-4 py-3">
         {!isNew && draft.relation !== 'self' ? (
           <Button variant="ghost" onClick={onRemove} className="text-gap">
             {t('edit.remove')}
