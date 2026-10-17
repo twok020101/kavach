@@ -4,6 +4,7 @@ import { AssessClaimRequest, ClaimCase, ClaimList, UpdateAppealRequest } from '@
 import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod';
 import { z } from 'zod';
 import { loadHousehold, requireUser } from '../auth';
+import { resetDemoHousehold } from '../demo';
 import {
   appealPdf,
   assess,
@@ -64,8 +65,14 @@ export const claimRoutes: FastifyPluginAsyncZod = async (app) => {
     '/v1/households/:hid/claims::sample',
     { schema: { params: Params, querystring: SampleQuery, response: { 201: ClaimCase } } },
     async (request, reply) => {
-      const household = await loadHousehold(request, request.params.hid);
+      let household = await loadHousehold(request, request.params.hid);
       const sample = SAMPLES[request.query.scene];
+      // The sample letters are written for a checkpoint of the Sharma story (the parents already
+      // on their own policy; Priya's delivery). A demo family that is not there yet is moved
+      // there first, or the letter would be matched against the wrong policy.
+      if (household.isDemo) {
+        household = await resetDemoHousehold(household, request.query.scene);
+      }
       const bytes = await readFile(resolve(repoRoot, 'data/samples', sample.file));
       const claim = await createClaim(household, {
         filename: sample.file,

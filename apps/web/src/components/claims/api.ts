@@ -4,6 +4,7 @@ import { ClaimCase, ClaimList, type AppealCheck } from '@kavach/schemas';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { api, apiUrl, ApiError } from '@/lib/api';
 import { getIdToken } from '@/lib/firebase';
+import { householdQueryKey } from '@/lib/household';
 
 const claimsKey = (hid?: string) => ['claims', hid] as const;
 const claimKey = (hid?: string, cid?: string) => ['claim', hid, cid] as const;
@@ -35,6 +36,8 @@ function useStoreClaim(hid: string | undefined) {
   const queryClient = useQueryClient();
   return (claim: ClaimCase) => {
     queryClient.setQueryData(claimKey(hid, claim.id), claim);
+    // A sample letter moves a demo family to its checkpoint, so the household may have changed.
+    void queryClient.invalidateQueries({ queryKey: householdQueryKey });
     return queryClient.invalidateQueries({ queryKey: claimsKey(hid) });
   };
 }

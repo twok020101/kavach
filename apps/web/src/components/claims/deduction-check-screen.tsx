@@ -4,6 +4,7 @@ import { formatInr } from '@kavach/engine';
 import type { AssessedDeduction, ClaimCase, Household } from '@kavach/schemas';
 import { ArrowLeft, CircleCheck, CircleHelp, CircleX, FileText, Info, PenLine } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import { apiMessage } from '@/lib/api';
 import { useState } from 'react';
 import { ClauseChip } from '@/components/documents/ClauseSheet';
 import { Amount } from '@/components/kavach/amount';
@@ -152,7 +153,9 @@ function Check({ household, cid }: { household: Household; cid: string }) {
             {t('check.draft')}
           </Button>
         ))}
-      {draft.isError && <p className="rounded-md bg-gap-bg p-3 text-gap">{t('error')}</p>}
+      {draft.isError && (
+        <p className="rounded-md bg-gap-bg p-3 text-gap">{apiMessage(draft.error) ?? t('error')}</p>
+      )}
 
       <Button variant="ghost" onClick={() => openLetter(household.id, claim.id)}>
         <FileText aria-hidden className="size-5" />
