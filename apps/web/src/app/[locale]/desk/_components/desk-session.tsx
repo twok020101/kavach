@@ -56,6 +56,7 @@ export function DeskSessionScreen({
   const locale = useLocale() as Locale;
   const router = useRouter();
   const fileInput = useRef<HTMLInputElement>(null);
+  const questionBox = useRef<HTMLTextAreaElement>(null);
   const answers = useRef<HTMLElement>(null);
   const askSection = useRef<HTMLElement>(null);
   const lineId = useRef(0);
@@ -276,6 +277,14 @@ export function DeskSessionScreen({
     if (estimate && !answer && !live)
       askSection.current?.scrollIntoView({ block: 'start', behavior: 'smooth' });
   }, [estimate, answer, live]);
+
+  // The question box fits its text: one line empty, up to five as the family types.
+  useEffect(() => {
+    const el = questionBox.current;
+    if (!el) return;
+    el.style.height = 'auto';
+    el.style.height = `${Math.min(el.scrollHeight, 176)}px`;
+  }, [question]);
 
   function submit(event: FormEvent) {
     event.preventDefault();
@@ -623,13 +632,22 @@ export function DeskSessionScreen({
                 <label htmlFor="desk-question" className="sr-only">
                   {t('questionLabel')}
                 </label>
-                <input
+                {/* Grows with the question (up to five lines) so every word stays in view; Enter sends, Shift+Enter breaks a line. */}
+                <textarea
                   id="desk-question"
+                  ref={questionBox}
+                  rows={1}
                   value={question}
                   onChange={(e) => setQuestion(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && !e.shiftKey && !e.nativeEvent.isComposing) {
+                      e.preventDefault();
+                      e.currentTarget.form?.requestSubmit();
+                    }
+                  }}
                   placeholder={t('questionPlaceholder')}
                   autoComplete="off"
-                  className="min-h-16 min-w-0 flex-1 rounded-md border-2 border-border-strong bg-surface px-3 text-lg placeholder:text-muted focus-visible:border-primary"
+                  className="max-h-44 min-h-16 min-w-0 flex-1 resize-none rounded-md border-2 border-border-strong bg-surface px-3 py-4 text-lg leading-snug placeholder:text-muted focus-visible:border-primary"
                 />
                 <Button
                   type="submit"

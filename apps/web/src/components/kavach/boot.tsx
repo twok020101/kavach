@@ -28,7 +28,11 @@ export function Boot() {
   const [elapsed, setElapsed] = useState(0);
 
   useEffect(() => {
-    if (!active) return;
+    // Never leave the page hidden: if the mark arrived after React, clear it and skip the opening.
+    if (!active) {
+      root().classList.remove('booting');
+      return;
+    }
     let frame = 0;
     const timers: number[] = [];
     const start = performance.now();
