@@ -11,12 +11,11 @@ import {
   TriangleAlert,
 } from 'lucide-react';
 import { motion, useReducedMotion } from 'motion/react';
-import { useTranslations } from 'next-intl';
 import type { ReactNode } from 'react';
 import { cn } from '../ui/cn';
 import { Amount } from './amount';
 import { AnimatedAmount } from './animated-amount';
-import { RuleId, VerifiedBadge } from './verified-badge';
+import { VerifiedBadge } from './verified-badge';
 
 const icons = {
   policy_order: IdCard,
@@ -42,7 +41,6 @@ export function AnswerCard({
   /** Extra controls under the card, e.g. "Compare rooms". */
   children?: ReactNode;
 }) {
-  const t = useTranslations('common');
   const reduce = useReducedMotion();
   const Icon = icons[card.kind];
   const lines = card.body.split('\n').filter(Boolean);
@@ -140,15 +138,6 @@ export function AnswerCard({
             </div>
           ))}
         </dl>
-      )}
-
-      {card.ruleIds.length > 0 && (
-        <p className="mt-3 flex flex-wrap items-center gap-1.5 text-sm text-muted">
-          <span>{t('rules')}</span>
-          {card.ruleIds.map((id) => (
-            <RuleId key={id} id={id} />
-          ))}
-        </p>
       )}
 
       {children && <div className="mt-3 border-t border-border pt-2">{children}</div>}

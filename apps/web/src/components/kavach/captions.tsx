@@ -17,7 +17,7 @@ export function Captions({ lines, className }: { lines: CaptionLine[]; className
   }, [lines.length]);
 
   return (
-    <ol role="log" aria-live="polite" className={cn('flex flex-col gap-3', className)}>
+    <ol role="log" aria-live="polite" className={cn('flex flex-col gap-2', className)}>
       {lines.map((line, i) => {
         const agent = line.who === 'agent';
         return (
@@ -29,7 +29,7 @@ export function Captions({ lines, className }: { lines: CaptionLine[]; className
             {agent && <LogoMark className="mb-1 size-6 shrink-0" />}
             <div
               className={cn(
-                'max-w-[88%] rounded-lg px-4 py-2.5 text-lg',
+                'max-w-[88%] rounded-lg px-3 py-2 text-base',
                 agent
                   ? 'rounded-bl-sm border border-border bg-surface font-semibold text-text'
                   : 'rounded-br-sm bg-primary-soft text-text',
