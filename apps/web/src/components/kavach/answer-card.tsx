@@ -61,16 +61,11 @@ export function AnswerCard({
         <span
           aria-hidden
           className={cn(
-            'relative flex size-11 shrink-0 items-center justify-center rounded-full',
+            'flex size-11 shrink-0 items-center justify-center rounded-full',
             warning ? 'bg-surface text-partial' : 'bg-primary-soft text-primary',
           )}
         >
           <Icon className="size-6" strokeWidth={1.75} />
-          {!warning && (
-            <span className="absolute -right-1 -top-1 flex size-5 items-center justify-center rounded-full bg-primary font-display text-[11px] font-bold text-on-primary">
-              {index + 1}
-            </span>
-          )}
         </span>
         <div className="min-w-0 flex-1">
           <h3 id={`${card.id}-title`} className="font-display text-xl font-bold leading-snug">
@@ -83,6 +78,7 @@ export function AnswerCard({
             </div>
           )}
         </div>
+        {!warning && <span className="label shrink-0 pt-1">0{index + 1}</span>}
       </header>
 
       {lines.length > 1 && card.kind === 'ask_desk' ? (
@@ -113,11 +109,11 @@ export function AnswerCard({
             <div
               key={a.label}
               className={cn(
-                'flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 rounded-sm px-3 py-2.5',
+                'flex flex-col gap-0.5 rounded-sm px-3 py-2.5',
                 a.emphasis ? 'bg-safe-bg text-safe' : 'bg-sunken',
               )}
             >
-              <dt className={cn(a.emphasis ? 'font-semibold' : 'text-muted')}>{a.label}</dt>
+              <dt className={cn('label', a.emphasis && 'text-safe')}>{a.label}</dt>
               <dd>
                 {a.emphasis && animate ? (
                   <AnimatedAmount
