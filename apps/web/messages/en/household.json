@@ -10,7 +10,8 @@
     "setup": "Setup",
     "job_change": "Job change",
     "hospital": "Hospital",
-    "claim": "Claim"
+    "claim": "Claim",
+    "maternity": "Delivery"
   },
   "membersHeading": "Family",
   "age": "{age} yrs",

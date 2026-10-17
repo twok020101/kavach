@@ -37,7 +37,7 @@ function Claims({ household }: { household: Household }) {
   const fileInput = useRef<HTMLInputElement>(null);
   const cameraInput = useRef<HTMLInputElement>(null);
 
-  const start = (file?: File) =>
+  const start = (file?: File | 'maternity') =>
     create.mutate(file, {
       onSuccess: (claim) => claim.status !== 'failed' && router.push(`/claims/${claim.id}`),
     });
@@ -64,10 +64,18 @@ function Claims({ household }: { household: Household }) {
               {t('list.photo')}
             </Button>
           </div>
-          <Button variant="ghost" onClick={() => start()}>
-            <Sparkles aria-hidden className="size-5" />
-            {t('list.sample')}
-          </Button>
+          <div className="flex flex-wrap justify-center gap-2">
+            <Button variant="ghost" onClick={() => start()}>
+              <Sparkles aria-hidden className="size-5" />
+              {t('list.sample')}
+            </Button>
+            {household.isDemo && (
+              <Button variant="ghost" onClick={() => start('maternity')}>
+                <Sparkles aria-hidden className="size-5" />
+                {t('list.sampleMaternity')}
+              </Button>
+            )}
+          </div>
           <input
             ref={fileInput}
             type="file"

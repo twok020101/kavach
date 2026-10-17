@@ -90,6 +90,8 @@ function categorise(d: LetterDeduction): Category {
   if (/non[- ]?payable|non[- ]?medical/.test(text)) return 'non_payable';
   if (/consumable/.test(text)) return 'consumables';
   if (/room rent|room charges/.test(text)) return 'room_excess';
+  if (/ailment limit|defined limit|maternity limit|sub-?limit|delivery limit/.test(text))
+    return 'ailment_limit';
   return 'other';
 }
 
@@ -163,6 +165,24 @@ function judge(category: Category, bill: ClaimBill, policy: Policy): Verdict {
             ruleId: 'R-HL-008',
             reason: `Room rent above the limit is not payable${roomFacts}.`,
           };
+    case 'ailment_limit': {
+      const m = policy.terms.maternity;
+      if (m) {
+        const limits = [m.limitNormal, m.limitCsection].filter((x) => x !== undefined);
+        return {
+          verdict: 'valid',
+          ruleId: 'R-CLM-009',
+          reason: `Maternity on this policy is capped at ${limits.map(formatInr).join(' / ')}; the insurer paid up to the cap. Nothing to appeal here: the fix is more cover before the next pregnancy.`,
+          citationKey: 'maternity',
+        };
+      }
+      return {
+        verdict: 'possibly',
+        ruleId: 'R-CLM-006',
+        reason:
+          'The letter cites a defined limit the policy terms do not show; ask the insurer which clause sets it.',
+      };
+    }
     default:
       return {
         verdict: 'possibly',

@@ -18,7 +18,14 @@ export const SettlementLetter = z.object({
       reasonGiven: z.string().optional(),
       /** Set by the letter reader when it can tell; the engine falls back to the label. */
       category: z
-        .enum(['non_payable', 'proportionate', 'consumables', 'room_excess', 'other'])
+        .enum([
+          'non_payable',
+          'proportionate',
+          'consumables',
+          'room_excess',
+          'ailment_limit',
+          'other',
+        ])
         .optional(),
       /** Policy clause the insurer printed against this deduction, e.g. "3.2". */
       clauseRef: z.string().optional(),

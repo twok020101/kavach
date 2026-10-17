@@ -19,7 +19,12 @@ import { repoRoot } from '../paths';
 const Params = z.object({ hid: z.string() });
 const ClaimParams = Params.extend({ cid: z.string() });
 const ACCEPTED = /^(application\/pdf|image\/(png|jpeg|webp|heic|heif))$/;
-const SAMPLE_LETTER = 'suraksha-settlement-letter.pdf';
+/** S30 "Use the sample letter": CX-1 (angioplasty) by default, MX-1 (delivery) for the maternity scene. */
+const SAMPLES = {
+  claim: { file: 'suraksha-settlement-letter.pdf', fixture: 'claim-letter-cx1' },
+  maternity: { file: 'lotus-maternity-settlement-letter.pdf', fixture: 'claim-letter-mx1' },
+} as const;
+const SampleQuery = z.object({ scene: z.enum(['claim', 'maternity']).default('claim') });
 
 /** Moment 3: settlement letter → engine verdict per deduction → verified appeal letter (WP-10). */
 export const claimRoutes: FastifyPluginAsyncZod = async (app) => {
@@ -57,15 +62,17 @@ export const claimRoutes: FastifyPluginAsyncZod = async (app) => {
   // S30 "Use the sample letter": the CX-1 Suraksha settlement letter from data/samples.
   app.post(
     '/v1/households/:hid/claims::sample',
-    { schema: { params: Params, response: { 201: ClaimCase } } },
+    { schema: { params: Params, querystring: SampleQuery, response: { 201: ClaimCase } } },
     async (request, reply) => {
       const household = await loadHousehold(request, request.params.hid);
-      const bytes = await readFile(resolve(repoRoot, 'data/samples', SAMPLE_LETTER));
+      const sample = SAMPLES[request.query.scene];
+      const bytes = await readFile(resolve(repoRoot, 'data/samples', sample.file));
       const claim = await createClaim(household, {
-        filename: SAMPLE_LETTER,
+        filename: sample.file,
         mimeType: 'application/pdf',
         bytes,
         isSample: true,
+        fixture: sample.fixture,
       });
       return reply.code(201).send(claim);
     },

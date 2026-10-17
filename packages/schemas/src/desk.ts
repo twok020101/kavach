@@ -8,6 +8,7 @@ export const DeskCardKind = z.enum([
   'ask_desk',
   'billing_branch',
   'top_up_note',
+  'limit_cap',
   'warning',
 ]);
 

@@ -39,7 +39,15 @@ import { DeskHeader } from './desk-header';
  * S22 + S23: the desk. Text mode (photo of the estimate, typed questions) or live voice mode
  * (mic, camera still, spoken answers); both show the same captions and answer cards.
  */
-export function DeskSessionScreen({ sid, demo }: { sid: string; demo: boolean }) {
+export function DeskSessionScreen({
+  sid,
+  demo,
+  scene,
+}: {
+  sid: string;
+  demo: boolean;
+  scene?: 'maternity';
+}) {
   const t = useTranslations('desk.session');
   const tc = useTranslations('common');
   const tl = useTranslations('live');
@@ -150,7 +158,12 @@ export function DeskSessionScreen({ sid, demo }: { sid: string; demo: boolean })
   const showEstimate = () => (live ? setCameraOpen(true) : fileInput.current?.click());
 
   const capture = useMutation({
-    mutationFn: (photo: File | 'sample') => deskClient.capture(sid, photo),
+    mutationFn: (photo: File | 'sample') =>
+      deskClient.capture(
+        sid,
+        photo,
+        scene === 'maternity' ? 'estimate-lotus-maternity' : undefined,
+      ),
     onMutate: (photo) => {
       setPhotoUrl(photo === 'sample' ? undefined : URL.createObjectURL(photo));
       say('user', photo === 'sample' ? t('sampleSent') : t('photoSent'));
@@ -233,7 +246,7 @@ export function DeskSessionScreen({ sid, demo }: { sid: string; demo: boolean })
     }
   }
 
-  const query = demo ? { demo: '1' } : undefined;
+  const query = demo ? { demo: '1', ...(scene ? { scene } : {}) } : undefined;
   const firstName = patient?.name.split(' ')[0];
 
   return (

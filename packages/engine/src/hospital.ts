@@ -9,6 +9,7 @@ import type {
   RoomCategory,
   RoomOptionResult,
   RuleFiring,
+  Treatment,
 } from '@kavach/schemas';
 import { formatInr, roundRupees } from './money';
 import { fire } from './rules';
@@ -121,7 +122,7 @@ function bestOrder(
 
   for (const order of orders) {
     const trace: RuleFiring[] = [];
-    const options = priced.map((o) => settle(ctx, o, order, mode, trace));
+    const options = priced.map((o) => settle(ctx, o, order, mode, trace, estimate.treatment));
     const recommended = options.reduce((a, b) =>
       b.outOfPocket < a.outOfPocket ||
       (b.outOfPocket === a.outOfPocket && b.rentPerDay < a.rentPerDay)
@@ -193,6 +194,7 @@ function settle(
   order: Policy[],
   mode: Mode,
   trace: RuleFiring[],
+  treatment: Treatment = 'general',
 ): RoomOptionResult {
   const { room, bill } = option;
   let paid = 0;
@@ -203,7 +205,7 @@ function settle(
     const adm = admissible(option, policy, mode);
     const rate = copayRate(policy, ctx.patient.age);
     const copay = roundRupees((adm.admissible * rate) / 100);
-    const eligible = adm.admissible - copay;
+    const eligible = maternityCap(ctx, treatment, policy, room.id, adm, copay, trace);
     const deductible = policy.terms.deductible;
     const siLeft = Math.max(0, policy.sumInsured - policy.claimsUsedThisYear);
     // Amounts already paid by earlier policies count toward a top-up's deductible (R-HL-009).
@@ -343,6 +345,80 @@ function admissible(option: PricedOption, policy: Policy, mode: Mode): Admissibl
   }
 
   return { admissible: admissibleTotal, deductions, trace };
+}
+
+/**
+ * R-MT-001 / R-MT-002: for a delivery, what one policy pays is capped at its maternity limit
+ * (after the other deductions and co-pay); nothing until the waiting period is served; nothing
+ * when the policy has no maternity benefit. Returns the amount the policy may pay.
+ */
+function maternityCap(
+  ctx: HospitalContext,
+  treatment: Treatment,
+  policy: Policy,
+  roomCategoryId: string,
+  adm: Admissible,
+  copay: number,
+  trace: RuleFiring[],
+): number {
+  const eligible = adm.admissible - copay;
+  if (treatment === 'general') return eligible;
+  const m = policy.terms.maternity;
+  const ruleCtx = { roomCategoryId, policyId: policy.id, treatment, eligible };
+
+  if (!m) {
+    adm.deductions.push({ ruleId: 'R-MT-001', label: 'No maternity benefit', amount: eligible });
+    trace.push(fire('R-MT-001', { ...ruleCtx, limit: 0 }, { pays: 0, capped: true }));
+    return 0;
+  }
+
+  const since = policy.continuousCoverSince ?? policy.startDate;
+  const servedOn = addMonths(since, m.waitingMonths);
+  if (ctx.asOf && m.waitingMonths > 0 && servedOn > ctx.asOf) {
+    adm.deductions.push({
+      ruleId: 'R-MT-002',
+      label: 'Maternity waiting period not over',
+      amount: eligible,
+    });
+    trace.push(
+      fire(
+        'R-MT-002',
+        { ...ruleCtx, coverSince: since, waitingMonths: m.waitingMonths, servedOn },
+        { pays: 0 },
+      ),
+    );
+    return 0;
+  }
+
+  const limit =
+    treatment === 'maternity_csection' ? (m.limitCsection ?? m.limitNormal) : m.limitNormal;
+  const capped = eligible > limit;
+  if (capped) {
+    adm.deductions.push({
+      ruleId: 'R-MT-001',
+      label: 'Above maternity limit',
+      amount: eligible - limit,
+    });
+  }
+  trace.push(
+    fire(
+      'R-MT-001',
+      { ...ruleCtx, limit, newbornDays: m.newbornDays },
+      { pays: Math.min(eligible, limit), capped, aboveLimit: Math.max(0, eligible - limit) },
+    ),
+  );
+  return Math.min(eligible, limit);
+}
+
+/** ISO date plus whole months (clamped to the month's last day). */
+function addMonths(iso: string, months: number): string {
+  const d = new Date(`${iso}T00:00:00Z`);
+  const day = d.getUTCDate();
+  d.setUTCDate(1);
+  d.setUTCMonth(d.getUTCMonth() + months);
+  const last = new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth() + 1, 0)).getUTCDate();
+  d.setUTCDate(Math.min(day, last));
+  return d.toISOString().slice(0, 10);
 }
 
 function copayRate(policy: Policy, age: number): number {

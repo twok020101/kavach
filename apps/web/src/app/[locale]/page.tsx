@@ -1,5 +1,6 @@
 import {
   ArrowRight,
+  Baby,
   BadgeCheck,
   FileWarning,
   GitBranch,
@@ -79,6 +80,21 @@ export default async function LandingPage({ params }: PageProps<'/[locale]'>) {
                   <span className="text-sm font-medium opacity-80">{t('tryHospitalSub')}</span>
                 </span>
                 <ArrowRight aria-hidden className="size-6 shrink-0" />
+              </Link>
+              <Link
+                href={{ pathname: '/desk', query: { demo: '1', scene: 'maternity' } }}
+                className={buttonClasses({
+                  variant: 'soft',
+                  size: 'lg',
+                  className: 'justify-start text-left',
+                })}
+              >
+                <Baby aria-hidden className="size-6 shrink-0" />
+                <span className="flex flex-1 flex-col">
+                  <span>{t('tryMaternity')}</span>
+                  <span className="text-sm font-medium opacity-80">{t('tryMaternitySub')}</span>
+                </span>
+                <ArrowRight aria-hidden className="size-5 shrink-0" />
               </Link>
               <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
                 <Link

@@ -5,6 +5,6 @@ import { DeskStart } from './_components/desk-start';
 export default async function DeskStartPage({ params, searchParams }: PageProps<'/[locale]/desk'>) {
   const { locale } = await params;
   setRequestLocale(locale);
-  const { demo } = await searchParams;
-  return <DeskStart demo={demo === '1'} />;
+  const { demo, scene } = await searchParams;
+  return <DeskStart demo={demo === '1'} scene={scene === 'maternity' ? 'maternity' : undefined} />;
 }

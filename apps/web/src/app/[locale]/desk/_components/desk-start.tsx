@@ -13,25 +13,30 @@ import { Link, useRouter } from '@/i18n/navigation';
 import { deskClient } from '@/lib/desk-client';
 import { CloseIcon, DeskHeader } from './desk-header';
 
-const DEMO_PATIENT = 'mem_suresh';
+export type DeskScene = 'maternity';
+
+/** The demo scenes: Suresh's angioplasty in Hindi (HX-1), or Priya's delivery in English (MX-1). */
+const SCENES: Record<DeskScene | 'hospital', { patient: string; language: Locale }> = {
+  hospital: { patient: 'mem_suresh', language: 'hi' },
+  maternity: { patient: 'mem_priya', language: 'en' },
+};
 
 /** S21 Hospital start: who is admitted, which language, one big Start. Fewest elements of any screen. */
-export function DeskStart({ demo }: { demo: boolean }) {
+export function DeskStart({ demo, scene }: { demo: boolean; scene?: DeskScene }) {
   const t = useTranslations('desk.start');
   const tc = useTranslations('common');
   const locale = useLocale() as Locale;
   const router = useRouter();
-  const [patientId, setPatientId] = useState<string | null>(demo ? DEMO_PATIENT : null);
-  const [language, setLanguage] = useState<Locale>(demo ? 'hi' : locale);
+  const preset = SCENES[scene ?? 'hospital'];
+  const [patientId, setPatientId] = useState<string | null>(demo ? preset.patient : null);
+  const [language, setLanguage] = useState<Locale>(demo ? preset.language : locale);
+  const query = demo ? { demo: '1', ...(scene ? { scene } : {}) } : undefined;
 
   const household = useQuery({ queryKey: ['desk', 'household'], queryFn: deskClient.getHousehold });
   const start = useMutation({
     mutationFn: () => deskClient.startSession({ patientMemberId: patientId!, language }),
     onSuccess: ({ sessionId }) =>
-      router.push(
-        { pathname: `/desk/${sessionId}`, query: demo ? { demo: '1' } : {} },
-        { locale: language },
-      ),
+      router.push({ pathname: `/desk/${sessionId}`, query: query ?? {} }, { locale: language }),
   });
 
   const tile =
@@ -43,7 +48,7 @@ export function DeskStart({ demo }: { demo: boolean }) {
     <>
       <DeskHeader
         title={t('title')}
-        query={demo ? { demo: '1' } : undefined}
+        query={query}
         action={
           <Link
             href="/"
@@ -58,7 +63,7 @@ export function DeskStart({ demo }: { demo: boolean }) {
         {demo && (
           <p className="flex gap-2 rounded-md bg-citation-bg p-3 text-base text-citation">
             <Info aria-hidden className="mt-1 size-5 shrink-0" />
-            {t('demoNote')}
+            {scene === 'maternity' ? t('demoNoteMaternity') : t('demoNote')}
           </p>
         )}
 

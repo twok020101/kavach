@@ -23,7 +23,14 @@ const claimsOf = (householdId: string) => `households/${householdId}/claimCases`
 const httpError = (statusCode: number, message: string, extra: object = {}) =>
   Object.assign(new Error(message), { statusCode, ...extra });
 
-export type LetterFile = { filename: string; mimeType: string; bytes: Buffer; isSample?: boolean };
+export type LetterFile = {
+  filename: string;
+  mimeType: string;
+  bytes: Buffer;
+  isSample?: boolean;
+  /** With FAKE_LLM=1, which recorded reading to return. */
+  fixture?: string;
+};
 
 export async function listClaims(householdId: string) {
   const claims = await store.list<ClaimCase>(claimsOf(householdId));
@@ -57,7 +64,7 @@ export async function createClaim(household: Household, file: LetterFile) {
   });
 
   try {
-    const letter = await readSettlementLetter(file);
+    const letter = await readSettlementLetter(file, { fixture: file.fixture });
     const memberId = matchPatient(household, letter.patientName);
     const policy = matchPolicy(household, letter, memberId);
     const productKey = await findProductKey(policy, letter);

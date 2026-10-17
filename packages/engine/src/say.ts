@@ -68,6 +68,16 @@ export function buildDeskSay(
     parts.push(t.youPay(rec.outOfPocket));
   }
 
+  const cap = evaluation.trace.find(
+    (f) =>
+      f.ruleId === 'R-MT-001' &&
+      f.inputs.roomCategoryId === rec.roomCategoryId &&
+      f.output.capped === true &&
+      typeof f.inputs.limit === 'number' &&
+      f.inputs.limit > 0,
+  );
+  if (cap) parts.push(t.capped(Number(cap.inputs.limit)));
+
   if (alternate) parts.push(t.ifFlat(alternate.saving));
   if (primary.billingType === 'package') parts.push(t.askPackage);
 
@@ -95,6 +105,7 @@ type Phrases = {
   ifFlat: (saving: number) => string;
   askPackage: string;
   topUp: (deductible: number) => string;
+  capped: (limit: number) => string;
   confirm: string;
 };
 
@@ -116,6 +127,8 @@ const HI: Phrases = {
   askPackage: 'Yeh package rate hai. Desk se policy limit wale room ka package price poochhiye.',
   topUp: (deductible) =>
     `Top-up policy tabhi kaam aayegi jab is saal ka kharcha ${rs(deductible)} se upar jaaye, isliye saare bill sambhal kar rakhiye.`,
+  capped: (limit) =>
+    `Dhyaan rahe, is policy mein delivery ki limit ${rs(limit)} hai, kamra koi bhi ho. Usse upar ka kharcha aapko dena hoga.`,
   confirm: 'Sign karne se pehle TPA desk se confirm kar lijiye.',
 };
 
@@ -135,5 +148,7 @@ const EN: Phrases = {
     'This is a package rate. Ask the desk for the package price in the room within your policy limit.',
   topUp: (deductible) =>
     `The top-up policy only helps once this year's bills cross ${formatInr(deductible)}, so keep every bill.`,
+  capped: (limit) =>
+    `Note that this policy pays at most ${formatInr(limit)} for a delivery, whichever room. Anything above that is yours to pay.`,
   confirm: 'Before you sign, confirm with the TPA desk.',
 };

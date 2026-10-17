@@ -27,7 +27,12 @@ import {
   HX1_CONTEXT,
   ICU_CONTEXT,
   ICU_ESTIMATE,
+  MX1_BILL,
+  MX1_CONTEXT,
+  MX1_ESTIMATE,
+  MX1_LETTER,
   PARENTS_POLICY,
+  STARTUP_POLICY,
   SUPER_TOP_UP,
   hx1Estimate,
 } from '../src/examples';
@@ -242,6 +247,91 @@ expect(
   'differential, room above limit',
   `${differentialAbove.deductions[1]?.verdict} ${differentialAbove.deductions[1]?.ruleId}`,
   'valid R-HL-001',
+);
+
+// ---------------------------------------------------------------- MX-1 maternity
+heading('MX-1 normal delivery: room rent and the maternity cap both bite (R-HL-008, R-MT-001)');
+const mx1 = evaluateHospital(MX1_CONTEXT, MX1_ESTIMATE);
+printBranch('primary', mx1.primary);
+expect('policy order', mx1.policyOrder.join(' > '), 'pol_gmc_startup > pol_supertopup');
+expect('Non-AC bill (the room the family took)', option(mx1.primary, 'nonac').bill, 77_250);
+expect('Non-AC room above limit (₹250 × 2)', deduction(mx1.primary, 'nonac', 'R-HL-008'), 500);
+expect('Non-AC proportionate deduction', deduction(mx1.primary, 'nonac', 'R-HL-001'), 4_891);
+expect('Non-AC admissible', option(mx1.primary, 'nonac').admissible, 69_959);
+expect('Non-AC insurer pays (capped)', option(mx1.primary, 'nonac').policyPays, 50_000);
+expect('Non-AC out of pocket', option(mx1.primary, 'nonac').outOfPocket, 27_250);
+expect('above-limit deduction (Non-AC)', deduction(mx1.primary, 'nonac', 'R-MT-001'), 19_959);
+expect('AC bill', option(mx1.primary, 'ac').bill, 88_950);
+expect('AC proportionate deduction', deduction(mx1.primary, 'ac', 'R-HL-001'), 27_556);
+expect('AC out of pocket', option(mx1.primary, 'ac').outOfPocket, 38_950);
+expect('General Ward bill', option(mx1.primary, 'general').bill, 69_750);
+expect('General Ward: no room deductions', option(mx1.primary, 'general').admissible, 67_850);
+expect('General Ward out of pocket', option(mx1.primary, 'general').outOfPocket, 19_750);
+expect('Twin Sharing out of pocket', option(mx1.primary, 'twin').outOfPocket, 23_850);
+expect('recommended', mx1.primary.recommendedRoomCategoryId, 'general');
+expect('saving (AC → General)', mx1.primary.saving, 19_200);
+expect('R-MT-001 fired', fired(mx1, 'R-MT-001'), true);
+const sayMx = buildDeskSay(mx1, 'en', { policyNames: { pol_gmc_startup: 'company policy' } });
+console.log(`  say (en): ${sayMx}`);
+expect('says the cap', sayMx.includes('pays at most ₹50,000 for a delivery'), true);
+console.log(
+  `  say (hi): ${buildDeskSay(mx1, 'hi', { policyNames: { pol_gmc_startup: 'company wali policy' } })}`,
+);
+
+heading('MX-1 variants: caesarean limit, waiting period, no maternity benefit (R-MT-002)');
+const csec = evaluateHospital(MX1_CONTEXT, { ...MX1_ESTIMATE, treatment: 'maternity_csection' });
+expect(
+  'caesarean cap ₹75,000 (not binding on this bill)',
+  option(csec.primary, 'general').policyPays,
+  67_850,
+);
+const withWait = {
+  ...STARTUP_POLICY,
+  terms: {
+    ...STARTUP_POLICY.terms,
+    maternity: { ...STARTUP_POLICY.terms.maternity!, waitingMonths: 12 },
+  },
+};
+const waiting = evaluateHospital({ ...MX1_CONTEXT, policies: [withWait] }, MX1_ESTIMATE);
+expect('waiting period not served: pays nothing', option(waiting.primary, 'general').policyPays, 0);
+expect('R-MT-002 fired', fired(waiting, 'R-MT-002'), true);
+const noMaternity = {
+  ...STARTUP_POLICY,
+  terms: { ...STARTUP_POLICY.terms, maternity: undefined },
+};
+const noBenefit = evaluateHospital({ ...MX1_CONTEXT, policies: [noMaternity] }, MX1_ESTIMATE);
+expect('no maternity benefit: pays nothing', option(noBenefit.primary, 'general').policyPays, 0);
+const generalAdmission = evaluateHospital(MX1_CONTEXT, { ...MX1_ESTIMATE, treatment: 'general' });
+expect(
+  'same bill as a general admission: no cap',
+  option(generalAdmission.primary, 'general').policyPays,
+  67_850,
+);
+
+heading('MX-1 claim: nothing to appeal (R-HL-008, R-CLM-009)');
+const mxClaim = assessClaim(MX1_LETTER, MX1_BILL, STARTUP_POLICY);
+for (const d of mxClaim.deductions) {
+  console.log(
+    `  ${d.verdict.padEnd(13)} ${formatInr(d.amount).padStart(8)} -> recoverable ${formatInr(d.recoverable).padStart(7)}  ${d.ruleId}  ${d.label}: ${d.reason}`,
+  );
+}
+expect('non-payable is valid', mxClaim.deductions[0]?.verdict, 'valid');
+expect(
+  'room excess is valid (R-HL-008)',
+  `${mxClaim.deductions[1]?.verdict} ${mxClaim.deductions[1]?.ruleId}`,
+  'valid R-HL-008',
+);
+expect(
+  'ailment limit is valid (R-CLM-009)',
+  `${mxClaim.deductions[2]?.verdict} ${mxClaim.deductions[2]?.ruleId}`,
+  'valid R-CLM-009',
+);
+expect('approved matches the letter', mxClaim.approved, 50_000);
+expect('recoverable', mxClaim.recoverable, 0);
+expect(
+  'out of pocket equals the desk answer for the Non-AC room',
+  MX1_BILL.total - mxClaim.expectedPayout,
+  option(mx1.primary, 'nonac').outOfPocket,
 );
 
 // ---------------------------------------------------------------- PX-1 (docs/plan/05 §11)

@@ -7,13 +7,17 @@
     "language": "Answers in",
     "start": "Start",
     "pickFirst": "Pick who is admitted to start.",
-    "privacy": "The camera is used only when you take a photo of the estimate. Nothing is shared without you."
+    "privacy": "The camera is used only when you take a photo of the estimate. Nothing is shared without you.",
+    "demoNoteMaternity": "Demo: Priya is admitted at Lotus Women’s Hospital for a planned normal delivery. The company policy caps maternity at ₹50,000. Answers come in English; you can change both."
   },
   "session": {
     "title": "Helping with {name}",
     "titleLoading": "Help at the hospital",
     "end": "End",
-    "orb": { "thinking": "Kavach is checking", "ready": "Ready: show the estimate or type" },
+    "orb": {
+      "thinking": "Kavach is checking",
+      "ready": "Ready: show the estimate or type"
+    },
     "textMode": "Text mode",
     "greeting": "Namaste. Take a photo of the hospital estimate, then ask me your question.",
     "sampleSent": "Using the sample estimate",

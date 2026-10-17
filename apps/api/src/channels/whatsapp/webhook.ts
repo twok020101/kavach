@@ -184,7 +184,9 @@ async function replyWithAnswer(
     const pcm = await synthesizeSpeech(answer.say, { fixture: 'whatsapp-tts-reply' });
     await reply({ kind: 'audio', data: await pcmToOggOpus(pcm) });
   }
-  const hasCards = answer.cards.some((c) => c.kind === 'room_compare' || c.kind === 'warning');
+  const hasCards = answer.cards.some((c) =>
+    ['room_compare', 'limit_cap', 'warning'].includes(c.kind),
+  );
   if (!hasCards) return reply({ kind: 'text', text: answer.text });
 
   const patient = household.members.find((m) => m.id === session.patientMemberId)!;

@@ -43,9 +43,10 @@ function useStoreClaim(hid: string | undefined) {
 export function useCreateClaim(hid: string | undefined) {
   const store = useStoreClaim(hid);
   return useMutation({
-    mutationFn: async (file?: File) => {
-      if (!file) {
-        return api(`${base(hid!)}:sample`, ClaimCase, {
+    mutationFn: async (file?: File | 'maternity') => {
+      if (!file || file === 'maternity') {
+        const scene = file === 'maternity' ? '?scene=maternity' : '';
+        return api(`${base(hid!)}:sample${scene}`, ClaimCase, {
           method: 'POST',
           token: await getIdToken(),
         });

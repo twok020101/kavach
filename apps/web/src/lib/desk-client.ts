@@ -36,7 +36,7 @@ export interface DeskClient {
   }): Promise<{ sessionId: string }>;
   getSession(sessionId: string): Promise<DeskSession>;
   /** Uploads a photo of the estimate (or `'sample'` for the demo estimate) and reads it. */
-  capture(sessionId: string, photo: File | 'sample'): Promise<HospitalEstimate>;
+  capture(sessionId: string, photo: File | 'sample', fixture?: string): Promise<HospitalEstimate>;
   /** Text turn: a typed question gets an answer with cards. */
   ask(sessionId: string, text: string, language: Locale): Promise<DeskAnswer>;
   /** Direct engine result, for the Why panel and "Compare rooms". */
@@ -71,9 +71,10 @@ export const deskClient: DeskClient = {
 
   getSession: (sessionId) => desk(`/${sessionId}`, DeskSession, { method: 'GET' }),
 
-  async capture(sessionId, photo) {
+  async capture(sessionId, photo, fixture) {
     if (photo === 'sample') {
-      return (await desk(`/${sessionId}/captures:sample`, DeskCaptureResponse)).estimate;
+      const q = fixture ? `?fixture=${encodeURIComponent(fixture)}` : '';
+      return (await desk(`/${sessionId}/captures:sample${q}`, DeskCaptureResponse)).estimate;
     }
     const body = new FormData();
     body.append('photo', photo);

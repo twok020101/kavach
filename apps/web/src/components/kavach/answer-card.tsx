@@ -2,6 +2,7 @@
 
 import type { DeskCard } from '@kavach/schemas';
 import {
+  Baby,
   BedDouble,
   GitBranch,
   IdCard,
@@ -23,6 +24,7 @@ const icons = {
   ask_desk: MessageCircleQuestionMark,
   billing_branch: GitBranch,
   top_up_note: Layers,
+  limit_cap: Baby,
   warning: TriangleAlert,
 } satisfies Record<DeskCard['kind'], unknown>;
 

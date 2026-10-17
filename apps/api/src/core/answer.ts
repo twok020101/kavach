@@ -119,6 +119,33 @@ function explain(
     },
   ];
 
+  // MX-1: a maternity limit that binds in the recommended room gets its own card (R-MT-001).
+  const capFiring = ev.trace.find(
+    (f) =>
+      f.ruleId === 'R-MT-001' &&
+      f.inputs.roomCategoryId === rec.roomCategoryId &&
+      f.output.capped === true &&
+      typeof f.inputs.limit === 'number' &&
+      f.inputs.limit > 0,
+  );
+  const capPolicy = capFiring && byId.get(String(capFiring.inputs.policyId));
+  if (capFiring && capPolicy?.terms.maternity) {
+    const m = capPolicy.terms.maternity;
+    const limit = Number(capFiring.inputs.limit);
+    cards.splice(2, 0, {
+      id: 'limit_cap',
+      kind: 'limit_cap',
+      title: t.cap.title,
+      body: `${t.cap.body(nick(capPolicy), m.limitNormal, m.limitCsection, m.newbornDays)}\n${t.cap.next}`,
+      amounts: [
+        { label: t.cap.limit, amount: limit, emphasis: false },
+        { label: t.cap.above, amount: Number(capFiring.output.aboveLimit ?? 0), emphasis: true },
+      ],
+      ruleIds: ['R-MT-001', 'R-MT-003'],
+      verified: true,
+    });
+  }
+
   if (alternate) {
     cards.push({
       id: 'billing_branch',
@@ -165,6 +192,7 @@ function explain(
         )
       : t.text.youPay(rec.outOfPocket),
     t.text.firstCard(nick(order[0]!)),
+    capFiring ? t.text.capped(Number(capFiring.inputs.limit)) : undefined,
     alternate ? t.text.ifFlat(alternate.saving) : undefined,
   ]
     .filter(Boolean)

@@ -31,6 +31,18 @@ export type Copy = {
   };
   branch: { title: string; body: string };
   topUp: { title: string; body: (name: string, deductible: number) => string; deductible: string };
+  cap: {
+    title: string;
+    body: (
+      policy: string,
+      limit: number,
+      csection: number | undefined,
+      newbornDays: number,
+    ) => string;
+    next: string;
+    limit: string;
+    above: string;
+  };
   sameCharges: (lower: RoomCategory, quoted: RoomCategory) => string;
   packagePrice: (procedure: string, lower: RoomCategory) => string;
   text: {
@@ -44,6 +56,7 @@ export type Copy = {
     youPay: (amount: number) => string;
     firstCard: (policy: string) => string;
     ifFlat: (saving: number) => string;
+    capped: (limit: number) => string;
   };
 };
 
@@ -92,6 +105,14 @@ const en: Copy = {
       `The ${name} pays only once this year's bills cross ${formatInr(deductible)}. Keep every bill and the discharge summary.`,
     deductible: 'Pays only above',
   },
+  cap: {
+    title: 'Maternity limit on this policy',
+    body: (policy, limit, csection, newbornDays) =>
+      `The ${policy} pays at most ${formatInr(limit)} for a normal delivery${csection && csection !== limit ? ` (${formatInr(csection)} for a caesarean)` : ''}, whichever room you take. The baby's hospital expenses in the first ${newbornDays} days count inside this limit, not on top of it.`,
+    next: 'For the next time: retail health plans with maternity exist, but every one has a waiting period of a year or more, so they only help if bought well before a pregnancy. Add the baby to your policy within 90 days of birth.',
+    limit: 'Policy pays at most',
+    above: 'Above the limit (yours to pay)',
+  },
   sameCharges: (lower, quoted) =>
     `Are the surgeon, OT, nursing and doctor charges in the ${en.room(lower)} room different from the ${en.room(quoted)} room, or the same for every room?`,
   packagePrice: (procedure, lower) =>
@@ -103,6 +124,8 @@ const en: Copy = {
     firstCard: (policy) => `Give the ${policy} card at the TPA desk first.`,
     ifFlat: (saving) =>
       `If every room has the same charges, the difference is only ${formatInr(saving)}; ask the desk.`,
+    capped: (limit) =>
+      `This policy pays at most ${formatInr(limit)} for the delivery, whichever room.`,
   },
 };
 
@@ -151,6 +174,14 @@ const hi: Copy = {
       `${name} तभी पैसे देगी जब इस साल का ख़र्च ${formatInr(deductible)} से ऊपर जाए। सारे बिल और डिस्चार्ज समरी संभाल कर रखिए।`,
     deductible: 'इससे ऊपर ही देगी',
   },
+  cap: {
+    title: 'इस पॉलिसी में मैटरनिटी की लिमिट',
+    body: (policy, limit, csection, newbornDays) =>
+      `${policy} नॉर्मल डिलीवरी के लिए ज़्यादा से ज़्यादा ${formatInr(limit)} देगी${csection && csection !== limit ? ` (सिज़ेरियन के लिए ${formatInr(csection)})` : ''}, कमरा कोई भी हो। बच्चे के पहले ${newbornDays} दिनों का अस्पताल ख़र्च इसी लिमिट के अंदर गिना जाता है, ऊपर से नहीं।`,
+    next: 'अगली बार के लिए: मैटरनिटी वाली रिटेल हेल्थ पॉलिसियाँ मिलती हैं, पर हर एक में साल भर या ज़्यादा का वेटिंग पीरियड होता है, इसलिए प्रेग्नेंसी से काफ़ी पहले लेने पर ही काम आती हैं। जन्म के 90 दिन के अंदर बच्चे को पॉलिसी में जोड़िए।',
+    limit: 'पॉलिसी ज़्यादा से ज़्यादा देगी',
+    above: 'लिमिट से ऊपर (आपको देना होगा)',
+  },
   sameCharges: (lower, quoted) =>
     `क्या ${hi.room(lower)} कमरे में सर्जन, OT, नर्सिंग और डॉक्टर के चार्ज ${hi.room(quoted)} कमरे से अलग हैं, या हर कमरे में एक जैसे?`,
   packagePrice: (procedure, lower) =>
@@ -162,6 +193,8 @@ const hi: Copy = {
     firstCard: (policy) => `TPA डेस्क पर पहले ${policy} का कार्ड दीजिए।`,
     ifFlat: (saving) =>
       `अगर हर कमरे में चार्ज एक जैसे हैं, तो फ़र्क़ सिर्फ़ ${formatInr(saving)} का है; डेस्क से पूछिए।`,
+    capped: (limit) =>
+      `यह पॉलिसी डिलीवरी के लिए ज़्यादा से ज़्यादा ${formatInr(limit)} देगी, कमरा कोई भी हो।`,
   },
 };
 

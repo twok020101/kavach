@@ -19,6 +19,8 @@ const documents = [
   'acme-benefits-summary',
   'parents-policy-schedule',
   'supertopup-schedule',
+  'lotus-maternity-estimate',
+  'lotus-maternity-settlement-letter',
 ];
 
 /** Chromium from CHROMIUM_PATH, else the newest one under PLAYWRIGHT_BROWSERS_PATH or /opt/pw-browsers. */
@@ -83,6 +85,11 @@ async function main(): Promise<void> {
     console.log(`Rendering samples to ${outDir}`);
     for (const name of documents) await renderDocument(browser, name);
     await renderPhoto(browser, 'city-heart-estimate.png', 'city-heart-estimate-photo.png');
+    await renderPhoto(
+      browser,
+      'lotus-maternity-estimate.png',
+      'lotus-maternity-estimate-photo.png',
+    );
   } finally {
     await browser.close();
   }
