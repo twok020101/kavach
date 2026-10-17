@@ -160,6 +160,8 @@
     },
     "partnerContinue": "Continue to partner",
     "partnerDemo": "Demo — no real purchase. In the live product this opens the partner's page with only what you ticked.",
-    "partnerBack": "Back"
+    "partnerBack": "Back",
+    "itemPremiumLabel": "Premium",
+    "perMonthShort": "per month"
   }
 }
