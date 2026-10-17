@@ -12,5 +12,9 @@ try {
   if (s === 'large' || s === 'xlarge') e.dataset.textScale = s;
   var landing = /^\/(en|hi)?\/?$/.test(location.pathname);
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (landing && !reduced && !sessionStorage.getItem('kavach.booted')) e.classList.add('booting');
+  // ?boot=1 replays the opening (for the demo video); otherwise once per tab, never under reduced motion.
+  var force = /[?&]boot=1(&|$)/.test(location.search);
+  if (landing && (force || (!reduced && !sessionStorage.getItem('kavach.booted')))) {
+    e.classList.add('booting');
+  }
 } catch {}

@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { hasLocale, NextIntlClientProvider } from 'next-intl';
 import { setRequestLocale } from 'next-intl/server';
+import Script from 'next/script';
 import {
   Inter,
   JetBrains_Mono,
@@ -51,8 +52,8 @@ export default async function LocaleLayout({ children, params }: LayoutProps<'/[
     // public/theme.js sets data-theme before React loads, so React must not warn about it.
     <html lang={locale} className={fonts.join(' ')} suppressHydrationWarning>
       <head>
-        {/* Async so React can hoist it; it is tiny and runs before the page has painted. */}
-        <script async src="/theme.js" />
+        {/* Runs before React hydrates: it sets the theme, the text size and the landing opening. */}
+        <Script src="/theme.js" strategy="beforeInteractive" />
       </head>
       <body className="min-h-dvh antialiased">
         <NextIntlClientProvider>
