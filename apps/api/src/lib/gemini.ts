@@ -55,15 +55,37 @@ export async function generateStructured<S extends z.ZodType>(opts: {
     return opts.schema.parse(JSON.parse(raw));
   }
 
-  const response = await genai().models.generateContent({
-    model: opts.model,
-    contents: opts.contents,
-    config: {
-      systemInstruction: opts.systemInstruction,
-      responseMimeType: 'application/json',
-      responseJsonSchema: z.toJSONSchema(opts.schema, { io: 'input' }),
-    },
-  });
+  const call = () =>
+    genai().models.generateContent({
+      model: opts.model,
+      contents: opts.contents,
+      config: {
+        systemInstruction: opts.systemInstruction,
+        responseMimeType: 'application/json',
+        responseJsonSchema: z.toJSONSchema(opts.schema, { io: 'input' }),
+      },
+    });
+  const response = await withOneRetryOn429(call);
   if (!response.text) throw new Error(`Empty response from ${opts.model}`);
   return opts.schema.parse(JSON.parse(response.text));
 }
+
+/**
+ * Preview models carry small per-minute quotas, and two quick desk captures can trip them.
+ * A 429 from Vertex is retried once after a short wait; anything else is thrown as is.
+ */
+async function withOneRetryOn429<T>(call: () => Promise<T>): Promise<T> {
+  try {
+    return await call();
+  } catch (error) {
+    if (!is429(error)) throw error;
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+    return call();
+  }
+}
+
+const is429 = (error: unknown) => {
+  if (typeof error !== 'object' || error === null) return false;
+  const { status, message } = error as { status?: unknown; message?: unknown };
+  return status === 429 || (typeof message === 'string' && message.includes('"code":429'));
+};

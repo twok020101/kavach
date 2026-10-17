@@ -76,11 +76,11 @@ export function DeskStart({ demo, scene }: { demo: boolean; scene?: DeskScene })
               ))}
             </div>
           ) : (
-            <div className="grid grid-cols-2 gap-3">
+            <div className="flex flex-col gap-2">
               {household.data?.members.map((m) => {
                 const on = patientId === m.id;
                 return (
-                  <label key={m.id} className={cn(tile, 'min-h-20', on ? selectedTile : idleTile)}>
+                  <label key={m.id} className={cn(tile, 'min-h-14', on ? selectedTile : idleTile)}>
                     <input
                       type="radio"
                       name="patient"
@@ -90,21 +90,15 @@ export function DeskStart({ demo, scene }: { demo: boolean; scene?: DeskScene })
                       className="sr-only"
                     />
                     <MemberAvatar member={m} className="size-10 text-base" />
-                    <span className="flex min-w-0 flex-col">
-                      <span className="flex items-center gap-1 font-semibold">
-                        {on && (
-                          <Check
-                            aria-hidden
-                            className="size-4 shrink-0 text-primary"
-                            strokeWidth={3}
-                          />
-                        )}
-                        <span className="truncate">{m.name.split(' ')[0]}</span>
-                      </span>
+                    <span className="flex min-w-0 flex-1 flex-wrap items-baseline gap-x-2">
+                      <span className="font-semibold">{m.name.split(' ')[0]}</span>
                       <span className="text-sm text-muted">
                         {tc(`relation.${m.relation}`)}, {m.age}
                       </span>
                     </span>
+                    {on && (
+                      <Check aria-hidden className="size-5 shrink-0 text-primary" strokeWidth={3} />
+                    )}
                   </label>
                 );
               })}

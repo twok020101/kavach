@@ -269,7 +269,7 @@ export function DeskSessionScreen({
         }
       />
 
-      <main className="mx-auto flex max-w-2xl flex-col gap-5 px-4 pb-48 pt-4">
+      <main className="mx-auto flex max-w-2xl flex-col gap-4 px-4 pb-48 pt-3">
         {live ? (
           <div className="relative flex flex-col items-center gap-3 py-4">
             <Badge icon={RadioTower} tone="primary" className="absolute right-0 top-0">
