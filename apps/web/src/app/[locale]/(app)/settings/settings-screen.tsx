@@ -129,7 +129,7 @@ function Settings({ household }: { household: Household }) {
                 }}
                 className="press flex w-full items-center gap-3 p-4 text-left hover:bg-sunken"
               >
-                <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-accent-soft text-accent-ink dark:text-text">
+                <span className="flex size-10 shrink-0 items-center justify-center rounded-md bg-accent-soft text-accent-ink dark:text-text">
                   <Eye aria-hidden className="size-5" />
                 </span>
                 <span className="flex flex-1 flex-col">
@@ -299,7 +299,7 @@ function NavRow({
     <li>
       <Link href={href} className="press flex items-center gap-3 p-4 hover:bg-sunken">
         {Icon && (
-          <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary-soft text-primary">
+          <span className="flex size-10 shrink-0 items-center justify-center rounded-md bg-primary-soft text-primary">
             <Icon aria-hidden className="size-5" />
           </span>
         )}

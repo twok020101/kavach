@@ -41,7 +41,7 @@ export function Sheet({
           <motion.div
             role="dialog"
             aria-modal="true"
-            className="relative max-h-[85dvh] w-full max-w-xl overflow-y-auto rounded-t-lg bg-surface p-4 pb-8 shadow-xl"
+            className="relative max-h-[85dvh] w-full max-w-xl overflow-y-auto rounded-t-lg bg-surface p-4 pb-8 shadow-2"
             initial={reduce ? { opacity: 0 } : { y: '100%' }}
             animate={reduce ? { opacity: 1 } : { y: 0 }}
             exit={reduce ? { opacity: 0 } : { y: '100%' }}

@@ -31,7 +31,7 @@ export function Captions({ lines, className }: { lines: CaptionLine[]; className
               className={cn(
                 'max-w-[88%] rounded-lg px-4 py-2.5 text-lg',
                 agent
-                  ? 'rounded-bl-sm bg-surface font-semibold text-text shadow-1'
+                  ? 'rounded-bl-sm border border-border bg-surface font-semibold text-text'
                   : 'rounded-br-sm bg-primary-soft text-text',
               )}
             >

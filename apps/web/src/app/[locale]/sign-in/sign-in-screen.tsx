@@ -84,7 +84,7 @@ export function SignInScreen({ invite }: { invite: string | null }) {
           preview.data && (
             <>
               <Card className="flex items-center gap-4">
-                <span className="flex size-14 items-center justify-center rounded-full bg-primary-soft text-primary">
+                <span className="flex size-14 items-center justify-center rounded-md bg-primary-soft text-primary">
                   <Users aria-hidden className="size-7" />
                 </span>
                 <p className="text-lg">{t('invitedAs', { name: preview.data.memberName })}</p>
@@ -99,7 +99,7 @@ export function SignInScreen({ invite }: { invite: string | null }) {
 
   return (
     <SetupFrame title={t('title')} intro={t('intro')}>
-      <div className="flex items-center gap-3 rounded-md bg-primary-soft p-4 text-primary-hover">
+      <div className="panel flex items-center gap-3">
         <ShieldCheck aria-hidden className="size-8 shrink-0" />
         <p className="font-medium">{ts('consent.promise')}</p>
       </div>

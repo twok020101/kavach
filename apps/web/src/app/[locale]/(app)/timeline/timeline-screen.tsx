@@ -102,7 +102,7 @@ function TimelineView({ household }: { household: Household }) {
       <div className="relative flex flex-col gap-6 pl-2">
         <span
           aria-hidden
-          className="absolute bottom-2 left-[1.45rem] top-2 w-0.5 rounded-full bg-border"
+          className="absolute bottom-2 left-[1.45rem] top-2 w-0.5 rounded-sm bg-border"
         />
 
         {upcoming.length > 0 && (
@@ -115,10 +115,10 @@ function TimelineView({ household }: { household: Household }) {
 
         {data && (upcoming.length > 0 || past.length > 0) && (
           <div className="relative z-10 flex items-center gap-3" role="separator">
-            <span className="ml-1.5 flex size-8 items-center justify-center rounded-full bg-primary text-on-primary ring-4 ring-bg">
+            <span className="ml-1.5 flex size-8 items-center justify-center rounded-md bg-primary text-on-primary">
               <span className="size-2.5 rounded-full bg-on-primary" />
             </span>
-            <span className="rounded-full bg-primary px-3 py-0.5 text-sm font-semibold text-on-primary">
+            <span className="rounded-sm bg-primary px-3 py-0.5 text-sm font-semibold text-on-primary">
               {t('today')}
             </span>
             <span className="h-px flex-1 bg-primary/40" />
@@ -186,7 +186,7 @@ function Entry({ entry, delay }: { entry: TimelineEntry; delay: number }) {
     <>
       <span
         className={cn(
-          'relative z-10 flex size-10 shrink-0 items-center justify-center rounded-full ring-4 ring-bg',
+          'relative z-10 flex size-10 shrink-0 items-center justify-center rounded-md',
           entry.upcoming ? 'bg-partial-bg text-partial' : 'bg-primary-soft text-primary',
         )}
       >
@@ -194,8 +194,8 @@ function Entry({ entry, delay }: { entry: TimelineEntry; delay: number }) {
       </span>
       <span
         className={cn(
-          'flex min-w-0 flex-1 items-center gap-3 rounded-md border border-border bg-surface p-3 shadow-1',
-          entry.href && 'press hover:-translate-y-0.5 hover:border-primary/50 hover:shadow-2',
+          'flex min-w-0 flex-1 items-center gap-3 rounded-md border border-border bg-surface p-3',
+          entry.href && 'press hover:border-primary',
         )}
       >
         <span className="flex min-w-0 flex-1 flex-col">

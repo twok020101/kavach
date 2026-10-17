@@ -56,7 +56,7 @@ export function AnswerCard({
       aria-labelledby={`${card.id}-title`}
       className={cn(
         'relative rounded-md border p-4 sm:p-5',
-        warning ? 'border-partial/40 bg-partial-bg' : 'border-border bg-surface shadow-1',
+        warning ? 'border-partial/40 bg-partial-bg' : 'border-border bg-surface',
       )}
     >
       <header className="flex items-start gap-3">

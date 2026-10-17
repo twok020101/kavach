@@ -34,15 +34,15 @@ const desktopTabs: Tab[] = [
   { href: '/settings', key: 'more', icon: Ellipsis },
 ];
 
-/** Phone: four tabs around the raised hospital button in the middle. */
+/** Phone: four tabs around the hospital cell in the middle. */
 const phoneLeft: Tab[] = [desktopTabs[0]!, desktopTabs[1]!];
 const phoneRight: Tab[] = [desktopTabs[2]!, desktopTabs[5]!];
 
 /**
- * Signed-in app frame. Phone: a slim top bar and a bottom bar with the marigold
- * "At the hospital" button raised in its centre, on every screen, so the one action that
- * matters in a crisis is always under the thumb. Desktop: a 264 px left nav with the same
- * button at the top, content up to 1200 px.
+ * Signed-in app frame. Phone: a slim top bar and a bottom bar whose centre cell is the
+ * marigold "Hospital" control, filled and flat, on every screen, so the one action that
+ * matters in a crisis is always under the thumb. Desktop: a 264 px left nav (07 §5) with the
+ * same button at the top, content up to 1200 px. No wash, blur or glow (plain register).
  */
 export function AppShell({
   householdName,
@@ -57,7 +57,7 @@ export function AppShell({
     href === '/settings' ? pathname.startsWith('/settings') : pathname.startsWith(href);
 
   return (
-    <div className="wash flex min-h-dvh flex-col lg:pl-66">
+    <div className="flex min-h-dvh flex-col lg:pl-66">
       <a
         href="#main"
         className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-surface focus:p-3"
@@ -66,7 +66,7 @@ export function AppShell({
       </a>
 
       {/* Phone top bar */}
-      <header className="sticky top-0 z-30 flex items-center gap-3 border-b border-border/70 bg-bg/90 px-4 py-2 backdrop-blur-md lg:hidden">
+      <header className="sticky top-0 z-30 flex items-center gap-3 border-b border-border bg-bg px-4 py-2 lg:hidden">
         <Link href="/home" className="flex items-center gap-2" aria-label="Kavach">
           <LogoMark className="size-7" />
           {householdName && (
@@ -78,7 +78,7 @@ export function AppShell({
       </header>
 
       {/* Desktop left nav */}
-      <aside className="fixed inset-y-0 left-0 z-30 hidden w-66 flex-col gap-6 border-r border-border bg-surface/80 px-4 py-5 backdrop-blur lg:flex">
+      <aside className="fixed inset-y-0 left-0 z-30 hidden w-66 flex-col gap-6 border-r border-border bg-surface px-4 py-5 lg:flex">
         <div className="flex flex-col gap-1 px-2">
           <Link href="/home" className="inline-flex" aria-label="Kavach">
             <Logo />
@@ -131,9 +131,9 @@ export function AppShell({
       {/* Phone bottom bar */}
       <nav
         aria-label={t('mainNav')}
-        className="fixed inset-x-0 bottom-0 z-30 border-t border-border bg-surface/95 pb-[env(safe-area-inset-bottom)] backdrop-blur-md lg:hidden"
+        className="fixed inset-x-0 bottom-0 z-30 border-t border-border bg-surface pb-[env(safe-area-inset-bottom)] lg:hidden"
       >
-        <ul className="mx-auto grid max-w-3xl grid-cols-5 items-end">
+        <ul className="mx-auto grid max-w-3xl grid-cols-5">
           {phoneLeft.map((tab) => (
             <PhoneTab
               key={tab.key}
@@ -142,14 +142,12 @@ export function AppShell({
               label={t(`nav.${tab.key}`)}
             />
           ))}
-          <li className="flex justify-center">
+          <li className="flex items-stretch justify-center p-1.5">
             <Link
               href="/desk"
-              className="press -mt-5 flex flex-col items-center gap-1 pb-1.5 text-xs font-semibold text-accent-ink dark:text-text"
+              className="press flex min-h-14 w-full flex-col items-center justify-center gap-0.5 rounded-md bg-accent text-xs font-bold text-accent-ink"
             >
-              <span className="tab-hero flex size-16 items-center justify-center rounded-full border-4 border-bg bg-accent text-accent-ink">
-                <Hospital aria-hidden className="size-7" strokeWidth={2} />
-              </span>
+              <Hospital aria-hidden className="size-6" strokeWidth={2} />
               {t('nav.hospital')}
             </Link>
           </li>
@@ -181,7 +179,7 @@ function PhoneTab({ tab, active, label }: { tab: Tab; active: boolean; label: st
       >
         <span
           className={cn(
-            'flex h-7 w-12 items-center justify-center rounded-full transition-colors',
+            'flex h-7 w-12 items-center justify-center rounded-md',
             active && 'bg-primary-soft',
           )}
         >

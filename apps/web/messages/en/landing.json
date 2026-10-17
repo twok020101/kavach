@@ -54,6 +54,15 @@
     "cited": "of rupee amounts come from tested rules, each with its clause"
   },
   "momentsIntro": "Kavach learns the household once, in about two minutes. Then it acts at the three moments where Indian families lose money.",
+  "titlePlain": "Your family's insurance,",
+  "titleEm": "explained at the moment it matters.",
+  "lead": "Kavach remembers every policy in the house and tells you what to do when life changes, at the hospital desk, and when a claim comes back short. In Hindi or English. Every rupee comes from written policy terms, with the page number.",
+  "howItWorks": "How it works",
+  "moment": {
+    "title": "The <saving></saving> moment",
+    "body": "Suresh is being admitted. The deluxe room costs the family about <deluxe></deluxe> out of pocket; the cheaper room about <standard></standard>. Kavach says which one, and why, before anyone signs."
+  },
+  "trustLine": "Built for the Google Cloud AI Builder Cup 2026 · Demo data is marked SAMPLE · Nothing is stored without consent · No payments, ever.",
   "tryMaternity": "Try the maternity scene",
   "tryMaternitySub": "Priya’s delivery: the ₹50,000 maternity limit, in English."
 }

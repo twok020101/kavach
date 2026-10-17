@@ -75,7 +75,7 @@ function PolicyRow({ policy, household }: { policy: Policy; household: Household
     <li>
       <Link
         href={`/policies/${policy.id}`}
-        className="press flex flex-col gap-3 rounded-md border border-border bg-surface p-4 shadow-1 hover:-translate-y-0.5 hover:border-primary/50 hover:shadow-2"
+        className="press flex flex-col gap-3 rounded-md border border-border bg-surface p-4 hover:border-primary"
       >
         <div className="flex items-start gap-3">
           <span

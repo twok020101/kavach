@@ -57,7 +57,8 @@
     },
     "questionLabel": "Your question",
     "questionPlaceholder": "Type your question",
-    "send": "Send"
+    "send": "Send",
+    "askTitle": "Common questions"
   },
   "summary": {
     "title": "Session summary",

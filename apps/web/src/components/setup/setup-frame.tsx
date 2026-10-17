@@ -28,7 +28,7 @@ export function StepProgress({ step }: { step: number }) {
           >
             <span
               className={cn(
-                'h-1.5 rounded-full transition-colors',
+                'h-1.5 rounded-sm transition-colors',
                 state === 'todo' ? 'bg-border' : 'bg-primary',
               )}
             />
@@ -69,7 +69,7 @@ export function SetupFrame({
 }) {
   const t = useTranslations('setup');
   return (
-    <div className="wash flex min-h-dvh flex-col lg:flex-row">
+    <div className="flex min-h-dvh flex-col lg:flex-row">
       <BrandPanel />
       <div className="relative flex w-full flex-1 flex-col lg:items-center lg:justify-center lg:py-10">
         <div className="flex w-full flex-1 flex-col lg:max-w-xl lg:flex-none">
@@ -100,7 +100,7 @@ export function SetupFrame({
             {children}
           </main>
           {footer && (
-            <footer className="sticky bottom-0 flex items-center justify-end gap-3 border-t border-border bg-bg/90 px-4 py-3 backdrop-blur-md lg:static lg:border-0 lg:bg-transparent lg:px-8 lg:py-5">
+            <footer className="sticky bottom-0 flex items-center justify-end gap-3 border-t border-border bg-bg px-4 py-3 lg:static lg:border-0 lg:bg-transparent lg:px-8 lg:py-5">
               {footer}
             </footer>
           )}
@@ -121,7 +121,7 @@ function BrandPanel() {
   return (
     <aside className="hidden w-[42%] max-w-xl flex-col justify-between bg-primary p-10 text-on-primary lg:flex">
       <Link href="/" className="inline-flex items-center gap-3" aria-label="Kavach">
-        <span className="rounded-full bg-surface p-1.5">
+        <span className="rounded-md bg-surface p-1.5">
           <LogoMark className="size-8" />
         </span>
         <span className="font-display text-2xl font-bold">Kavach</span>
@@ -135,7 +135,7 @@ function BrandPanel() {
             <li key={key} className="flex items-start gap-3">
               <span
                 className={cn(
-                  'flex size-10 shrink-0 items-center justify-center rounded-full',
+                  'flex size-10 shrink-0 items-center justify-center rounded-md',
                   key === 'hospital' ? 'bg-accent text-accent-ink' : 'bg-white/15 text-on-primary',
                 )}
               >

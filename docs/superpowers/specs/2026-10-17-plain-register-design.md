@@ -19,9 +19,23 @@ A screen is right when a 58-year-old who has been scammed by a phone call before
 5. **No urgency devices.** No countdowns, no "only today", no exclamation marks, no badges with counts, no modals that interrupt, no notification prompts.
 6. **Plain words.** Sentence case everywhere. Headings are statements, not slogans. Hindi keeps the everyday English insurance words people use (policy, room rent, TPA, cashless).
 
+## Reconciliation with the design system (07), decided 17 Oct evening
+
+Jai asked that Kshitij's project rules govern everything, and that where [07-design-system.md](../../plan/07-design-system.md) and this spec conflict, **07 wins on type, corner radii and page colour**. So, overriding the "Tokens", "Type" and "Controls" sections below wherever they differ:
+
+- **Type stays as 07 §4:** Plus Jakarta Sans for headings, Inter for body, Noto Sans Devanagari for Hindi, Source Serif 4 for policy quotes, JetBrains Mono **only** in the Why panel and the Proof page (so rupee amounts are not set in mono).
+- **Radii stay as 07 §5:** 6 px inputs and chips, 12 px cards, 20 px sheets and big buttons, full for avatars and the orb. Nothing is square.
+- **Page colour stays as 07 §3.2:** warm sand `#FBFAF7`, primary `#2E45A0`.
+- **Elevation per 07 §5:** level 0 (flat, bordered) is the default for cards; level 2 only for sheets and popovers; no level 1 "raised" cards; no accent glow.
+- **Structure per 07 and 08:** the 264 px desktop left nav and the bottom tab bar; the voice orb (indigo listening, marigold speaking, breathing scale 1 → 1.06 at 1.6 s) stays on the desk; `SafetyScoreRing` stays on Home; count-ups at 600 ms; cover-map status changes cross-fade at 400 ms with the pulse ring; targets at least 48 px (64 on the desk).
+- **Copy per 11 §4:** the global footer, hospital, plan, claims and sample disclaimers verbatim; no exclamation marks in hospital mode or on WhatsApp.
+- **Numbers per 08:** the ₹90,000 and ₹14,560 shown on the landing page come from the engine's worked examples (`landingNumbers`), never typed into message strings.
+
+What this spec still changes, because 07 does not require it: the colour wash and every gradient go; raised-card shadows go; the marigold glow under the hospital tab goes; words-rise headlines go; the phone bezel mock goes; pills used as decoration become 6 px chips; the `scale(0.97)` press becomes a colour change; reveals are 300 ms and 8 px; the landing page gains the statement headline, the "what Kavach is / is not" table, the trust line and the dark evidence band; citations sit beside every number.
+
 ## Tokens
 
-Replace the current values in `apps/web/src/app/globals.css`. Names stay so components need no renaming.
+Replace the current values in `apps/web/src/app/globals.css`. Names stay so components need no renaming. **Superseded in part by the reconciliation above: keep sand page, 07 radii and 07 primary; apply only the shadow, wash and citation rows.**
 
 ### Colour (light, the default and the only required theme)
 

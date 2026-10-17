@@ -57,7 +57,8 @@
     },
     "questionLabel": "आपका सवाल",
     "questionPlaceholder": "अपना सवाल लिखिए",
-    "send": "भेजें"
+    "send": "भेजें",
+    "askTitle": "आम सवाल"
   },
   "summary": {
     "title": "सारांश",

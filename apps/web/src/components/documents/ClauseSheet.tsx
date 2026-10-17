@@ -59,7 +59,7 @@ export function ClauseSheet({
         role="dialog"
         aria-modal="true"
         aria-labelledby="clause-title"
-        className="relative flex max-h-[85dvh] w-full max-w-lg flex-col gap-4 overflow-y-auto rounded-t-lg bg-surface p-5 shadow-xl sm:rounded-lg"
+        className="relative flex max-h-[85dvh] w-full max-w-lg flex-col gap-4 overflow-y-auto rounded-t-lg bg-surface p-5 shadow-2 sm:rounded-lg"
       >
         <header className="flex items-start justify-between gap-3">
           <div>

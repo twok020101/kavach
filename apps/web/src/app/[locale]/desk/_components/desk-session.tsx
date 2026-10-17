@@ -20,6 +20,7 @@ import { AgentSteps, type AgentStep } from '@/components/kavach/agent-steps';
 import { AnswerCard } from '@/components/kavach/answer-card';
 import { Amount } from '@/components/kavach/amount';
 import { Captions, type CaptionLine } from '@/components/kavach/captions';
+import { DisclaimerBar } from '@/components/kavach/disclaimer-bar';
 import { ListeningOrb } from '@/components/kavach/listening-orb';
 import { RoomCompare } from '@/components/kavach/room-compare';
 import { WhyPanel } from '@/components/kavach/why-panel';
@@ -268,7 +269,7 @@ export function DeskSessionScreen({
         }
       />
 
-      <main className="mx-auto flex max-w-2xl flex-col gap-5 px-4 pb-56 pt-4">
+      <main className="mx-auto flex max-w-2xl flex-col gap-5 px-4 pb-48 pt-4">
         {live ? (
           <div className="relative flex flex-col items-center gap-3 py-4">
             <Badge icon={RadioTower} tone="primary" className="absolute right-0 top-0">
@@ -280,18 +281,7 @@ export function DeskSessionScreen({
               label={voice.muted ? tl('orb.muted') : tl(`orb.${liveLabel(voice.status)}`)}
             />
           </div>
-        ) : (
-          <div className="flex items-center justify-between gap-3">
-            <ListeningOrb
-              size="sm"
-              state={busy ? 'thinking' : 'idle'}
-              label={busy ? t('orb.thinking') : t('orb.ready')}
-            />
-            <Badge icon={Keyboard} className="shrink-0">
-              {t('textMode')}
-            </Badge>
-          </div>
-        )}
+        ) : null}
 
         <Captions lines={captions} />
 
@@ -368,6 +358,25 @@ export function DeskSessionScreen({
           </Card>
         )}
 
+        {estimate && !answer && !live && (
+          <section aria-labelledby="ask-title" className="flex flex-col gap-2">
+            <h2 id="ask-title" className="font-display text-lg font-bold">
+              {t('askTitle')}
+            </h2>
+            {[t('suggest.room'), t('suggest.card')].map((s) => (
+              <Button
+                key={s}
+                variant="secondary"
+                size="desk"
+                disabled={busy}
+                onClick={() => ask.mutate(s)}
+              >
+                {s}
+              </Button>
+            ))}
+          </section>
+        )}
+
         {answer && (
           <section aria-label={t('answers')} className="flex flex-col gap-4">
             {answer.questionForDesk && answer.cards.some((c) => c.kind === 'billing_branch') && (
@@ -412,6 +421,8 @@ export function DeskSessionScreen({
               </Disclosure>
             </Card>
 
+            <DisclaimerBar kind="hospital" className="text-base" />
+
             <div className="flex flex-col gap-3">
               <Button variant="secondary" size="desk" onClick={share}>
                 <Share2 aria-hidden className="size-6" />
@@ -452,7 +463,7 @@ export function DeskSessionScreen({
         />
       )}
 
-      <div className="fixed inset-x-0 bottom-0 z-20 border-t border-border bg-bg/95 pb-[env(safe-area-inset-bottom)] backdrop-blur-md">
+      <div className="fixed inset-x-0 bottom-0 z-20 border-t border-border bg-bg pb-[env(safe-area-inset-bottom)]">
         {live ? (
           <div className="mx-auto grid max-w-2xl grid-cols-[auto_minmax(0,1fr)_auto] items-stretch gap-2 px-4 py-3">
             <Button
@@ -519,31 +530,7 @@ export function DeskSessionScreen({
                 {tl('talk')}
               </Button>
             )}
-            {!answer && (
-              <div className="flex gap-2 overflow-x-auto pb-1" aria-label={t('suggestions')}>
-                {[t('suggest.room'), t('suggest.card')].map((s) => (
-                  <button
-                    key={s}
-                    type="button"
-                    disabled={busy}
-                    onClick={() => ask.mutate(s)}
-                    className="min-h-12 shrink-0 rounded-full border-2 border-primary bg-surface px-4 font-semibold text-primary hover:bg-primary-soft disabled:opacity-50"
-                  >
-                    {s}
-                  </button>
-                ))}
-              </div>
-            )}
             <form onSubmit={submit} className="flex items-stretch gap-2">
-              <Button
-                variant="secondary"
-                className="min-h-16 min-w-16 shrink-0 px-0"
-                aria-label={t('capture.photo')}
-                disabled={busy}
-                onClick={() => fileInput.current?.click()}
-              >
-                <Camera aria-hidden className="size-7" />
-              </Button>
               <label htmlFor="desk-question" className="sr-only">
                 {t('questionLabel')}
               </label>

@@ -6,12 +6,12 @@ export type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'accent' | 'soft
 export type ButtonSize = 'sm' | 'md' | 'lg' | 'desk' | 'hero';
 
 const variants: Record<ButtonVariant, string> = {
-  primary: 'bg-primary text-on-primary shadow-1 hover:bg-primary-hover',
+  primary: 'bg-primary text-on-primary hover:bg-primary-hover',
   secondary: 'border-2 border-primary bg-surface text-primary hover:bg-primary-soft',
   soft: 'bg-primary-soft text-primary-hover hover:bg-primary/15',
   ghost: 'text-primary hover:bg-primary-soft',
   // Marigold is reserved for the hospital button and brand moments.
-  accent: 'bg-accent text-accent-ink shadow-accent hover:brightness-[1.03] hover:shadow-2',
+  accent: 'bg-accent text-accent-ink hover:brightness-95',
 };
 
 const sizes: Record<ButtonSize, string> = {
