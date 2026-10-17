@@ -5,7 +5,6 @@ import {
   ArrowRight,
   Briefcase,
   PenLine,
-  Plus,
   RotateCcw,
   ShieldAlert,
   ShieldCheck,
@@ -15,12 +14,13 @@ import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 import { Amount } from '@/components/kavach/amount';
 import { Reveal } from '@/components/kavach/reveal';
-import { Button, buttonClasses } from '@/components/ui/button';
+import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { cn } from '@/components/ui/cn';
 import { CellDetail } from '@/components/plan/cell-detail';
 import { CoverGrid } from '@/components/plan/cover-grid';
 import { DateScrubber } from '@/components/plan/date-scrubber';
+import { ComingUp, Greeting, QuickActions, ReadyPanel } from '@/components/plan/home-extras';
 import { MemberHome } from '@/components/plan/member-home';
 import { PlanFrame } from '@/components/plan/plan-frame';
 import { useActions, usePlan } from '@/components/plan/queries';
@@ -31,6 +31,7 @@ import { useDate } from '@/components/plan/format';
 import { Link } from '@/i18n/navigation';
 import { useDemoControls } from '@/lib/household';
 import { useStoredMemberId } from '@/lib/session';
+import { useCountUp } from '@/lib/use-count-up';
 
 const SCRUB_DAYS = 180;
 
@@ -49,6 +50,11 @@ function HomeOrMember({ household }: { household: Household }) {
   return <Home household={household} />;
 }
 
+/**
+ * S09 Home for the owner: a greeting that knows the hour, what needs them, the safety score, the
+ * cover map over time, the next dates, three plain things to do, and what Kavach will say first
+ * if someone is admitted tonight. Phone: one column. Desktop: the map left, the rest right.
+ */
 function Home({ household }: { household: Household }) {
   const t = useTranslations('plan.home');
   const tp = useTranslations('plan');
@@ -82,16 +88,13 @@ function Home({ household }: { household: Household }) {
   const owner = household.members.find((m) => m.relation === 'self');
   const earner = owner?.name ?? '';
   const selectedCount = plan?.recommendations.filter((r) => r.status === 'selected').length ?? 0;
+  const score = plan?.coverMap.score ?? 0;
+  const scoreWord = score >= 70 ? 'high' : score >= 40 ? 'mid' : 'low';
 
   return (
     <div className="flex flex-col gap-5">
       <header className="flex flex-wrap items-end justify-between gap-3">
-        <div>
-          <h1 className="font-display text-3xl font-bold tracking-tight sm:text-4xl">
-            {t('hello', { name: owner?.name.split(' ')[0] ?? household.name })}
-          </h1>
-          <p className="mt-1 text-muted">{t('asOf', { date: date(asOf, true) })}</p>
-        </div>
+        <Greeting household={household} needs={drafts.length} asOf={today} />
         {household.isDemo && (
           <div className="flex items-center gap-1 rounded-md border border-border py-1 pl-3 pr-1 text-sm font-medium text-accent-ink dark:text-text">
             <span>{t('demoDate', { date: date(today, true) })}</span>
@@ -120,10 +123,11 @@ function Home({ household }: { household: Household }) {
               <div className="flex items-center gap-4">
                 <ScoreRing score={plan.coverMap.score} />
                 <div className="flex min-w-0 flex-col">
-                  <span className="text-sm font-semibold uppercase tracking-wide text-muted">
-                    {t('score')}
-                  </span>
+                  <span className="label">{t('score')}</span>
                   <span className="font-display text-xl font-bold leading-snug">
+                    {t(`scoreWord.${scoreWord}`)}
+                  </span>
+                  <span className="text-sm text-muted">
                     {t('summary', { gaps, onJob, name: earner })}
                   </span>
                 </div>
@@ -173,7 +177,7 @@ function Home({ household }: { household: Household }) {
           </Reveal>
         )}
 
-        <Reveal className="lg:col-start-1 lg:row-span-4 lg:row-start-1">
+        <Reveal className="lg:col-start-1 lg:row-span-5 lg:row-start-1">
           <Card className="flex flex-col gap-4">
             <div className="flex items-center justify-between gap-3">
               <h2 className="font-display text-xl font-bold">{t('mapTitle')}</h2>
@@ -204,15 +208,17 @@ function Home({ household }: { household: Household }) {
         </Reveal>
 
         <Reveal delay={0.1} className="lg:col-start-2">
-          <Link
-            href="/change"
-            className={buttonClasses({ variant: 'secondary', size: 'lg', className: 'w-full' })}
-          >
-            <Plus aria-hidden className="size-5" />
-            {t('whatsChanging')}
-          </Link>
+          <ComingUp pins={pins} from={today} />
+        </Reveal>
+
+        <Reveal delay={0.15} className="lg:col-start-2">
+          <ReadyPanel household={household} asOf={today} />
         </Reveal>
       </div>
+
+      <Reveal delay={0.1}>
+        <QuickActions household={household} />
+      </Reveal>
 
       <Sheet
         open={!!selected}
@@ -245,13 +251,17 @@ function Stat({
     partial: 'bg-partial-bg text-partial',
     gap: 'bg-gap-bg text-gap',
   };
+  const shown = useCountUp(n, 600);
   return (
     <div className={cn('flex flex-col items-center gap-0.5 rounded-md px-2 py-2', tones[tone])}>
       <dt className="flex items-center gap-1 text-xs font-semibold">
         <Icon aria-hidden className="size-4" />
         {label}
       </dt>
-      <dd className="font-display text-2xl font-bold tabular-nums">{n}</dd>
+      <dd className="font-display text-2xl font-bold tabular-nums">
+        <span className="sr-only">{n}</span>
+        <span aria-hidden>{shown}</span>
+      </dd>
     </div>
   );
 }

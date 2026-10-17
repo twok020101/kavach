@@ -49,7 +49,47 @@
     "noCover": "No policy covers you yet.",
     "call": "Call {name}",
     "whatsappLine": "If the app won’t open, message Kavach on WhatsApp",
-    "fullView": "Show everything"
+    "fullView": "Show everything",
+    "greeting": {
+      "morning": "Good morning, {name}",
+      "afternoon": "Good afternoon, {name}",
+      "evening": "Good evening, {name}",
+      "night": "Hello, {name}"
+    },
+    "watch": "Kavach is keeping an eye on {policies, plural, one {# policy} other {# policies}} for {people} people.",
+    "needsYou": "{count, plural, =0 {Nothing needs you today.} one {# thing needs you.} other {# things need you.}}",
+    "scoreWord": {
+      "low": "Needs attention",
+      "mid": "Getting there",
+      "high": "Well covered"
+    },
+    "quick": {
+      "title": "Do something",
+      "change": "Tell Kavach what’s changing",
+      "changeHint": "A new job, a baby, a move",
+      "claim": "Check a claim letter",
+      "claimHint": "Every deduction, against the policy",
+      "invite": "Give {name} the hospital button",
+      "inviteHint": "Her own login, in Hindi"
+    },
+    "comingUp": {
+      "title": "Coming up",
+      "inDays": "{days, plural, =0 {today} one {in # day} other {in # days}}",
+      "all": "Full timeline",
+      "none": "No dates to watch in the next six months."
+    },
+    "ready": {
+      "title": "Ready for an emergency",
+      "intro": "If someone is admitted tonight, this is what Kavach will say first.",
+      "line": "{name}: give the {policy} card first{limit, select, none {} other { · room limit {limit}/day}}",
+      "nick": {
+        "company": "company policy",
+        "parents": "parents’ policy",
+        "topup": "top-up policy",
+        "own": "own policy"
+      },
+      "none": "No health policy covers {name} today."
+    }
   },
   "scrubber": {
     "asOf": "As of {date}",

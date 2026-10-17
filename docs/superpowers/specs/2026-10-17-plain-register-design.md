@@ -145,3 +145,12 @@ New features, API changes, the proof page's charts, WhatsApp card images, the da
 ## Checks
 
 `pnpm lint`, `pnpm typecheck`, `pnpm build`; screenshots of landing, home, desk answer, policies and proof at 390 px and 1366 px in English and Hindi; a keyboard pass on the shell and desk; the "would she hand it her policy" read-through of every screen against the six trust rules above.
+
+## Landing exception, 17 Oct late evening
+
+Jai asked, after seeing his portfolio site again, for Kavach's landing page to open the way that site does and to carry "a lot of UI/UX animation", while still giving someone in a panic "a calm feeling of safety, like an elder brother who knows what to do". So the **landing page only** (`/`, `/en`, `/hi`) now has:
+
+- an opening on a first visit in a tab (`components/kavach/boot.tsx`): the shield draws itself, three quiet lines say what is already in place, the panel lifts; about 2.5 s, skipped by a tap, by reduced motion and on every repeat visit; never on app or hospital routes;
+- a statement whose words rise, sections that rise in order, two slow colour fields behind the opening section, a soft pointer light, the sample family appearing one person at a time, and the hospital moment told in three self-advancing frames with the ₹90,000 counted up.
+
+The trust rules still govern how it moves: slow, no glows, no urgency, nothing that interrupts, marigold only on the hospital control and the shield. Every app screen, the desk above all, stays as this spec says: still.

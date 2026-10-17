@@ -64,5 +64,42 @@
   },
   "trustLine": "Built for the Google Cloud AI Builder Cup 2026 · Demo data is marked SAMPLE · Nothing is stored without consent · No payments, ever.",
   "tryMaternity": "Try the maternity scene",
-  "tryMaternitySub": "Priya’s delivery: the ₹50,000 maternity limit, in English."
+  "tryMaternitySub": "Priya’s delivery: the ₹50,000 maternity limit, in English.",
+  "kicker": "Take a breath. The policies are already read.",
+  "boot": {
+    "policies": "Your family’s policies: read, with page numbers",
+    "rules": "Room-rent and maternity rules: ready",
+    "beside": "Standing beside you, in Hindi or English",
+    "tagline": "Standing beside your family at every insurance moment.",
+    "skip": "Tap anywhere to continue"
+  },
+  "family": {
+    "title": "The sample family Kavach already knows",
+    "caption": "Five people, four policies, one picture. Kavach learnt them once, in about two minutes.",
+    "relations": {
+      "self": "Rahul, 34 · pays the premiums",
+      "spouse": "Priya, 32",
+      "child": "Anaya, 5",
+      "father": "Suresh, 62 · the patient",
+      "mother": "Kamala, 58 · opens Kavach at the desk"
+    }
+  },
+  "story": {
+    "caption": "How the hospital moment goes",
+    "step1": {
+      "title": "Kamala taps At the hospital",
+      "body": "In Hindi, on her own phone. Kavach already knows Suresh’s two policies."
+    },
+    "step2": {
+      "title": "She shows the estimate to the camera",
+      "body": "Kavach reads the room tariff: deluxe ₹9,000 a day, standard ₹5,000."
+    },
+    "step3": {
+      "title": "“Ask for the ₹5,000 room.”",
+      "body": "Only room-priced charges are cut in the pricier room. Kavach says which card to give first, and what to ask the desk."
+    },
+    "saving": "Less to pay",
+    "pause": "Pause the story",
+    "play": "Play the story"
+  }
 }
