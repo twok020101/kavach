@@ -12,7 +12,7 @@ const root = () => document.documentElement;
 /**
  * Whether this load gets the opening, decided once. public/theme.js normally marks it before
  * first paint; the same rule is applied here in case that script ran late, so the opening never
- * depends on a race (landing route, not reduced motion, not yet shown in this tab, or ?boot=1).
+ * depends on a race (landing route, not reduced motion, first visit in this tab or a refresh, or ?boot=1).
  */
 let wanted: boolean | undefined;
 const noop = () => () => {};
@@ -22,7 +22,11 @@ function decide(): boolean {
     const landing = /^\/(en|hi)?\/?$/.test(location.pathname);
     const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
     const force = /[?&]boot=1(&|$)/.test(location.search);
-    const yes = landing && (force || (!reduced && !sessionStorage.getItem('kavach.booted')));
+    const nav = performance.getEntriesByType('navigation')[0] as
+      PerformanceNavigationTiming | undefined;
+    const reload = nav?.type === 'reload';
+    const yes =
+      landing && (force || (!reduced && (reload || !sessionStorage.getItem('kavach.booted'))));
     if (yes) root().classList.add('booting');
     return yes;
   } catch {
@@ -38,7 +42,7 @@ const readWanted = () => (wanted ??= decide());
  * say what is already in place, each tick drawing itself; then the panel lifts, its content
  * lagging a little for depth, and the page rises underneath. About two and a half seconds, once
  * per tab, never on app or hospital routes. A tap, a key or reduced motion skips it. Nothing
- * counts, flashes or hurries anyone.
+ * counts, flashes or hurries anyone. A refresh of the landing page plays it again.
  */
 export function Boot() {
   const t = useTranslations('landing.boot');

@@ -12,9 +12,12 @@ try {
   if (s === 'large' || s === 'xlarge') e.dataset.textScale = s;
   var landing = /^\/(en|hi)?\/?$/.test(location.pathname);
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  // ?boot=1 replays the opening (for the demo video); otherwise once per tab, never under reduced motion.
+  // Plays on the first visit in a tab and again on a refresh of the landing page; ?boot=1 forces
+  // it; moving back to the landing from inside the app does not replay it; reduced motion skips it.
   var force = /[?&]boot=1(&|$)/.test(location.search);
-  if (landing && (force || (!reduced && !sessionStorage.getItem('kavach.booted')))) {
+  var nav = performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
+  var reload = !!nav && nav.type === 'reload';
+  if (landing && (force || (!reduced && (reload || !sessionStorage.getItem('kavach.booted'))))) {
     e.classList.add('booting');
   }
 } catch {}
