@@ -9,10 +9,27 @@ const RUN_MS = 2400;
 const LIFT_MS = 720;
 const root = () => document.documentElement;
 
-/** Whether public/theme.js marked this load for the opening; decided once, before React ran. */
+/**
+ * Whether this load gets the opening, decided once. public/theme.js normally marks it before
+ * first paint; the same rule is applied here in case that script ran late, so the opening never
+ * depends on a race (landing route, not reduced motion, not yet shown in this tab, or ?boot=1).
+ */
 let wanted: boolean | undefined;
 const noop = () => () => {};
-const readWanted = () => (wanted ??= root().classList.contains('booting'));
+function decide(): boolean {
+  if (root().classList.contains('booting')) return true;
+  try {
+    const landing = /^\/(en|hi)?\/?$/.test(location.pathname);
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const force = /[?&]boot=1(&|$)/.test(location.search);
+    const yes = landing && (force || (!reduced && !sessionStorage.getItem('kavach.booted')));
+    if (yes) root().classList.add('booting');
+    return yes;
+  } catch {
+    return false;
+  }
+}
+const readWanted = () => (wanted ??= decide());
 
 /**
  * The opening on a first visit to the landing page: the shield draws itself, three quiet lines
