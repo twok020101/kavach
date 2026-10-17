@@ -56,7 +56,7 @@ export function DeskSessionScreen({
   const router = useRouter();
   const fileInput = useRef<HTMLInputElement>(null);
   const answers = useRef<HTMLElement>(null);
-  const ask = useRef<HTMLElement>(null);
+  const askSection = useRef<HTMLElement>(null);
   const lineId = useRef(0);
 
   const [captions, setCaptions] = useState<CaptionLine[]>([
@@ -227,7 +227,7 @@ export function DeskSessionScreen({
   // Once the estimate is read, the next step is the question: bring the two buttons into view.
   useEffect(() => {
     if (estimate && !answer && !live)
-      ask.current?.scrollIntoView({ block: 'start', behavior: 'smooth' });
+      askSection.current?.scrollIntoView({ block: 'start', behavior: 'smooth' });
   }, [estimate, answer, live]);
 
   function submit(event: FormEvent) {
