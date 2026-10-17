@@ -178,13 +178,20 @@ export function DeskSessionScreen({
       setCaptured(est);
       // Live: the agent reads the estimate itself and answers aloud.
       if (live) return voice.capture();
+      // Not an estimate (a poster, a foreign price list, an unreadable page): say what it is.
+      if (est.needsConfirmation && est.lines.length === 0) {
+        say('agent', t('estimateUnclear', { note: est.notes[0] ?? '' }));
+        return;
+      }
       say(
         'agent',
-        t('estimateRead', {
-          hospital: est.hospitalName,
-          days: est.days,
-          rooms: est.roomCategories.length,
-        }),
+        est.billingType === 'package'
+          ? t('packageRead', { hospital: est.hospitalName, rooms: est.roomCategories.length })
+          : t('estimateRead', {
+              hospital: est.hospitalName,
+              days: est.days,
+              rooms: est.roomCategories.length,
+            }),
       );
     },
     // 415: HEIC or a damaged file; 413: too large. Anything else: the photo could not be read.
@@ -360,13 +367,26 @@ export function DeskSessionScreen({
             </div>
             {!answer && (
               <>
-                <ul className="flex flex-wrap gap-2" aria-label={t('estimate.rooms')}>
-                  {estimate.roomCategories.map((room) => (
-                    <li key={room.id} className="rounded-sm bg-sunken px-2 py-1">
-                      <Amount value={room.rentPerDay} className="font-semibold" /> {room.label}
-                    </li>
-                  ))}
-                </ul>
+                {estimate.needsConfirmation && estimate.lines.length === 0 ? (
+                  <ul className="flex flex-col gap-1 text-partial">
+                    {estimate.notes.map((note) => (
+                      <li key={note}>{note}</li>
+                    ))}
+                  </ul>
+                ) : (
+                  <ul className="flex flex-wrap gap-2" aria-label={t('estimate.rooms')}>
+                    {estimate.roomCategories.map((room) => {
+                      // A package list prices the whole stay per room; a tariff prices the room per day.
+                      const figure = estimate.packagePrices?.[room.id] ?? room.rentPerDay;
+                      return (
+                        <li key={room.id} className="rounded-sm bg-sunken px-2 py-1">
+                          {figure > 0 && <Amount value={figure} className="font-semibold" />}{' '}
+                          {room.label}
+                        </li>
+                      );
+                    })}
+                  </ul>
+                )}
                 <div className="flex flex-wrap items-center justify-between gap-2">
                   <p className="text-muted">{t('estimate.check')}</p>
                   <Button

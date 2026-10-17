@@ -83,11 +83,17 @@ export function evaluateHospital(
         ),
       );
       break;
-    case 'package':
+    case 'package': {
       primary = run('package');
-      questionForDesk = packageQuestion(estimate, rooms, policies);
-      trace.push(fire('R-HL-014', { billingType: 'package' }, { questionForDesk }));
+      // One question only when the lower room's package price is not on the estimate.
+      const priced = Object.keys(estimate.packagePrices ?? {});
+      const lower = lowerRoom(rooms, policies);
+      if (!priced.includes(lower.id)) questionForDesk = packageQuestion(estimate, rooms, policies);
+      trace.push(
+        fire('R-HL-014', { billingType: 'package', pricedRooms: priced }, { questionForDesk }),
+      );
       break;
+    }
     default:
       primary = run(estimate.billingType);
   }

@@ -79,7 +79,7 @@ export function buildDeskSay(
   if (cap) parts.push(t.capped(Number(cap.inputs.limit)));
 
   if (alternate) parts.push(t.ifFlat(alternate.saving));
-  if (primary.billingType === 'package') parts.push(t.askPackage);
+  if (primary.billingType === 'package' && evaluation.questionForDesk) parts.push(t.askPackage);
 
   const topUp = evaluation.trace.find(
     (f) =>
@@ -111,15 +111,21 @@ type Phrases = {
 
 const rs = (n: number) => `${hindiWords(n)} rupaye`;
 const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
+/** "Nau hazaar rupaye wale room" for a priced room; the printed label (a package name) otherwise. */
+const roomHi = (o: RoomOptionResult) =>
+  o.rentPerDay > 0 ? `${cap(rs(o.rentPerDay))} wale room` : o.label;
+/** "the ₹9,000 room" for a priced room; "the Standard Package · Shared Room" otherwise. */
+const roomEn = (o: RoomOptionResult) =>
+  o.rentPerDay > 0 ? `the ${formatInr(o.rentPerDay)} room` : `the ${o.label}`;
 
 const HI: Phrases = {
   policyFirst: (name) => `Pehle ${name} ka card TPA desk par dijiye.`,
   compare: (worst, rec, cut, saving) => {
     const pay = `lagbhag ${rs(worst.outOfPocket)} dene padenge.`;
     const lead = cut
-      ? `${cap(rs(worst.rentPerDay))} wale room mein doctor aur operation ke charges bhi zyada hain, aur insurance unpar katauti karega. Aapko ${pay}`
-      : `${cap(rs(worst.rentPerDay))} wale room mein aapko ${pay}`;
-    return `${lead} ${cap(rs(rec.rentPerDay))} wala room maangiye, tab lagbhag ${rs(rec.outOfPocket)}, yaani ${rs(saving)} kam.`;
+      ? `${roomHi(worst)} mein doctor aur operation ke charges bhi zyada hain, aur insurance unpar katauti karega. Aapko ${pay}`
+      : `${roomHi(worst)} mein aapko ${pay}`;
+    return `${lead} ${roomHi(rec)} maangiye, tab lagbhag ${rs(rec.outOfPocket)}, yaani ${rs(saving)} kam.`;
   },
   youPay: (amount) => `Aapko lagbhag ${rs(amount)} dene padenge.`,
   ifFlat: (saving) =>
@@ -137,9 +143,9 @@ const EN: Phrases = {
   compare: (worst, rec, cut, saving) => {
     const pay = `pay about ${formatInr(worst.outOfPocket)}.`;
     const lead = cut
-      ? `In the ${formatInr(worst.rentPerDay)} room the doctor and operation charges are higher too, and insurance will cut part of them. You would ${pay}`
-      : `In the ${formatInr(worst.rentPerDay)} room you would ${pay}`;
-    return `${lead} Ask for the ${formatInr(rec.rentPerDay)} room; then about ${formatInr(rec.outOfPocket)}, which is ${formatInr(saving)} less.`;
+      ? `In ${roomEn(worst)} the doctor and operation charges are higher too, and insurance will cut part of them. You would ${pay}`
+      : `In ${roomEn(worst)} you would ${pay}`;
+    return `${lead} Ask for ${roomEn(rec)}; then about ${formatInr(rec.outOfPocket)}, which is ${formatInr(saving)} less.`;
   },
   youPay: (amount) => `You would pay about ${formatInr(amount)}.`,
   ifFlat: (saving) =>

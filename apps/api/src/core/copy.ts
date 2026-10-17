@@ -66,8 +66,19 @@ export type Copy = {
   };
 };
 
+/** A room with a per-day rent reads "Deluxe (₹9,000/day)"; a package reads by its label. */
+const roomEn = (r: RoomCategory) =>
+  r.rentPerDay > 0 ? `${r.label} (${formatInr(r.rentPerDay)}/day)` : r.label;
+const roomHi = (r: RoomCategory) =>
+  r.rentPerDay > 0 ? `${r.label} (${formatInr(r.rentPerDay)}/दिन)` : r.label;
+/** "the ₹9,000 room" or "the Standard Package · Shared Room". */
+const shortEn = (r: RoomCategory) =>
+  r.rentPerDay > 0 ? `the ${formatInr(r.rentPerDay)} room` : `the ${r.label}`;
+const shortHi = (r: RoomCategory) =>
+  r.rentPerDay > 0 ? `${formatInr(r.rentPerDay)} वाला कमरा` : r.label;
+
 const en: Copy = {
-  room: (r) => `${r.label} (${formatInr(r.rentPerDay)}/day)`,
+  room: roomEn,
   needEstimate: {
     text: 'Please send a photo of the hospital estimate, so I can check the room charges.',
     say: 'Please show me the hospital estimate. Take a photo of it, and I will check the room charges.',
@@ -92,12 +103,12 @@ const en: Copy = {
     cut: (rent) =>
       `In the ${formatInr(rent)} room the doctor and operation charges are higher too, and insurance cuts part of them.`,
     plain: 'What you would pay in each room.',
-    youPay: (r) => `${r.label} (${formatInr(r.rentPerDay)}/day): you pay about`,
+    youPay: (r) => `${roomEn(r)}: you pay about`,
     saving: 'You save about',
   },
   ask: {
     title: 'Ask the desk',
-    getRoom: (r) => `Can we get the ${r.label} room (${formatInr(r.rentPerDay)}/day)?`,
+    getRoom: (r) => `Can we get ${shortEn(r)}?`,
     cashless: (policy) => `Please start cashless approval with the ${policy}.`,
     confirm: 'Confirm the amounts with the TPA desk before you sign.',
   },
@@ -125,7 +136,7 @@ const en: Copy = {
     `What is the package price for ${procedure} in the ${en.room(lower)} room?`,
   text: {
     switchRoom: (rec, recPays, worst, worstPays, saving) =>
-      `Ask for the ${formatInr(rec.rentPerDay)} room: you pay about ${formatInr(recPays)} instead of about ${formatInr(worstPays)} in the ${formatInr(worst.rentPerDay)} room (${formatInr(saving)} less).`,
+      `Ask for ${shortEn(rec)}: you pay about ${formatInr(recPays)} instead of about ${formatInr(worstPays)} in ${shortEn(worst)} (${formatInr(saving)} less).`,
     youPay: (amount) => `You pay about ${formatInr(amount)}.`,
     firstCard: (policy) => `Give the ${policy} card at the TPA desk first.`,
     ifFlat: (saving) =>
@@ -134,7 +145,7 @@ const en: Copy = {
       `This policy pays at most ${formatInr(limit)} for the delivery, whichever room.`,
     roomPick: (room, pays, best, bestPays) =>
       room.id === best.id
-        ? `${room.label} (${formatInr(room.rentPerDay)}/day) is the cheapest for you: about ${formatInr(pays)}.`
+        ? `${roomEn(room)} is the cheapest for you: about ${formatInr(pays)}.`
         : `${room.label} (${formatInr(room.rentPerDay)}/day): you pay about ${formatInr(pays)}, which is ${formatInr(pays - bestPays)} more than the ${best.label} (${formatInr(bestPays)}).`,
     eachRoom: (items) =>
       `What you pay in each room: ${items.map((i) => `${i.room.label} ${formatInr(i.pays)}`).join(' · ')}.`,
@@ -144,7 +155,7 @@ const en: Copy = {
 };
 
 const hi: Copy = {
-  room: (r) => `${r.label} (${formatInr(r.rentPerDay)}/दिन)`,
+  room: roomHi,
   needEstimate: {
     text: 'अस्पताल के एस्टिमेट की फ़ोटो भेजिए, ताकि मैं कमरे के चार्ज देख सकूँ।',
     say: 'Hospital ka estimate dikhaiye. Uski photo lijiye, phir room ke charges dekhte hain.',
@@ -169,12 +180,12 @@ const hi: Copy = {
     cut: (rent) =>
       `${formatInr(rent)} वाले कमरे में डॉक्टर और ऑपरेशन के चार्ज भी ज़्यादा हैं, और बीमा उन पर कटौती करेगा।`,
     plain: 'हर कमरे में आपको कितना देना होगा।',
-    youPay: (r) => `${r.label} (${formatInr(r.rentPerDay)}/दिन): आपको लगभग`,
+    youPay: (r) => `${roomHi(r)}: आपको लगभग`,
     saving: 'बचत लगभग',
   },
   ask: {
     title: 'डेस्क से पूछिए',
-    getRoom: (r) => `क्या ${r.label} कमरा (${formatInr(r.rentPerDay)}/दिन) मिलेगा?`,
+    getRoom: (r) => `क्या ${shortHi(r)} मिलेगा?`,
     cashless: (policy) => `${policy} से कैशलेस अप्रूवल शुरू कीजिए।`,
     confirm: 'साइन करने से पहले TPA डेस्क से रक़म पक्की कर लीजिए।',
   },
@@ -202,7 +213,7 @@ const hi: Copy = {
     `${hi.room(lower)} कमरे में ${procedure} का पैकेज रेट कितना है?`,
   text: {
     switchRoom: (rec, recPays, worst, worstPays, saving) =>
-      `${formatInr(rec.rentPerDay)} वाला कमरा माँगिए: लगभग ${formatInr(recPays)} देने होंगे, ${formatInr(worst.rentPerDay)} वाले में लगभग ${formatInr(worstPays)} (${formatInr(saving)} कम)।`,
+      `${shortHi(rec)} माँगिए: लगभग ${formatInr(recPays)} देने होंगे, ${shortHi(worst)} में लगभग ${formatInr(worstPays)} (${formatInr(saving)} कम)।`,
     youPay: (amount) => `आपको लगभग ${formatInr(amount)} देने होंगे।`,
     firstCard: (policy) => `TPA डेस्क पर पहले ${policy} का कार्ड दीजिए।`,
     ifFlat: (saving) =>
@@ -211,7 +222,7 @@ const hi: Copy = {
       `यह पॉलिसी डिलीवरी के लिए ज़्यादा से ज़्यादा ${formatInr(limit)} देगी, कमरा कोई भी हो।`,
     roomPick: (room, pays, best, bestPays) =>
       room.id === best.id
-        ? `${room.label} (${formatInr(room.rentPerDay)}/दिन) आपके लिए सबसे सस्ता है: लगभग ${formatInr(pays)}।`
+        ? `${roomHi(room)} आपके लिए सबसे सस्ता है: लगभग ${formatInr(pays)}।`
         : `${room.label} (${formatInr(room.rentPerDay)}/दिन): आपको लगभग ${formatInr(pays)} देने होंगे, यानी ${best.label} (${formatInr(bestPays)}) से ${formatInr(pays - bestPays)} ज़्यादा।`,
     eachRoom: (items) =>
       `हर कमरे में आपको कितना देना होगा: ${items.map((i) => `${i.room.label} ${formatInr(i.pays)}`).join(' · ')}।`,

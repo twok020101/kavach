@@ -103,10 +103,21 @@ export function checkEstimate(reading: HospitalEstimate): HospitalEstimate {
     unsure = true;
   };
 
-  if (reading.lines.length === 0) {
+  const packaged =
+    reading.billingType === 'package' &&
+    Object.keys(reading.packagePrices ?? {}).length > 0 &&
+    reading.roomCategories.some((r) => reading.packagePrices?.[r.id] !== undefined);
+  if (reading.lines.length === 0 && !packaged) {
     // Nothing to check: say so once (the reader's own note says what the photo shows).
     flag('No charges could be read from the estimate.');
     return { ...reading, needsConfirmation: true, notes };
+  }
+  // A package list prices whole rooms; its categories must each carry a package price.
+  if (packaged) {
+    const unpriced = reading.roomCategories.filter(
+      (r) => reading.packagePrices?.[r.id] === undefined,
+    );
+    for (const r of unpriced) notes.push(`${r.label}: no package price printed; ask the desk.`);
   }
 
   // Estimates often print a rent-only tariff table (General Ward … Suite) next to charges

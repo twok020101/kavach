@@ -60,7 +60,9 @@
     "send": "Send",
     "askTitle": "Common questions",
     "captureUnreadable": "That photo format can't be read here. iPhone HEIC photos need the camera set to 'Most Compatible', or send a screenshot of the photo. Then try again.",
-    "captureTooBig": "That photo is too large to send. Take it again at a normal size, or send a screenshot."
+    "captureTooBig": "That photo is too large to send. Take it again at a normal size, or send a screenshot.",
+    "estimateUnclear": "I couldn’t use this as an estimate. {note}",
+    "packageRead": "I have read {hospital}’s package prices: {rooms, plural, one {# package} other {# packages}}. Now ask me which one to take."
   },
   "summary": {
     "title": "Session summary",
