@@ -29,17 +29,16 @@
   --status-na-bg: #ece9e2;
   --citation: #23357a;
   --citation-bg: #f2f4fc;
-  --radius-sm: 8px;
-  --radius-md: 16px;
-  --radius-lg: 22px;
-  /* Elevation (07 §5): 1 for raised cards, 2 for sheets and popovers. */
-  --shadow-1: 0 1px 2px rgba(28, 26, 23, 0.06), 0 1px 1px rgba(28, 26, 23, 0.04);
+  /* Radii per 07 §5: 6 inputs and chips, 12 cards, 20 sheets and big buttons. */
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  /* Elevation (07 §5): 0 is the default (flat, bordered); 2 only for sheets and popovers.
+     No raised cards, no accent glow, no colour wash (plain register, spec 2026-10-17). */
+  --shadow-1: none;
   --shadow-2: 0 8px 24px rgba(15, 27, 61, 0.12);
-  --shadow-accent: 0 10px 24px -10px rgba(217, 139, 18, 0.7);
-  /* The soft wash behind the top of a page: indigo on the left, marigold on the right. */
-  --wash:
-    radial-gradient(60% 40% at 0% 0%, rgba(69, 96, 196, 0.1), transparent 70%),
-    radial-gradient(50% 35% at 100% 0%, rgba(244, 166, 42, 0.16), transparent 70%);
+  --shadow-accent: none;
+  --wash: none;
 }
 
 [data-theme='dark'] {
@@ -68,12 +67,10 @@
   --status-na-bg: #23263a;
   --citation: #b8c4f5;
   --citation-bg: #1f2540;
-  --shadow-1: 0 0 0 1px rgba(255, 255, 255, 0.04);
+  --shadow-1: none;
   --shadow-2: 0 12px 32px rgba(0, 0, 0, 0.5);
-  --shadow-accent: 0 10px 24px -10px rgba(244, 166, 42, 0.5);
-  --wash:
-    radial-gradient(60% 40% at 0% 0%, rgba(143, 163, 240, 0.12), transparent 70%),
-    radial-gradient(50% 35% at 100% 0%, rgba(244, 166, 42, 0.1), transparent 70%);
+  --shadow-accent: none;
+  --wash: none;
 }
 
 /* Hospital desk: always light, maximum contrast, bigger type. */
@@ -83,7 +80,6 @@
   --text: #0b0b0c;
   --text-muted: #34312b;
   --border: #ddd8ce;
-  --wash: none;
 }
 
 /* Larger text (S27 Settings). The desk sets its own size. */
@@ -171,8 +167,8 @@ html:has([data-mode='desk']) {
   }
 
   ::selection {
-    background: var(--accent);
-    color: var(--accent-ink);
+    background: var(--primary-soft);
+    color: var(--text);
   }
 
   /* One visible focus ring everywhere: 2 px + 2 px offset. */
@@ -184,69 +180,57 @@ html:has([data-mode='desk']) {
 }
 
 @layer components {
-  /* The faint colour wash at the top of a page (landing, home, setup). */
+  /* Kept for callers; the colour wash itself is gone (plain register: no washes or gradients). */
   .wash {
-    background-image: var(--wash);
-    background-repeat: no-repeat;
-    background-size: 100% 520px;
+    background-image: none;
   }
 
-  /* Pressing a control should feel like it gives. */
+  /* Pressing a control changes its colour only: nothing moves unless it explains something. */
   .press {
     transition:
-      transform 160ms var(--ease-brand),
-      background-color 200ms,
-      border-color 200ms,
-      box-shadow 200ms,
-      color 200ms;
+      background-color 160ms,
+      border-color 160ms,
+      color 160ms;
   }
   .press:active:not(:disabled) {
-    transform: scale(0.97);
+    filter: brightness(0.92);
   }
 
-  /* Fades content up once as it scrolls into view (see Reveal). */
+  /* Fades content up once as it scrolls into view (see Reveal): 300 ms, 8 px. */
   .rv {
     opacity: 0;
-    transform: translateY(14px);
+    transform: translateY(8px);
     transition:
-      opacity 0.7s var(--ease-out-expo),
-      transform 0.7s var(--ease-out-expo);
+      opacity 0.3s ease-out,
+      transform 0.3s ease-out;
   }
   .rv.in {
     opacity: 1;
     transform: none;
   }
 
-  /* Words of a heading rise out of their baseline one after another (landing hero). */
-  .wr-word {
-    display: inline-block;
-    overflow: hidden;
-    vertical-align: bottom;
-    padding-bottom: 0.08em;
-    margin-bottom: -0.08em;
+  /* A panel: sunken fill with a 6 px left rule (info, next step, missing). */
+  .panel {
+    background: var(--surface-sunken);
+    border-left: 6px solid var(--primary);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    padding: 12px 14px;
   }
-  .wr-word > span {
-    display: inline-block;
-    transform: translateY(110%);
-    animation: wr-rise 0.9s var(--ease-out-expo) forwards;
-    animation-delay: calc(var(--w, 0) * 60ms + 80ms);
+  .panel-partial {
+    border-left-color: var(--status-partial);
   }
-  @keyframes wr-rise {
-    to {
-      transform: none;
-    }
+  .panel-gap {
+    border-left-color: var(--status-gap);
   }
 
-  /* A marigold underline swept under a phrase. */
-  .mark {
-    background: linear-gradient(var(--accent), var(--accent)) no-repeat 0 90% / 100% 0.3em;
-    padding-inline: 0.04em;
-    margin-inline: -0.04em;
-  }
-
-  /* The raised hospital button in the middle of the bottom bar. */
-  .tab-hero {
-    box-shadow: var(--shadow-accent);
+  /* Small uppercase label: table headers, eyebrows. */
+  .label {
+    font-size: 0.75rem;
+    line-height: 1.2;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-muted);
   }
 
   /* Thin hairline used between stacked rows. */
@@ -275,10 +259,6 @@ html:has([data-mode='desk']) {
   .rv {
     opacity: 1;
     transform: none;
-  }
-  .wr-word > span {
-    transform: none;
-    animation: none;
   }
 }
 
