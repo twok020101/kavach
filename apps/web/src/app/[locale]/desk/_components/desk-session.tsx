@@ -30,6 +30,7 @@ import { Card } from '@/components/ui/card';
 import { Disclosure } from '@/components/ui/disclosure';
 import { Spinner } from '@/components/ui/spinner';
 import { useRouter } from '@/i18n/navigation';
+import { ApiError } from '@/lib/api';
 import { deskClient } from '@/lib/desk-client';
 import { useLiveDesk, type LiveFallback, type LiveStatus } from '@/lib/live/use-live-desk';
 import { AgentStepsTicker } from './agent-steps-ticker';
@@ -184,7 +185,16 @@ export function DeskSessionScreen({
         }),
       );
     },
-    onError: () => say('agent', t('captureFailed')),
+    // 415: HEIC or a damaged file; 413: too large. Anything else: the photo could not be read.
+    onError: (error) =>
+      say(
+        'agent',
+        error instanceof ApiError && error.status === 415
+          ? t('captureUnreadable')
+          : error instanceof ApiError && error.status === 413
+            ? t('captureTooBig')
+            : t('captureFailed'),
+      ),
   });
 
   const ask = useMutation({

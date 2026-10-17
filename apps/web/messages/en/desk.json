@@ -58,7 +58,9 @@
     "questionLabel": "Your question",
     "questionPlaceholder": "Type your question",
     "send": "Send",
-    "askTitle": "Common questions"
+    "askTitle": "Common questions",
+    "captureUnreadable": "That photo format can't be read here. iPhone HEIC photos need the camera set to 'Most Compatible', or send a screenshot of the photo. Then try again.",
+    "captureTooBig": "That photo is too large to send. Take it again at a normal size, or send a screenshot."
   },
   "summary": {
     "title": "Session summary",

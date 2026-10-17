@@ -15,6 +15,7 @@ import type { FastifyRequest } from 'fastify';
 import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod';
 import { z } from 'zod';
 import type { EstimateImage } from '../agents/estimate-reader';
+import { prepareEstimatePhoto } from '../desk/photo';
 import { loadHousehold, requireUser } from '../auth';
 import {
   captureEstimate,
@@ -48,7 +49,14 @@ const samplePhoto = (fixture = 'estimate-city-heart') =>
     'data/samples',
     SAMPLE_PHOTOS[fixture] ?? SAMPLE_PHOTOS['estimate-city-heart']!,
   );
-const IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/heic', 'application/pdf'];
+const IMAGE_TYPES = [
+  'image/jpeg',
+  'image/png',
+  'image/webp',
+  'image/heic',
+  'image/heif',
+  'application/pdf',
+];
 
 /** The text-and-photo hospital desk (docs/plan/06-api.md "Moment 2"). */
 export const deskRoutes: FastifyPluginAsyncZod = async (app) => {
@@ -155,7 +163,9 @@ async function uploadedImages(request: FastifyRequest): Promise<EstimateImage[]>
     if (!IMAGE_TYPES.includes(part.mimetype)) {
       throw badRequest(`Unsupported file type ${part.mimetype}: send a photo or PDF`);
     }
-    images.push({ data: await part.toBuffer(), mimeType: part.mimetype });
+    images.push(
+      await prepareEstimatePhoto({ data: await part.toBuffer(), mimeType: part.mimetype }),
+    );
   }
   if (images.length === 0) throw badRequest('No estimate photo in the upload');
   return images;
