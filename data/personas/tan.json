@@ -1,0 +1,206 @@
+{
+  "$comment": "The Tan family, Singapore (SAMPLE). Fictional people, insurer and hospital; the plan's terms mirror a mid-market Class B1 Integrated Shield Plan with a 2022 rider, figures rounded. Amounts are whole Singapore dollars.",
+  "household": {
+    "id": "hh_tan",
+    "name": "Tan family",
+    "city": "Singapore",
+    "country": "SG",
+    "isDemo": true,
+    "createdAt": "2027-03-01T00:00:00.000Z",
+    "members": [
+      {
+        "id": "mem_weiming",
+        "name": "Wei Ming",
+        "relation": "self",
+        "age": 38,
+        "language": "en",
+        "phone": "+6580000001",
+        "earning": true
+      },
+      {
+        "id": "mem_huiling",
+        "name": "Hui Ling",
+        "relation": "spouse",
+        "age": 36,
+        "language": "zh",
+        "phone": "+6580000002",
+        "earning": true
+      },
+      { "id": "mem_jiaen", "name": "Jia En", "relation": "child", "age": 6, "language": "en" },
+      {
+        "id": "mem_ahkow",
+        "name": "Ah Kow",
+        "relation": "parent",
+        "age": 68,
+        "language": "zh",
+        "phone": "+6580000003",
+        "conditions": ["hypertension"],
+        "earning": false
+      },
+      {
+        "id": "mem_siewhong",
+        "name": "Siew Hong",
+        "relation": "parent",
+        "age": 64,
+        "language": "ms",
+        "phone": "+6580000004",
+        "earning": false
+      }
+    ],
+    "finances": {
+      "takeHomeMonthly": 8500,
+      "emiMonthly": 2200,
+      "fixedSpendMonthly": 3500,
+      "emergencyFund": 30000,
+      "annualIncome": 130000,
+      "loansOutstanding": 420000
+    },
+    "assets": []
+  },
+  "policies": [
+    {
+      "id": "pol_mshl_weiming",
+      "kind": "medishield_life",
+      "insurer": "CPF Board (MediShield Life)",
+      "productName": "MediShield Life",
+      "source": "personal",
+      "holderMemberId": "mem_weiming",
+      "coveredMemberIds": ["mem_weiming"],
+      "sumInsured": 200000,
+      "startDate": "2027-01-01",
+      "endDate": "2027-12-31",
+      "terms": { "copayPercent": 0, "deductible": 0, "proportionateDeduction": false, "citations": {} }
+    },
+    {
+      "id": "pol_mshl_huiling",
+      "kind": "medishield_life",
+      "insurer": "CPF Board (MediShield Life)",
+      "productName": "MediShield Life",
+      "source": "personal",
+      "holderMemberId": "mem_huiling",
+      "coveredMemberIds": ["mem_huiling"],
+      "sumInsured": 200000,
+      "startDate": "2027-01-01",
+      "endDate": "2027-12-31",
+      "terms": { "copayPercent": 0, "deductible": 0, "proportionateDeduction": false, "citations": {} }
+    },
+    {
+      "id": "pol_mshl_jiaen",
+      "kind": "medishield_life",
+      "insurer": "CPF Board (MediShield Life)",
+      "productName": "MediShield Life",
+      "source": "personal",
+      "holderMemberId": "mem_weiming",
+      "coveredMemberIds": ["mem_jiaen"],
+      "sumInsured": 200000,
+      "startDate": "2027-01-01",
+      "endDate": "2027-12-31",
+      "terms": { "copayPercent": 0, "deductible": 0, "proportionateDeduction": false, "citations": {} }
+    },
+    {
+      "id": "pol_mshl_ahkow",
+      "kind": "medishield_life",
+      "insurer": "CPF Board (MediShield Life)",
+      "productName": "MediShield Life",
+      "source": "personal",
+      "holderMemberId": "mem_ahkow",
+      "coveredMemberIds": ["mem_ahkow"],
+      "sumInsured": 200000,
+      "startDate": "2027-01-01",
+      "endDate": "2027-12-31",
+      "terms": { "copayPercent": 0, "deductible": 0, "proportionateDeduction": false, "citations": {} }
+    },
+    {
+      "id": "pol_mshl_siewhong",
+      "kind": "medishield_life",
+      "insurer": "CPF Board (MediShield Life)",
+      "productName": "MediShield Life",
+      "source": "personal",
+      "holderMemberId": "mem_siewhong",
+      "coveredMemberIds": ["mem_siewhong"],
+      "sumInsured": 200000,
+      "startDate": "2027-01-01",
+      "endDate": "2027-12-31",
+      "terms": { "copayPercent": 0, "deductible": 0, "proportionateDeduction": false, "citations": {} }
+    },
+    {
+      "id": "pol_ip_ahkow",
+      "kind": "integrated_shield",
+      "insurer": "Sample Insurer SG",
+      "productName": "Sample Shield Plan B1 with rider (SAMPLE)",
+      "policyNumber": "SG-IP-2022-004417",
+      "source": "personal",
+      "holderMemberId": "mem_weiming",
+      "coveredMemberIds": ["mem_ahkow"],
+      "sumInsured": 500000,
+      "premiumAnnual": 1860,
+      "continuousCoverSince": "2022-05-01",
+      "startDate": "2027-05-01",
+      "endDate": "2028-04-30",
+      "terms": {
+        "copayPercent": 0,
+        "deductible": 0,
+        "proportionateDeduction": false,
+        "citations": {},
+        "sg": {
+          "wardEntitlement": "B1",
+          "prorationByWard": { "A": 0.5, "private": 0.25 },
+          "deductibleByWard": { "C": 1500, "B2": 2000, "B1": 2000, "A": 2500, "private": 3500 },
+          "deductibleByWardFrom81": { "C": 2000, "B2": 3000, "B1": 3000, "A": 3000, "private": 3000 },
+          "coinsurance": [{ "percent": 10 }],
+          "policyYearLimit": 500000,
+          "rider": {
+            "copayPercent": 5,
+            "annualCap": 3000,
+            "capNeedsPanel": true,
+            "coversDeductible": true
+          }
+        }
+      }
+    },
+    {
+      "id": "pol_term_weiming",
+      "kind": "term_life",
+      "insurer": "Sample Insurer SG",
+      "productName": "Sample Term Life (SAMPLE)",
+      "source": "personal",
+      "holderMemberId": "mem_weiming",
+      "coveredMemberIds": ["mem_weiming"],
+      "sumInsured": 500000,
+      "premiumAnnual": 720,
+      "startDate": "2024-02-01",
+      "endDate": "2044-01-31",
+      "terms": { "copayPercent": 0, "deductible": 0, "proportionateDeduction": false, "citations": {} }
+    }
+  ],
+  "checkpoints": {
+    "setup": {
+      "$comment": "The family as set up on 1 March 2027.",
+      "asOf": "2027-03-01",
+      "policies": [
+        "pol_mshl_weiming",
+        "pol_mshl_huiling",
+        "pol_mshl_jiaen",
+        "pol_mshl_ahkow",
+        "pol_mshl_siewhong",
+        "pol_ip_ahkow",
+        "pol_term_weiming"
+      ],
+      "changes": null
+    },
+    "hospital": {
+      "$comment": "Ah Kow's planned angioplasty at Sample General Hospital (restructured); Wei Ming opens Kavach at the admission desk. The plan is bought for Class B1; the hospital offers Class A.",
+      "asOf": "2027-06-10",
+      "policies": [
+        "pol_mshl_weiming",
+        "pol_mshl_huiling",
+        "pol_mshl_jiaen",
+        "pol_mshl_ahkow",
+        "pol_mshl_siewhong",
+        "pol_ip_ahkow",
+        "pol_term_weiming"
+      ],
+      "changes": null
+    }
+  }
+}

@@ -26,6 +26,26 @@ const BENEFITS: Source = {
   title: "The employer's group health benefits summary (migration clause); check with HR",
 };
 
+// Singapore sources (data/rules/SG/README.md keeps the figures these rules carry, dated).
+const MOH_MSHL: Source = {
+  title: 'MOH, MediShield Life benefits (claim limits for admissions on or after 1 June 2026)',
+  url: 'https://www.moh.gov.sg/managing-expenses/schemes-and-subsidies/medishield-life/medishield-life-benefits/',
+};
+const CPF_PRORATION: Source = {
+  title: 'CPF Board, MediShield Life pro-ration factors (admissions on or after 1 April 2025)',
+  url: 'https://www.cpf.gov.sg/member/healthcare-financing/medishield-life/medishield-life-proration',
+};
+const MOH_RIDERS: Source = {
+  title:
+    'MOH, Integrated Shield Plan riders: minimum 5% co-payment, cap with panel and pre-authorisation (2018; changes from 1 April 2026)',
+  url: 'https://www.moh.gov.sg/newsroom/criteria-for-inclusion-of-medical-specialists-into-insurer%27s-panel-for-integrated-shield/',
+};
+const MOH_APPEALS: Source = {
+  title:
+    'MOH and LIA on IP claim disputes: the insurer first, then the Clinical Claims Resolution Process or FIDReC',
+  url: 'https://moh.gov.sg/newsroom/ip-appeals',
+};
+
 const list: Rule[] = [
   {
     id: 'R-HL-001',
@@ -272,6 +292,104 @@ const list: Rule[] = [
       "Members of an employer's group health policy can ask to move to an individual policy, keeping their continuous cover, if the request reaches the insurer in time (Acme: 15 days before the last working day).",
     status: 'to_verify',
     sources: [BENEFITS, IRDAI_2024],
+  },
+
+  // Singapore (R-SG-*): MediShield Life and Integrated Shield Plans. Figures in hospital-sg.ts.
+  {
+    id: 'R-SG-001',
+    name: 'MediShield Life pro-rates by ward class',
+    statement:
+      'MediShield Life is sized for subsidised B2 and C wards. In a higher ward class or a private hospital only a share of the bill counts as claimable (Singapore Citizens from 1 April 2025: Class B1 34%, Class A 27%, private hospitals 16%), applied before the claim limits.',
+    status: 'to_verify',
+    sources: [CPF_PRORATION, MOH_MSHL],
+  },
+  {
+    id: 'R-SG-002',
+    name: 'MediShield Life daily claim limits',
+    statement:
+      'Daily ward and treatment charges are claimable up to $830 a day, ICU up to $5,140 a day, with an extra $800 a day for the first two inpatient days (admissions on or after 1 June 2026).',
+    status: 'to_verify',
+    sources: [MOH_MSHL],
+  },
+  {
+    id: 'R-SG-003',
+    name: 'Deductible per policy year',
+    statement:
+      'A deductible comes off the claimable amount once per policy year; it depends on the ward class and rises from age 81 (MediShield Life: Class C $1,500, Class B2 and above $2,000; from 81: $2,000 and $3,000). A plan has its own table.',
+    status: 'to_verify',
+    sources: [MOH_MSHL],
+  },
+  {
+    id: 'R-SG-004',
+    name: 'Co-insurance after the deductible',
+    statement:
+      'The insured pays co-insurance on the claimable amount after the deductible: MediShield Life 10% of the first $5,000, 5% of the next $5,000 and 3% beyond; a plan typically 10%.',
+    status: 'to_verify',
+    sources: [MOH_MSHL],
+  },
+  {
+    id: 'R-SG-005',
+    name: 'Plan pays as charged within its ward entitlement',
+    statement:
+      "An Integrated Shield Plan pays as charged for the ward class it is bought for; in a higher class only the plan's own pro-ration share of the bill is claimable.",
+    status: 'verified',
+    sources: [WORDING],
+  },
+  {
+    id: 'R-SG-006',
+    name: 'Rider: at least 5% stays with the insured; the cap needs the panel',
+    statement:
+      "A rider pays the deductible and the co-insurance, but every rider sold since 1 April 2018 leaves at least 5% with the insured. The yearly cap on that share ($3,000 for riders bought before 1 April 2026, $6,000 from then, when the rider also no longer pays the deductible) applies only when the specialist is on the insurer's panel and pre-authorisation was obtained.",
+    status: 'to_verify',
+    sources: [MOH_RIDERS, WORDING],
+  },
+  {
+    id: 'R-SG-007',
+    name: 'Policy-year limit',
+    statement:
+      'Nothing is paid above the policy-year limit (MediShield Life $200,000; a plan has its own).',
+    status: 'to_verify',
+    sources: [MOH_MSHL, WORDING],
+  },
+  {
+    id: 'R-SG-010',
+    name: 'Panel unknown: both branches, one question',
+    statement:
+      'When it is not known whether the specialist is on the panel with pre-authorisation, Kavach computes the capped and uncapped co-payment and asks the family to put that one question to the desk.',
+    status: 'verified',
+    sources: [MOH_RIDERS],
+  },
+  {
+    id: 'R-SGCLM-001',
+    name: 'Pro-ration within the entitlement is challengeable',
+    statement:
+      "A pro-ration deduction on a stay within the plan's ward entitlement is challengeable: the plan pays as charged there.",
+    status: 'verified',
+    sources: [WORDING],
+  },
+  {
+    id: 'R-SGCLM-002',
+    name: 'Co-payment above the cap with a panel specialist is challengeable',
+    statement:
+      'With a panel specialist and pre-authorisation, the rider caps the co-payment for the policy year; a larger co-payment is challengeable.',
+    status: 'to_verify',
+    sources: [MOH_RIDERS, WORDING],
+  },
+  {
+    id: 'R-SGCLM-003',
+    name: 'A deductible charged twice is challengeable',
+    statement:
+      'The deductible comes off once per policy year; a second deductible on a later admission in the same year, or one on both MediShield Life and the plan, is challengeable.',
+    status: 'to_verify',
+    sources: [MOH_MSHL, WORDING],
+  },
+  {
+    id: 'R-SGCLM-006',
+    name: 'Disputes: the insurer, then CCRP or FIDReC',
+    statement:
+      "A deduction with no clause given is possibly recoverable: appeal to the insurer first (LIA members reply within 14 business days); a clinical dispute goes to the Clinical Claims Resolution Process, any other to FIDReC, free, within six months of the insurer's final reply.",
+    status: 'to_verify',
+    sources: [MOH_APPEALS],
   },
 ];
 

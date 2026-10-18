@@ -1,6 +1,11 @@
 import { z } from 'zod';
 
-export const Locale = z.enum(['en', 'hi']);
+/** Screen and speech languages: English, Hindi, Tamil, Mandarin (Simplified), Malay. */
+export const Locale = z.enum(['en', 'hi', 'ta', 'zh', 'ms']);
+
+/** The market a household lives in: its currency, rules pack and demo scenes. */
+export const Country = z.enum(['IN', 'SG']);
+export type Country = z.infer<typeof Country>;
 export type Locale = z.infer<typeof Locale>;
 
 /** Whole rupees. Every amount in Kavach is an integer number of rupees. */

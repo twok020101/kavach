@@ -33,6 +33,8 @@ export const DeskInputs = z.object({
   utteranceText: z.string().optional(),
   roomOptions: z.array(RoomCategory).optional(),
   billingTypeAnswer: BillingType.optional(),
+  /** Singapore: whether the specialist is on the insurer's panel with pre-authorisation (rider cap). */
+  panelAnswer: z.enum(['panel', 'nonPanel']).optional(),
   /** True when the session already had an answer: the text is a follow-up question. */
   followUp: z.boolean().optional(),
 });
