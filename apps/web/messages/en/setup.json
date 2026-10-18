@@ -41,7 +41,10 @@
     },
     "required": "Kavach needs at least the first one to work.",
     "promise": "We never sell your data. We never contact insurers for you. You can download or delete everything at any time from Settings.",
-    "agree": "Agree and continue"
+    "agree": "Agree and continue",
+    "essential": "Essential",
+    "optional": "Optional",
+    "count": "{on} of {total} permissions on"
   },
   "family": {
     "title": "Tell us about your family",

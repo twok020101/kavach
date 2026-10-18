@@ -1,6 +1,6 @@
 'use client';
 
-import type { ConsentPurpose } from '@kavach/schemas';
+import { ConsentPurpose } from '@kavach/schemas';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { ConsentToggles } from '@/components/setup/consent-toggles';
@@ -35,6 +35,9 @@ export default function ConsentPage() {
       }
     >
       <ConsentToggles value={consents} onChange={setConsents} />
+      <p className="text-sm text-muted" aria-live="polite">
+        {t('count', { on: consents.length, total: ConsentPurpose.options.length })}
+      </p>
       {!ready && <p className="text-sm text-partial">{t('required')}</p>}
       <p className="rounded-md bg-sunken p-4 text-sm">{t('promise')}</p>
       {create.isError && <p className="rounded-md bg-gap-bg p-3 text-gap">{ts('error')}</p>}
