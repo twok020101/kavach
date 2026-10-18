@@ -22,7 +22,8 @@
       "appeal_sent": "Appeal sent",
       "resolved": "Resolved",
       "failed": "Not read"
-    }
+    },
+    "sampleMaternity": "Use the maternity sample letter"
   },
   "steps": {
     "read": "Reading the settlement letter",

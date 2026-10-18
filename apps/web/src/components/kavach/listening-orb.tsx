@@ -5,7 +5,14 @@ import { cn } from '../ui/cn';
 
 export type OrbState = 'idle' | 'listening' | 'thinking' | 'speaking';
 
-/** The desk orb: indigo while listening or thinking, marigold while speaking. */
+const SIZES = { sm: 'size-10', md: 'size-16', lg: 'size-36' } as const;
+
+/**
+ * The desk orb: a soft sphere with the Kavach shield at its heart. Indigo while listening or
+ * thinking, marigold while speaking (07 §3.4). Listening sends out slow sonar rings; thinking
+ * turns a thin arc around the sphere; speaking shows a small voice wave under it. Everything is
+ * slow and quiet, and reduced motion leaves only the colour and the label.
+ */
 export function ListeningOrb({
   state,
   label,
@@ -14,37 +21,91 @@ export function ListeningOrb({
   state: OrbState;
   /** Visible status next to the orb, e.g. "Kavach is listening". */
   label: string;
-  size?: 'sm' | 'md';
+  size?: 'sm' | 'md' | 'lg';
 }) {
   const reduce = useReducedMotion();
   const speaking = state === 'speaking';
+  const listening = state === 'listening';
+  const thinking = state === 'thinking';
+  const active = state !== 'idle';
+  const big = size === 'lg';
   const pulse =
-    reduce || state === 'idle'
+    reduce || !active
       ? { scale: 1 }
       : speaking
-        ? { scale: [1, 1.12, 0.98, 1.08, 1] }
-        : { scale: [1, 1.06, 1] };
+        ? { scale: [1, 1.08, 0.99, 1.06, 1] }
+        : { scale: [1, 1.05, 1] };
 
   return (
-    <div role="status" className="flex items-center gap-3">
-      <span className={cn('relative inline-flex shrink-0', size === 'md' ? 'size-16' : 'size-10')}>
+    <div
+      role="status"
+      className={cn('flex items-center gap-3', big && 'flex-col gap-5 text-center')}
+    >
+      <span
+        className={cn(
+          'orb relative inline-flex shrink-0 items-center justify-center',
+          SIZES[size],
+          speaking ? 'orb--speaking' : active ? 'orb--active' : 'orb--idle',
+        )}
+      >
+        {/* Sonar rings while listening */}
+        {listening && !reduce && (
+          <>
+            <span aria-hidden className="orb__ring" />
+            <span aria-hidden className="orb__ring orb__ring--2" />
+            <span aria-hidden className="orb__ring orb__ring--3" />
+          </>
+        )}
+        {/* A thin arc turning while Kavach checks the numbers */}
+        {thinking && !reduce && <span aria-hidden className="orb__arc" />}
         <motion.span
           aria-hidden
           animate={pulse}
-          transition={{ duration: speaking ? 1.2 : 1.6, repeat: Infinity, ease: 'easeInOut' }}
-          className={cn(
-            'absolute inset-0 rounded-full',
-            speaking ? 'bg-accent' : state === 'idle' ? 'bg-primary-soft' : 'bg-primary',
-          )}
+          transition={{ duration: speaking ? 1.1 : 1.8, repeat: Infinity, ease: 'easeInOut' }}
+          className="orb__core absolute inset-0 rounded-full"
         />
-        {state === 'thinking' && (
-          <span
-            aria-hidden
-            className="absolute -inset-1.5 animate-spin rounded-full border-4 border-primary-soft border-t-primary"
+        <svg
+          viewBox="0 0 32 32"
+          aria-hidden
+          className={cn(
+            'relative text-white',
+            big ? 'size-14' : size === 'md' ? 'size-8' : 'size-5',
+          )}
+        >
+          <path
+            d="M15 4 5 7.5V15c0 6.6 4.2 11 10 13"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.8"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            opacity="0.95"
           />
+          <path
+            d="M17 4l10 3.5V15c0 6.6-4.2 11-10 13"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.8"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            opacity="0.95"
+          />
+          <circle cx="12" cy="13" r="2.2" fill="currentColor" />
+          <circle cx="20" cy="13" r="2.2" fill="currentColor" />
+        </svg>
+      </span>
+      <span className={cn('flex flex-col items-center gap-2', !big && 'items-start')}>
+        <span className={cn('font-semibold', big && 'text-xl')}>{label}</span>
+        {speaking && !reduce && (
+          <span aria-hidden className="orb__wave">
+            <i />
+            <i />
+            <i />
+            <i />
+            <i />
+          </span>
         )}
       </span>
-      <span className="font-semibold">{label}</span>
     </div>
   );
 }

@@ -76,7 +76,7 @@ export function DocumentCard({
 
       {extraction && !policy && (
         <div className="flex flex-col gap-2">
-          {extraction.summary && <p className="text-sm">{extraction.summary}</p>}
+          {extraction.summary && <p className="line-clamp-4 text-sm">{extraction.summary}</p>}
           {extraction.citations.map((citation) => (
             <p key={citation.quote} className="flex items-start gap-2 text-sm text-muted">
               <span className="flex-1 font-serif">“{citation.quote}”</span>

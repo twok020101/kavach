@@ -15,7 +15,7 @@ import type {
 } from '@kavach/schemas';
 import { deskPatient, policyName, policyNickname, type DeskPatient } from './context';
 import { COPY, type Copy } from './copy';
-import { detectBillingAnswer, detectLocale } from './intent';
+import { detectBillingAnswer, detectLocale, detectRoomMention } from './intent';
 
 /**
  * The desk core. Every door (text-and-photo desk, live session, WhatsApp) calls this one
@@ -44,7 +44,15 @@ export function answer(
     billingTypeAnswer,
     roomOptions: inputs.roomOptions,
   });
-  return explain(household, patient, estimate, evaluation, t, lang);
+  return explain(
+    household,
+    patient,
+    estimate,
+    evaluation,
+    t,
+    lang,
+    inputs.followUp ? inputs.utteranceText : undefined,
+  );
 }
 
 /** The engine result for a patient and estimate, with the family's billing answer applied. */
@@ -70,6 +78,8 @@ function explain(
   ev: DeskEvaluation,
   t: Copy,
   lang: Locale,
+  /** What the family typed or said this turn, when the session already had an answer. */
+  utterance?: string,
 ): DeskAnswer {
   const byId = new Map(patient.policies.map((p) => [p.id, p]));
   const order = ev.policyOrder.map((id) => byId.get(id)!);
@@ -119,6 +129,61 @@ function explain(
     },
   ];
 
+  // MX-1: a maternity limit that binds in the recommended room gets its own card (R-MT-001).
+  const capFiring = ev.trace.find(
+    (f) =>
+      f.ruleId === 'R-MT-001' &&
+      f.inputs.roomCategoryId === rec.roomCategoryId &&
+      f.output.capped === true &&
+      typeof f.inputs.limit === 'number' &&
+      f.inputs.limit > 0,
+  );
+  const capPolicy = capFiring && byId.get(String(capFiring.inputs.policyId));
+  if (capFiring && capPolicy?.terms.maternity) {
+    const m = capPolicy.terms.maternity;
+    const limit = Number(capFiring.inputs.limit);
+    cards.splice(2, 0, {
+      id: 'limit_cap',
+      kind: 'limit_cap',
+      title: t.cap.title,
+      body: `${t.cap.body(nick(capPolicy), m.limitNormal, m.limitCsection, m.newbornDays)}\n${t.cap.next}`,
+      amounts: [
+        { label: t.cap.limit, amount: limit, emphasis: false },
+        { label: t.cap.above, amount: Number(capFiring.output.aboveLimit ?? 0), emphasis: true },
+      ],
+      ruleIds: ['R-MT-001', 'R-MT-003'],
+      verified: true,
+    });
+  }
+
+  // Nothing paid for a delivery, because the policy has no maternity benefit (R-MT-001 with
+  // limit 0) or its waiting period is not over (R-MT-002): a card says why, with the bill the
+  // family pays, or they see the whole bill as theirs with no reason (issue #25).
+  const noPay =
+    rec.policyPays === 0
+      ? ev.trace.find(
+          (f) =>
+            f.inputs.roomCategoryId === rec.roomCategoryId &&
+            ((f.ruleId === 'R-MT-001' && f.inputs.limit === 0) || f.ruleId === 'R-MT-002'),
+        )
+      : undefined;
+  const noPayPolicy = noPay && byId.get(String(noPay.inputs.policyId));
+  if (noPay && noPayPolicy) {
+    const waiting = noPay.ruleId === 'R-MT-002';
+    const body = waiting
+      ? t.waiting.body(nick(noPayPolicy), String(noPay.inputs.servedOn))
+      : t.noMaternity.body(nick(noPayPolicy));
+    cards.splice(2, 0, {
+      id: waiting ? 'maternity_waiting' : 'no_maternity',
+      kind: 'limit_cap',
+      title: waiting ? t.waiting.title : t.noMaternity.title,
+      body: `${body}\n${t.cap.next}`,
+      amounts: [{ label: t.cap.above, amount: rec.outOfPocket, emphasis: true }],
+      ruleIds: [noPay.ruleId],
+      verified: true,
+    });
+  }
+
   if (alternate) {
     cards.push({
       id: 'billing_branch',
@@ -154,21 +219,45 @@ function explain(
     });
   }
 
-  const text = [
-    primary.saving > 0 && worst.roomCategoryId !== rec.roomCategoryId
-      ? t.text.switchRoom(
-          asRoom(rec),
-          rec.outOfPocket,
-          asRoom(worst),
-          worst.outOfPocket,
-          primary.saving,
-        )
-      : t.text.youPay(rec.outOfPocket),
-    t.text.firstCard(nick(order[0]!)),
-    alternate ? t.text.ifFlat(alternate.saving) : undefined,
-  ]
-    .filter(Boolean)
-    .join(' ');
+  // A follow-up question ("can we take the twin sharing?", "general ward allows one attendant,
+  // which room then?") gets the per-room figures, not the opening paragraph again. Numbers
+  // still come only from the engine result; the question itself is not interpreted beyond
+  // which room it names.
+  const rooms = primary.options.map((o) => asRoom(o));
+  const named = utterance ? detectRoomMention(utterance, rooms) : undefined;
+  const isFollowUp = Boolean(utterance?.trim()) && !billingAnswerIn(utterance);
+  const byRoom = (id: string) => primary.options.find((o) => o.roomCategoryId === id)!;
+  const text = isFollowUp
+    ? [
+        named
+          ? t.text.roomPick(named, byRoom(named.id).outOfPocket, asRoom(rec), rec.outOfPocket)
+          : undefined,
+        t.text.eachRoom(
+          [...primary.options]
+            .sort((a, b) => a.outOfPocket - b.outOfPocket)
+            .map((o) => ({ room: asRoom(o), pays: o.outOfPocket })),
+        ),
+        capFiring ? t.text.capped(Number(capFiring.inputs.limit)) : undefined,
+        t.text.hospitalRules,
+      ]
+        .filter(Boolean)
+        .join(' ')
+    : [
+        primary.saving > 0 && worst.roomCategoryId !== rec.roomCategoryId
+          ? t.text.switchRoom(
+              asRoom(rec),
+              rec.outOfPocket,
+              asRoom(worst),
+              worst.outOfPocket,
+              primary.saving,
+            )
+          : t.text.youPay(rec.outOfPocket),
+        t.text.firstCard(nick(order[0]!)),
+        capFiring ? t.text.capped(Number(capFiring.inputs.limit)) : undefined,
+        alternate ? t.text.ifFlat(alternate.saving) : undefined,
+      ]
+        .filter(Boolean)
+        .join(' ');
 
   return {
     text,
@@ -260,6 +349,10 @@ function unclearEstimate(estimate: HospitalEstimate, t: Copy, lang: Locale): Des
     locale: lang,
   };
 }
+
+/** True when the utterance was the family's answer to the desk's billing question. */
+const billingAnswerIn = (utterance: string | undefined) =>
+  detectBillingAnswer(utterance) !== undefined;
 
 const warning = (id: string, title: string, body: string): DeskCard => ({
   id,

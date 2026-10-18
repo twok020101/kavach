@@ -10,7 +10,8 @@
     "setup": "शुरुआत",
     "job_change": "नौकरी बदली",
     "hospital": "अस्पताल",
-    "claim": "क्लेम"
+    "claim": "क्लेम",
+    "maternity": "डिलीवरी"
   },
   "membersHeading": "परिवार",
   "age": "{age} साल",

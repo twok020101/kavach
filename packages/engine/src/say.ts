@@ -68,8 +68,47 @@ export function buildDeskSay(
     parts.push(t.youPay(rec.outOfPocket));
   }
 
+  const cap = evaluation.trace.find(
+    (f) =>
+      f.ruleId === 'R-MT-001' &&
+      f.inputs.roomCategoryId === rec.roomCategoryId &&
+      f.output.capped === true &&
+      typeof f.inputs.limit === 'number' &&
+      f.inputs.limit > 0,
+  );
+  if (cap) parts.push(t.capped(Number(cap.inputs.limit)));
+
+  // No maternity benefit at all (R-MT-001 with limit 0) and nothing paid: say why, or the family
+  // hears the whole bill as theirs with no reason (issue #25).
+  const noBenefit =
+    rec.policyPays === 0
+      ? evaluation.trace.find(
+          (f) =>
+            f.ruleId === 'R-MT-001' &&
+            f.inputs.roomCategoryId === rec.roomCategoryId &&
+            f.inputs.limit === 0,
+        )
+      : undefined;
+  if (noBenefit) {
+    const id = String(noBenefit.inputs.policyId);
+    parts.push(t.noMaternity(options.policyNames?.[id] ?? id));
+  }
+  // The maternity waiting period is not over (R-MT-002): say until when.
+  const waiting =
+    rec.policyPays === 0
+      ? evaluation.trace.find(
+          (f) => f.ruleId === 'R-MT-002' && f.inputs.roomCategoryId === rec.roomCategoryId,
+        )
+      : undefined;
+  if (waiting) {
+    const id = String(waiting.inputs.policyId);
+    parts.push(
+      t.waiting(options.policyNames?.[id] ?? id, longDate(String(waiting.inputs.servedOn), locale)),
+    );
+  }
+
   if (alternate) parts.push(t.ifFlat(alternate.saving));
-  if (primary.billingType === 'package') parts.push(t.askPackage);
+  if (primary.billingType === 'package' && evaluation.questionForDesk) parts.push(t.askPackage);
 
   const topUp = evaluation.trace.find(
     (f) =>
@@ -95,20 +134,37 @@ type Phrases = {
   ifFlat: (saving: number) => string;
   askPackage: string;
   topUp: (deductible: number) => string;
+  capped: (limit: number) => string;
+  noMaternity: (name: string) => string;
+  waiting: (name: string, until: string) => string;
   confirm: string;
 };
 
+/** "20 July 2027" for speech, in the language's own month names. */
+const longDate = (iso: string, lang: Locale) =>
+  new Date(`${iso}T00:00:00`).toLocaleDateString(lang === 'hi' ? 'hi-IN' : 'en-IN', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  });
+
 const rs = (n: number) => `${hindiWords(n)} rupaye`;
 const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
+/** "Nau hazaar rupaye wale room" for a priced room; the printed label (a package name) otherwise. */
+const roomHi = (o: RoomOptionResult) =>
+  o.rentPerDay > 0 ? `${cap(rs(o.rentPerDay))} wale room` : o.label;
+/** "the ₹9,000 room" for a priced room; "the Standard Package · Shared Room" otherwise. */
+const roomEn = (o: RoomOptionResult) =>
+  o.rentPerDay > 0 ? `the ${formatInr(o.rentPerDay)} room` : `the ${o.label}`;
 
 const HI: Phrases = {
   policyFirst: (name) => `Pehle ${name} ka card TPA desk par dijiye.`,
   compare: (worst, rec, cut, saving) => {
     const pay = `lagbhag ${rs(worst.outOfPocket)} dene padenge.`;
     const lead = cut
-      ? `${cap(rs(worst.rentPerDay))} wale room mein doctor aur operation ke charges bhi zyada hain, aur insurance unpar katauti karega. Aapko ${pay}`
-      : `${cap(rs(worst.rentPerDay))} wale room mein aapko ${pay}`;
-    return `${lead} ${cap(rs(rec.rentPerDay))} wala room maangiye, tab lagbhag ${rs(rec.outOfPocket)}, yaani ${rs(saving)} kam.`;
+      ? `${roomHi(worst)} mein doctor aur operation ke charges bhi zyada hain, aur insurance unpar katauti karega. Aapko ${pay}`
+      : `${roomHi(worst)} mein aapko ${pay}`;
+    return `${lead} ${roomHi(rec)} maangiye, tab lagbhag ${rs(rec.outOfPocket)}, yaani ${rs(saving)} kam.`;
   },
   youPay: (amount) => `Aapko lagbhag ${rs(amount)} dene padenge.`,
   ifFlat: (saving) =>
@@ -116,6 +172,12 @@ const HI: Phrases = {
   askPackage: 'Yeh package rate hai. Desk se policy limit wale room ka package price poochhiye.',
   topUp: (deductible) =>
     `Top-up policy tabhi kaam aayegi jab is saal ka kharcha ${rs(deductible)} se upar jaaye, isliye saare bill sambhal kar rakhiye.`,
+  capped: (limit) =>
+    `Dhyaan rahe, is policy mein delivery ki limit ${rs(limit)} hai, kamra koi bhi ho. Usse upar ka kharcha aapko dena hoga.`,
+  noMaternity: (name) =>
+    `${cap(name)} mein delivery cover nahi hai, isliye yeh poora bill aapko dena hoga.`,
+  waiting: (name, until) =>
+    `${cap(name)} mein delivery ka waiting period ${until} tak hai, isliye abhi yeh poora bill aapko dena hoga.`,
   confirm: 'Sign karne se pehle TPA desk se confirm kar lijiye.',
 };
 
@@ -124,9 +186,9 @@ const EN: Phrases = {
   compare: (worst, rec, cut, saving) => {
     const pay = `pay about ${formatInr(worst.outOfPocket)}.`;
     const lead = cut
-      ? `In the ${formatInr(worst.rentPerDay)} room the doctor and operation charges are higher too, and insurance will cut part of them. You would ${pay}`
-      : `In the ${formatInr(worst.rentPerDay)} room you would ${pay}`;
-    return `${lead} Ask for the ${formatInr(rec.rentPerDay)} room; then about ${formatInr(rec.outOfPocket)}, which is ${formatInr(saving)} less.`;
+      ? `In ${roomEn(worst)} the doctor and operation charges are higher too, and insurance will cut part of them. You would ${pay}`
+      : `In ${roomEn(worst)} you would ${pay}`;
+    return `${lead} Ask for ${roomEn(rec)}; then about ${formatInr(rec.outOfPocket)}, which is ${formatInr(saving)} less.`;
   },
   youPay: (amount) => `You would pay about ${formatInr(amount)}.`,
   ifFlat: (saving) =>
@@ -135,5 +197,11 @@ const EN: Phrases = {
     'This is a package rate. Ask the desk for the package price in the room within your policy limit.',
   topUp: (deductible) =>
     `The top-up policy only helps once this year's bills cross ${formatInr(deductible)}, so keep every bill.`,
+  capped: (limit) =>
+    `Note that this policy pays at most ${formatInr(limit)} for a delivery, whichever room. Anything above that is yours to pay.`,
+  noMaternity: (name) =>
+    `The ${name} does not cover a delivery, so this whole bill is yours to pay.`,
+  waiting: (name, until) =>
+    `The ${name} has a waiting period for delivery until ${until}, so this whole bill is yours to pay.`,
   confirm: 'Before you sign, confirm with the TPA desk.',
 };

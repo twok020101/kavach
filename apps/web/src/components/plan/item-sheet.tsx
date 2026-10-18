@@ -5,6 +5,7 @@ import { ArrowLeft, ExternalLink, Handshake } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { Amount } from '../kavach/amount';
+import { DisclaimerBar } from '../kavach/disclaimer-bar';
 import { Button } from '../ui/button';
 import { useRecommendationTitle } from './recommendation';
 import { RuleList } from './rule-list';
@@ -49,26 +50,28 @@ function ItemDetail({ household, rec }: { household: Household; rec: Recommendat
     );
 
   return (
-    <div className="flex flex-col gap-4">
-      <section className="flex flex-col gap-1">
-        <h3 className="font-semibold text-muted">{t('itemWhat')}</h3>
-        <p className="text-lg">
-          {t.rich('itemCover', {
-            amount: () => <Amount value={rec.cover} className="font-semibold" />,
-          })}
-        </p>
-        {names && <p>{t('itemWho', { names })}</p>}
-        <p>
-          {t.rich('itemPremium', {
-            amount: () => <Amount value={rec.premiumMonthly} className="font-semibold" />,
-          })}
-        </p>
-        <p className="text-sm text-muted">{t('itemIllustrative')}</p>
-      </section>
+    <div className="flex flex-col gap-5">
+      <dl className="grid grid-cols-2 gap-3">
+        <div className="rounded-sm bg-sunken px-3 py-2.5">
+          <dt className="label">{t('itemWhat')}</dt>
+          <dd className="mt-1 font-display text-2xl font-bold">
+            <Amount value={rec.cover} />
+          </dd>
+        </div>
+        <div className="rounded-sm bg-sunken px-3 py-2.5">
+          <dt className="label">{t('itemPremiumLabel')}</dt>
+          <dd className="mt-1 font-display text-2xl font-bold">
+            <Amount value={rec.premiumMonthly} />
+            <span className="ml-1 text-sm font-medium text-muted">{t('perMonthShort')}</span>
+          </dd>
+        </div>
+      </dl>
+      {names && <p className="text-muted">{t('itemWho', { names })}</p>}
       <section className="flex flex-col gap-2">
-        <h3 className="font-semibold text-muted">{t('itemWhy')}</h3>
+        <h3 className="label">{t('itemWhy')}</h3>
         <RuleList ids={rec.ruleIds} />
       </section>
+      <DisclaimerBar kind="plan" />
       <Button size="lg" onClick={() => setHandoff(true)}>
         <Handshake aria-hidden className="size-5" />
         {t('partner')}

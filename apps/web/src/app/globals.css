@@ -8,7 +8,7 @@
   --bg: #fbfaf7;
   --surface: #ffffff;
   --surface-sunken: #f5f3ee;
-  --border: #ddd8ce;
+  --border: #e4e0d7;
   --border-strong: #a39d90;
   --text: #1c1a17;
   --text-muted: #5e6472;
@@ -19,6 +19,10 @@
   --accent: #f4a62a;
   --accent-ink: #0f1b3d;
   --accent-soft: #fff8eb;
+  --accent-hover: #e99b1c;
+  /* The hard 2 px base under a solid button (07 reconciliation, spec 2026-10-17 §Button). */
+  --base-primary: #1b2a63;
+  --base-accent: #a86a08;
   --status-safe: #1f7a4d;
   --status-safe-bg: #e4f3ea;
   --status-partial: #9a5b00;
@@ -29,9 +33,16 @@
   --status-na-bg: #ece9e2;
   --citation: #23357a;
   --citation-bg: #f2f4fc;
+  /* Radii per 07 §5: 6 inputs and chips, 12 cards, 20 sheets and big buttons. */
   --radius-sm: 6px;
   --radius-md: 12px;
   --radius-lg: 20px;
+  /* Elevation (07 §5): 0 is the default (flat, bordered); 2 only for sheets and popovers.
+     No raised cards, no accent glow, no colour wash (plain register, spec 2026-10-17). */
+  --shadow-1: none;
+  --shadow-2: 0 8px 24px rgba(15, 27, 61, 0.12);
+  --shadow-accent: none;
+  --wash: none;
 }
 
 [data-theme='dark'] {
@@ -39,7 +50,7 @@
   --bg: #12141c;
   --surface: #1a1d28;
   --surface-sunken: #151821;
-  --border: #3a3f55;
+  --border: #2d3245;
   --border-strong: #5e6472;
   --text: #edebe6;
   --text-muted: #9aa0b4;
@@ -50,6 +61,9 @@
   --accent: #f4a62a;
   --accent-ink: #12141c;
   --accent-soft: #3a2a10;
+  --accent-hover: #e99b1c;
+  --base-primary: #5668b3;
+  --base-accent: #a86a08;
   --status-safe: #5bc48a;
   --status-safe-bg: #173326;
   --status-partial: #f0b44c;
@@ -58,6 +72,12 @@
   --status-gap-bg: #3d1d1a;
   --status-na: #9aa0b4;
   --status-na-bg: #23263a;
+  --citation: #b8c4f5;
+  --citation-bg: #1f2540;
+  --shadow-1: none;
+  --shadow-2: 0 12px 32px rgba(0, 0, 0, 0.5);
+  --shadow-accent: none;
+  --wash: none;
 }
 
 /* Hospital desk: always light, maximum contrast, bigger type. */
@@ -66,11 +86,15 @@
   --surface: #ffffff;
   --text: #0b0b0c;
   --text-muted: #34312b;
+  --border: #ddd8ce;
 }
 
 /* Larger text (S27 Settings). The desk sets its own size. */
 html[data-text-scale='large']:not(:has([data-mode='desk'])) {
   font-size: 112.5%;
+}
+html[data-text-scale='xlarge']:not(:has([data-mode='desk'])) {
+  font-size: 125%;
 }
 
 /* Desk mode scales the whole page (rem units) to a 20 px base. */
@@ -93,6 +117,7 @@ html:has([data-mode='desk']) {
   --color-accent: var(--accent);
   --color-accent-ink: var(--accent-ink);
   --color-accent-soft: var(--accent-soft);
+  --color-accent-hover: var(--accent-hover);
   --color-safe: var(--status-safe);
   --color-safe-bg: var(--status-safe-bg);
   --color-partial: var(--status-partial);
@@ -106,22 +131,366 @@ html:has([data-mode='desk']) {
   --radius-sm: var(--radius-sm);
   --radius-md: var(--radius-md);
   --radius-lg: var(--radius-lg);
+  --shadow-1: var(--shadow-1);
+  --shadow-2: var(--shadow-2);
+  --shadow-accent: var(--shadow-accent);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-brand: cubic-bezier(0.2, 0.8, 0.2, 1);
+  /* Strong curves (Emil Kowalski): built-in easings are too weak to read as intentional. */
+  --ease-out-strong: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
   --font-sans: var(--font-inter), var(--font-noto-deva), system-ui, sans-serif;
   --font-display: var(--font-jakarta), var(--font-noto-deva), sans-serif;
   --font-serif: var(--font-source-serif), serif;
   --font-mono: var(--font-jetbrains), ui-monospace, monospace;
 }
 
-body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: var(--font-sans);
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scrollbar-color: var(--border-strong) var(--bg);
+    accent-color: var(--primary);
+    caret-color: var(--primary);
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-sans);
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  a,
+  button {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  ::selection {
+    background: var(--primary-soft);
+    color: var(--text);
+  }
+
+  /* One visible focus ring everywhere: 2 px + 2 px offset. */
+  :focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+    border-radius: 6px;
+  }
+
+  /* Text fields: the border takes the primary and a soft 3 px halo grows on focus, 160 ms. */
+  input:not([type='checkbox'], [type='radio'], [type='range'], [type='file']),
+  textarea,
+  select {
+    transition:
+      border-color 160ms,
+      box-shadow 160ms var(--ease-out-strong),
+      background-color 160ms;
+  }
+  input:not([type='checkbox'], [type='radio'], [type='range'], [type='file']):focus-visible,
+  textarea:focus-visible,
+  select:focus-visible {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px var(--primary-soft);
+  }
+
+  /* Checkboxes and radios drawn in the brand: a 22 px box, the tick drawn in 160 ms. */
+  input[type='checkbox'],
+  input[type='radio'] {
+    appearance: none;
+    display: inline-grid;
+    place-content: center;
+    width: 22px;
+    height: 22px;
+    flex: none;
+    margin: 0;
+    border: 2px solid var(--border-strong);
+    border-radius: 6px;
+    background: var(--surface);
+    cursor: pointer;
+    transition:
+      border-color 160ms,
+      background-color 160ms,
+      transform 160ms var(--ease-out-strong);
+  }
+  input[type='radio'] {
+    border-radius: 50%;
+  }
+  input[type='checkbox']::before,
+  input[type='radio']::before {
+    content: '';
+    width: 12px;
+    height: 12px;
+    transform: scale(0.6);
+    opacity: 0;
+    transition:
+      transform 160ms var(--ease-out-strong),
+      opacity 120ms;
+  }
+  input[type='checkbox']::before {
+    background: var(--on-primary);
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M4 10.5l4 4 8-9' fill='none' stroke='%23000' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+      center / contain no-repeat;
+  }
+  input[type='radio']::before {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--on-primary);
+  }
+  input[type='checkbox']:checked,
+  input[type='radio']:checked {
+    border-color: var(--primary);
+    background: var(--primary);
+  }
+  input[type='checkbox']:checked::before,
+  input[type='radio']:checked::before {
+    transform: scale(1);
+    opacity: 1;
+  }
+  input[type='checkbox']:active:not(:disabled),
+  input[type='radio']:active:not(:disabled) {
+    transform: scale(0.92);
+  }
+  input[type='checkbox']:disabled,
+  input[type='radio']:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    input[type='checkbox']:hover:not(:disabled, :checked),
+    input[type='radio']:hover:not(:disabled, :checked) {
+      border-color: var(--primary);
+    }
+  }
+
+  /* The "as of" slider: a quiet track, a 26 px thumb that grows a halo when held. */
+  input[type='range'] {
+    appearance: none;
+    height: 40px;
+    background: transparent;
+  }
+  input[type='range']::-webkit-slider-runnable-track {
+    height: 6px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--surface-sunken);
+  }
+  input[type='range']::-moz-range-track {
+    height: 6px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--surface-sunken);
+  }
+  input[type='range']::-webkit-slider-thumb {
+    appearance: none;
+    width: 26px;
+    height: 26px;
+    margin-top: -11px;
+    border-radius: 50%;
+    border: 3px solid var(--surface);
+    background: var(--primary);
+    box-shadow: 0 0 0 1px var(--border-strong);
+    transition:
+      transform 160ms var(--ease-out-strong),
+      box-shadow 160ms var(--ease-out-strong);
+  }
+  input[type='range']::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 3px solid var(--surface);
+    background: var(--primary);
+    box-shadow: 0 0 0 1px var(--border-strong);
+  }
+  input[type='range']:active::-webkit-slider-thumb {
+    transform: scale(1.1);
+    box-shadow: 0 0 0 6px var(--primary-soft);
+  }
+  input[type='range']:focus-visible {
+    outline: none;
+  }
+  input[type='range']:focus-visible::-webkit-slider-thumb {
+    box-shadow: 0 0 0 4px var(--primary-soft);
+  }
 }
 
-/* One visible focus ring everywhere: 2 px + 2 px offset. */
-:focus-visible {
-  outline: 2px solid var(--primary);
-  outline-offset: 2px;
+@layer components {
+  /* Kept for callers; the colour wash itself is gone (plain register: no washes or gradients). */
+  .wash {
+    background-image: none;
+  }
+
+  /* Press feedback: the control gives under the finger (scale 0.97, 160 ms, strong ease-out).
+     It is feedback, not decoration: the interface confirms it heard the tap. */
+  .press {
+    transition:
+      transform 160ms var(--ease-out-strong),
+      box-shadow 160ms var(--ease-out-strong),
+      background-color 160ms,
+      border-color 160ms,
+      color 160ms;
+  }
+  .press:active:not(:disabled) {
+    transform: scale(0.97);
+  }
+
+  /* A solid button stands on a hard 2 px base (07 §Button). On press it moves down onto its
+     base, which disappears: the finger feels the button go in. Hover darkens by a step and lifts
+     a pixel, on a mouse only. Transform and box-shadow, nothing that lays out. */
+  .btn-solid {
+    --base: var(--base-primary);
+    box-shadow: 0 2px 0 var(--base);
+    transition:
+      transform 160ms var(--ease-out-strong),
+      box-shadow 160ms var(--ease-out-strong),
+      background-color 160ms,
+      border-color 160ms,
+      color 160ms;
+  }
+  .btn-solid.btn-accent {
+    --base: var(--base-accent);
+  }
+  .btn-solid.btn-outline {
+    --base: var(--primary);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .btn-solid:hover:not(:disabled) {
+      transform: translateY(-1px);
+      box-shadow: 0 3px 0 var(--base);
+    }
+  }
+  .btn-solid:active:not(:disabled) {
+    transform: translateY(2px);
+    box-shadow: 0 0 0 var(--base);
+  }
+  .btn-solid:disabled {
+    box-shadow: none;
+  }
+  /* Icons inside a button never squash, and a trailing arrow nudges on hover. */
+  .btn svg {
+    flex: none;
+    transition: transform 160ms var(--ease-out-strong);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .btn:hover:not(:disabled) svg.btn-arrow {
+      transform: translateX(3px);
+    }
+  }
+
+  /* Fades content up once as it scrolls into view (see Reveal): 300 ms, 8 px. */
+  .rv {
+    opacity: 0;
+    transform: translateY(8px);
+    transition:
+      opacity 0.3s var(--ease-out-strong),
+      transform 0.3s var(--ease-out-strong);
+  }
+  .rv.in {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* A panel: sunken fill with a 6 px left rule (info, next step, missing). */
+  .panel {
+    background: var(--surface-sunken);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+  }
+  .panel-partial {
+    background: var(--status-partial-bg);
+    border-color: color-mix(in srgb, var(--status-partial) 30%, transparent);
+  }
+  .panel-gap {
+    background: var(--status-gap-bg);
+    border-color: color-mix(in srgb, var(--status-gap) 30%, transparent);
+  }
+
+  /* Small uppercase label: table headers, eyebrows. */
+  .label {
+    font-size: 0.75rem;
+    line-height: 1.2;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  /* Thin hairline used between stacked rows. */
+  .hairline > * + * {
+    border-top: 1px solid var(--border);
+  }
+
+  /* Loading placeholder: a soft light passes over it every 1.6 s (transform only). */
+  .shimmer {
+    position: relative;
+    overflow: hidden;
+    background: var(--surface-sunken);
+  }
+  .shimmer::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      color-mix(in srgb, var(--surface) 80%, transparent) 50%,
+      transparent 100%
+    );
+    animation: shimmer 1.6s var(--ease-in-out-strong) infinite;
+  }
+  @keyframes shimmer {
+    to {
+      transform: translateX(100%);
+    }
+  }
+
+  /* The light/dark toggle: the moon turns into the sun instead of swapping. */
+  .theme-icons {
+    display: inline-grid;
+    place-items: center;
+  }
+  .theme-icons > svg {
+    grid-area: 1 / 1;
+    transition:
+      transform 260ms var(--ease-out-strong),
+      opacity 160ms;
+  }
+  :root:not([data-theme='dark']) .theme-icons .icon-sun,
+  [data-theme='dark'] .theme-icons .icon-moon {
+    opacity: 0;
+    transform: rotate(90deg) scale(0.6);
+  }
+
+  /* A pull handle on sheets, phone only. */
+  .sheet-handle {
+    display: block;
+    width: 40px;
+    height: 5px;
+    margin: 0 auto 10px;
+    border-radius: 999px;
+    background: var(--border-strong);
+    opacity: 0.6;
+  }
+  @media (min-width: 640px) {
+    .sheet-handle {
+      display: none;
+    }
+  }
 }
 
 /* All amounts use tabular figures so columns line up. */
@@ -138,7 +507,15 @@ body {
   *::before,
   *::after {
     animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
     transition-duration: 0.01ms !important;
+  }
+  .rv {
+    opacity: 1;
+    transform: none;
+  }
+  .shimmer::after {
+    animation: none;
   }
 }
 
@@ -146,4 +523,533 @@ body {
 [data-theme='dark'] .dark-hidden,
 :root:not([data-theme='dark']) .light-hidden {
   display: none;
+}
+
+/* ---------------------------------------------------------------------------------------------
+   The landing page's opening and its motion (components/kavach/boot.tsx, landing-live.tsx).
+   Public page only: app and hospital screens stay still. Everything is slow and soft; the
+   reduced-motion block at the end switches it all off. */
+
+html.booting,
+html.booting body {
+  background: #0f1b3d;
+}
+html.booting body {
+  overflow: hidden;
+}
+/* The page waits under the opening, then its sections rise in order. */
+html.booting .landing {
+  visibility: hidden;
+}
+/* The colour fields behind the opening section reach past the edges; clip them so a phone never
+   grows a wider layout viewport (which pushed the opening off-centre and let the page scroll sideways). */
+.landing {
+  overflow-x: clip;
+}
+
+@layer components {
+  .boot {
+    position: fixed;
+    inset: 0;
+    z-index: 90;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(20px, 4vw, 48px);
+    color: #edebe6;
+    background: #0f1b3d;
+    transition: transform var(--lift, 640ms) var(--ease-in-out-strong);
+    will-change: transform;
+  }
+  /* A warm light rising behind the two arcs, slowly, like a room at dawn. */
+  .boot::before {
+    content: '';
+    position: absolute;
+    inset: -20%;
+    background:
+      radial-gradient(42% 38% at 78% 22%, rgba(244, 166, 42, 0.26), transparent 70%),
+      radial-gradient(40% 40% at 14% 86%, rgba(143, 163, 240, 0.22), transparent 70%);
+    filter: blur(40px);
+    opacity: 0;
+    transform: scale(0.94);
+    animation: boot-dawn 1.6s var(--ease-out-strong) forwards;
+  }
+  .boot.is-leaving {
+    transform: translateY(-100%);
+  }
+  /* The content lags the panel a little as it lifts, so the exit has depth. */
+  .boot.is-leaving .boot__inner {
+    transform: translateY(24%);
+    opacity: 0.6;
+    transition:
+      transform var(--lift, 640ms) var(--ease-in-out-strong),
+      opacity 320ms ease-out;
+  }
+  .boot__inner {
+    position: relative;
+    display: flex;
+    width: min(100%, 560px);
+    flex-direction: column;
+    gap: 28px;
+  }
+  .boot__brand {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+  .boot__shield {
+    width: 68px;
+    height: 68px;
+    flex: none;
+  }
+  .boot__name {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.05;
+  }
+  /* The name settles into place from below, through a mask, once the arcs have met. */
+  .boot__word {
+    display: block;
+    overflow: hidden;
+    font-family: var(--font-display);
+    font-size: clamp(32px, 6vw, 46px);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    clip-path: inset(0 0 100% 0);
+    animation: boot-unmask 520ms var(--ease-out-strong) 320ms forwards;
+  }
+  .boot__word > span {
+    display: block;
+    transform: translateY(60%);
+    animation: boot-settle 520ms var(--ease-out-strong) 320ms forwards;
+  }
+  .boot__deva {
+    font-family: var(--font-noto-deva), var(--font-sans);
+    font-size: 18px;
+    color: rgba(237, 235, 230, 0.7);
+    opacity: 0;
+    animation: boot-in 400ms var(--ease-out-strong) 700ms forwards;
+  }
+  .boot__lines {
+    display: flex;
+    min-height: 7.5rem;
+    flex-direction: column;
+    gap: 12px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: 1.0625rem;
+  }
+  .boot__line {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #edebe6;
+    opacity: 0;
+    animation: boot-in 320ms var(--ease-out-strong) forwards;
+  }
+  /* Each tick draws itself as the line arrives. */
+  .boot__tick {
+    width: 20px;
+    height: 20px;
+    flex: none;
+    color: #5bc48a;
+  }
+  .boot__tick path {
+    stroke-dasharray: 24;
+    stroke-dashoffset: 24;
+    animation: boot-draw 280ms var(--ease-out-strong) 80ms forwards;
+  }
+  .boot__foot {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .boot__tagline {
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: rgba(237, 235, 230, 0.78);
+    opacity: 0;
+    animation: boot-in 400ms var(--ease-out-strong) 360ms forwards;
+  }
+  /* The rail: a 3 px track, the fill scaled from the left, a lit head at its tip, and three
+     ticks that light up as the lines above them land. Transform and opacity only. */
+  .boot__rail {
+    --p: 0;
+    position: relative;
+    height: 3px;
+    border-radius: 99px;
+    background: rgba(237, 235, 230, 0.14);
+    opacity: 0;
+    animation: boot-in 400ms var(--ease-out-strong) 420ms forwards;
+  }
+  .boot__fill {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(90deg, #d98c12, var(--accent) 60%, #ffcf7a);
+    transform: scaleX(var(--p));
+    transform-origin: left;
+  }
+  .boot__head {
+    position: absolute;
+    inset: 0;
+    transform: translateX(calc(-100% + var(--p) * 100%));
+    pointer-events: none;
+  }
+  .boot__head > i {
+    position: absolute;
+    right: -5px;
+    top: 50%;
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: #ffd98a;
+    box-shadow:
+      0 0 0 4px rgba(244, 166, 42, 0.28),
+      0 0 14px 2px rgba(244, 166, 42, 0.55);
+    transform: translateY(-50%);
+    transition:
+      transform 200ms var(--ease-out-strong),
+      box-shadow 200ms;
+  }
+  .boot__mark {
+    position: absolute;
+    top: 50%;
+    width: 2px;
+    height: 9px;
+    margin-left: -1px;
+    border-radius: 2px;
+    background: rgba(237, 235, 230, 0.3);
+    transform: translateY(-50%) scaleY(0.6);
+    transition:
+      background-color 200ms,
+      transform 280ms var(--ease-out-strong),
+      box-shadow 200ms;
+  }
+  .boot__mark.is-lit {
+    background: #ffd98a;
+    transform: translateY(-50%) scaleY(1);
+    box-shadow: 0 0 10px 1px rgba(244, 166, 42, 0.7);
+  }
+  /* Full: the head brightens for the moment before the lift. */
+  .boot__rail.is-done .boot__fill {
+    background: linear-gradient(90deg, var(--accent), #ffe2a8);
+  }
+  .boot__rail.is-done .boot__head > i {
+    transform: translateY(-50%) scale(1.25);
+    box-shadow:
+      0 0 0 6px rgba(244, 166, 42, 0.3),
+      0 0 22px 4px rgba(244, 166, 42, 0.7);
+  }
+  .boot__skip {
+    margin: 0;
+    font-size: 0.8rem;
+    color: rgba(237, 235, 230, 0.5);
+    opacity: 0;
+    animation: boot-in 400ms var(--ease-out-strong) 700ms forwards;
+  }
+  @keyframes boot-in {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes boot-dawn {
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  @keyframes boot-unmask {
+    to {
+      clip-path: inset(0 0 -10% 0);
+    }
+  }
+  @keyframes boot-settle {
+    to {
+      transform: none;
+    }
+  }
+  @keyframes boot-draw {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  /* Sections of the landing page rise in order once the opening hands over. */
+  .rise {
+    animation: landing-rise 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: calc(var(--i, 0) * 90ms);
+  }
+  html.booting .rise {
+    animation-play-state: paused;
+  }
+  @keyframes landing-rise {
+    from {
+      opacity: 0;
+      transform: translate3d(0, 14px, 0);
+    }
+  }
+
+  /* Words of the opening statement rise out of their baseline one after another. */
+  .wr-word {
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: bottom;
+    padding-bottom: 0.08em;
+    margin-bottom: -0.08em;
+  }
+  .wr-word > span {
+    display: inline-block;
+    transform: translateY(110%);
+    animation: wr-rise 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation-delay: calc(var(--w, 0) * 55ms + 120ms);
+  }
+  html.booting .wr-word > span {
+    animation-play-state: paused;
+  }
+  @keyframes wr-rise {
+    to {
+      transform: none;
+    }
+  }
+
+  /* A soft light that follows the pointer over the opening section (mouse only). */
+  .spot {
+    position: relative;
+    isolation: isolate;
+  }
+  .spot::before {
+    content: '';
+    position: absolute;
+    inset: -24px;
+    z-index: -1;
+    border-radius: 24px;
+    pointer-events: none;
+    background: radial-gradient(
+      420px circle at var(--sx, -999px) var(--sy, -999px),
+      rgba(69, 96, 196, 0.1),
+      transparent 65%
+    );
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .spot:hover::before {
+      opacity: 1;
+    }
+  }
+
+  /* Two slow, blurred colour fields behind the opening section: the warmth of the brand, breathing. */
+  .aurora {
+    position: absolute;
+    inset: -120px -160px;
+    z-index: -2;
+    overflow: hidden;
+    border-radius: 160px;
+    pointer-events: none;
+  }
+  .aurora::before,
+  .aurora::after {
+    content: '';
+    position: absolute;
+    width: 46vw;
+    height: 46vw;
+    max-width: 560px;
+    max-height: 560px;
+    border-radius: 50%;
+    filter: blur(90px);
+    opacity: 0.4;
+  }
+  .aurora::before {
+    top: -18%;
+    right: -8%;
+    background: rgba(244, 166, 42, 0.22);
+    animation: aurora-a 22s ease-in-out infinite alternate;
+  }
+  .aurora::after {
+    bottom: -30%;
+    left: -10%;
+    background: rgba(69, 96, 196, 0.2);
+    animation: aurora-b 26s ease-in-out infinite alternate;
+  }
+  [data-theme='dark'] .aurora::before {
+    background: rgba(244, 166, 42, 0.14);
+  }
+  [data-theme='dark'] .aurora::after {
+    background: rgba(143, 163, 240, 0.16);
+  }
+  @keyframes aurora-a {
+    to {
+      transform: translate3d(-10%, 12%, 0) scale(1.08);
+    }
+  }
+  @keyframes aurora-b {
+    to {
+      transform: translate3d(12%, -10%, 0) scale(1.1);
+    }
+  }
+
+  /* The three-frame story of the hospital moment. */
+  .story {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    background: var(--surface);
+    padding: 16px;
+  }
+  .story__screen {
+    min-height: 13.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rise,
+  .wr-word > span,
+  .aurora::before,
+  .aurora::after,
+  .boot__line {
+    animation: none;
+  }
+  .boot__tagline,
+  .boot__rail,
+  .boot__skip {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+  .wr-word > span {
+    transform: none;
+  }
+  .spot::before {
+    display: none;
+  }
+}
+
+/* ---------------------------------------------------------------------------------------------
+   The desk orb (components/kavach/listening-orb.tsx): a soft sphere, sonar rings while listening,
+   a turning arc while thinking, a small voice wave while speaking. Slow, quiet, no glow. */
+@layer components {
+  .orb__core {
+    background:
+      radial-gradient(circle at 32% 28%, rgba(255, 255, 255, 0.55), transparent 42%),
+      radial-gradient(circle at 70% 75%, rgba(0, 0, 0, 0.18), transparent 55%), var(--orb);
+    box-shadow:
+      inset 0 -6px 14px rgba(0, 0, 0, 0.14),
+      0 10px 28px -14px var(--orb);
+    transition: background-color 400ms ease;
+  }
+  .orb--idle {
+    --orb: var(--primary-soft);
+  }
+  .orb--idle .orb__core {
+    box-shadow: none;
+  }
+  .orb--idle svg {
+    color: var(--primary);
+  }
+  .orb--active {
+    --orb: var(--primary);
+  }
+  .orb--speaking {
+    --orb: var(--accent);
+  }
+  .orb--speaking svg {
+    color: var(--accent-ink);
+  }
+
+  .orb__ring {
+    position: absolute;
+    inset: 0;
+    border-radius: 9999px;
+    border: 2px solid var(--orb);
+    opacity: 0;
+    animation: orb-sonar 2.6s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+  }
+  .orb__ring--2 {
+    animation-delay: 0.85s;
+  }
+  .orb__ring--3 {
+    animation-delay: 1.7s;
+  }
+  @keyframes orb-sonar {
+    0% {
+      transform: scale(1);
+      opacity: 0.55;
+    }
+    100% {
+      transform: scale(1.9);
+      opacity: 0;
+    }
+  }
+
+  .orb__arc {
+    position: absolute;
+    inset: -8px;
+    border-radius: 9999px;
+    background: conic-gradient(from 0deg, transparent 0 70%, var(--orb) 100%);
+    -webkit-mask: radial-gradient(
+      farthest-side,
+      transparent calc(100% - 3px),
+      #000 calc(100% - 2px)
+    );
+    mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 2px));
+    animation: orb-turn 1.6s linear infinite;
+  }
+  @keyframes orb-turn {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .orb__wave {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    height: 18px;
+  }
+  .orb__wave i {
+    display: block;
+    width: 3px;
+    height: 6px;
+    border-radius: 2px;
+    background: var(--accent);
+    animation: orb-wave 1s ease-in-out infinite;
+  }
+  .orb__wave i:nth-child(2) {
+    animation-delay: 0.12s;
+  }
+  .orb__wave i:nth-child(3) {
+    animation-delay: 0.24s;
+  }
+  .orb__wave i:nth-child(4) {
+    animation-delay: 0.36s;
+  }
+  .orb__wave i:nth-child(5) {
+    animation-delay: 0.48s;
+  }
+  @keyframes orb-wave {
+    0%,
+    100% {
+      height: 6px;
+    }
+    50% {
+      height: 18px;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .orb__ring,
+  .orb__arc,
+  .orb__wave i {
+    animation: none;
+  }
 }

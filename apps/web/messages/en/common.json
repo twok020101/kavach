@@ -6,7 +6,10 @@
   "error": "Something went wrong. Please try again, or type your question instead.",
   "close": "Close",
   "language": "Language",
-  "languages": { "en": "English", "hi": "हिंदी" },
+  "languages": {
+    "en": "English",
+    "hi": "हिंदी"
+  },
   "skipToContent": "Skip to content",
   "mainNav": "Main",
   "atHospital": "At the hospital",
@@ -16,7 +19,8 @@
     "policies": "Policies",
     "timeline": "Timeline",
     "claims": "Claims",
-    "more": "More"
+    "more": "More",
+    "hospital": "Hospital"
   },
   "status": {
     "covered": "Covered",
@@ -33,7 +37,10 @@
     "parent_in_law": "Parent-in-law",
     "other": "Family"
   },
-  "captions": { "agent": "Kavach", "user": "You" },
+  "captions": {
+    "agent": "Kavach",
+    "user": "You"
+  },
   "why": {
     "rulesTitle": "Rules behind the answer",
     "tariffTitle": "The hospital’s room tariff",
@@ -66,5 +73,40 @@
     "policyPays": "Policy pays",
     "youPay": "You pay",
     "none": "None"
-  }
+  },
+  "statusShort": {
+    "covered": "Covered",
+    "partial": "Partly",
+    "contingent": "On job",
+    "gap": "Gap",
+    "na": "–"
+  },
+  "disclaimer": {
+    "global": "Kavach gives guidance based on your documents and published rules. It is not an insurer, broker or agent, and the insurer decides every claim.",
+    "plan": "Sizes are guidance, not product recommendations. Premiums are illustrative.",
+    "hospital": "Estimate only. Please confirm with the insurance (TPA) desk before you sign.",
+    "claims": "This letter is a draft for you to review and send yourself."
+  },
+  "evidence": {
+    "sources": "Rules checked against",
+    "irdai2024": "IRDAI master circular on health insurance, 29 May 2024",
+    "irdai2020": "IRDAI circular on proportionate deductions, 2020",
+    "wordings": "{count} public policy wordings tested, {checked} labelled by a person",
+    "sample": "Demo data is marked SAMPLE and is not about real people"
+  },
+  "isNot": {
+    "isTitle": "What Kavach is",
+    "notTitle": "What it is not",
+    "rows": {
+      "reader": "A reader and calculator for the policies you already have",
+      "notInsurer": "An insurer, broker, agent or seller of policies",
+      "cites": "Every rupee shown comes from written policy terms, with the page",
+      "notGuarantee": "A guarantee of what a claim will pay: the insurer decides every claim",
+      "consent": "Nothing is read or stored without your consent",
+      "notPayments": "Something that takes payments or contacts insurers for you"
+    }
+  },
+  "copy": "Copy",
+  "copied": "Copied",
+  "activeFamily": "Active family"
 }

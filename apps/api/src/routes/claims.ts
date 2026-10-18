@@ -4,6 +4,8 @@ import { AssessClaimRequest, ClaimCase, ClaimList, UpdateAppealRequest } from '@
 import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod';
 import { z } from 'zod';
 import { loadHousehold, requireUser } from '../auth';
+import { resetDemoHousehold } from '../demo';
+import { env } from '../env';
 import {
   appealPdf,
   assess,
@@ -19,7 +21,23 @@ import { repoRoot } from '../paths';
 const Params = z.object({ hid: z.string() });
 const ClaimParams = Params.extend({ cid: z.string() });
 const ACCEPTED = /^(application\/pdf|image\/(png|jpeg|webp|heic|heif))$/;
-const SAMPLE_LETTER = 'suraksha-settlement-letter.pdf';
+/** S30 "Use the sample letter": CX-1 (angioplasty) by default, MX-1 (delivery) for the maternity scene. */
+const SAMPLES = {
+  claim: { file: 'suraksha-settlement-letter.pdf', fixture: 'claim-letter-cx1' },
+  maternity: { file: 'lotus-maternity-settlement-letter.pdf', fixture: 'claim-letter-mx1' },
+} as const;
+const SampleQuery = z.object({ scene: z.enum(['claim', 'maternity']).default('claim') });
+/** FAKE_LLM only: the recorded reading and classification to return for an upload. */
+const UploadQuery = z.object({
+  fixture: z
+    .string()
+    .regex(/^[a-z0-9-]+$/)
+    .optional(),
+  kind: z
+    .string()
+    .regex(/^[a-z0-9-]+$/)
+    .optional(),
+});
 
 /** Moment 3: settlement letter → engine verdict per deduction → verified appeal letter (WP-10). */
 export const claimRoutes: FastifyPluginAsyncZod = async (app) => {
@@ -34,10 +52,12 @@ export const claimRoutes: FastifyPluginAsyncZod = async (app) => {
     },
   );
 
-  // S30: upload a settlement letter (photo or PDF) as a multipart "file" field.
+  // S30: upload a settlement letter (photo or PDF) as a multipart "file" field. With FAKE_LLM=1,
+  // `?kind=` and `?fixture=` pick the recorded classification and reading, so the refusal of a
+  // document that is not a claim letter can be exercised without a model (scripts/claims-refusal-check.mts).
   app.post(
     '/v1/households/:hid/claims',
-    { schema: { params: Params, response: { 201: ClaimCase } } },
+    { schema: { params: Params, querystring: UploadQuery, response: { 201: ClaimCase } } },
     async (request, reply) => {
       const household = await loadHousehold(request, request.params.hid);
       const file = await request.file();
@@ -49,6 +69,8 @@ export const claimRoutes: FastifyPluginAsyncZod = async (app) => {
         filename: file.filename,
         mimeType: file.mimetype,
         bytes: await file.toBuffer(),
+        fixture: env.FAKE_LLM ? request.query.fixture : undefined,
+        kindFixture: env.FAKE_LLM ? request.query.kind : undefined,
       });
       return reply.code(201).send(claim);
     },
@@ -57,15 +79,23 @@ export const claimRoutes: FastifyPluginAsyncZod = async (app) => {
   // S30 "Use the sample letter": the CX-1 Suraksha settlement letter from data/samples.
   app.post(
     '/v1/households/:hid/claims::sample',
-    { schema: { params: Params, response: { 201: ClaimCase } } },
+    { schema: { params: Params, querystring: SampleQuery, response: { 201: ClaimCase } } },
     async (request, reply) => {
-      const household = await loadHousehold(request, request.params.hid);
-      const bytes = await readFile(resolve(repoRoot, 'data/samples', SAMPLE_LETTER));
+      let household = await loadHousehold(request, request.params.hid);
+      const sample = SAMPLES[request.query.scene];
+      // The sample letters are written for a checkpoint of the Sharma story (the parents already
+      // on their own policy; Priya's delivery). A demo family that is not there yet is moved
+      // there first, or the letter would be matched against the wrong policy.
+      if (household.isDemo) {
+        household = await resetDemoHousehold(household, request.query.scene);
+      }
+      const bytes = await readFile(resolve(repoRoot, 'data/samples', sample.file));
       const claim = await createClaim(household, {
-        filename: SAMPLE_LETTER,
+        filename: sample.file,
         mimeType: 'application/pdf',
         bytes,
         isSample: true,
+        fixture: sample.fixture,
       });
       return reply.code(201).send(claim);
     },

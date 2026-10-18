@@ -1,6 +1,7 @@
 import { randomUUID } from 'node:crypto';
 import { formatInr } from '@kavach/engine';
 import type {
+  HospitalEstimate,
   CreateDeskSessionBody,
   DeskAnswer,
   DeskSession,
@@ -86,6 +87,29 @@ export async function captureEstimate(
   return { estimate, answer: reply };
 }
 
+/**
+ * An estimate the family told the desk aloud (room rents, days, the quoted total) when no photo
+ * is possible yet. Stored like a capture, so evaluate_options and the Why panel work on it.
+ */
+export async function recordSpokenEstimate(
+  household: Household,
+  sid: string,
+  estimate: HospitalEstimate,
+) {
+  const session = await activeSession(household, sid);
+  const reply = answer(household, session.patientMemberId, { estimate }, session.language);
+  const updated: DeskSession = {
+    ...session,
+    estimate,
+    hospitalName: session.hospitalName ?? estimate.hospitalName,
+    billingTypeAnswer: undefined,
+    lastAnswer: reply,
+    language: reply.locale ?? session.language,
+  };
+  await save(household, updated);
+  return { estimate, answer: reply };
+}
+
 /** A text turn: a question, the answer to the desk question, or a corrected estimate. */
 export async function takeTurn(household: Household, sid: string, body: DeskTurnBody) {
   const session = await activeSession(household, sid);
@@ -94,13 +118,20 @@ export async function takeTurn(household: Household, sid: string, body: DeskTurn
   const reply: DeskAnswer = answer(
     household,
     session.patientMemberId,
-    { estimate, utteranceText: body.text, billingTypeAnswer },
+    {
+      estimate,
+      utteranceText: body.text,
+      billingTypeAnswer,
+      // The first question gets the opening answer; later ones get the per-room follow-up.
+      followUp: Boolean(session.lastQuestion && session.lastAnswer?.cards.length),
+    },
     body.language ?? session.language,
   );
   const updated: DeskSession = {
     ...session,
     estimate,
     billingTypeAnswer,
+    lastQuestion: body.text?.trim() || session.lastQuestion,
     lastAnswer: reply,
     language: reply.locale ?? session.language,
   };

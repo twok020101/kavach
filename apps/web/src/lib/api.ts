@@ -36,3 +36,10 @@ export async function api<S extends z.ZodType>(
 }
 
 export const apiUrl = API_URL;
+
+/** The message the API sent with an error, if any, so screens can say what went wrong. */
+export function apiMessage(error: unknown): string | undefined {
+  if (!(error instanceof ApiError)) return undefined;
+  const body = error.body as { message?: unknown } | null;
+  return typeof body?.message === 'string' ? body.message : undefined;
+}

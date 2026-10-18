@@ -2,6 +2,7 @@ import { ProofResponse, type FieldScore } from '@kavach/schemas';
 import { ArrowLeft, BadgeCheck, CircleDashed, ExternalLink, FlaskConical } from 'lucide-react';
 import { getFormatter, getTranslations, setRequestLocale } from 'next-intl/server';
 import type { ReactNode } from 'react';
+import { EvidenceBand } from '@/components/kavach/evidence-band';
 import { RuleId } from '@/components/kavach/verified-badge';
 import { LanguageSwitch } from '@/components/kavach/language-switch';
 import { Logo } from '@/components/kavach/logo';
@@ -39,6 +40,11 @@ export default async function ProofPage({ params }: PageProps<'/[locale]/proof'>
         </Link>
         <LanguageSwitch className="ml-auto" />
       </header>
+      <EvidenceBand
+        as="header"
+        wordings={proof?.results.wordings}
+        checked={proof?.results.labelsChecked}
+      />
 
       <main className="mx-auto flex max-w-3xl flex-col gap-8 px-4 pb-16 pt-4">
         <section className="flex flex-col gap-3">

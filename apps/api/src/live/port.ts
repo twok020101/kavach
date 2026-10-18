@@ -7,7 +7,7 @@ import type {
   Locale,
 } from '@kavach/schemas';
 import { deskContext, deskPatient } from '../core/context';
-import { getSession, takeTurn } from '../desk/sessions';
+import { getSession, recordSpokenEstimate, takeTurn } from '../desk/sessions';
 import { productKeyFor, searchClauses } from '../retrieval/clauses';
 import { store } from '../store';
 
@@ -25,6 +25,10 @@ export interface DeskPort {
     billingTypeAnswer?: BillingType;
     language: Locale;
   }): Promise<DeskAnswer>;
+  /** Stores an estimate the family told the desk aloud, and answers with it. */
+  spokenEstimate(
+    estimate: HospitalEstimate,
+  ): Promise<{ estimate: HospitalEstimate; answer: DeskAnswer }>;
   lastAnswer(): Promise<DeskAnswer | undefined>;
   searchClauses(
     query: string,
@@ -49,6 +53,8 @@ export function inProcessDesk(householdId: string, sessionId: string): DeskPort 
     estimate: async () => (await session()).estimate,
     evaluate: async ({ question, billingTypeAnswer, language }) =>
       takeTurn(await household(), sessionId, { text: question, billingTypeAnswer, language }),
+    spokenEstimate: async (estimate) =>
+      recordSpokenEstimate(await household(), sessionId, estimate),
     lastAnswer: async () => (await session()).lastAnswer,
     async searchClauses(query) {
       const h = await household();

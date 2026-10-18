@@ -29,6 +29,22 @@ export const PolicyKind = z.enum([
   'motor',
 ]);
 
+/**
+ * Maternity benefit (MX-1). Group policies usually cap delivery expenses at a defined limit;
+ * retail plans add a waiting period. Newborn expenses in the first days count inside the limit.
+ */
+export const MaternityTerms = z.object({
+  /** Limit per delivery for a normal delivery. */
+  limitNormal: Rupees,
+  /** Limit per delivery for a caesarean; defaults to the normal-delivery limit. */
+  limitCsection: Rupees.optional(),
+  /** Days from birth during which the newborn's expenses are covered inside the maternity limit. */
+  newbornDays: z.number().int().nonnegative().default(90),
+  /** Months of continuous cover before maternity is payable (0 for most employer group policies). */
+  waitingMonths: z.number().int().nonnegative().default(0),
+});
+export type MaternityTerms = z.infer<typeof MaternityTerms>;
+
 /** The terms of a policy that the engine needs. Each may carry a citation to the wording. */
 export const PolicyTerms = z.object({
   roomRentLimitPerDay: Rupees.optional(),
@@ -39,6 +55,8 @@ export const PolicyTerms = z.object({
   /** Super top-up / deductible: the policy pays only above this amount per year. */
   deductible: Rupees.default(0),
   proportionateDeduction: z.boolean().default(true),
+  /** Maternity benefit; absent means the policy pays nothing for a delivery. */
+  maternity: MaternityTerms.optional(),
   /** Read from full wordings (evals); schedules usually don't print them. */
   waitingPeriods: z
     .object({

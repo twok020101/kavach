@@ -30,8 +30,10 @@ function Actions({ household }: { household: Household }) {
           return (
             <li key={a.id}>
               <Link href={`/actions/${a.id}`} className="block">
-                <Card className="flex items-center gap-3 p-3 hover:border-primary sm:p-3">
-                  <Icon aria-hidden className="size-5 shrink-0 text-primary" />
+                <Card interactive className="flex items-center gap-3 p-3 sm:p-3">
+                  <span className="flex size-10 shrink-0 items-center justify-center rounded-md bg-primary-soft text-primary">
+                    <Icon aria-hidden className="size-5" />
+                  </span>
                   <span className="flex flex-1 flex-col">
                     <span className="font-semibold">{a.title}</span>
                     <span className="text-sm text-muted">

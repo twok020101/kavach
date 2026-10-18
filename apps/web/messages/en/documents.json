@@ -69,7 +69,7 @@
     "health": "Health",
     "other": "Life and other",
     "add": "Add a document",
-    "empty": "No policies yet. Add a schedule or your employer's summary.",
+    "empty": "No policies yet. An e-card or TPA ID card shows who is covered but not the terms, so it does not create a policy. Add the policy schedule or your employer's benefits summary.",
     "documents": "{count, plural, =0 {No documents} one {1 document} other {# documents}}",
     "renews": "Renews {date}",
     "starts": "Starts {date}",

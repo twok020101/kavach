@@ -4,6 +4,10 @@ import { BillingType } from './hospital';
 
 /** What the claim letter reader extracts from a settlement letter. */
 export const SettlementLetter = z.object({
+  /** False when the document is not a claim settlement letter at all (a brochure, an estimate, an ID card). */
+  isSettlementLetter: z.boolean().optional(),
+  /** What the document looks like instead, when `isSettlementLetter` is false. */
+  documentDescription: z.string().optional(),
   insurer: z.string(),
   claimNumber: z.string(),
   policyNumber: z.string().optional(),
@@ -18,7 +22,14 @@ export const SettlementLetter = z.object({
       reasonGiven: z.string().optional(),
       /** Set by the letter reader when it can tell; the engine falls back to the label. */
       category: z
-        .enum(['non_payable', 'proportionate', 'consumables', 'room_excess', 'other'])
+        .enum([
+          'non_payable',
+          'proportionate',
+          'consumables',
+          'room_excess',
+          'ailment_limit',
+          'other',
+        ])
         .optional(),
       /** Policy clause the insurer printed against this deduction, e.g. "3.2". */
       clauseRef: z.string().optional(),

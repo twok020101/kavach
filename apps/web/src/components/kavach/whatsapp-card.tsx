@@ -34,7 +34,7 @@ export async function WhatsAppCard() {
   return (
     <Card as="section" aria-labelledby="whatsapp-title" className="flex flex-col gap-4">
       <div className="flex items-center gap-3">
-        <span className="flex size-12 items-center justify-center rounded-full bg-safe-bg text-safe">
+        <span className="flex size-12 items-center justify-center rounded-md bg-safe-bg text-safe">
           <MessageCircle aria-hidden className="size-6" />
         </span>
         <h2 id="whatsapp-title" className="font-display text-2xl font-bold">

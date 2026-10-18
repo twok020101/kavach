@@ -18,3 +18,9 @@ apps/web/AGENTS.md
 /evals/results/*
 !/evals/results/latest.json
 !/evals/results/latest.md
+
+# Brainstorming mockups (superpowers visual companion)
+.superpowers/
+
+# Locally installed third-party design skills (not part of the repo)
+.claude/skills/

@@ -22,14 +22,22 @@ const Env = z.object({
 
   GOOGLE_CLOUD_PROJECT: z.string().optional(),
   GOOGLE_CLOUD_LOCATION: z.string().default('asia-south1'),
+  // The Live API models are served from fewer regions than the rest; empty = GOOGLE_CLOUD_LOCATION.
+  GOOGLE_CLOUD_LIVE_LOCATION: z.string().optional(),
   KAVACH_MODEL_PRO: z.string().default('gemini-pro-latest-placeholder'),
   KAVACH_MODEL_FLASH: z.string().default('gemini-flash-latest-placeholder'),
   KAVACH_MODEL_LIVE: z.string().default('gemini-live-native-audio-placeholder'),
   KAVACH_MODEL_TTS: z.string().default('gemini-tts-placeholder'),
   KAVACH_MODEL_EMBED: z.string().default('gemini-embedding-placeholder'),
+  /** A quick model for voice notes and document classification; empty = KAVACH_MODEL_FLASH. */
+  KAVACH_MODEL_QUICK: z.string().optional(),
+  /** Region for the quick model; empty = GOOGLE_CLOUD_LOCATION. */
+  GOOGLE_CLOUD_QUICK_LOCATION: z.string().optional(),
   KAVACH_LIVE_VOICE: z.string().default('voice-name-placeholder'),
 
   STORE: z.enum(['memory', 'firestore']).default('memory'),
+  /** Where the memory store is mirrored (relative to the repo); 'off' keeps it in memory only. */
+  MEMORY_STORE_FILE: z.string().optional(),
   GCS_BUCKET: z.string().optional(),
 
   META_WHATSAPP_TOKEN: z.string().optional(),
