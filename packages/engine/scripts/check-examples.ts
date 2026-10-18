@@ -256,13 +256,17 @@ printBranch('primary', mx1.primary);
 expect('policy order', mx1.policyOrder.join(' > '), 'pol_gmc_startup > pol_supertopup');
 expect('Non-AC bill (the room the family took)', option(mx1.primary, 'nonac').bill, 77_250);
 expect('Non-AC room above limit (₹250 × 2)', deduction(mx1.primary, 'nonac', 'R-HL-008'), 500);
-expect('Non-AC proportionate deduction', deduction(mx1.primary, 'nonac', 'R-HL-001'), 4_891);
-expect('Non-AC admissible', option(mx1.primary, 'nonac').admissible, 69_959);
+expect('no proportionate deduction: the group policy waives it', fired(mx1, 'R-HL-001'), false);
+expect('Non-AC admissible', option(mx1.primary, 'nonac').admissible, 74_850);
 expect('Non-AC insurer pays (capped)', option(mx1.primary, 'nonac').policyPays, 50_000);
 expect('Non-AC out of pocket', option(mx1.primary, 'nonac').outOfPocket, 27_250);
-expect('above-limit deduction (Non-AC)', deduction(mx1.primary, 'nonac', 'R-MT-001'), 19_959);
+expect(
+  'above-limit deduction (Non-AC), as on the letter',
+  deduction(mx1.primary, 'nonac', 'R-MT-001'),
+  24_850,
+);
 expect('AC bill', option(mx1.primary, 'ac').bill, 88_950);
-expect('AC proportionate deduction', deduction(mx1.primary, 'ac', 'R-HL-001'), 27_556);
+expect('AC room above limit (₹2,000 × 2)', deduction(mx1.primary, 'ac', 'R-HL-008'), 4_000);
 expect('AC out of pocket', option(mx1.primary, 'ac').outOfPocket, 38_950);
 expect('General Ward bill', option(mx1.primary, 'general').bill, 69_750);
 expect('General Ward: no room deductions', option(mx1.primary, 'general').admissible, 67_850);
@@ -301,6 +305,15 @@ const noMaternity = {
 };
 const noBenefit = evaluateHospital({ ...MX1_CONTEXT, policies: [noMaternity] }, MX1_ESTIMATE);
 expect('no maternity benefit: pays nothing', option(noBenefit.primary, 'general').policyPays, 0);
+const sayNoBenefit = buildDeskSay(noBenefit, 'en', {
+  policyNames: { pol_gmc_startup: 'company policy' },
+});
+console.log(`  say (en, no benefit): ${sayNoBenefit}`);
+expect(
+  'says the policy does not cover a delivery',
+  sayNoBenefit.includes('does not cover a delivery'),
+  true,
+);
 const generalAdmission = evaluateHospital(MX1_CONTEXT, { ...MX1_ESTIMATE, treatment: 'general' });
 expect(
   'same bill as a general admission: no cap',

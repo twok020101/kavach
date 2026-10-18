@@ -193,7 +193,9 @@ export const CX1_BILL: ClaimBill = {
 // claim (anonymised: hospital, people and numbers are fictional). The hospital prices by room
 // (general ward, twin sharing, non-AC single, AC single); the family took the non-AC room, just
 // above the room eligibility, so a small room deduction applied, and then the group policy's
-// ₹50,000 maternity cap took the rest. Policy mirrors pol_gmc_startup.
+// ₹50,000 maternity cap took the rest. Policy mirrors pol_gmc_startup: like the Acme group cover
+// it waives proportionate deduction, so only the room-rent excess itself is cut (R-HL-008), and
+// the desk card and the settlement letter split the bill the same way (issue #24).
 
 export const PRIYA = { memberId: 'mem_priya', name: 'Priya', age: 32 };
 
@@ -215,7 +217,7 @@ export const STARTUP_POLICY: Policy = {
     roomRentLimitPerDay: 2_500,
     copayPercent: 0,
     deductible: 0,
-    proportionateDeduction: true,
+    proportionateDeduction: false,
     maternity: { limitNormal: 50_000, limitCsection: 75_000, newbornDays: 90, waitingMonths: 0 },
     citations: {},
   },

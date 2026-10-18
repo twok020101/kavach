@@ -107,7 +107,7 @@
       "terms": {
         "roomRentLimitPerDay": 2500,
         "copayPercent": 0,
-        "proportionateDeduction": true,
+        "proportionateDeduction": false,
         "maternity": {
           "limitNormal": 50000,
           "limitCsection": 75000,

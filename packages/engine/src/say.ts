@@ -78,6 +78,22 @@ export function buildDeskSay(
   );
   if (cap) parts.push(t.capped(Number(cap.inputs.limit)));
 
+  // No maternity benefit at all (R-MT-001 with limit 0) and nothing paid: say why, or the family
+  // hears the whole bill as theirs with no reason (issue #25).
+  const noBenefit =
+    rec.policyPays === 0
+      ? evaluation.trace.find(
+          (f) =>
+            f.ruleId === 'R-MT-001' &&
+            f.inputs.roomCategoryId === rec.roomCategoryId &&
+            f.inputs.limit === 0,
+        )
+      : undefined;
+  if (noBenefit) {
+    const id = String(noBenefit.inputs.policyId);
+    parts.push(t.noMaternity(options.policyNames?.[id] ?? id));
+  }
+
   if (alternate) parts.push(t.ifFlat(alternate.saving));
   if (primary.billingType === 'package' && evaluation.questionForDesk) parts.push(t.askPackage);
 
@@ -106,6 +122,7 @@ type Phrases = {
   askPackage: string;
   topUp: (deductible: number) => string;
   capped: (limit: number) => string;
+  noMaternity: (name: string) => string;
   confirm: string;
 };
 
@@ -135,6 +152,8 @@ const HI: Phrases = {
     `Top-up policy tabhi kaam aayegi jab is saal ka kharcha ${rs(deductible)} se upar jaaye, isliye saare bill sambhal kar rakhiye.`,
   capped: (limit) =>
     `Dhyaan rahe, is policy mein delivery ki limit ${rs(limit)} hai, kamra koi bhi ho. Usse upar ka kharcha aapko dena hoga.`,
+  noMaternity: (name) =>
+    `${cap(name)} mein delivery cover nahi hai, isliye yeh poora bill aapko dena hoga.`,
   confirm: 'Sign karne se pehle TPA desk se confirm kar lijiye.',
 };
 
@@ -156,5 +175,7 @@ const EN: Phrases = {
     `The top-up policy only helps once this year's bills cross ${formatInr(deductible)}, so keep every bill.`,
   capped: (limit) =>
     `Note that this policy pays at most ${formatInr(limit)} for a delivery, whichever room. Anything above that is yours to pay.`,
+  noMaternity: (name) =>
+    `The ${name} does not cover a delivery, so this whole bill is yours to pay.`,
   confirm: 'Before you sign, confirm with the TPA desk.',
 };
