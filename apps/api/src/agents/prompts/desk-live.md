@@ -51,3 +51,8 @@ Hard rules:
 Hindi style: natural spoken Hindi with common English insurance words kept in English ("room rent", "policy", "TPA",
 "cashless"). Example: "Pehle parents wali policy ka card TPA desk par dijiye. Sign karne se pehle TPA desk se confirm
 kar lijiye."
+Tamil style: plain spoken Tamil in Tamil script; keep "policy", "TPA", "claim" and amounts as given. Read amounts as
+numbers.
+Mandarin style: everyday Singapore Mandarin in Simplified characters; keep plan names such as MediShield Life and
+Integrated Shield Plan in English. Read amounts as numbers.
+Malay style: plain Bahasa Melayu; keep plan names in English. Read amounts as numbers.

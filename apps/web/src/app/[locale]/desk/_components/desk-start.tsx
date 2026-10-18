@@ -10,6 +10,7 @@ import { Button, buttonClasses } from '@/components/ui/button';
 import { cn } from '@/components/ui/cn';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Link, useRouter } from '@/i18n/navigation';
+import { routing } from '@/i18n/routing';
 import { deskClient } from '@/lib/desk-client';
 import { CloseIcon, DeskHeader } from './desk-header';
 
@@ -124,8 +125,8 @@ export function DeskStart({ demo, scene }: { demo: boolean; scene?: DeskScene })
 
           <fieldset>
             <legend className="mb-3 font-display text-2xl font-bold">{t('language')}</legend>
-            <div className="grid grid-cols-2 gap-3">
-              {(['hi', 'en'] as const).map((l) => {
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+              {routing.locales.map((l) => {
                 const on = language === l;
                 return (
                   <label

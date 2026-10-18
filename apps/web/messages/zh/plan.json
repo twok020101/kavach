@@ -1,0 +1,238 @@
+{
+  "loading": "正在加载您全家的保障…",
+  "error": "无法加载。API 在运行吗？",
+  "retry": "再试一次",
+  "close": "关闭",
+  "why": "我们是怎么算出来的",
+  "risk": {
+    "health": "健康",
+    "life": "人寿",
+    "accident": "意外"
+  },
+  "layer": {
+    "employer": "来自雇主",
+    "personal": "您自己的",
+    "statutory": "政府计划"
+  },
+  "issue": {
+    "topup_without_base": "Super top-up 只赔付超出自付额的部分，而现在没有基本保单承保那部分。没有基本保单，它什么都不赔。",
+    "savings_plan_not_term": "这主要是一份储蓄计划；相对于您所缴的保费，人寿保障很小。",
+    "below_minimum": "低于我们建议的最低额。"
+  },
+  "home": {
+    "demoDate": "演示日期：{date}",
+    "startStory": "开始故事",
+    "score": "安全评分",
+    "summary": "{gaps, plural, =0 {没有缺口} one {# 个缺口} other {# 个缺口}} · {onJob, plural, =0 {没有保障依赖工作} one {# 项依赖 {name} 的工作} other {# 项依赖 {name} 的工作}}",
+    "mapCaption": "所选日期，谁有哪些保障",
+    "member": "成员",
+    "cellTitle": "{name} · {risk}",
+    "next": "下一步：{count, plural, one {# 个步骤} other {# 个步骤}}，每月 <amount></amount>",
+    "nextHint": "在您的预算内 · 查看您的计划",
+    "drafts": "{count, plural, one {# 个步骤} other {# 个步骤}}在等您处理",
+    "whatsChanging": "有什么变化？",
+    "hello": "您好，{name}",
+    "asOf": "截至 {date}，您全家的保障",
+    "mapTitle": "谁有哪些保障",
+    "onJob": "{count} 项依赖 {name} 的工作",
+    "tapHint": "点任意格子，查看有什么保障、缺什么、以及原因。",
+    "stats": {
+      "covered": "已承保",
+      "partial": "部分",
+      "gaps": "缺口"
+    },
+    "draftsHint": "Kavach 准备好的信件和提醒。请审阅并批准。",
+    "short": "差 <amount></amount>",
+    "helloMember": "您好，{name}",
+    "hospitalSub": "在医院柜台时点这里。Kavach 会一步步指导您。",
+    "yourCover": "您的保障",
+    "noCover": "还没有保单承保您。",
+    "call": "打电话给 {name}",
+    "whatsappLine": "如果应用打不开，在 WhatsApp 上给 Kavach 发消息",
+    "fullView": "显示全部",
+    "greeting": {
+      "morning": "早安，{name}",
+      "afternoon": "午安，{name}",
+      "evening": "晚上好，{name}",
+      "night": "您好，{name}"
+    },
+    "watch": "Kavach 正在为 {people} 位家人留意 {policies, plural, one {# 份保单} other {# 份保单}}。",
+    "needsYou": "{count, plural, =0 {今天没有需要您处理的事。} one {有 # 件事需要您处理。} other {有 # 件事需要您处理。}}",
+    "scoreWord": {
+      "low": "需要关注",
+      "mid": "正在改善",
+      "high": "保障充足"
+    },
+    "quick": {
+      "title": "做点什么",
+      "change": "告诉 Kavach 有什么变化",
+      "changeHint": "新工作、新生儿、搬家",
+      "claim": "核查理赔信",
+      "claimHint": "每一项扣减，对照保单",
+      "invite": "把医院按钮交给 {name}",
+      "inviteHint": "她自己的登录，用印地语"
+    },
+    "comingUp": {
+      "title": "即将到来",
+      "inDays": "{days, plural, =0 {今天} one {# 天后} other {# 天后}}",
+      "all": "完整时间线",
+      "none": "未来六个月没有需要留意的日期。"
+    },
+    "ready": {
+      "title": "紧急情况已准备好",
+      "intro": "如果今晚有人入院，这是 Kavach 会先说的话。",
+      "line": "{name}：先给 {policy} 的卡{limit, select, none {} other { · 病房限额每天 {limit}}}",
+      "nick": {
+        "company": "公司保单",
+        "parents": "父母的保单",
+        "topup": "top-up 保单",
+        "own": "自己的保单"
+      },
+      "none": "今天没有健康保单承保 {name}。"
+    }
+  },
+  "scrubber": {
+    "asOf": "截至 {date}",
+    "today": "回到今天",
+    "pins": "保障变化的日期",
+    "cover_ends": "{name} 的保障终止",
+    "cover_starts": "{name} 的保障开始"
+  },
+  "cell": {
+    "needs": "需要",
+    "has": "已有",
+    "endsWithJob": "随 {name} 的工作终止 · 有效至 {date}",
+    "topUpAbove": "只赔付每年超出 <amount></amount> 的部分",
+    "nothing": "这个日期没有任何保障覆盖此项。",
+    "seeFix": "在您的计划中查看解决办法"
+  },
+  "rec": {
+    "title": {
+      "term_life": "{names} 的定期人寿保险",
+      "family_health": "家庭健康保险（{names}）",
+      "parents_health": "父母自己的健康保险（{names}）",
+      "personal_accident": "{names} 的意外保障",
+      "device": "手机保障（{asset}）"
+    },
+    "perMonth": "约 <amount></amount>/月",
+    "viaMigration": "从 {employer} 的保单转出",
+    "illustrative": "仅为示例",
+    "defer": {
+      "employer_cover": "目前由 {employer} 的团体保单承保。如果换工作就变得紧急。",
+      "budget": "稍后：这个月的预算放不下。"
+    },
+    "purpose": {
+      "term_life": "赚钱的人离世时家人的收入",
+      "personal_accident": "意外导致无法工作时的收入",
+      "device": "丢失、被盗和损坏",
+      "family_health": "医药费，不依赖任何工作",
+      "parents_health": "以他们自己名义的医药费"
+    }
+  },
+  "plan": {
+    "title": "您的计划",
+    "uses": "使用每月可用于保障的 <budget></budget> 中的 <spend></spend>",
+    "howBudget": "我们如何设定您的预算",
+    "budgetExplain": "扣除贷款分期和开支后，您每月还剩 <left></left>。我们建议最多用 20%（<total></total>）购买保障。您已经在付 <existing></existing>，所以还有 <free></free> 可用。",
+    "thinFund": "您的应急资金不足 3 个月的固定开支，所以我们优先选择低自付额的方案。",
+    "later": "稍后",
+    "review": "需要检视的事项",
+    "reviewIssue": {
+      "savings_plan_not_term": "主要是储蓄计划；相对保费，人寿保障很小。",
+      "topup_without_base": "没有基本保单在下面，它什么都不赔。",
+      "below_minimum": "低于我们建议的最低额。"
+    },
+    "disclaimer": "保费仅为示例，不是报价。Kavach 不销售保险；购买前请咨询持牌顾问。",
+    "allocated": "已列入计划",
+    "leftOver": "剩余"
+  },
+  "change": {
+    "title": "有什么变化？",
+    "label": "描述这个变化",
+    "placeholder": "例如：12月1日加入一家初创公司",
+    "common": "常见变化",
+    "chips": {
+      "newJob": "新工作",
+      "baby": "即将有宝宝",
+      "parents": "父母搬来同住",
+      "car": "新车",
+      "trip": "出国旅行",
+      "loan": "新房屋贷款"
+    },
+    "examples": {
+      "newJob": "12月1日加入初创公司 Orbit Labs。他们为我、Priya 和 Anaya 提供 ₹3 lakh 的保障。",
+      "baby": "我们的宝宝预计五月出生。",
+      "parents": "我父母下个月搬来和我们同住。",
+      "car": "下个月买一辆新车。",
+      "trip": "三月去欧洲两个星期。",
+      "loan": "申请 ₹60 lakh 的房屋贷款。"
+    },
+    "check": "核查",
+    "understood": "我理解的是这样",
+    "parseError": "没能理解。请换一种说法。"
+  },
+  "confirm": {
+    "leaves": "{name} 于 {date} 离开 {employer}",
+    "coverEnds": "{employer} 的健康保障于 {date} 终止，涉及 {count, plural, one {# 人} other {你们全部 # 人}}",
+    "joins": "于 {date} 加入 {employer}",
+    "newCover": "{employer} 为 {names} 提供 <amount></amount> 的健康保障",
+    "noCover": "{employer} 不提供健康保障",
+    "offerQuestion": "{employer} 提供健康保障吗？",
+    "offerYes": "是",
+    "offerNo": "否 / 不确定",
+    "unrecognised": "未使用：{text}",
+    "checkDates": "有些日期是推测的。继续前请核对。",
+    "saveError": "无法保存这个变化。请再试一次。",
+    "edit": "编辑",
+    "looksRight": "没错"
+  },
+  "replan": {
+    "notFound": "找不到这个变化。",
+    "headline": "{date}，{names} 将失去保障",
+    "headlineNone": "从 {date} 起，这是您的新计划",
+    "score": "安全评分 {before} → {after}，如果不采取行动",
+    "newPlan": "您的新计划",
+    "spend": "<before></before> → <after></after>/月",
+    "fits": "符合您的预算",
+    "steps": "步骤，附日期",
+    "checkHr": "截止日期来自雇主的福利摘要。请向人事部确认。",
+    "by": "截止",
+    "kind": {
+      "migration_letter": "待审阅的信",
+      "grievance_letter": "待审阅的信",
+      "reminder": "WhatsApp 提醒"
+    },
+    "status": {
+      "draft": "等您处理",
+      "approved": "已批准",
+      "done": "已完成",
+      "dismissed": "已忽略"
+    }
+  },
+  "actions": {
+    "title": "您的步骤",
+    "empty": "没有待办事项。告诉 Kavach 有什么变化，它会准备好步骤。",
+    "due": "截止 {date}"
+  },
+  "review": {
+    "notFound": "找不到这个步骤。",
+    "due": "截止 {date}",
+    "to": "致：{to}",
+    "blanks": "已根据您的家庭资料填写。高亮的空白处请您填写。",
+    "fill": "请填写",
+    "why": "为什么要这一步",
+    "whyLetter": "工作结束时，团体健康保单对所有受保人都会终止。如果申请及时送达保险公司，父母通常可以转为个人保单，并保留等待期的累计。",
+    "whyReminder": "Kavach 会在这一天在 WhatsApp 上提醒您，并附上准备好寄出的信。",
+    "approve": "批准",
+    "approveReminder": "开启提醒",
+    "dismiss": "暂时不要",
+    "approvedLetter": "已批准。您的信已准备好。",
+    "approvedReminder": "提醒已开启。Kavach 会在 WhatsApp 上给您发消息。",
+    "copy": "复制",
+    "copied": "已复制",
+    "pdf": "PDF",
+    "neverSends": "Kavach 不会代您寄信。由您自己寄出。",
+    "whatsapp": "WhatsApp 上的 Kavach",
+    "error": "出了点问题。请再试一次。"
+  }
+}

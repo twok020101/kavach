@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { formatInr } from '@kavach/engine';
+import { LANGUAGE_NAMES } from '../core/locales';
 import type { DeskContext, Locale } from '@kavach/schemas';
 import { appRoot } from '../paths';
 
@@ -19,7 +20,7 @@ export function deskLiveInstruction(context: DeskContext, language: Locale): str
       )
       .join('; ') || 'none';
   const values: Record<string, string> = {
-    language: language === 'hi' ? 'Hindi' : 'English',
+    language: LANGUAGE_NAMES[language].english,
     patient_name: patient.name,
     age: String(patient.age),
     relation: patient.relation,

@@ -1,0 +1,49 @@
+{
+  "title": "演示家庭",
+  "intro": "您自己的 Sharma 一家副本。可以重置到故事的任何时刻。",
+  "loading": "正在设置演示家庭…",
+  "error": "无法加载家庭。API 在运行吗？",
+  "retry": "再试一次",
+  "demoDate": "演示日期：{date}",
+  "checkpointsHeading": "跳到某个时刻",
+  "checkpoints": {
+    "setup": "设置",
+    "job_change": "换工作",
+    "hospital": "医院",
+    "claim": "索赔",
+    "maternity": "分娩"
+  },
+  "membersHeading": "家庭",
+  "age": "{age} 岁",
+  "relations": {
+    "self": "本人",
+    "spouse": "配偶",
+    "child": "子女",
+    "parent": "父母",
+    "parent_in_law": "岳父母/公婆",
+    "other": "其他"
+  },
+  "speaksHindi": "说印地语",
+  "conditions": {
+    "diabetes_t2": "二型糖尿病"
+  },
+  "policiesHeading": "保单",
+  "kinds": {
+    "group_health": "团体健康保险",
+    "retail_health": "健康保险",
+    "super_top_up": "Super top-up 保险",
+    "term_life": "定期人寿保险",
+    "personal_accident": "个人意外保险",
+    "endowment": "储蓄保险",
+    "motor": "汽车保险"
+  },
+  "sumInsured": "保额 {amount}",
+  "covers": "承保 {names}",
+  "validTill": "至 {date}",
+  "roomLimit": "病房每天最多 {amount}",
+  "copay": "{percent}% 共同承担",
+  "copayFromAge": "{age} 岁起 {percent}% 共同承担",
+  "deductible": "支付 {amount} 以上的部分",
+  "claimsUsed": "今年已用 {amount}",
+  "speaks": "会说{language}"
+}

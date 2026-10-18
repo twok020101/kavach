@@ -167,7 +167,7 @@ function option(
 
 /** The engine result for HX-1: differential billing, plus the flat-billing branch for the Why panel. */
 export function mockEvaluation(lang: Locale) {
-  const c = copy[lang];
+  const c = copy[lang === 'hi' ? 'hi' : 'en'];
   const nonPayable = { ruleId: 'R-HL-005', label: c.nonPayable, amount: 6000 };
   return DeskEvaluation.parse({
     policyOrder: [PARENTS_POLICY, TOP_UP],
@@ -276,7 +276,7 @@ export function mockEvaluation(lang: Locale) {
 
 /** The desk core's reply for HX-1 (or a request for the estimate when none was captured). */
 export function mockAnswer(lang: Locale, hasEstimate = true) {
-  const c = copy[lang];
+  const c = copy[lang === 'hi' ? 'hi' : 'en'];
   if (!hasEstimate) {
     return DeskAnswer.parse({ text: c.needEstimate, say: c.needEstimate, cards: [], trace: [] });
   }

@@ -1,3 +1,4 @@
+import type { Locale } from '@kavach/schemas';
 import { LiveServerMessage, type LiveClientMessage, type LiveErrorCode } from '@kavach/schemas';
 import { apiUrl } from '../api';
 import { getIdToken } from '../firebase';
@@ -28,7 +29,7 @@ export class LiveSocket {
 
   constructor(
     private readonly sessionId: string,
-    private readonly language: string,
+    private readonly language: Locale,
     private readonly on: LiveSocketEvents,
   ) {}
 
@@ -44,7 +45,7 @@ export class LiveSocket {
     const ws = new WebSocket(url);
     this.ws = ws;
     ws.onopen = () => {
-      this.send({ type: 'hello', language: this.language === 'en' ? 'en' : 'hi' });
+      this.send({ type: 'hello', language: this.language });
       this.ping = setInterval(() => this.send({ type: 'ping' }), PING_MS);
     };
     ws.onmessage = (event) => {

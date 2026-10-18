@@ -44,5 +44,6 @@
   "copay": "{percent}% co-pay",
   "copayFromAge": "{percent}% co-pay from age {age}",
   "deductible": "Pays above {amount}",
-  "claimsUsed": "Used this year {amount}"
+  "claimsUsed": "Used this year {amount}",
+  "speaks": "Speaks {language}"
 }

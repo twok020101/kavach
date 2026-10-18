@@ -44,5 +44,6 @@
   "copay": "{percent}% को-पे",
   "copayFromAge": "{age} साल से {percent}% को-पे",
   "deductible": "{amount} से ऊपर देती है",
-  "claimsUsed": "इस साल इस्तेमाल {amount}"
+  "claimsUsed": "इस साल इस्तेमाल {amount}",
+  "speaks": "{language} बोलते हैं"
 }

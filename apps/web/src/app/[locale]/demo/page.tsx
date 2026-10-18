@@ -8,6 +8,7 @@ import { useDemoControls, useHousehold } from '@/lib/household';
 /** Dev page: starts the demo and shows the household, with the S29 checkpoint controls. */
 export default function DemoPage() {
   const t = useTranslations('household');
+  const tc = useTranslations('common');
   const format = useFormatter();
   const { data: household, error, refetch } = useHousehold();
   const { reset } = useDemoControls(household?.id);
@@ -69,7 +70,8 @@ export default function DemoPage() {
               </div>
               <Tags
                 items={[
-                  member.language === 'hi' && t('speaksHindi'),
+                  member.language !== 'en' &&
+                    t('speaks', { language: tc(`languages.${member.language}`) }),
                   ...member.conditions.map((c) =>
                     t.has(`conditions.${c}`) ? t(`conditions.${c}`) : c,
                   ),

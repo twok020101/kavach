@@ -5,9 +5,9 @@ import { Link, usePathname } from '@/i18n/navigation';
 import { routing } from '@/i18n/routing';
 import { cn } from '../ui/cn';
 
-const labels: Record<string, string> = { en: 'EN', hi: 'हिं' };
+const labels: Record<string, string> = { en: 'EN', hi: 'हिं', ta: 'த', zh: '中', ms: 'BM' };
 
-/** EN | हिं segmented control. Keeps the current page (and `query`, if given). */
+/** EN | हिं | த | 中 | BM segmented control. Keeps the current page (and `query`, if given). */
 export function LanguageSwitch({
   query,
   compact = false,
@@ -36,7 +36,7 @@ export function LanguageSwitch({
           aria-current={l === locale ? 'true' : undefined}
           className={cn(
             'press flex items-center justify-center rounded-sm font-semibold',
-            compact ? 'min-h-9 min-w-10 px-2 text-xs' : 'min-h-11 min-w-12 px-3 text-sm',
+            compact ? 'min-h-9 min-w-8 px-1.5 text-xs' : 'min-h-11 min-w-10 px-2.5 text-sm',
             l === locale ? 'bg-primary-soft text-primary-hover' : 'text-muted hover:text-text',
           )}
         >

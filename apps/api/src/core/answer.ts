@@ -14,7 +14,7 @@ import type {
   RoomOptionResult,
 } from '@kavach/schemas';
 import { deskPatient, policyName, policyNickname, type DeskPatient } from './context';
-import { COPY, type Copy } from './copy';
+import { copyFor, type Copy } from './copy';
 import { detectBillingAnswer, detectLocale, detectRoomMention } from './intent';
 
 /**
@@ -28,7 +28,7 @@ export function answer(
   locale: Locale,
 ): DeskAnswer {
   const lang = detectLocale(inputs.utteranceText, locale);
-  const t = COPY[lang];
+  const t = copyFor(lang, household.country);
   const patient = deskPatient(household, patientId);
   const { estimate } = inputs;
 

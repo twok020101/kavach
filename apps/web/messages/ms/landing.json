@@ -1,0 +1,112 @@
+{
+  "headline": "AI yang berdiri di sisi keluarga anda pada setiap saat insurans.",
+  "subhead": "Kavach mengingati perlindungan keluarga anda dan bertindak apabila perlu: apabila hidup berubah, di kaunter hospital, dan apabila tuntutan bermasalah.",
+  "tryHospital": "Cuba babak hospital",
+  "tryHospitalSub": "Anggaran contoh, Hindi atau Inggeris, kurang seminit. Tanpa log masuk.",
+  "previewLabel": "Contoh jawapan",
+  "previewCaption": "Apa yang Kavach beritahu keluarga di kaunter hospital",
+  "momentsTitle": "Tiga saat yang penting",
+  "moments": {
+    "change": {
+      "title": "Apabila hidup berubah",
+      "body": "“Menyertai syarikat permulaan pada 1 Dis.” Kavach nampak perlindungan ibu bapa anda tamat pada 30 Nov, menyediakan surat untuk mengekalkannya, dan mengingatkan anda di WhatsApp.",
+      "stat": "Perlindungan ibu bapa dikekalkan, tidak hilang"
+    },
+    "hospital": {
+      "title": "Di kaunter hospital",
+      "body": "Suara dan kamera, dalam bahasa Hindi. Tunjukkan anggaran dan Kavach beritahu kad polisi mana yang patut diberi dan bilik mana yang patut diminta.",
+      "stat": "<amount></amount> kurang perlu dibayar"
+    },
+    "claim": {
+      "title": "Apabila tuntutan bermasalah",
+      "body": "Hantar surat penyelesaian. Kavach menyemak setiap potongan dengan polisi anda dan menyediakan rayuan.",
+      "stat": "<amount></amount> dijumpai untuk dirayu"
+    }
+  },
+  "whatsapp": {
+    "title": "Tiada aplikasi? Jawapan yang sama di WhatsApp",
+    "body": "Hantar foto anggaran atau nota suara dalam bahasa Hindi. Kavach membalas dengan nota suara dan kad.",
+    "qrAlt": "Kod QR yang membuka WhatsApp dengan mesej untuk menyertai nombor ujian Kavach",
+    "openOnPhone": "Di telefon ini? Buka WhatsApp",
+    "notConfigured": "Nombor ujian WhatsApp belum disediakan.",
+    "step1": "Imbas kod dengan kamera telefon anda. WhatsApp dibuka dengan mesej penyertaan.",
+    "step2": "Hantar mesej itu untuk menyertai nombor ujian Kavach.",
+    "step3": "Hantar RAHUL untuk mendapat makluman keluarga di telefon anda, kemudian hantar foto anggaran atau nota suara.",
+    "note": "Ini menggunakan nombor ujian WhatsApp. Keahlian bertahan 3 hari; imbas semula selepas itu.",
+    "joinText": "Atau hantar “{join}” ke {number} di WhatsApp."
+  },
+  "trust": {
+    "title": "Setiap angka menunjukkan pengiraannya",
+    "body": "Jumlah rupee datang daripada peraturan yang diuji, bukan tekaan. Ketik “Mengapa angka ini?” untuk melihat peraturan dan klausa di sebalik setiap satu."
+  },
+  "footer": {
+    "disclaimer": "Panduan, bukan cadangan polisi. Sahkan dengan syarikat insurans anda atau kaunter TPA.",
+    "sample": "Semua dalam demo ini adalah data contoh rekaan.",
+    "built": "Dibina di atas Gemini dan Google Cloud."
+  },
+  "headlineMark": "setiap saat insurans",
+  "eyebrow": "Hindi dan Inggeris · suara dahulu · dibina untuk seluruh keluarga",
+  "tryFamily": "Cuba dengan keluarga Sharma",
+  "statsLabel": "Apa yang Kavach jumpa dalam keluarga contoh",
+  "stats": {
+    "desk": "kurang perlu dibayar, dengan meminta bilik yang betul di kaunter hospital",
+    "claim": "dijumpai untuk dirayu dalam satu surat penyelesaian",
+    "cited": "daripada jumlah rupee datang daripada peraturan yang diuji, setiap satu dengan klausanya"
+  },
+  "momentsIntro": "Kavach mengenali isi rumah sekali sahaja, dalam kira-kira dua minit. Kemudian ia bertindak pada tiga saat di mana keluarga India kehilangan wang.",
+  "titlePlain": "Insurans keluarga anda,",
+  "titleEm": "dijelaskan pada saat ia penting.",
+  "lead": "Kavach mengingati setiap polisi dalam rumah dan memberitahu anda apa yang perlu dibuat apabila hidup berubah, di kaunter hospital, dan apabila tuntutan dibayar kurang. Dalam bahasa Hindi atau Inggeris. Setiap rupee datang daripada terma polisi bertulis, dengan nombor muka surat.",
+  "howItWorks": "Cara ia berfungsi",
+  "moment": {
+    "title": "Saat <saving></saving>",
+    "body": "Suresh sedang dimasukkan ke hospital. Bilik deluxe berharga kira-kira <deluxe></deluxe> daripada poket keluarga; bilik yang lebih murah kira-kira <standard></standard>. Kavach beritahu yang mana, dan mengapa, sebelum sesiapa menandatangani."
+  },
+  "trustLine": "Dibina untuk Google Cloud AI Builder Cup 2026 · Data demo ditanda SAMPLE · Tiada apa yang disimpan tanpa kebenaran · Tiada bayaran, selama-lamanya.",
+  "tryMaternity": "Cuba babak bersalin",
+  "tryMaternitySub": "Kelahiran anak Priya: had bersalin ₹50,000, dalam bahasa Inggeris.",
+  "kicker": "Tarik nafas. Polisi sudah pun dibaca.",
+  "boot": {
+    "policies": "Polisi keluarga anda: dibaca, dengan nombor muka surat",
+    "rules": "Peraturan hospital dan bersalin: difahami",
+    "beside": "Berdiri di sisi anda, dalam bahasa Hindi atau Inggeris",
+    "tagline": "Berdiri di sisi keluarga anda pada setiap saat insurans.",
+    "skip": "Ketik di mana-mana untuk teruskan"
+  },
+  "family": {
+    "title": "Keluarga contoh yang Kavach sudah kenal",
+    "caption": "Lima orang, empat polisi, satu gambaran. Kavach mengenali mereka sekali sahaja, dalam kira-kira dua minit.",
+    "relations": {
+      "self": "Rahul, 34 · membayar premium",
+      "spouse": "Priya, 32",
+      "child": "Anaya, 5",
+      "father": "Suresh, 62 · pesakit",
+      "mother": "Kamala, 58 · membuka Kavach di kaunter"
+    }
+  },
+  "story": {
+    "caption": "Bagaimana saat hospital berlaku",
+    "step1": {
+      "title": "Kamala ketik Di hospital",
+      "body": "Dalam bahasa Hindi, di telefonnya sendiri. Kavach sudah kenal dua polisi Suresh."
+    },
+    "step2": {
+      "title": "Dia tunjukkan anggaran kepada kamera",
+      "body": "Kavach membaca tarif bilik: deluxe ₹9,000 sehari, standard ₹5,000."
+    },
+    "step3": {
+      "title": "“Minta bilik ₹5,000.”",
+      "body": "Hanya caj yang berharga mengikut bilik dipotong dalam bilik yang lebih mahal. Kavach beritahu kad mana yang patut diberi dahulu, dan apa yang patut ditanya di kaunter."
+    },
+    "saving": "Kurang perlu dibayar",
+    "pause": "Jeda cerita",
+    "play": "Main cerita"
+  },
+  "closing": {
+    "title": "Jangan sekali-kali hadapi kaunter hospital tanpa persediaan.",
+    "body": "Cuba dua babak dengan keluarga contoh, atau sediakan keluarga anda sendiri dalam beberapa minit. Kavach tidak menjual apa-apa dan tidak menghubungi mana-mana syarikat insurans.",
+    "hospital": "Suresh di kaunter hospital",
+    "maternity": "Kelahiran anak Priya",
+    "own": "Sediakan keluarga saya"
+  }
+}

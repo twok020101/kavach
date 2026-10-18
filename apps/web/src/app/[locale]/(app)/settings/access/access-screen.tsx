@@ -2,6 +2,7 @@
 
 import type { Household, Locale } from '@kavach/schemas';
 import { BellRing, Check, Copy, Link2, MessageCircle, UserPlus } from 'lucide-react';
+import { routing } from '@/i18n/routing';
 import { useTranslations } from 'next-intl';
 import QRCode from 'qrcode';
 import { useEffect, useState } from 'react';
@@ -200,7 +201,7 @@ function Invite({ household }: { household: Household }) {
           <fieldset className="flex flex-col gap-2">
             <legend className="mb-1 font-medium">{t('inviteLanguage')}</legend>
             <div className="flex gap-2">
-              {(['hi', 'en'] as const).map((l) => (
+              {routing.locales.map((l) => (
                 <Chip key={l} selected={language === l} onClick={() => setLanguage(l)}>
                   {tc(`languages.${l}`)}
                 </Chip>

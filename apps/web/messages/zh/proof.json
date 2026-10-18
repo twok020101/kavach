@@ -1,0 +1,71 @@
+{
+  "linkFromLanding": "看看 Kavach 读取真实保单有多准确",
+  "back": "返回首页",
+  "title": "Kavach 读取真实保单有多准确",
+  "intro": "我们在真实、公开的印度健康保险条款上运行 Kavach 的文件阅读器，并把它读出的每项条件与人工对照 PDF 核查过的标注进行比较。",
+  "fixtureBanner": "本次运行使用的是预先录制的测试答案，不是实时模型。它证明流程可以运作，但不是准确率分数。真实数字会在下一次实时运行后出现。",
+  "overall": "字段准确率",
+  "notMeasured": "尚未测量",
+  "overallDetail": "{labelled} 个已标注字段中，{correct} 个读取正确",
+  "noLabels": "还没有任何字段有核查过的标注，所以无法评分。",
+  "stats": {
+    "wordings": "保单条款",
+    "wordingsValue": "{count} 份条款",
+    "read": "本次运行已读取",
+    "checked": "人工核查过的标注",
+    "checkedValue": "{total} 个中的 {checked} 个",
+    "date": "运行日期",
+    "model": "模型",
+    "fixtures": "录制的测试答案"
+  },
+  "perFieldTitle": "各字段准确率",
+  "perFieldIntro": "每个条形代表 Kavach 读取该条件与标注完全一致的条款比例。",
+  "fieldScore": "{correct}/{labelled}",
+  "fieldNoLabels": "尚无标注",
+  "fields": {
+    "roomRentLimitPerDay": "每天房费限额",
+    "icuLimitPerDay": "每天 ICU 限额",
+    "copayPercent": "共同承担百分比",
+    "copayFromAge": "共同承担的起始年龄",
+    "proportionateDeduction": "是否适用按比例扣减",
+    "deductible": "自付额",
+    "initialWaitingDays": "初始等待期",
+    "pedWaitingMonths": "既往病症等待期",
+    "specificWaitingMonths": "特定疾病等待期",
+    "nonPayables": "不予支付项目清单"
+  },
+  "wordingsTitle": "条款文件",
+  "wordingsIntro": "向 IRDAI 备案或由保险公司公布的公开文件，以 UIN 识别。",
+  "segment": {
+    "individual": "个人",
+    "floater": "家庭共享保额",
+    "senior": "乐龄人士",
+    "super_top_up": "Super top-up",
+    "group": "团体（雇主）",
+    "standard": "IRDAI 标准产品"
+  },
+  "status": {
+    "read": "已读取",
+    "missing_pdf": "未获取 PDF",
+    "failed": "读取失败"
+  },
+  "labelChecked": "标注已核查",
+  "labelUnchecked": "标注尚未核查",
+  "rulesTitle": "每一卢比背后的规则",
+  "rulesIntro": "Kavach 显示的每个金额都来自这些规则，而不是来自 AI。只有在人工对照原始来源核查后，规则才会标为已核实。",
+  "ruleVerified": "已核实",
+  "ruleToVerify": "待核实",
+  "rulesCount": "{total} 条规则中已核实 {verified} 条",
+  "methodTitle": "我们如何测量",
+  "method": {
+    "dataset": "数据集：来自 {insurers} 家保险公司的 {count} 份公开保单条款，包括团体、乐龄人士、Super top-up 和 IRDAI 标准产品。PDF 不存放在我们的代码库中；由脚本按网址获取并核对其指纹。",
+    "labels": "标注：每份条款由 AI 预先填写约十项条件，附页码和引文；然后由人工逐一对照 PDF 核查。只有核查过的标注才计入。",
+    "scoring": "评分：每个字段精确匹配。以保额百分比表示的限额，按 ₹5,00,000 的保额进行比较。",
+    "spoken": "口述金额：排练录音经转写后，把口述的每个卢比金额与引擎的答案离线比较。",
+    "code": "评估代码、标注和结果都在 GitHub 的 evals 文件夹中。"
+  },
+  "codeLink": "在 GitHub 上打开评估",
+  "honestTitle": "这里还没有显示的内容",
+  "honest": "八份条款是一个很小的集合；我们如实说明，而不是夸大。引用准确率和核查器的捕获率尚未在本页测量。",
+  "error": "无法加载结果。请稍后再试。"
+}

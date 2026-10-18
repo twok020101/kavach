@@ -18,7 +18,7 @@ import { useLocale, useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { Reveal } from '@/components/kavach/reveal';
 import { PlanFrame } from '@/components/plan/plan-frame';
-import { useDate } from '@/components/plan/format';
+import { useDate, dateTag } from '@/components/plan/format';
 import { Chip } from '@/components/setup/member-sheet';
 import { cn } from '@/components/ui/cn';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -61,7 +61,7 @@ function TimelineView({ household }: { household: Household }) {
   const entries = data?.entries.filter((e) => !kinds || kinds.includes(e.kind)) ?? [];
   const upcoming = entries.filter((e) => e.upcoming);
   const past = entries.filter((e) => !e.upcoming);
-  const month = new Intl.DateTimeFormat(locale === 'hi' ? 'hi-IN' : 'en-IN', {
+  const month = new Intl.DateTimeFormat(dateTag(locale), {
     month: 'long',
     year: 'numeric',
     timeZone: 'UTC',

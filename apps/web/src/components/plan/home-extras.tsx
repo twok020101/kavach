@@ -25,7 +25,13 @@ import type { Pin } from './date-scrubber';
  * things to do, and what Kavach will say first if someone is admitted tonight.
  */
 
-const HEALTH: Policy['kind'][] = ['group_health', 'retail_health', 'super_top_up'];
+const HEALTH: Policy['kind'][] = [
+  'group_health',
+  'retail_health',
+  'super_top_up',
+  'medishield_life',
+  'integrated_shield',
+];
 
 /** "Good evening, Rahul" by the device clock; plus one line on what Kavach is watching. */
 export function Greeting({
@@ -63,10 +69,10 @@ export function Greeting({
 export function QuickActions({ household }: { household: Household }) {
   const t = useTranslations('plan.home.quick');
   // The person who most needs her own login: the parent who will be at the desk rather than in
-  // the bed (the younger Hindi-speaking parent, Kamala in the sample family), else any parent.
+  // the bed (the younger parent who does not speak English, Kamala in the sample family), else any parent.
   const parents = household.members.filter((m) => m.relation === 'parent');
   const invitee =
-    [...parents].filter((m) => m.language === 'hi').sort((a, b) => a.age - b.age)[0] ?? parents[0];
+    [...parents].filter((m) => m.language !== 'en').sort((a, b) => a.age - b.age)[0] ?? parents[0];
   const items: {
     href: '/change' | '/claims' | '/settings/access';
     icon: LucideIcon;

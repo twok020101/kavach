@@ -6,6 +6,11 @@ import type { BillingType, Locale, RoomCategory } from '@kavach/schemas';
  */
 
 const DEVANAGARI = /[\u0900-\u097F]/;
+const TAMIL = /[\u0B80-\u0BFF]/;
+const HAN = /[\u4E00-\u9FFF\u3400-\u4DBF]/;
+// Malay is Latin-script; a few function words that English does not share tell it apart.
+const MALAY =
+  /\b(bilik|boleh|berapa|yang|mana|saya|kami|hospital|bayar|patut|tidak|adakah|untuk|dengan|ini|itu|wad|tuntutan)\b/i;
 const HINGLISH =
   /\b(kya|kaun|kaunsa|kitna|kitne|kitni|hai|hain|lein|lena|kamra|kamre|paise|batao|bataiye|chahiye|nahi|nahin|haan|mein|wala|wali|wale|abhi|kaise|kyun|karna|kare|karein)\b/i;
 const ENGLISH =
@@ -15,7 +20,10 @@ const ENGLISH =
 export function detectLocale(text: string | undefined, fallback: Locale): Locale {
   if (!text?.trim()) return fallback;
   if (DEVANAGARI.test(text) || HINGLISH.test(text)) return 'hi';
+  if (TAMIL.test(text)) return 'ta';
+  if (HAN.test(text)) return 'zh';
   if (ENGLISH.test(text)) return 'en';
+  if (MALAY.test(text)) return 'ms';
   return fallback;
 }
 

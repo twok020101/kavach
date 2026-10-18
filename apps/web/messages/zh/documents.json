@@ -1,0 +1,110 @@
+{
+  "loading": "加载中…",
+  "error": "无法连接 Kavach。API 在运行吗？",
+  "retry": "再试一次",
+  "back": "返回",
+  "sample": "SAMPLE",
+  "setup": {
+    "step": "第 3 步，共 4 步",
+    "title": "添加您手头的文件",
+    "intro": "保单、雇主的保险福利摘要、电子卡。Kavach 会读取它们，并显示每项信息的出处。",
+    "drop": "把 PDF 或照片拖到这里",
+    "choose": "选择文件",
+    "photo": "拍照",
+    "useSamples": "使用 Sharma 一家的样本文件",
+    "uploading": "正在上传 {name}… {percent}%",
+    "uploadFailed": "无法上传 {name}。请再试一次。",
+    "none": "没有文件？",
+    "skip": "暂时跳过",
+    "continue": "继续"
+  },
+  "steps": {
+    "queued": "等待读取",
+    "reading_pages": "正在读取第 {done} 页，共 {total} 页",
+    "reading": "正在读取文件",
+    "matching_family": "正在把人员与您的家庭匹配",
+    "linking_clauses": "正在把每项条件关联到条款",
+    "done": "已读取"
+  },
+  "failed": "无法读取这份文件：{error}",
+  "kinds": {
+    "benefits_summary": "雇主福利摘要",
+    "policy_schedule": "保单明细表",
+    "wording": "保单条款",
+    "estimate": "医院估价单",
+    "settlement_letter": "理赔结算信",
+    "other": "文件"
+  },
+  "check": "核对我们找到的内容",
+  "confirm": "添加到家庭保单",
+  "confirming": "添加中…",
+  "confirmed": "已添加到家庭保单",
+  "viewPolicy": "查看保单",
+  "covers": "承保 {names}",
+  "facts": {
+    "sumInsured": "保额",
+    "roomRent": "房费",
+    "icu": "ICU",
+    "proportionateDeduction": "按比例扣减",
+    "copay": "共同承担",
+    "deductible": "自付额",
+    "nonPayables": "不予支付项目"
+  },
+  "values": {
+    "perDay": "每天 {amount}",
+    "noRoomLimit": "无限额",
+    "icuAsBilled": "按实际账单，不按比例扣减",
+    "applies": "超出病房限额时适用",
+    "waived": "不适用",
+    "copay": "{percent}%",
+    "copayFromAge": "{age} 岁及以上为 {percent}%",
+    "none": "无",
+    "perYear": "每年 {amount}",
+    "nonPayables": "所列项目不予支付"
+  },
+  "notCited": "尚无文件依据",
+  "vault": {
+    "title": "保单",
+    "intro": "家里的每一份保单，以及决定索赔结果的条件。",
+    "health": "健康",
+    "other": "人寿及其他",
+    "add": "添加文件",
+    "empty": "还没有保单。电子卡或 TPA 卡只显示谁受保，不显示条款，所以不会生成保单。请添加保单明细表或雇主的福利摘要。",
+    "documents": "{count, plural, =0 {没有文件} one {1 份文件} other {# 份文件}}",
+    "renews": "{date} 续保",
+    "starts": "{date} 生效",
+    "status": {
+      "active": "生效中",
+      "ending": "{date} 到期",
+      "planned": "待生效",
+      "ended": "已到期"
+    }
+  },
+  "policy": {
+    "notFound": "这份保单已不在家庭中。",
+    "covers": "承保 {names}",
+    "sumInsured": "保额 {amount}",
+    "premium": "每年 {amount}",
+    "validTill": "有效期至 {date}",
+    "keyTerms": "主要条件",
+    "openDocument": "打开完整文件",
+    "noDocument": "添加保单明细表，即可查看每项条件的出处。"
+  },
+  "clause": {
+    "title": "§{ref} {title}",
+    "fromDocument": "来自文件",
+    "page": "第 {page} 页",
+    "fullClause": "完整条款",
+    "open": "打开文件中的该页",
+    "close": "关闭"
+  },
+  "kindsPolicy": {
+    "group_health": "雇主健康保险",
+    "retail_health": "健康保险",
+    "super_top_up": "Super top-up 保险",
+    "term_life": "定期人寿保险",
+    "personal_accident": "个人意外保险",
+    "endowment": "储蓄保险",
+    "motor": "汽车保险"
+  }
+}

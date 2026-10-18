@@ -1,0 +1,110 @@
+{
+  "loading": "Sedang memuatkan…",
+  "error": "Tidak dapat menghubungi Kavach. Adakah API sedang berjalan?",
+  "retry": "Cuba lagi",
+  "back": "Kembali",
+  "sample": "SAMPLE",
+  "setup": {
+    "step": "Langkah 3 daripada 4",
+    "title": "Tambah apa yang anda ada",
+    "intro": "Polisi, ringkasan insurans majikan anda, e-kad. Kavach membacanya dan menunjukkan dari mana setiap fakta datang.",
+    "drop": "Letakkan PDF atau foto di sini",
+    "choose": "Pilih fail",
+    "photo": "Ambil foto",
+    "useSamples": "Guna dokumen contoh keluarga Sharma",
+    "uploading": "Memuat naik {name}… {percent}%",
+    "uploadFailed": "Tidak dapat memuat naik {name}. Cuba lagi.",
+    "none": "Tiada dokumen?",
+    "skip": "Langkau buat masa ini",
+    "continue": "Teruskan"
+  },
+  "steps": {
+    "queued": "Menunggu untuk dibaca",
+    "reading_pages": "Membaca muka surat {done} daripada {total}",
+    "reading": "Membaca dokumen",
+    "matching_family": "Memadankan orang dengan keluarga anda",
+    "linking_clauses": "Mengaitkan setiap terma dengan klausanya",
+    "done": "Dibaca"
+  },
+  "failed": "Dokumen ini tidak dapat dibaca: {error}",
+  "kinds": {
+    "benefits_summary": "Ringkasan manfaat majikan",
+    "policy_schedule": "Jadual polisi",
+    "wording": "Perkataan polisi",
+    "estimate": "Anggaran hospital",
+    "settlement_letter": "Surat penyelesaian tuntutan",
+    "other": "Dokumen"
+  },
+  "check": "Semak apa yang kami jumpa",
+  "confirm": "Tambah ke polisi keluarga",
+  "confirming": "Menambah…",
+  "confirmed": "Ditambah ke polisi keluarga",
+  "viewPolicy": "Lihat polisi",
+  "covers": "Melindungi {names}",
+  "facts": {
+    "sumInsured": "Jumlah diinsuranskan",
+    "roomRent": "Sewa bilik",
+    "icu": "ICU",
+    "proportionateDeduction": "Potongan berkadar",
+    "copay": "Insurans bersama",
+    "deductible": "Deduktibel",
+    "nonPayables": "Item tidak dibayar"
+  },
+  "values": {
+    "perDay": "{amount} sehari",
+    "noRoomLimit": "Tiada had",
+    "icuAsBilled": "Mengikut bil, tiada potongan berkadar",
+    "applies": "Terpakai jika melebihi had bilik",
+    "waived": "Tidak terpakai",
+    "copay": "{percent}%",
+    "copayFromAge": "{percent}% untuk mereka yang berumur {age}+",
+    "none": "Tiada",
+    "perYear": "{amount} setahun",
+    "nonPayables": "Item yang disenaraikan tidak dibayar"
+  },
+  "notCited": "Belum daripada mana-mana dokumen",
+  "vault": {
+    "title": "Polisi",
+    "intro": "Setiap polisi dalam keluarga, dengan terma yang menentukan tuntutan.",
+    "health": "Kesihatan",
+    "other": "Hayat dan lain-lain",
+    "add": "Tambah dokumen",
+    "empty": "Belum ada polisi. E-kad atau kad ID TPA menunjukkan siapa yang dilindungi tetapi bukan termanya, jadi ia tidak mewujudkan polisi. Tambah jadual polisi atau ringkasan manfaat majikan anda.",
+    "documents": "{count, plural, =0 {Tiada dokumen} one {1 dokumen} other {# dokumen}}",
+    "renews": "Diperbaharui {date}",
+    "starts": "Bermula {date}",
+    "status": {
+      "active": "Aktif",
+      "ending": "Tamat {date}",
+      "planned": "Dirancang",
+      "ended": "Sudah tamat"
+    }
+  },
+  "policy": {
+    "notFound": "Polisi ini tidak lagi ada dalam keluarga.",
+    "covers": "Melindungi {names}",
+    "sumInsured": "Jumlah diinsuranskan {amount}",
+    "premium": "{amount} setahun",
+    "validTill": "Sah sehingga {date}",
+    "keyTerms": "Terma utama",
+    "openDocument": "Buka dokumen penuh",
+    "noDocument": "Tambah jadual polisi untuk melihat dari mana setiap terma datang."
+  },
+  "clause": {
+    "title": "§{ref} {title}",
+    "fromDocument": "Daripada dokumen",
+    "page": "muka surat {page}",
+    "fullClause": "Klausa penuh",
+    "open": "Buka muka surat dalam dokumen",
+    "close": "Tutup"
+  },
+  "kindsPolicy": {
+    "group_health": "Kesihatan majikan",
+    "retail_health": "Kesihatan",
+    "super_top_up": "Super top-up",
+    "term_life": "Hayat bertempoh",
+    "personal_accident": "Kemalangan diri",
+    "endowment": "Endowmen",
+    "motor": "Motor"
+  }
+}

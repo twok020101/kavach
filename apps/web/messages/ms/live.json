@@ -1,0 +1,42 @@
+{
+  "talk": "Bercakap dengan Kavach",
+  "talkHint": "Bercakap dalam bahasa Hindi atau Inggeris. Kavach menjawab secara lisan.",
+  "badge": "Suara langsung",
+  "orb": {
+    "connecting": "Menyambung…",
+    "listening": "Kavach sedang mendengar",
+    "thinking": "Kavach sedang menyemak",
+    "speaking": "Kavach sedang bercakap",
+    "reconnecting": "Menyambung semula…",
+    "muted": "Mikrofon dimatikan: ketik mikrofon untuk bercakap"
+  },
+  "greeting": "Salam. Beritahu saya apa yang berlaku, dan tunjukkan anggaran hospital dengan kamera.",
+  "mute": "Matikan mikrofon (Kavach menjawab)",
+  "unmute": "Hidupkan mikrofon",
+  "showEstimate": "Tunjukkan anggaran",
+  "typeInstead": "Taip sahaja",
+  "billing": {
+    "question": "Apa kata kaunter?",
+    "differ": "Caj berbeza mengikut bilik",
+    "same": "Sama di setiap bilik",
+    "differText": "Kaunter kata caj berbeza untuk setiap bilik",
+    "sameText": "Kaunter kata caj sama di setiap bilik"
+  },
+  "camera": {
+    "title": "Kamera",
+    "hint": "Pastikan seluruh muka surat dalam bingkai",
+    "capture": "Ambil foto",
+    "back": "Kembali",
+    "sample": "Guna anggaran contoh"
+  },
+  "fallback": {
+    "title": "Bertukar ke mod teks",
+    "connection_lost": "Sambungan suara langsung terputus. Kavach bertukar ke mod teks: jawapannya sama.",
+    "mic_denied": "Mikrofon tidak tersedia. Kavach bertukar ke mod teks: jawapannya sama.",
+    "time_limit": "Sesi langsung telah mencapai had 5 minit. Teruskan dalam mod teks: jawapannya sama.",
+    "other": "Suara langsung tidak berfungsi sekarang. Kavach bertukar ke mod teks: jawapannya sama.",
+    "retry": "Cuba suara semula",
+    "dismiss": "Tutup"
+  },
+  "muteShort": "Senyapkan"
+}
