@@ -40,19 +40,20 @@ export function CoverGrid({
 
   return (
     <div className="-mx-4 overflow-x-auto px-4 sm:mx-0 sm:px-0">
-      <table className="w-full min-w-[19rem] table-fixed border-separate border-spacing-y-2 text-sm">
+      {/* A ruled table (Stitch 06): a labelled header row, a hairline between members. */}
+      <table className="w-full min-w-[19rem] table-fixed border-collapse text-sm">
         <caption className="sr-only">{t('home.mapCaption')}</caption>
         <thead>
-          <tr className="text-left text-xs font-semibold uppercase tracking-wide text-muted">
-            <th scope="col" className="w-[27%] pb-1 sm:w-[26%]">
-              <span className="sr-only">{t('home.member')}</span>
+          <tr className="border-b border-border text-left text-xs font-semibold uppercase tracking-wide text-muted [&:lang(ta)]:tracking-normal [&:lang(zh)]:tracking-normal">
+            <th scope="col" className="w-[27%] pb-2 font-semibold sm:w-[26%]">
+              <span className="sr-only sm:not-sr-only">{t('home.member')}</span>
             </th>
             {shown.map((risk) => {
               const Icon = RISK_ICON[risk];
               return (
-                <th key={risk} scope="col" className="pb-1 pl-1.5">
-                  <span className="inline-flex items-center gap-1">
-                    <Icon aria-hidden className="size-3.5" />
+                <th key={risk} scope="col" className="pb-2 pl-1.5 font-semibold">
+                  <span className="inline-flex min-w-0 items-center gap-1 leading-tight [overflow-wrap:anywhere]">
+                    <Icon aria-hidden className="size-3.5 shrink-0" />
                     {t(`risk.${risk}`)}
                   </span>
                 </th>
@@ -62,13 +63,16 @@ export function CoverGrid({
         </thead>
         <tbody>
           {household.members.map((member) => (
-            <tr key={member.id}>
-              <th scope="row" className="pr-1 text-left font-semibold">
+            <tr key={member.id} className="border-b border-border last:border-b-0">
+              <th scope="row" className="py-2 pr-1 text-left font-semibold">
                 <span className="flex items-center gap-2">
                   <MemberAvatar member={member} className="hidden size-8 text-xs sm:inline-flex" />
                   <span className="flex min-w-0 flex-col leading-tight">
                     <span className="truncate">{member.name.split(' ')[0]}</span>
-                    <span className="truncate text-xs font-normal text-muted">
+                    <span
+                      className="truncate text-xs font-normal text-muted"
+                      title={`${tc(`relation.${member.relation}`)} · ${member.age}`}
+                    >
                       {tc(`relation.${member.relation}`)} · {member.age}
                     </span>
                   </span>
@@ -76,10 +80,10 @@ export function CoverGrid({
               </th>
               {shown.map((risk) => {
                 const c = cell(member.id, risk);
-                if (!c) return <td key={risk} />;
+                if (!c) return <td key={risk} className="py-2" />;
                 const missing = c.status === 'na' ? 0 : short(c);
                 return (
-                  <td key={risk} className="pl-1.5 align-top">
+                  <td key={risk} className="py-2 pl-1.5 align-middle">
                     <motion.button
                       layout
                       key={c.status}
@@ -99,7 +103,7 @@ export function CoverGrid({
                       <StatusBadge
                         status={c.status}
                         short
-                        className="w-full text-xs leading-tight sm:hidden"
+                        className="w-full min-w-0 px-1.5 text-[11px] leading-tight sm:hidden"
                       />
                       <StatusBadge
                         status={c.status}

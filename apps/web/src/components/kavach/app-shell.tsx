@@ -89,14 +89,17 @@ export function AppShell({
 
       {/* Phone top bar */}
       <header className="sticky top-0 z-30 flex items-center gap-3 border-b border-border bg-bg px-4 py-2 lg:hidden">
-        <Link href="/home" className="flex items-center gap-2" aria-label="Kavach">
-          <LogoMark className="size-7" />
+        {/* The family name gives way first; the switch may hold five languages. */}
+        <Link href="/home" className="flex min-w-0 flex-1 items-center gap-2" aria-label="Kavach">
+          <LogoMark className="size-7 shrink-0" />
           {householdName && (
-            <span className="truncate font-display text-base font-bold">{householdName}</span>
+            <span className="min-w-0 truncate font-display text-base font-bold">
+              {householdName}
+            </span>
           )}
         </Link>
-        <ThemeToggle className="ml-auto" />
-        <LanguageSwitch compact />
+        <ThemeToggle className="shrink-0" />
+        <LanguageSwitch compact className="shrink-0" />
       </header>
 
       {/* Desktop left nav */}
@@ -106,15 +109,18 @@ export function AppShell({
             <Logo />
           </Link>
           {householdName && (
-            // The family block (from the Stitch sidebar): who this is for, and the way to Settings.
+            // The family block (from the Stitch sidebar): a soft indigo tile naming who this is
+            // for, and the way to Settings. 48 px tall; the border shows on hover and focus.
             <Link
               href="/settings"
-              className="press flex items-center gap-2 rounded-md bg-sunken px-3 py-2 hover:bg-primary-soft"
+              className="press flex min-h-12 items-center gap-2.5 rounded-md border border-transparent bg-primary-soft px-3 py-2 hover:border-primary focus-visible:border-primary"
             >
-              <Users aria-hidden className="size-5 shrink-0 text-primary" />
+              <Users aria-hidden className="size-5 shrink-0 text-primary-hover" />
               <span className="flex min-w-0 flex-1 flex-col">
-                <span className="label">{t('activeFamily')}</span>
-                <span className="truncate font-semibold leading-tight">{householdName}</span>
+                <span className="label text-primary-hover">{t('activeFamily')}</span>
+                <span className="truncate font-display font-semibold leading-tight">
+                  {householdName}
+                </span>
               </span>
               <ChevronsUpDown aria-hidden className="size-4 shrink-0 text-muted" />
             </Link>
@@ -122,9 +128,15 @@ export function AppShell({
         </div>
         <Link
           href="/desk"
-          className={buttonClasses({ variant: 'accent', size: 'lg', className: 'w-full' })}
+          className={buttonClasses({
+            variant: 'accent',
+            size: 'lg',
+            // Tamil and Malay labels are long: wrap inside the column rather than overrun it.
+            className:
+              'w-full min-w-0 whitespace-normal text-center leading-tight [overflow-wrap:anywhere]',
+          })}
         >
-          <Hospital aria-hidden className="size-6" />
+          <Hospital aria-hidden className="size-6 shrink-0" />
           {t('atHospital')}
         </Link>
         <nav aria-label={t('mainNav')}>
@@ -153,8 +165,8 @@ export function AppShell({
             ))}
           </ul>
         </nav>
-        <div className="mt-auto flex items-center gap-2 px-2">
-          <LanguageSwitch />
+        <div className="mt-auto flex flex-wrap items-center gap-2 px-2">
+          <LanguageSwitch compact />
           <ThemeToggle />
         </div>
       </aside>
@@ -183,7 +195,7 @@ export function AppShell({
           <li className="flex items-stretch justify-center p-1.5">
             <Link
               href="/desk"
-              className="btn btn-solid btn-accent flex min-h-14 w-full flex-col items-center justify-center gap-0.5 rounded-md bg-accent text-xs font-bold text-accent-ink"
+              className="btn btn-solid btn-accent flex min-h-14 w-full min-w-0 flex-col items-center justify-center gap-0.5 rounded-md bg-accent px-1 text-center text-xs font-bold leading-tight text-accent-ink [overflow-wrap:anywhere]"
             >
               <Hospital aria-hidden className="size-6" strokeWidth={2} />
               {t('nav.hospital')}
@@ -211,7 +223,7 @@ function PhoneTab({ tab, active, label }: { tab: Tab; active: boolean; label: st
         href={tab.href}
         aria-current={active ? 'page' : undefined}
         className={cn(
-          'press flex min-h-16 flex-col items-center justify-center gap-0.5 text-xs font-medium',
+          'press flex min-h-16 min-w-0 flex-col items-center justify-center gap-0.5 px-1 text-center text-xs font-medium leading-tight [overflow-wrap:anywhere]',
           active ? 'text-primary' : 'text-muted hover:text-text',
         )}
       >
