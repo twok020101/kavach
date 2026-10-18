@@ -14,6 +14,7 @@ import { ItemSheet } from '@/components/plan/item-sheet';
 import { PlanFrame } from '@/components/plan/plan-frame';
 import { usePlan } from '@/components/plan/queries';
 import { RecommendationRow } from '@/components/plan/recommendation';
+import { Link } from '@/i18n/navigation';
 
 export function PlanScreen() {
   return <PlanFrame>{(household) => <PlanView household={household} />}</PlanFrame>;
@@ -107,7 +108,19 @@ function PlanView({ household }: { household: Household }) {
                   </span>
                   <ChevronRight aria-hidden className="size-5 text-primary" />
                 </span>
-                {/* The meter: how much of the free monthly budget the plan uses. */}
+                {/* The meter: how much of the free monthly budget the plan uses, and what is left. */}
+                <span className="flex items-center justify-between text-xs font-medium text-muted">
+                  <span>
+                    {t('allocated')}: <Amount value={plan.monthlySpend} className="text-text" />
+                  </span>
+                  <span>
+                    {t('leftOver')}:{' '}
+                    <Amount
+                      value={Math.max(0, budget.forNewMonthly - plan.monthlySpend)}
+                      className="text-text"
+                    />
+                  </span>
+                </span>
                 <span
                   role="meter"
                   aria-valuemin={0}
@@ -129,9 +142,18 @@ function PlanView({ household }: { household: Household }) {
               <h2 className="font-display text-lg font-semibold text-muted">{t('review')}</h2>
               <ul className="flex flex-col gap-2">
                 {plan.reviews.map((r) => (
-                  <li key={r.policyId + r.issue} className="panel panel-partial">
-                    <p className="font-semibold">{policy(r.policyId)?.productName}</p>
-                    <p className="text-sm text-partial">{t(`reviewIssue.${r.issue}`)}</p>
+                  <li key={r.policyId + r.issue}>
+                    {/* Each review opens the policy it is about. */}
+                    <Link
+                      href={`/policies/${r.policyId}`}
+                      className="panel panel-partial press flex items-center gap-3 hover:border-partial"
+                    >
+                      <span className="flex min-w-0 flex-1 flex-col">
+                        <span className="font-semibold">{policy(r.policyId)?.productName}</span>
+                        <span className="text-sm text-partial">{t(`reviewIssue.${r.issue}`)}</span>
+                      </span>
+                      <ChevronRight aria-hidden className="size-5 shrink-0 text-partial" />
+                    </Link>
                   </li>
                 ))}
               </ul>

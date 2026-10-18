@@ -135,7 +135,9 @@
       "topup_without_base": "Pays nothing without a base policy below it.",
       "below_minimum": "Below the minimum we suggest."
     },
-    "disclaimer": "Premiums are illustrative, not a quote. Kavach doesn't sell insurance; talk to a licensed adviser before you buy."
+    "disclaimer": "Premiums are illustrative, not a quote. Kavach doesn't sell insurance; talk to a licensed adviser before you buy.",
+    "allocated": "In the plan",
+    "leftOver": "Left over"
   },
   "change": {
     "title": "What's changing?",
