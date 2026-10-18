@@ -55,7 +55,12 @@ export function repairReading(raw: unknown, issues: z.ZodError): HospitalEstimat
   const second = HospitalEstimate.safeParse({ ...fixed, needsConfirmation: true });
   const notes = Array.isArray(fixed.notes) ? fixed.notes.filter((n) => typeof n === 'string') : [];
   const hasLines = Array.isArray(fixed.lines) && fixed.lines.length > 0;
-  if (second.success && hasLines) {
+  // A package poster has no lines, only a price per room; it is still an estimate.
+  const hasPackage =
+    !!fixed.packagePrices &&
+    typeof fixed.packagePrices === 'object' &&
+    Object.keys(fixed.packagePrices as object).length > 0;
+  if (second.success && (hasLines || hasPackage)) {
     return {
       ...second.data,
       notes: [...second.data.notes, 'Some fields were adjusted while reading; please check them.'],

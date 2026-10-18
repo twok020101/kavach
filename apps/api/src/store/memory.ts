@@ -12,45 +12,77 @@ const FILE =
 
 /**
  * In-process store for local development. Every write is mirrored (debounced) to a JSON file
- * under `.data`, and the file is loaded on boot, so a restart of the API no longer wipes the
- * families people set up while testing.
+ * under `.data`, flushed again when the process exits, and the file is loaded on boot, so a
+ * restart of the API no longer wipes the families people set up while testing. A file that
+ * cannot be parsed is set aside, never overwritten.
  */
 export class MemoryStore implements Store {
   private readonly collections = new Map<string, Map<string, unknown>>();
   private timer: ReturnType<typeof setTimeout> | undefined;
+  private dirty = false;
 
   constructor() {
     this.load();
+    if (FILE) {
+      const flush = () => this.flush();
+      process.once('exit', flush);
+      for (const signal of ['SIGINT', 'SIGTERM'] as const) {
+        process.once(signal, () => {
+          flush();
+          process.exit(0);
+        });
+      }
+    }
   }
 
   private load() {
     if (!FILE) return;
+    let text: string;
     try {
-      const raw = JSON.parse(readFileSync(FILE, 'utf8')) as Record<string, Record<string, unknown>>;
+      text = readFileSync(FILE, 'utf8');
+    } catch {
+      return; // No file yet: start empty.
+    }
+    try {
+      const raw = JSON.parse(text) as Record<string, Record<string, unknown>>;
       for (const [name, docs] of Object.entries(raw)) {
         this.collections.set(name, new Map(Object.entries(docs)));
       }
     } catch {
-      // No file yet, or not readable: start empty.
+      const aside = `${FILE}.corrupt-${Date.now()}`;
+      try {
+        renameSync(FILE, aside);
+      } catch {
+        // Could not move it; the next write will replace it.
+      }
+      console.warn(`memory store: ${FILE} could not be parsed; moved to ${aside}`);
+    }
+  }
+
+  /** Writes the store to disk now (atomic rename), if anything changed since the last write. */
+  private flush() {
+    if (!FILE || !this.dirty) return;
+    clearTimeout(this.timer);
+    this.timer = undefined;
+    const out: Record<string, Record<string, unknown>> = {};
+    for (const [name, docs] of this.collections) out[name] = Object.fromEntries(docs);
+    try {
+      mkdirSync(dirname(FILE), { recursive: true });
+      const tmp = `${FILE}.tmp`;
+      writeFileSync(tmp, JSON.stringify(out));
+      renameSync(tmp, FILE);
+      this.dirty = false;
+    } catch {
+      // Read-only disk: the data lives in memory for this run only.
     }
   }
 
   private persist() {
     if (!FILE) return;
+    this.dirty = true;
     clearTimeout(this.timer);
-    this.timer = setTimeout(() => {
-      const out: Record<string, Record<string, unknown>> = {};
-      for (const [name, docs] of this.collections) out[name] = Object.fromEntries(docs);
-      try {
-        mkdirSync(dirname(FILE), { recursive: true });
-        const tmp = `${FILE}.tmp`;
-        writeFileSync(tmp, JSON.stringify(out));
-        renameSync(tmp, FILE);
-      } catch {
-        // Read-only disk: the data lives in memory for this run only.
-      }
-    }, 250);
-    this.timer.unref?.();
+    // Not unref'd: the pending write keeps the process alive for the 250 ms it needs.
+    this.timer = setTimeout(() => this.flush(), 250);
   }
 
   private collection(name: string) {

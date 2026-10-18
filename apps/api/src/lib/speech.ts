@@ -72,6 +72,9 @@ export function pcmToOggOpus({ data, sampleRate }: Pcm): Promise<Buffer> {
         ? done(Buffer.concat(out))
         : fail(new Error(`ffmpeg exited ${code}: ${Buffer.concat(err).toString()}`)),
     );
+    // If ffmpeg rejects the input and exits early, the write fails with EPIPE; the close
+    // handler above reports it, so the pipe error must not crash the process.
+    ffmpeg.stdin.on('error', () => {});
     ffmpeg.stdin.end(data);
   });
 }
@@ -127,6 +130,9 @@ function transcode(data: Buffer): Promise<Buffer> {
         ? done(Buffer.concat(out))
         : fail(new Error(`ffmpeg exited ${code}: ${Buffer.concat(err).toString()}`)),
     );
+    // If ffmpeg rejects the input and exits early, the write fails with EPIPE; the close
+    // handler above reports it, so the pipe error must not crash the process.
+    ffmpeg.stdin.on('error', () => {});
     ffmpeg.stdin.end(data);
   });
 }
