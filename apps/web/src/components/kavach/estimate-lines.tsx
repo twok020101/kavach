@@ -16,21 +16,29 @@ const NEVER_RATIO: readonly LineHead[] = [
   'non_payable',
 ];
 
-type Mark = { tone: BadgeTone; key: 'nonPayable' | 'aboveLimit' | 'ratio' | 'icu' };
+type Mark = { tone: BadgeTone; key: 'nonPayable' | 'aboveLimit' | 'ratio' | 'icu' | 'covered' };
+
+const TINT: Partial<Record<BadgeTone, string>> = {
+  gap: 'bg-gap-bg/30',
+  partial: 'bg-partial-bg/30',
+};
 
 /**
- * The estimate's own lines for the room it was quoted for, each marked with what the policy
- * does to it once the engine has run: not payable, above the room limit, reduced with the
- * room, or never reduced (ICU). The figures are the hospital's; the marks and the totals
- * block under them are the engine's (Stitch 10/11 line-item table).
+ * The estimate's own lines for the room it was quoted for, as a table (Stitch desk): each line
+ * marked with what the policy does to it once the engine has run (not payable, above the room
+ * limit, reduced with the room, never reduced, covered), then the total and the engine's cuts.
+ * The figures are the hospital's; the marks and the totals below them are the engine's.
  */
 export function EstimateLines({
   estimate,
   result,
+  sample = false,
 }: {
   estimate: HospitalEstimate;
   /** The engine's primary branch, once evaluated; without it the lines carry no marks. */
   result?: BranchResult;
+  /** The demo's sample estimate, not a photo the family took. */
+  sample?: boolean;
 }) {
   const t = useTranslations('desk.session.estimate');
   const tc = useTranslations('common.compare');
@@ -48,7 +56,7 @@ export function EstimateLines({
     if (ratio && line.pricedByRoom && !NEVER_RATIO.includes(line.head)) {
       return { tone: 'partial', key: 'ratio' };
     }
-    return undefined;
+    return { tone: 'safe', key: 'covered' };
   };
 
   const lines = estimate.lines.filter((l) => l.amounts[quoted.id] !== undefined);
@@ -59,15 +67,22 @@ export function EstimateLines({
   const row = 'flex items-baseline justify-between gap-3';
 
   return (
-    <div className="flex flex-col gap-3">
-      <p className="text-sm text-muted">{t('quotedFor', { room: quoted.label })}</p>
-      <ul className="hairline text-base">
+    <div className="overflow-hidden rounded-md border border-border text-base">
+      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border bg-sunken px-3 py-2 text-sm font-semibold">
+        <span>{t('quotedFor', { room: quoted.label })}</span>
+        {sample && (
+          <Badge tone="primary" className="text-xs">
+            {t('sample')}
+          </Badge>
+        )}
+      </div>
+      <ul className="divide-y divide-border">
         {lines.map((line) => {
           const m = mark(line);
           return (
             <li
               key={line.head + line.label}
-              className="flex items-start justify-between gap-3 py-3"
+              className={cn('flex items-start justify-between gap-3 px-3 py-2', m && TINT[m.tone])}
             >
               <span className="flex min-w-0 flex-col gap-1">
                 <span className={cn(m?.tone === 'gap' && 'text-muted line-through')}>
@@ -84,10 +99,9 @@ export function EstimateLines({
           );
         })}
       </ul>
-      {/* The totals row: the hospital's total, then what the engine makes of it. */}
-      <dl className="flex flex-col gap-1.5 rounded-sm bg-sunken px-3 py-3">
-        <div className={row}>
-          <dt className="font-display font-bold">{t('total')}</dt>
+      <dl className="flex flex-col gap-1 border-t border-border bg-sunken px-3 py-2">
+        <div className="flex items-baseline justify-between gap-3">
+          <dt className="font-semibold">{t('total')}</dt>
           <dd>
             <Amount value={total} className="font-display text-xl font-bold" />
           </dd>
@@ -96,7 +110,7 @@ export function EstimateLines({
           <div key={d.ruleId + d.label} className={row}>
             <dt className="text-sm text-muted">{tc('notPaid', { label: d.label })}</dt>
             <dd>
-              <Amount value={d.amount} className="text-sm text-partial" />
+              <Amount value={d.amount} className="text-sm font-semibold text-gap" />
             </dd>
           </div>
         ))}

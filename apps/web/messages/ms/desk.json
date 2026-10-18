@@ -51,8 +51,10 @@
         "nonPayable": "Tidak dibayar",
         "aboveLimit": "Melebihi had bilik",
         "ratio": "Dikurangkan mengikut bilik",
-        "icu": "ICU: tidak pernah dikurangkan"
-      }
+        "icu": "ICU: tidak pernah dikurangkan",
+        "covered": "Dilindungi"
+      },
+      "sample": "Contoh"
     },
     "answers": "Jawapan",
     "compareRooms": "Bandingkan bilik",
@@ -82,7 +84,34 @@
     "admitted": "Dimasukkan",
     "controls": "Kawalan kaunter pantas",
     "memberChip": "{name} ({relation}, {age})",
-    "sendPrompts": "Hantar ini kepada keluarga di WhatsApp"
+    "sendPrompts": "Hantar ini kepada keluarga di WhatsApp",
+    "result": {
+      "title": "Keputusan Kavach",
+      "save": "Jimat <amount></amount>",
+      "noSaving": "Setiap bilik sama kosnya kepada keluarga",
+      "reason": "{room} paling murah untuk keluarga selepas peraturan polisi digunakan.",
+      "reasonSame": "Minta {room}; polisi melayan setiap bilik dengan sama.",
+      "ask": "Minta {room}",
+      "perDay": "sehari",
+      "recommendedChip": "Cadangan Kavach",
+      "costsMoreChip": "Kos lebih tinggi",
+      "familyPays": "Keluarga bayar"
+    },
+    "askDesk": {
+      "title": "Tanya kaunter kemasukan sekarang",
+      "intro": "Bacakan ini di kaunter, atau salin.",
+      "ask": "Tanya kaunter",
+      "say": "Apa kata Kavach"
+    },
+    "rules": {
+      "title": "Peraturan polisi yang digunakan",
+      "count": "{count, plural, one {# peraturan} other {# peraturan}}",
+      "details": "Lihat kiraan setiap peraturan"
+    },
+    "textNote": {
+      "title": "Mod teks",
+      "body": "Taip soalan anda, atau ketik Bercakap dengan Kavach untuk bercakap."
+    }
   },
   "summary": {
     "title": "Ringkasan sesi",

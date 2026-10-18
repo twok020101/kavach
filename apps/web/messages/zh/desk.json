@@ -51,8 +51,10 @@
         "nonPayable": "不予支付",
         "aboveLimit": "超出病房限额",
         "ratio": "随病房按比例扣减",
-        "icu": "ICU：从不扣减"
-      }
+        "icu": "ICU：从不扣减",
+        "covered": "可报销"
+      },
+      "sample": "样本"
     },
     "answers": "回答",
     "compareRooms": "比较病房",
@@ -82,7 +84,34 @@
     "admitted": "住院人",
     "controls": "柜台快捷操作",
     "memberChip": "{name}（{relation}，{age}）",
-    "sendPrompts": "把这些发给家人的 WhatsApp"
+    "sendPrompts": "把这些发给家人的 WhatsApp",
+    "result": {
+      "title": "Kavach 的结果",
+      "save": "节省 <amount></amount>",
+      "noSaving": "每种病房家人自付都一样",
+      "reason": "按保单规则计算后，{room} 家人自付最少。",
+      "reasonSame": "请要 {room}；保单对每种病房一视同仁。",
+      "ask": "请要 {room}",
+      "perDay": "每天",
+      "recommendedChip": "Kavach 建议",
+      "costsMoreChip": "自付更多",
+      "familyPays": "家人自付"
+    },
+    "askDesk": {
+      "title": "现在就问入院柜台",
+      "intro": "在柜台照着读出来，或复制下来。",
+      "ask": "问柜台",
+      "say": "Kavach 怎么说"
+    },
+    "rules": {
+      "title": "已应用的保单规则",
+      "count": "{count, plural, other {# 条规则}}",
+      "details": "查看每条规则的计算"
+    },
+    "textNote": {
+      "title": "文字模式",
+      "body": "输入您的问题，或点“和 Kavach 说话”直接说。"
+    }
   },
   "summary": {
     "title": "本次摘要",

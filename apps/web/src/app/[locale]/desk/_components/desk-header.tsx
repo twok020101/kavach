@@ -55,13 +55,19 @@ export function DeskHeader({
           </div>
           {subtitle && <p className="truncate text-sm text-muted">{subtitle}</p>}
         </div>
-        <LanguageSwitch query={query} compact className="shrink-0" />
+        {/* A phone has no room for the title beside the switch: it moves to the row below. */}
+        <LanguageSwitch
+          query={query}
+          compact
+          className={cn('shrink-0', hasSubNav && 'max-sm:hidden')}
+        />
         {action}
       </div>
 
       {hasSubNav && (
         <div className="border-t border-border bg-bg">
           <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-x-4 gap-y-2 px-4 py-2 lg:px-6">
+            <LanguageSwitch query={query} compact className="sm:hidden" />
             {demoScene && (
               <nav aria-label={ts('label')} className="flex max-w-full gap-1.5 overflow-x-auto">
                 {(['hospital', 'maternity', 'singapore'] as const).map((s) => (

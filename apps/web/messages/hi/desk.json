@@ -51,8 +51,10 @@
         "nonPayable": "नहीं मिलेगा",
         "aboveLimit": "कमरे की लिमिट से ऊपर",
         "ratio": "कमरे के साथ घटेगा",
-        "icu": "ICU: कभी नहीं घटता"
-      }
+        "icu": "ICU: कभी नहीं घटता",
+        "covered": "कवर है"
+      },
+      "sample": "सैंपल"
     },
     "answers": "जवाब",
     "compareRooms": "कमरों की तुलना",
@@ -82,7 +84,34 @@
     "admitted": "भर्ती",
     "memberChip": "{name} ({relation}, {age})",
     "controls": "डेस्क के ज़रूरी कंट्रोल",
-    "sendPrompts": "ये सवाल परिवार को WhatsApp पर भेजें"
+    "sendPrompts": "ये सवाल परिवार को WhatsApp पर भेजें",
+    "result": {
+      "title": "Kavach का नतीजा",
+      "save": "<amount></amount> बचाएँ",
+      "noSaving": "हर कमरे में परिवार का खर्च बराबर है",
+      "reason": "पॉलिसी के नियम लगाने के बाद {room} में परिवार का खर्च सबसे कम है।",
+      "reasonSame": "{room} माँगें; पॉलिसी हर कमरे को बराबर मानती है।",
+      "ask": "{room} माँगें",
+      "perDay": "प्रति दिन",
+      "recommendedChip": "Kavach की सलाह",
+      "costsMoreChip": "ज़्यादा खर्च",
+      "familyPays": "परिवार देगा"
+    },
+    "askDesk": {
+      "title": "एडमिशन डेस्क से अभी पूछें",
+      "intro": "काउंटर पर ये पढ़कर सुनाएँ, या कॉपी करें।",
+      "ask": "डेस्क से पूछें",
+      "say": "Kavach क्या कहता है"
+    },
+    "rules": {
+      "title": "लागू हुए पॉलिसी नियम",
+      "count": "{count, plural, one {# नियम} other {# नियम}}",
+      "details": "हर नियम का हिसाब देखें"
+    },
+    "textNote": {
+      "title": "टेक्स्ट मोड",
+      "body": "अपना सवाल लिखें, या बोलने के लिए Kavach से बात करें दबाएँ।"
+    }
   },
   "summary": {
     "title": "सारांश",

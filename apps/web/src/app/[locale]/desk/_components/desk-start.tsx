@@ -40,7 +40,18 @@ export function DeskStart({ demo, scene }: { demo: boolean; scene?: DeskScene })
   const query = demo ? { demo: '1', ...(scene ? { scene } : {}) } : undefined;
 
   const queryClient = useQueryClient();
-  const household = useQuery({ queryKey: ['desk', 'household'], queryFn: deskClient.getHousehold });
+  // In the demo the scene's family is set up first, so the list shows who the scene is about
+  // (the Tans for the Singapore scene) and the preset patient is one of them.
+  const household = useQuery({
+    queryKey: ['desk', 'household', demo ? (scene ?? 'hospital') : 'own'],
+    queryFn: async () => {
+      if (demo) {
+        await deskClient.prepareScene(scene ?? 'hospital');
+        await queryClient.invalidateQueries({ predicate: (q) => q.queryKey[0] !== 'desk' });
+      }
+      return deskClient.getHousehold();
+    },
+  });
   const start = useMutation({
     mutationFn: async () => {
       if (demo) {

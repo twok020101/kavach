@@ -97,21 +97,24 @@ export function AnswerCard({
       </header>
 
       {lines.length > 1 && card.kind === 'ask_desk' ? (
-        <ul className="mt-3 flex flex-col gap-2 text-lg">
+        <ul className="mt-3 flex flex-col gap-2 text-base">
           {lines.map((line, i) => (
-            <li key={line} className="flex items-start gap-3">
+            <li
+              key={line}
+              className="flex items-start gap-3 rounded-md border border-border bg-sunken p-3"
+            >
               <span
                 aria-hidden
-                className="mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-full bg-sunken font-display text-sm font-bold text-primary-hover"
+                className="mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-full bg-surface font-display text-sm font-bold text-primary-hover"
               >
                 {i + 1}
               </span>
-              <span className="flex-1">{line}</span>
+              <span className="flex-1 italic leading-relaxed">“{line}”</span>
               <button
                 type="button"
                 onClick={() => copy(line, i)}
                 aria-label={copied === i ? tc('copied') : tc('copy')}
-                className="press -my-1 flex size-11 shrink-0 items-center justify-center rounded-md text-muted hover:bg-sunken hover:text-primary"
+                className="press -my-1 flex size-12 shrink-0 items-center justify-center rounded-md text-muted hover:bg-primary-soft hover:text-primary"
               >
                 {copied === i ? (
                   <Check aria-hidden className="size-5 text-safe" />
