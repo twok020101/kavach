@@ -105,5 +105,7 @@
       "consent": "Nothing is read or stored without your consent",
       "notPayments": "Something that takes payments or contacts insurers for you"
     }
-  }
+  },
+  "copy": "Copy",
+  "copied": "Copied"
 }

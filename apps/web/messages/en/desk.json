@@ -42,7 +42,16 @@
       "days": "{days, plural, one {# day} other {# days}}",
       "rooms": "Room types on the estimate",
       "check": "Does this look right?",
-      "retake": "Retake"
+      "retake": "Retake",
+      "lines": "What is on the estimate",
+      "quotedFor": "As quoted for {room}",
+      "total": "Estimate total",
+      "mark": {
+        "nonPayable": "Not payable",
+        "aboveLimit": "Above the room limit",
+        "ratio": "Reduced with the room",
+        "icu": "ICU: never reduced"
+      }
     },
     "answers": "Answer",
     "compareRooms": "Compare rooms",

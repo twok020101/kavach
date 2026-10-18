@@ -21,6 +21,7 @@ import { AnswerCard } from '@/components/kavach/answer-card';
 import { Amount } from '@/components/kavach/amount';
 import { Captions, type CaptionLine } from '@/components/kavach/captions';
 import { DisclaimerBar } from '@/components/kavach/disclaimer-bar';
+import { EstimateLines } from '@/components/kavach/estimate-lines';
 import { ListeningOrb } from '@/components/kavach/listening-orb';
 import { RoomCompare } from '@/components/kavach/room-compare';
 import { WhyPanel } from '@/components/kavach/why-panel';
@@ -440,6 +441,11 @@ export function DeskSessionScreen({
                     </Button>
                   </div>
                 </>
+              )}
+              {estimate.lines.length > 0 && (
+                <Disclosure label={t('estimate.lines')} className="-mb-1">
+                  <EstimateLines estimate={estimate} result={evaluation.data?.primary} />
+                </Disclosure>
               )}
             </Card>
           )}

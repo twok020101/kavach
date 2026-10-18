@@ -4,6 +4,8 @@ import type { DeskCard } from '@kavach/schemas';
 import {
   Baby,
   BedDouble,
+  Check,
+  Copy,
   GitBranch,
   IdCard,
   Layers,
@@ -11,7 +13,8 @@ import {
   TriangleAlert,
 } from 'lucide-react';
 import { motion, useReducedMotion } from 'motion/react';
-import type { ReactNode } from 'react';
+import { useTranslations } from 'next-intl';
+import { useState, type ReactNode } from 'react';
 import { cn } from '../ui/cn';
 import { Amount } from './amount';
 import { AnimatedAmount } from './animated-amount';
@@ -42,9 +45,21 @@ export function AnswerCard({
   children?: ReactNode;
 }) {
   const reduce = useReducedMotion();
+  const tc = useTranslations('common');
   const Icon = icons[card.kind];
   const lines = card.body.split('\n').filter(Boolean);
   const warning = card.kind === 'warning';
+  // Each "ask the desk" line can be copied on its own, to read out or paste to the family.
+  const [copied, setCopied] = useState<number>();
+  const copy = async (line: string, i: number) => {
+    try {
+      await navigator.clipboard.writeText(line);
+      setCopied(i);
+      setTimeout(() => setCopied((c) => (c === i ? undefined : c)), 1500);
+    } catch {
+      // No clipboard (an old browser or a denied permission); the line is still on screen.
+    }
+  };
 
   return (
     <motion.article
@@ -84,14 +99,26 @@ export function AnswerCard({
       {lines.length > 1 && card.kind === 'ask_desk' ? (
         <ul className="mt-3 flex flex-col gap-2 text-lg">
           {lines.map((line, i) => (
-            <li key={line} className="flex gap-3">
+            <li key={line} className="flex items-start gap-3">
               <span
                 aria-hidden
                 className="mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-full bg-sunken font-display text-sm font-bold text-primary-hover"
               >
                 {i + 1}
               </span>
-              <span>{line}</span>
+              <span className="flex-1">{line}</span>
+              <button
+                type="button"
+                onClick={() => copy(line, i)}
+                aria-label={copied === i ? tc('copied') : tc('copy')}
+                className="press -my-1 flex size-11 shrink-0 items-center justify-center rounded-md text-muted hover:bg-sunken hover:text-primary"
+              >
+                {copied === i ? (
+                  <Check aria-hidden className="size-5 text-safe" />
+                ) : (
+                  <Copy aria-hidden className="size-5" />
+                )}
+              </button>
             </li>
           ))}
         </ul>
