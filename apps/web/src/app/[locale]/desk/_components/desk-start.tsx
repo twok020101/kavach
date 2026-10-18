@@ -1,7 +1,7 @@
 'use client';
 
 import type { Locale } from '@kavach/schemas';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { ArrowRight, Check, Info, Mic } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 import { useState } from 'react';
@@ -32,10 +32,15 @@ export function DeskStart({ demo, scene }: { demo: boolean; scene?: DeskScene })
   const [language, setLanguage] = useState<Locale>(demo ? preset.language : locale);
   const query = demo ? { demo: '1', ...(scene ? { scene } : {}) } : undefined;
 
+  const queryClient = useQueryClient();
   const household = useQuery({ queryKey: ['desk', 'household'], queryFn: deskClient.getHousehold });
   const start = useMutation({
     mutationFn: async () => {
-      if (demo) await deskClient.prepareScene(scene ?? 'hospital');
+      if (demo) {
+        await deskClient.prepareScene(scene ?? 'hospital');
+        // The family's claims, documents and plan belong to the new checkpoint now.
+        await queryClient.invalidateQueries();
+      }
       return deskClient.startSession({ patientMemberId: patientId!, language });
     },
     onSuccess: ({ sessionId }) =>
