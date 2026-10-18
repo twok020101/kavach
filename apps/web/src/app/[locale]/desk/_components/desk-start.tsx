@@ -34,7 +34,9 @@ export function DeskStart({ demo, scene }: { demo: boolean; scene?: DeskScene })
   const router = useRouter();
   const preset = SCENES[scene ?? 'hospital'];
   const [patientId, setPatientId] = useState<string | null>(demo ? preset.patient : null);
-  const [language, setLanguage] = useState<Locale>(demo ? preset.language : locale);
+  // The Singapore scene answers in Malay when the page is in Malay, else Mandarin.
+  const presetLanguage = scene === 'singapore' && locale === 'ms' ? 'ms' : preset.language;
+  const [language, setLanguage] = useState<Locale>(demo ? presetLanguage : locale);
   const query = demo ? { demo: '1', ...(scene ? { scene } : {}) } : undefined;
 
   const queryClient = useQueryClient();

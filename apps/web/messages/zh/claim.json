@@ -43,7 +43,7 @@
     "icu": "曾入住 ICU",
     "noIcu": "未入住 ICU",
     "change": "更改",
-    "roomRent": "每天房费（₹）",
+    "roomRent": "每天房费",
     "icuLabel": "住院期间有一段时间在 ICU",
     "save": "重新核查",
     "cancel": "取消",

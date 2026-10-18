@@ -8,11 +8,14 @@ import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { CountryProvider } from '@/lib/country';
 import { useHousehold } from '@/lib/household';
+import { useMarketSync } from '@/lib/market-sync';
 
 /** App shell + the household, with loading and error states, for every moment-1 screen. */
 export function PlanFrame({ children }: { children: (household: Household) => ReactNode }) {
   const t = useTranslations('plan');
   const { data: household, error, refetch } = useHousehold();
+  // A language of the other market moves the demo family there first (zh/ms → Singapore).
+  const switching = useMarketSync(household);
   return (
     <CountryProvider country={household?.country}>
       <AppShell householdName={household?.name}>
@@ -23,7 +26,7 @@ export function PlanFrame({ children }: { children: (household: Household) => Re
               {t('retry')}
             </Button>
           </div>
-        ) : household ? (
+        ) : household && !switching ? (
           children(household)
         ) : (
           <div aria-busy className="flex flex-col gap-4" aria-label={t('loading')}>

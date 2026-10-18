@@ -1,9 +1,10 @@
 'use client';
 
-import { DemoCheckpoint, Household } from '@kavach/schemas';
+import { DemoCheckpoint, Household, type Locale } from '@kavach/schemas';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { api, ApiError } from './api';
 import { getIdToken } from './firebase';
+import { personaForLocale } from './market';
 import { startDemo, storedHouseholdId } from './session';
 
 export const householdQueryKey = ['household'] as const;
@@ -19,7 +20,8 @@ export async function loadCurrentHousehold(): Promise<Household> {
       if (!(error instanceof ApiError && error.status === 404)) throw error;
     }
   }
-  const householdId = await startDemo();
+  const lang = (typeof document !== 'undefined' ? document.documentElement.lang : 'en') as Locale;
+  const householdId = await startDemo('hospital', personaForLocale(lang));
   return api(`/v1/households/${householdId}`, Household, { token });
 }
 
