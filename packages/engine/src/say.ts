@@ -165,13 +165,14 @@ const longDate = (iso: string, locale: Locale, country: Country) =>
 const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
 const HI = (money: Money, country: Country): Phrases => {
+  const desk = country === 'SG' ? 'business office' : 'TPA desk';
   // Rupees are spoken as words; Singapore dollars are read from digits.
   const rs = (n: number) => (country === 'IN' ? `${hindiWords(n)} rupaye` : money(n));
   /** "Nau hazaar rupaye wale room" for a priced room; the printed label (a package name) otherwise. */
   const room = (o: RoomOptionResult) =>
     o.rentPerDay > 0 ? `${cap(rs(o.rentPerDay))} wale room` : o.label;
   return {
-    policyFirst: (name) => `Pehle ${name} ka card TPA desk par dijiye.`,
+    policyFirst: (name) => `Pehle ${name} ka card ${desk} par dijiye.`,
     compare: (worst, rec, cut, saving) => {
       const pay = `lagbhag ${rs(worst.outOfPocket)} dene padenge.`;
       const lead = cut
@@ -191,16 +192,17 @@ const HI = (money: Money, country: Country): Phrases => {
       `${cap(name)} mein delivery cover nahi hai, isliye yeh poora bill aapko dena hoga.`,
     waiting: (name, until) =>
       `${cap(name)} mein delivery ka waiting period ${until} tak hai, isliye abhi yeh poora bill aapko dena hoga.`,
-    confirm: 'Sign karne se pehle TPA desk se confirm kar lijiye.',
+    confirm: `Sign karne se pehle ${desk} se confirm kar lijiye.`,
   };
 };
 
-const EN = (money: Money): Phrases => {
+const EN = (money: Money, country: Country): Phrases => {
+  const desk = country === 'SG' ? 'business office' : 'TPA desk';
   /** "the ₹9,000 room" for a priced room; "the Standard Package · Shared Room" otherwise. */
   const room = (o: RoomOptionResult) =>
     o.rentPerDay > 0 ? `the ${money(o.rentPerDay)} room` : `the ${o.label}`;
   return {
-    policyFirst: (name) => `First give the ${name} card at the TPA desk.`,
+    policyFirst: (name) => `First give the ${name} card at the ${desk}.`,
     compare: (worst, rec, cut, saving) => {
       const pay = `pay about ${money(worst.outOfPocket)}.`;
       const lead = cut
@@ -221,15 +223,16 @@ const EN = (money: Money): Phrases => {
       `The ${name} does not cover a delivery, so this whole bill is yours to pay.`,
     waiting: (name, until) =>
       `The ${name} has a waiting period for delivery until ${until}, so this whole bill is yours to pay.`,
-    confirm: 'Before you sign, confirm with the TPA desk.',
+    confirm: `Before you sign, confirm with the ${desk}.`,
   };
 };
 
-const TA = (money: Money): Phrases => {
+const TA = (money: Money, country: Country): Phrases => {
+  const desk = country === 'SG' ? 'பிசினஸ் ஆபிஸில்' : 'TPA டெஸ்க்கில்';
   /** "₹5,000 அறை" for a priced room; the printed label otherwise. */
   const room = (o: RoomOptionResult) => (o.rentPerDay > 0 ? `${money(o.rentPerDay)} அறை` : o.label);
   return {
-    policyFirst: (name) => `முதலில் ${name} கார்டை TPA டெஸ்க்கில் கொடுங்கள்.`,
+    policyFirst: (name) => `முதலில் ${name} கார்டை ${desk} கொடுங்கள்.`,
     compare: (worst, rec, cut, saving) => {
       const pay = `சுமார் ${money(worst.outOfPocket)} செலுத்த வேண்டும்.`;
       const lead = cut
@@ -250,16 +253,17 @@ const TA = (money: Money): Phrases => {
       `${name} பிரசவத்தைக் கவர் செய்யாது, எனவே இந்த முழு பில்லையும் நீங்கள் செலுத்த வேண்டும்.`,
     waiting: (name, until) =>
       `${name}-இல் பிரசவத்துக்கான காத்திருப்புக் காலம் ${until} வரை உள்ளது, எனவே இப்போது இந்த முழு பில்லையும் நீங்கள் செலுத்த வேண்டும்.`,
-    confirm: 'கையெழுத்திடும் முன் TPA டெஸ்க்கில் உறுதிப்படுத்திக் கொள்ளுங்கள்.',
+    confirm: `கையெழுத்திடும் முன் ${desk} உறுதிப்படுத்திக் கொள்ளுங்கள்.`,
   };
 };
 
-const ZH = (money: Money): Phrases => {
+const ZH = (money: Money, country: Country): Phrases => {
+  const desk = country === 'SG' ? '医院商务办公室' : ' TPA 柜台';
   /** "₹5,000的病房" for a priced room; the printed label otherwise. */
   const room = (o: RoomOptionResult) =>
     o.rentPerDay > 0 ? `${money(o.rentPerDay)}的病房` : o.label;
   return {
-    policyFirst: (name) => `请先把${name}的卡交给 TPA 柜台。`,
+    policyFirst: (name) => `请先把${name}的卡交给${desk}。`,
     compare: (worst, rec, cut, saving) => {
       const pay = `大约需要自付${money(worst.outOfPocket)}。`;
       const lead = cut
@@ -277,16 +281,17 @@ const ZH = (money: Money): Phrases => {
       `请注意，无论住哪种病房，这份保单对分娩最多赔付${money(limit)}。超出部分需要您自付。`,
     noMaternity: (name) => `${name}不承保分娩，所以这整张账单需要您自付。`,
     waiting: (name, until) => `${name}的分娩等待期到${until}才结束，所以目前这整张账单需要您自付。`,
-    confirm: '签字前请先与 TPA 柜台确认。',
+    confirm: `签字前请先与${desk}确认。`,
   };
 };
 
-const MS = (money: Money): Phrases => {
+const MS = (money: Money, country: Country): Phrases => {
+  const desk = country === 'SG' ? 'pejabat perniagaan hospital' : 'kaunter TPA';
   /** "bilik ₹5,000" for a priced room; the printed label otherwise. */
   const room = (o: RoomOptionResult) =>
     o.rentPerDay > 0 ? `bilik ${money(o.rentPerDay)}` : o.label;
   return {
-    policyFirst: (name) => `Serahkan kad ${name} di kaunter TPA dahulu.`,
+    policyFirst: (name) => `Serahkan kad ${name} di ${desk} dahulu.`,
     compare: (worst, rec, cut, saving) => {
       const pay = `perlu membayar kira-kira ${money(worst.outOfPocket)}.`;
       const lead = cut
@@ -306,7 +311,7 @@ const MS = (money: Money): Phrases => {
       `${name} tidak melindungi bersalin, jadi seluruh bil ini perlu anda bayar.`,
     waiting: (name, until) =>
       `${name} mempunyai tempoh menunggu untuk bersalin sehingga ${until}, jadi buat masa ini seluruh bil ini perlu anda bayar.`,
-    confirm: 'Sebelum menandatangani, sahkan dengan kaunter TPA.',
+    confirm: `Sebelum menandatangani, sahkan dengan ${desk}.`,
   };
 };
 

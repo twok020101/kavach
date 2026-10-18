@@ -11,15 +11,60 @@
     { "id": "b1", "label": "Class B1 (4-bedded)", "rentPerDay": 280, "wardClass": "B1" }
   ],
   "lines": [
-    { "head": "room", "label": "Ward charges × 3 days", "pricedByRoom": true, "amounts": { "a": 1950, "b1": 840 } },
-    { "head": "doctor_visits", "label": "Daily attendance fees × 3", "pricedByRoom": true, "amounts": { "a": 900, "b1": 600 } },
-    { "head": "surgeon", "label": "Angioplasty: cardiologist's fee", "pricedByRoom": true, "amounts": { "a": 9500, "b1": 7000 } },
-    { "head": "ot", "label": "Cardiac catheterisation laboratory", "pricedByRoom": true, "amounts": { "a": 6500, "b1": 4800 } },
-    { "head": "implant", "label": "Drug-eluting stent", "pricedByRoom": false, "amounts": { "a": 4200, "b1": 4200 } },
-    { "head": "pharmacy", "label": "Medication", "pricedByRoom": false, "amounts": { "a": 1100, "b1": 1100 } },
-    { "head": "diagnostics", "label": "Investigations (ECG, echo, bloods)", "pricedByRoom": false, "amounts": { "a": 1600, "b1": 1600 } },
-    { "head": "consumables", "label": "Consumables", "pricedByRoom": false, "amounts": { "a": 900, "b1": 900 } },
-    { "head": "non_payable", "label": "Admission fee and television (non-claimable)", "pricedByRoom": true, "amounts": { "a": 120, "b1": 60 } }
+    {
+      "head": "room",
+      "label": "Ward charges × 3 days",
+      "pricedByRoom": true,
+      "amounts": { "a": 1950, "b1": 840 }
+    },
+    {
+      "head": "doctor_visits",
+      "label": "Daily attendance fees × 3",
+      "pricedByRoom": true,
+      "amounts": { "a": 900, "b1": 600 }
+    },
+    {
+      "head": "surgeon",
+      "label": "Angioplasty: cardiologist's fee",
+      "pricedByRoom": true,
+      "amounts": { "a": 9500, "b1": 7000 }
+    },
+    {
+      "head": "ot",
+      "label": "Cardiac catheterisation laboratory",
+      "pricedByRoom": true,
+      "amounts": { "a": 6500, "b1": 4800 }
+    },
+    {
+      "head": "implant",
+      "label": "Drug-eluting stent",
+      "pricedByRoom": false,
+      "amounts": { "a": 4200, "b1": 4200 }
+    },
+    {
+      "head": "pharmacy",
+      "label": "Medication",
+      "pricedByRoom": false,
+      "amounts": { "a": 1100, "b1": 1100 }
+    },
+    {
+      "head": "diagnostics",
+      "label": "Investigations (ECG, echo, bloods)",
+      "pricedByRoom": false,
+      "amounts": { "a": 1600, "b1": 1600 }
+    },
+    {
+      "head": "consumables",
+      "label": "Consumables",
+      "pricedByRoom": false,
+      "amounts": { "a": 900, "b1": 900 }
+    },
+    {
+      "head": "non_payable",
+      "label": "Admission fee and television (non-claimable)",
+      "pricedByRoom": true,
+      "amounts": { "a": 120, "b1": 60 }
+    }
   ],
   "printedTotals": { "a": 26770, "b1": 21100 },
   "needsConfirmation": false,

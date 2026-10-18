@@ -391,17 +391,25 @@ expect(
 heading('SX-1 Singapore: a Class B1 plan with a rider, offered Class A (R-SG-003 to R-SG-006)');
 const sx1 = evaluateHospital(SX1_CONTEXT, SX1_ESTIMATE);
 printBranch('primary', sx1.primary);
-expect('policy order: the plan, then MediShield Life', sx1.policyOrder.join(' > '), 'pol_ip_ahkow > pol_mshl_ahkow');
+expect(
+  'policy order: the plan, then MediShield Life',
+  sx1.policyOrder.join(' > '),
+  'pol_ip_ahkow > pol_mshl_ahkow',
+);
 expect('Class B1 bill', option(sx1.primary, 'b1').bill, 21_100);
-expect('Class B1 claimable (as charged, less non-payables)', option(sx1.primary, 'b1').admissible, 21_040);
-expect('Class B1 co-payment (5% with the rider)', option(sx1.primary, 'b1').copay, 952);
-expect('Class B1 out of pocket', option(sx1.primary, 'b1').outOfPocket, 1_012);
+expect(
+  'Class B1 claimable (as charged, less non-payables)',
+  option(sx1.primary, 'b1').admissible,
+  21_040,
+);
+expect('Class B1 co-payment (5% with the rider)', option(sx1.primary, 'b1').copay, 927);
+expect('Class B1 out of pocket', option(sx1.primary, 'b1').outOfPocket, 987);
 expect('Class A bill', option(sx1.primary, 'a').bill, 26_770);
 expect('Class A claimable (pro-rated to 50%)', option(sx1.primary, 'a').admissible, 13_325);
 expect('Class A pro-ration deduction', deduction(sx1.primary, 'a', 'R-SG-005'), 13_325);
 expect('Class A out of pocket', option(sx1.primary, 'a').outOfPocket, 13_986);
 expect('recommended: Class B1', sx1.primary.recommendedRoomCategoryId, 'b1');
-expect('saving (A → B1)', sx1.primary.saving, 12_974);
+expect('saving (A → B1)', sx1.primary.saving, 12_999);
 expect('no panel question: the cap never binds on this bill', sx1.questionForDesk, undefined);
 expect('R-SG-006 fired', fired(sx1, 'R-SG-006'), true);
 const saySx = buildDeskSay(sx1, 'en', {
@@ -409,14 +417,20 @@ const saySx = buildDeskSay(sx1, 'en', {
   policyNames: { pol_ip_ahkow: 'Shield plan', pol_mshl_ahkow: 'MediShield Life' },
 });
 console.log(`  say (en): ${saySx}`);
-expect('speaks Singapore dollars', saySx.includes('S$12,974'), true);
-console.log(`  say (zh): ${buildDeskSay(sx1, 'zh', { country: 'SG', policyNames: { pol_ip_ahkow: 'Shield 综合健保计划' } })}`);
+expect('speaks Singapore dollars', saySx.includes('S$12,999'), true);
+console.log(
+  `  say (zh): ${buildDeskSay(sx1, 'zh', { country: 'SG', policyNames: { pol_ip_ahkow: 'Shield 综合健保计划' } })}`,
+);
 
 heading('SX-2 Singapore: MediShield Life alone (R-SG-001, R-SG-002)');
 const sx2 = evaluateHospital({ ...SX1_CONTEXT, policies: [MEDISHIELD_AHKOW] }, SX1_ESTIMATE);
 expect('policy order', sx2.policyOrder.join(' > '), 'pol_mshl_ahkow');
 expect('Class B1 pays something', option(sx2.primary, 'b1').policyPays > 0, true);
-expect('Class B1 out of pocket is most of the bill', option(sx2.primary, 'b1').outOfPocket > 15_000, true);
+expect(
+  'Class B1 out of pocket is most of the bill',
+  option(sx2.primary, 'b1').outOfPocket > 15_000,
+  true,
+);
 expect('R-SG-001 fired', fired(sx2, 'R-SG-001'), true);
 
 // ---------------------------------------------------------------- PX-1 (docs/plan/05 §11)

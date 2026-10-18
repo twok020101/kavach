@@ -337,7 +337,6 @@ export const MX1_BILL: ClaimBill = {
   icuStay: false,
 };
 
-
 // ---------------------------------------------------------------------------------------------
 // SX-1: Singapore. Ah Kow (68), a Class B1 Integrated Shield Plan with a 2022 rider, admitted
 // for an angioplasty at a restructured hospital that offers Class A and Class B1. Amounts are
@@ -380,8 +379,8 @@ export const SHIELD_PLAN_B1: Policy = {
     sg: {
       wardEntitlement: 'B1',
       prorationByWard: { A: 0.5, private: 0.25 },
-      deductibleByWard: { C: 1_500, B2: 2_000, B1: 2_000, A: 2_500, private: 3_500 },
-      deductibleByWardFrom81: { C: 2_000, B2: 3_000, B1: 3_000, A: 3_000, private: 3_000 },
+      // MOH minimum IP deductibles for a Class B1 plan: the lower of the target class and the ward used.
+      deductibleByWard: { C: 1_500, B2: 2_000, B1: 2_500, A: 2_500, private: 2_500 },
       coinsurance: [{ percent: 10 }],
       policyYearLimit: 500_000,
       rider: { copayPercent: 5, annualCap: 3_000, capNeedsPanel: true, coversDeductible: true },

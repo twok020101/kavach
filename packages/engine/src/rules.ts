@@ -28,22 +28,24 @@ const BENEFITS: Source = {
 
 // Singapore sources (data/rules/SG/README.md keeps the figures these rules carry, dated).
 const MOH_MSHL: Source = {
-  title: 'MOH, MediShield Life benefits (claim limits for admissions on or after 1 June 2026)',
-  url: 'https://www.moh.gov.sg/managing-expenses/schemes-and-subsidies/medishield-life/medishield-life-benefits/',
+  title:
+    'MOH, MediShield Life benefits and "How to make a MediShield Life claim" (claim limits, deductible Table I, co-insurance Table J; updated 1 June 2026); MediShield Life Scheme Regulations 2015 (S 622/2015) reg 13',
+  url: 'https://www.moh.gov.sg/managing-expenses/schemes-and-subsidies/medishield-life/how-to-make-a-medishield-life-claim/',
 };
 const CPF_PRORATION: Source = {
-  title: 'CPF Board, MediShield Life pro-ration factors (admissions on or after 1 April 2025)',
+  title:
+    'CPF Board, MediShield Life pro-ration factors, ward and surgical (admissions on or after 1 April 2025); S 622/2015 Fourth Schedule',
   url: 'https://www.cpf.gov.sg/member/healthcare-financing/medishield-life/medishield-life-proration',
 };
 const MOH_RIDERS: Source = {
   title:
-    'MOH, Integrated Shield Plan riders: minimum 5% co-payment, cap with panel and pre-authorisation (2018; changes from 1 April 2026)',
-  url: 'https://www.moh.gov.sg/newsroom/criteria-for-inclusion-of-medical-specialists-into-insurer%27s-panel-for-integrated-shield/',
+    'MOH press release, 26 Nov 2025: new requirements for Integrated Shield Plan riders (Annex A: minimum 5% co-payment, cap of at least $3,000 (2018) or $6,000 excluding the deductible for riders from 1 April 2026, cap only for panel or pre-authorised claims; minimum IP deductibles by ward class)',
+  url: 'https://www.moh.gov.sg/newsroom/new-requirements-for-integrated-shield-plan-riders-to-strengthen-sustainability-of-private-health-insurance-and-address-rising-healthcare-costs/',
 };
 const MOH_APPEALS: Source = {
   title:
-    'MOH and LIA on IP claim disputes: the insurer first, then the Clinical Claims Resolution Process or FIDReC',
-  url: 'https://moh.gov.sg/newsroom/ip-appeals',
+    'FIDReC Terms of Reference v2.2 (1 July 2025), rules 4, 13, 21: the insurer first; FIDReC after its final reply or four weeks, within six months; adjudication up to S$150,000',
+  url: 'https://www.fidrec.com.sg/',
 };
 
 const list: Rule[] = [
@@ -299,7 +301,7 @@ const list: Rule[] = [
     id: 'R-SG-001',
     name: 'MediShield Life pro-rates by ward class',
     statement:
-      'MediShield Life is sized for subsidised B2 and C wards. In a higher ward class or a private hospital only a share of the bill counts as claimable (Singapore Citizens from 1 April 2025: Class B1 34%, Class A 27%, private hospitals 16%), applied before the claim limits.',
+      'MediShield Life is sized for subsidised B2 and C wards. In a higher ward class or a private hospital only a share of the bill counts as claimable, applied before the claim limits (Singapore Citizens from 1 April 2025, ward charges: Class B1 34%, Class A 27%, private hospitals 16%; surgical charges: 35%, 25%, 10%).',
     status: 'to_verify',
     sources: [CPF_PRORATION, MOH_MSHL],
   },
@@ -315,7 +317,7 @@ const list: Rule[] = [
     id: 'R-SG-003',
     name: 'Deductible per policy year',
     statement:
-      'A deductible comes off the claimable amount once per policy year; it depends on the ward class and rises from age 81 (MediShield Life: Class C $1,500, Class B2 and above $2,000; from 81: $2,000 and $3,000). A plan has its own table.',
+      "A deductible comes off the claimable amount once per policy year; it depends on the ward class and rises from age 81 (MediShield Life, 2026: Class C $2,000, Class B1 and B2 $2,500, Class A and private $3,500; from 81: $2,750, $3,500, $4,500). A plan has its own table, at or above the MOH minimum for the ward class (C $1,500, B2 $2,000, B1 $2,500, A and private $3,500, or the plan's own target class if lower).",
     status: 'to_verify',
     sources: [MOH_MSHL],
   },
@@ -323,7 +325,7 @@ const list: Rule[] = [
     id: 'R-SG-004',
     name: 'Co-insurance after the deductible',
     statement:
-      'The insured pays co-insurance on the claimable amount after the deductible: MediShield Life 10% of the first $5,000, 5% of the next $5,000 and 3% beyond; a plan typically 10%.',
+      "The insured pays co-insurance on the claimable amount after the deductible, with the tiers measured on the policy year's claimable amount including the deductible: MediShield Life 10% of the first $5,000, 5% of the next $5,000 and 3% beyond; a plan typically one rate of 10%.",
     status: 'to_verify',
     sources: [MOH_MSHL],
   },
@@ -339,7 +341,7 @@ const list: Rule[] = [
     id: 'R-SG-006',
     name: 'Rider: at least 5% stays with the insured; the cap needs the panel',
     statement:
-      "A rider pays the deductible and the co-insurance, but every rider sold since 1 April 2018 leaves at least 5% with the insured. The yearly cap on that share ($3,000 for riders bought before 1 April 2026, $6,000 from then, when the rider also no longer pays the deductible) applies only when the specialist is on the insurer's panel and pre-authorisation was obtained.",
+      "A rider pays the deductible and the co-insurance, but every rider sold since 8 March 2018 leaves at least 5% with the insured. The yearly cap on that share (at least $3,000 for riders of the 2018 design; at least $6,000, excluding the deductible, for riders sold from 1 April 2026, which no longer pay the MOH minimum deductible) applies only when the specialist is on the insurer's panel or the claim was pre-authorised.",
     status: 'to_verify',
     sources: [MOH_RIDERS, WORDING],
   },
@@ -387,7 +389,7 @@ const list: Rule[] = [
     id: 'R-SGCLM-006',
     name: 'Disputes: the insurer, then CCRP or FIDReC',
     statement:
-      "A deduction with no clause given is possibly recoverable: appeal to the insurer first (LIA members reply within 14 business days); a clinical dispute goes to the Clinical Claims Resolution Process, any other to FIDReC, free, within six months of the insurer's final reply.",
+      'A deduction with no clause given is possibly recoverable: complain to the insurer first and ask for its final reply; after that reply (or four weeks without one) FIDReC takes the dispute, within six months of the final reply, mediation first and adjudication up to S$150,000 that binds the insurer if the family accepts. Singapore sets no statutory claim-settlement timeline for health claims.',
     status: 'to_verify',
     sources: [MOH_APPEALS],
   },

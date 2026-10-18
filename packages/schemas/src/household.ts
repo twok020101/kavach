@@ -45,6 +45,8 @@ export const SgTerms = z.object({
   wardEntitlement: WardClass,
   /** Share of the bill counted as claimable in each ward class above the entitlement. */
   prorationByWard: z.partialRecord(WardClass, z.number().min(0).max(1)).default({}),
+  /** MediShield Life pro-rates surgical charges (surgeon, OT) by a separate, lower factor. */
+  surgicalProrationByWard: z.partialRecord(WardClass, z.number().min(0).max(1)).optional(),
   /** MediShield Life per-day limits; absent on a plan that pays as charged. */
   dailyWardLimit: Rupees.optional(),
   icuDailyLimit: Rupees.optional(),
@@ -52,7 +54,10 @@ export const SgTerms = z.object({
   /** Deductible per policy year by ward class, for ages 80 and below and from 81. */
   deductibleByWard: z.partialRecord(WardClass, Rupees).default({}),
   deductibleByWardFrom81: z.partialRecord(WardClass, Rupees).optional(),
-  /** Co-insurance tiers on the claimable amount after the deductible; the last tier has no `upTo`. */
+  /**
+   * Co-insurance tiers, measured on the claimable amount of the policy year including the
+   * deductible (MediShield Life: 10% to $5,000, 5% to $10,000, 3% beyond); the last tier has no `upTo`.
+   */
   coinsurance: z
     .array(z.object({ upTo: Rupees.optional(), percent: z.number().min(0).max(100) }))
     .default([{ percent: 10 }]),

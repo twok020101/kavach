@@ -31,27 +31,30 @@ import { fire } from './rules';
  */
 
 /**
- * MediShield Life figures, from MOH and CPF pages, dated. `data/rules/SG/README.md` mirrors them.
+ * MediShield Life figures, from MOH and CPF pages, dated; `data/rules/SG/README.md` mirrors them
+ * and names the sources (the Singapore rulebook in data/rules/SG/source, rules SG-MSHL-01..04).
  * Claim limits: admissions on or after 1 June 2026 (MOH). Pro-ration: admissions on or after
- * 1 April 2025, Singapore Citizens (CPF Table G). Deductible and co-insurance: MOH, 2025.
+ * 1 April 2025, Singapore Citizens (CPF). Deductible (by age next birthday, 80 and below / 81
+ * and above) and co-insurance: MOH "How to make a MediShield Life claim", Tables I and J,
+ * updated 1 June 2026. MOH has announced a second deductible step on 1 April 2027 (amounts not
+ * yet published).
  */
 export const MEDISHIELD_LIFE: SgTerms = {
   wardEntitlement: 'B2',
   prorationByWard: { C: 1, B2: 1, B1: 0.34, A: 0.27, private: 0.16 },
+  surgicalProrationByWard: { C: 1, B2: 1, B1: 0.35, A: 0.25, private: 0.1 },
   dailyWardLimit: 830,
   icuDailyLimit: 5_140,
   firstDaysExtra: { days: 2, perDay: 800 },
-  deductibleByWard: { C: 1_500, B2: 2_000, B1: 2_000, A: 2_000, private: 2_000 },
-  deductibleByWardFrom81: { C: 2_000, B2: 3_000, B1: 3_000, A: 3_000, private: 3_000 },
-  coinsurance: [
-    { upTo: 5_000, percent: 10 },
-    { upTo: 10_000, percent: 5 },
-    { percent: 3 },
-  ],
+  deductibleByWard: { C: 2_000, B2: 2_500, B1: 2_500, A: 3_500, private: 3_500 },
+  deductibleByWardFrom81: { C: 2_750, B2: 3_500, B1: 3_500, A: 4_500, private: 4_500 },
+  coinsurance: [{ upTo: 5_000, percent: 10 }, { upTo: 10_000, percent: 5 }, { percent: 3 }],
   policyYearLimit: 200_000,
 };
 
 const SG_KINDS: readonly Policy['kind'][] = ['medishield_life', 'integrated_shield'];
+/** Heads MediShield Life pro-rates by the surgical factor (the rest by the ward factor). */
+const SURGICAL_HEADS: readonly HospitalEstimate['lines'][number]['head'][] = ['surgeon', 'ot'];
 const WARD_ORDER: WardClass[] = ['C', 'B2', 'B1', 'A', 'private'];
 
 /** True when the patient's cover is Singapore cover (the household is in the SG market). */
@@ -191,12 +194,14 @@ function priced(estimate: HospitalEstimate, room: RoomCategory) {
     return { head: line.head, amount, days };
   });
   const bill = lines.reduce((s, l) => s + l.amount, 0);
-  const nonPayable = lines.filter((l) => l.head === 'non_payable').reduce((s, l) => s + l.amount, 0);
+  const nonPayable = lines
+    .filter((l) => l.head === 'non_payable')
+    .reduce((s, l) => s + l.amount, 0);
   return { lines, bill, nonPayable };
 }
 
-/** Tiered co-insurance on an amount: 10% of the first $5,000, 5% of the next $5,000, 3% beyond. */
-function coinsurance(amount: number, tiers: SgTerms['coinsurance']): number {
+/** The tiers applied to the first `amount` dollars of claimable charges. */
+function tiered(amount: number, tiers: SgTerms['coinsurance']): number {
   let total = 0;
   let from = 0;
   for (const tier of tiers) {
@@ -206,11 +211,27 @@ function coinsurance(amount: number, tiers: SgTerms['coinsurance']): number {
     from = to;
     if (amount <= to) break;
   }
-  return roundRupees(total);
+  return total;
+}
+
+/**
+ * Co-insurance on the claimable amount after the deductible. The tiers are measured on the
+ * claimable amount including the deductible (MOH Table J): 10% of the first $5,000, 5% of the
+ * next $5,000, 3% beyond. A plan with one rate is unaffected.
+ */
+function coinsurance(
+  afterDeductible: number,
+  tiers: SgTerms['coinsurance'],
+  deductible: number,
+): number {
+  return roundRupees(tiered(deductible + afterDeductible, tiers) - tiered(deductible, tiers));
 }
 
 function deductibleFor(terms: SgTerms, ward: WardClass, age: number): number {
-  const table = age >= 81 && terms.deductibleByWardFrom81 ? terms.deductibleByWardFrom81 : terms.deductibleByWard;
+  const table =
+    age >= 81 && terms.deductibleByWardFrom81
+      ? terms.deductibleByWardFrom81
+      : terms.deductibleByWard;
   return table[ward] ?? 0;
 }
 
@@ -228,10 +249,11 @@ function medishieldPays(
 ): number {
   const terms = sgTerms(policy)!;
   const factor = terms.prorationByWard[ward] ?? 1;
+  const surgicalFactor = terms.surgicalProrationByWard?.[ward] ?? factor;
   let claimable = 0;
   for (const line of p.lines) {
     if (line.head === 'non_payable') continue;
-    const prorated = line.amount * factor;
+    const prorated = line.amount * (SURGICAL_HEADS.includes(line.head) ? surgicalFactor : factor);
     if (line.head === 'room' && terms.dailyWardLimit !== undefined) {
       const extra = terms.firstDaysExtra
         ? Math.min(line.days, terms.firstDaysExtra.days) * terms.firstDaysExtra.perDay
@@ -246,12 +268,12 @@ function medishieldPays(
   claimable = roundRupees(claimable);
   const deductible = deductibleFor(terms, ward, ctx.patient.age);
   const afterDeductible = Math.max(0, claimable - deductible);
-  const coins = coinsurance(afterDeductible, terms.coinsurance);
+  const coins = coinsurance(afterDeductible, terms.coinsurance, Math.min(claimable, deductible));
   const yearLeft = Math.max(0, (terms.policyYearLimit ?? Infinity) - policy.claimsUsedThisYear);
   const pays = Math.min(afterDeductible - coins, yearLeft);
   const ctxIds = { roomCategoryId: room.id, policyId: policy.id, ward };
   trace.push(
-    fire('R-SG-001', { ...ctxIds, factor, bill: p.bill }, { claimable }),
+    fire('R-SG-001', { ...ctxIds, factor, surgicalFactor, bill: p.bill }, { claimable }),
     fire(
       'R-SG-002',
       { ...ctxIds, dailyWardLimit: terms.dailyWardLimit, icuDailyLimit: terms.icuDailyLimit },
@@ -340,14 +362,15 @@ function settle(
 
   const deductible = Math.min(claimable, deductibleFor(terms, ward, ctx.patient.age));
   const afterDeductible = claimable - deductible;
-  const coins = coinsurance(afterDeductible, terms.coinsurance);
+  const coins = coinsurance(afterDeductible, terms.coinsurance, deductible);
   trace.push(
     fire('R-SG-003', { ...ids, age: ctx.patient.age, deductible }, { afterDeductible }),
     fire('R-SG-004', { ...ids, tiers: terms.coinsurance }, { coinsurance: coins }),
   );
   const yearLeft = Math.max(0, (terms.policyYearLimit ?? Infinity) - plan.claimsUsedThisYear);
   let planPays = Math.min(afterDeductible - coins, yearLeft);
-  if (afterDeductible - coins > yearLeft) trace.push(fire('R-SG-007', { ...ids, yearLeft }, { planPays }));
+  if (afterDeductible - coins > yearLeft)
+    trace.push(fire('R-SG-007', { ...ids, yearLeft }, { planPays }));
 
   // The rider (R-SG-006): pays the deductible and the co-insurance above the insured's share.
   let familyDeductible = deductible;
