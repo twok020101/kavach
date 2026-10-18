@@ -195,7 +195,7 @@
   },
   "brand": {
     "tagline": "Standing beside your family at every insurance moment.",
-    "lead": "Kavach reads every policy in the house once, then tells you what to do at the three moments where families lose money. In Hindi or English, with the page number.",
+    "lead": "Kavach reads every policy in the house once, then tells you what to do at the three moments where families lose money. In your language, with the page number.",
     "promise": "We never sell your data and never contact insurers for you.",
     "change": {
       "title": "When life changes",
@@ -203,7 +203,7 @@
     },
     "hospital": {
       "title": "At the hospital desk",
-      "body": "Hindi or English, by voice. Which card to give, which room to ask for."
+      "body": "In your language, by voice. Which card to give, which room to ask for."
     },
     "claim": {
       "title": "When a claim goes wrong",
