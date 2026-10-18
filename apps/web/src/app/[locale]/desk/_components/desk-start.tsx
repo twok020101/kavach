@@ -34,7 +34,10 @@ export function DeskStart({ demo, scene }: { demo: boolean; scene?: DeskScene })
 
   const household = useQuery({ queryKey: ['desk', 'household'], queryFn: deskClient.getHousehold });
   const start = useMutation({
-    mutationFn: () => deskClient.startSession({ patientMemberId: patientId!, language }),
+    mutationFn: async () => {
+      if (demo) await deskClient.prepareScene(scene ?? 'hospital');
+      return deskClient.startSession({ patientMemberId: patientId!, language });
+    },
     onSuccess: ({ sessionId }) =>
       router.push({ pathname: `/desk/${sessionId}`, query: query ?? {} }, { locale: language }),
   });

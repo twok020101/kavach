@@ -4,12 +4,14 @@
  */
 import {
   CreateDeskSessionResponse,
+  type DemoCheckpoint,
   DeskAnswer,
   DeskCaptureResponse,
   DeskEvaluation,
   DeskSession,
   DeskSessionSummary,
   type HospitalEstimate,
+  Household,
   type Locale,
   type Member,
 } from '@kavach/schemas';
@@ -17,7 +19,7 @@ import type { z } from 'zod';
 import { api } from './api';
 import { getIdToken } from './firebase';
 import { loadCurrentHousehold } from './household';
-import { storedHouseholdId } from './session';
+import { startDemo, storedHouseholdId } from './session';
 
 export type DeskHousehold = {
   householdId: string;
@@ -30,6 +32,13 @@ export type { DeskSessionSummary };
 export interface DeskClient {
   /** Household members to pick the patient from (S21). */
   getHousehold(): Promise<DeskHousehold>;
+  /**
+   * A demo scene is written for a checkpoint of the Sharma story (Suresh's angioplasty at
+   * `hospital`, Priya's delivery at `maternity`). A demo family is moved there first, or started
+   * there, so the scene meets the policy that is in force then (issue #27). A real family is
+   * left alone.
+   */
+  prepareScene(checkpoint: DemoCheckpoint): Promise<void>;
   startSession(input: {
     patientMemberId: string;
     language: Locale;
@@ -62,6 +71,20 @@ export const deskClient: DeskClient = {
   async getHousehold() {
     const household = await loadCurrentHousehold();
     return { householdId: household.id, members: household.members };
+  },
+
+  async prepareScene(checkpoint) {
+    if (!storedHouseholdId()) {
+      await startDemo(checkpoint);
+      return;
+    }
+    const household = await loadCurrentHousehold();
+    if (!household.isDemo) return;
+    await api(`/v1/households/${household.id}/demo:reset`, Household, {
+      method: 'POST',
+      json: { checkpoint },
+      token: await getIdToken(),
+    });
   },
 
   async startSession(input) {
