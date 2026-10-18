@@ -26,7 +26,7 @@ export async function classifyClaimDocument(
     location: quickLocation,
     schema: Classification,
     systemInstruction:
-      'You look at one document and say whether it is a health insurance claim settlement letter: a settlement advice, claim approval or discharge approval letter from an insurer or TPA, with a claim number and approved and deducted amounts. A policy brochure or plan, a hospital estimate, a policy schedule, an ID card or a photo that is not a document is not one. Describe what the document is in a few words.',
+      'You look at one document and say whether it is a letter from an insurer or TPA about a health insurance claim: a settlement advice, claim approval, partial approval, discharge approval, repudiation or rejection letter, or a query letter about a claim, usually with a claim number. A policy brochure or plan, a hospital estimate, a policy schedule, an ID card or a photo that is not a document is not one. Describe what the document is in a few words.',
     contents: [
       {
         role: 'user',
