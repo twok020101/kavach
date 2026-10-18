@@ -60,7 +60,7 @@ WhatsApp is a second door to the same agent: messages go through `apps/api/src/c
 ## Deploying
 
 1. `PROJECT=<id> REGION=asia-south1 ./infra/bootstrap.sh` (once): enables APIs, creates Firestore, the bucket, the image repository and empty secrets.
-   - Spending cap (recommended before the first real Gemini call): `PROJECT=<id> BILLING_ACCOUNT=<id> AMOUNT=5000 ./infra/cap-billing.sh`. Budgets only alert, so this deploys a small Cloud Function (`infra/billing-cap/`) that detaches billing from the project when spend reaches the amount. Cost data lags usage by a few hours, so keep the amount a little under what you can afford.
+   - Spending cap (recommended before the first real Gemini call): `PROJECT=<id> BILLING_ACCOUNT=<id> AMOUNT=4500 ./infra/cap-billing.sh`. Budgets only alert, so this deploys a small Cloud Function (`infra/billing-cap/`) that detaches billing from the project when spend reaches the amount. Cost data lags usage by a few hours, so keep the amount a little under what you can afford.
 2. Add secret values: `printf '%s' "<value>" | gcloud secrets versions add <NAME> --data-file=-`.
 3. API: `PROJECT=<id> ./infra/deploy-api.sh` (Cloud Build → Cloud Run, min 1 instance, WebSockets on).
 4. Web: connect the repo to Firebase App Hosting with root `apps/web`; settings are in `apps/web/apphosting.yaml`.
