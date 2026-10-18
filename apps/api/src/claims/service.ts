@@ -36,6 +36,8 @@ export type LetterFile = {
   isSample?: boolean;
   /** With FAKE_LLM=1, which recorded reading to return. */
   fixture?: string;
+  /** With FAKE_LLM=1, which recorded classification to return (e.g. `claim-letter-kind-brochure`). */
+  kindFixture?: string;
 };
 
 export async function listClaims(householdId: string) {
@@ -70,7 +72,7 @@ export async function createClaim(household: Household, file: LetterFile) {
   });
 
   try {
-    const kind = await classifyClaimDocument(file);
+    const kind = await classifyClaimDocument(file, { fixture: file.kindFixture });
     if (!kind.isSettlementLetter) throw notALetter(kind.description);
     const letter = await readSettlementLetter(file, { fixture: file.fixture });
     if (letter.isSettlementLetter === false) throw notALetter(letter.documentDescription);

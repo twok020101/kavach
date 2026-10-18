@@ -5,6 +5,7 @@ import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod';
 import { z } from 'zod';
 import { loadHousehold, requireUser } from '../auth';
 import { resetDemoHousehold } from '../demo';
+import { env } from '../env';
 import {
   appealPdf,
   assess,
@@ -26,6 +27,17 @@ const SAMPLES = {
   maternity: { file: 'lotus-maternity-settlement-letter.pdf', fixture: 'claim-letter-mx1' },
 } as const;
 const SampleQuery = z.object({ scene: z.enum(['claim', 'maternity']).default('claim') });
+/** FAKE_LLM only: the recorded reading and classification to return for an upload. */
+const UploadQuery = z.object({
+  fixture: z
+    .string()
+    .regex(/^[a-z0-9-]+$/)
+    .optional(),
+  kind: z
+    .string()
+    .regex(/^[a-z0-9-]+$/)
+    .optional(),
+});
 
 /** Moment 3: settlement letter → engine verdict per deduction → verified appeal letter (WP-10). */
 export const claimRoutes: FastifyPluginAsyncZod = async (app) => {
@@ -40,10 +52,12 @@ export const claimRoutes: FastifyPluginAsyncZod = async (app) => {
     },
   );
 
-  // S30: upload a settlement letter (photo or PDF) as a multipart "file" field.
+  // S30: upload a settlement letter (photo or PDF) as a multipart "file" field. With FAKE_LLM=1,
+  // `?kind=` and `?fixture=` pick the recorded classification and reading, so the refusal of a
+  // document that is not a claim letter can be exercised without a model (scripts/claims-refusal-check.mts).
   app.post(
     '/v1/households/:hid/claims',
-    { schema: { params: Params, response: { 201: ClaimCase } } },
+    { schema: { params: Params, querystring: UploadQuery, response: { 201: ClaimCase } } },
     async (request, reply) => {
       const household = await loadHousehold(request, request.params.hid);
       const file = await request.file();
@@ -55,6 +69,8 @@ export const claimRoutes: FastifyPluginAsyncZod = async (app) => {
         filename: file.filename,
         mimeType: file.mimetype,
         bytes: await file.toBuffer(),
+        fixture: env.FAKE_LLM ? request.query.fixture : undefined,
+        kindFixture: env.FAKE_LLM ? request.query.kind : undefined,
       });
       return reply.code(201).send(claim);
     },
