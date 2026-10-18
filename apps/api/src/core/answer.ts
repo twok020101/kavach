@@ -156,28 +156,30 @@ function explain(
     });
   }
 
-  // No maternity benefit at all (R-MT-001 with limit 0) and nothing paid: a card says why, or the
-  // family sees the whole bill as theirs with no reason (issue #25).
-  const noBenefit =
+  // Nothing paid for a delivery, because the policy has no maternity benefit (R-MT-001 with
+  // limit 0) or its waiting period is not over (R-MT-002): a card says why, with the bill the
+  // family pays, or they see the whole bill as theirs with no reason (issue #25).
+  const noPay =
     rec.policyPays === 0
       ? ev.trace.find(
           (f) =>
-            f.ruleId === 'R-MT-001' &&
             f.inputs.roomCategoryId === rec.roomCategoryId &&
-            f.inputs.limit === 0,
+            ((f.ruleId === 'R-MT-001' && f.inputs.limit === 0) || f.ruleId === 'R-MT-002'),
         )
       : undefined;
-  const noBenefitPolicy = noBenefit && byId.get(String(noBenefit.inputs.policyId));
-  if (noBenefit && noBenefitPolicy) {
+  const noPayPolicy = noPay && byId.get(String(noPay.inputs.policyId));
+  if (noPay && noPayPolicy) {
+    const waiting = noPay.ruleId === 'R-MT-002';
+    const body = waiting
+      ? t.waiting.body(nick(noPayPolicy), String(noPay.inputs.servedOn))
+      : t.noMaternity.body(nick(noPayPolicy));
     cards.splice(2, 0, {
-      id: 'no_maternity',
+      id: waiting ? 'maternity_waiting' : 'no_maternity',
       kind: 'limit_cap',
-      title: t.noMaternity.title,
-      body: `${t.noMaternity.body(nick(noBenefitPolicy))}\n${t.cap.next}`,
-      amounts: [
-        { label: t.cap.above, amount: Number(noBenefit.inputs.eligible ?? 0), emphasis: true },
-      ],
-      ruleIds: ['R-MT-001'],
+      title: waiting ? t.waiting.title : t.noMaternity.title,
+      body: `${body}\n${t.cap.next}`,
+      amounts: [{ label: t.cap.above, amount: rec.outOfPocket, emphasis: true }],
+      ruleIds: [noPay.ruleId],
       verified: true,
     });
   }

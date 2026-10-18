@@ -45,6 +45,8 @@ export type Copy = {
   };
   /** The policy has no maternity benefit at all (R-MT-001 with limit 0). */
   noMaternity: { title: string; body: (policy: string) => string };
+  /** The maternity waiting period runs until `until` (R-MT-002). */
+  waiting: { title: string; body: (policy: string, until: string) => string };
   sameCharges: (lower: RoomCategory, quoted: RoomCategory) => string;
   packagePrice: (procedure: string, lower: RoomCategory) => string;
   text: {
@@ -67,6 +69,14 @@ export type Copy = {
     hospitalRules: string;
   };
 };
+
+/** "20 July 2027" in the screen's language. */
+const longDate = (iso: string, locale: Locale) =>
+  new Date(`${iso}T00:00:00`).toLocaleDateString(locale === 'hi' ? 'hi-IN' : 'en-IN', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  });
 
 /** A room with a per-day rent reads "Deluxe (₹9,000/day)"; a package reads by its label. */
 const roomEn = (r: RoomCategory) =>
@@ -136,6 +146,11 @@ const en: Copy = {
     title: 'No maternity cover on this policy',
     body: (policy) =>
       `The ${policy} does not cover a delivery, so the hospital bill is yours to pay. Check the exclusions in the policy schedule, and ask the TPA desk to confirm before you sign.`,
+  },
+  waiting: {
+    title: 'Maternity waiting period not over',
+    body: (policy, until) =>
+      `The ${policy} covers a delivery only from ${longDate(until, 'en')}, so this hospital bill is yours to pay. Ask the TPA desk to confirm the date before you sign.`,
   },
   sameCharges: (lower, quoted) =>
     `Are the surgeon, OT, nursing and doctor charges in the ${en.room(lower)} room different from the ${en.room(quoted)} room, or the same for every room?`,
@@ -218,6 +233,11 @@ const hi: Copy = {
     title: 'इस पॉलिसी में मैटरनिटी कवर नहीं है',
     body: (policy) =>
       `${policy} डिलीवरी को कवर नहीं करती, इसलिए अस्पताल का बिल आपको देना होगा। पॉलिसी शेड्यूल के एक्सक्लूज़न देखिए, और साइन करने से पहले TPA डेस्क से पुष्टि कर लीजिए।`,
+  },
+  waiting: {
+    title: 'मैटरनिटी का वेटिंग पीरियड अभी पूरा नहीं हुआ',
+    body: (policy, until) =>
+      `${policy} डिलीवरी को ${longDate(until, 'hi')} से ही कवर करेगी, इसलिए यह अस्पताल का बिल आपको देना होगा। साइन करने से पहले TPA डेस्क से तारीख़ की पुष्टि कर लीजिए।`,
   },
   sameCharges: (lower, quoted) =>
     `क्या ${hi.room(lower)} कमरे में सर्जन, OT, नर्सिंग और डॉक्टर के चार्ज ${hi.room(quoted)} कमरे से अलग हैं, या हर कमरे में एक जैसे?`,

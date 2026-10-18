@@ -299,6 +299,11 @@ const withWait = {
 const waiting = evaluateHospital({ ...MX1_CONTEXT, policies: [withWait] }, MX1_ESTIMATE);
 expect('waiting period not served: pays nothing', option(waiting.primary, 'general').policyPays, 0);
 expect('R-MT-002 fired', fired(waiting, 'R-MT-002'), true);
+const sayWaiting = buildDeskSay(waiting, 'en', {
+  policyNames: { pol_gmc_startup: 'company policy' },
+});
+console.log(`  say (en, waiting): ${sayWaiting}`);
+expect('says the waiting period', sayWaiting.includes('waiting period'), true);
 const noMaternity = {
   ...STARTUP_POLICY,
   terms: { ...STARTUP_POLICY.terms, maternity: undefined },
@@ -345,6 +350,38 @@ expect(
   'out of pocket equals the desk answer for the Non-AC room',
   MX1_BILL.total - mxClaim.expectedPayout,
   option(mx1.primary, 'nonac').outOfPocket,
+);
+
+heading('MX-1 claim variants: a cut above the cap, and a sub-limit the policy does not have (#23)');
+const overCut = assessClaim(
+  {
+    ...MX1_LETTER,
+    approvedAmount: 34_850,
+    deductions: MX1_LETTER.deductions.map((d, i) => (i === 2 ? { ...d, amount: 40_000 } : d)),
+  },
+  MX1_BILL,
+  STARTUP_POLICY,
+);
+expect(
+  'a cut above the cap is challengeable (R-CLM-009)',
+  `${overCut.deductions[2]?.verdict} ${overCut.deductions[2]?.ruleId}`,
+  'challengeable R-CLM-009',
+);
+expect('only the excess over the cap is recoverable', overCut.recoverable, 15_150);
+const cataract = assessClaim(
+  {
+    ...MX1_LETTER,
+    deductions: [
+      { label: 'Cataract sub-limit', amount: 10_000, reasonGiven: 'Cataract limited per eye' },
+    ],
+  },
+  MX1_BILL,
+  STARTUP_POLICY,
+);
+expect(
+  'a sub-limit the terms do not show is possibly recoverable (R-CLM-006)',
+  `${cataract.deductions[0]?.verdict} ${cataract.deductions[0]?.ruleId}`,
+  'possibly R-CLM-006',
 );
 
 // ---------------------------------------------------------------- PX-1 (docs/plan/05 §11)

@@ -93,6 +93,19 @@ export function buildDeskSay(
     const id = String(noBenefit.inputs.policyId);
     parts.push(t.noMaternity(options.policyNames?.[id] ?? id));
   }
+  // The maternity waiting period is not over (R-MT-002): say until when.
+  const waiting =
+    rec.policyPays === 0
+      ? evaluation.trace.find(
+          (f) => f.ruleId === 'R-MT-002' && f.inputs.roomCategoryId === rec.roomCategoryId,
+        )
+      : undefined;
+  if (waiting) {
+    const id = String(waiting.inputs.policyId);
+    parts.push(
+      t.waiting(options.policyNames?.[id] ?? id, longDate(String(waiting.inputs.servedOn), locale)),
+    );
+  }
 
   if (alternate) parts.push(t.ifFlat(alternate.saving));
   if (primary.billingType === 'package' && evaluation.questionForDesk) parts.push(t.askPackage);
@@ -123,8 +136,17 @@ type Phrases = {
   topUp: (deductible: number) => string;
   capped: (limit: number) => string;
   noMaternity: (name: string) => string;
+  waiting: (name: string, until: string) => string;
   confirm: string;
 };
+
+/** "20 July 2027" for speech, in the language's own month names. */
+const longDate = (iso: string, lang: Locale) =>
+  new Date(`${iso}T00:00:00`).toLocaleDateString(lang === 'hi' ? 'hi-IN' : 'en-IN', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  });
 
 const rs = (n: number) => `${hindiWords(n)} rupaye`;
 const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
@@ -154,6 +176,8 @@ const HI: Phrases = {
     `Dhyaan rahe, is policy mein delivery ki limit ${rs(limit)} hai, kamra koi bhi ho. Usse upar ka kharcha aapko dena hoga.`,
   noMaternity: (name) =>
     `${cap(name)} mein delivery cover nahi hai, isliye yeh poora bill aapko dena hoga.`,
+  waiting: (name, until) =>
+    `${cap(name)} mein delivery ka waiting period ${until} tak hai, isliye abhi yeh poora bill aapko dena hoga.`,
   confirm: 'Sign karne se pehle TPA desk se confirm kar lijiye.',
 };
 
@@ -177,5 +201,7 @@ const EN: Phrases = {
     `Note that this policy pays at most ${formatInr(limit)} for a delivery, whichever room. Anything above that is yours to pay.`,
   noMaternity: (name) =>
     `The ${name} does not cover a delivery, so this whole bill is yours to pay.`,
+  waiting: (name, until) =>
+    `The ${name} has a waiting period for delivery until ${until}, so this whole bill is yours to pay.`,
   confirm: 'Before you sign, confirm with the TPA desk.',
 };
