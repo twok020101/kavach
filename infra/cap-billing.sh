@@ -9,9 +9,9 @@
 # Alerts fire by e-mail at 50%, 90% and 100% to the billing account admins;
 # the function fires on the cost updates the budget publishes to Pub/Sub.
 #
-# Status: not yet run against a real billing account (issue #28). The console's enforced
-# Vertex AI spend cap is what is live; this is the second line. Run it once, then record the
-# result in PROGRESS.md.
+# Status: run for real on 18 Oct 2026 (issue #28): budget `kavach-cap` and function
+# `kavach-billing-cap` (asia-south1) are live on kavach-bfsi, alongside the console's enforced
+# Vertex AI spend cap. Re-running is safe: it recreates the budget and redeploys the function.
 #
 # Roles the person running this needs: Billing Account Administrator on BILLING_ACCOUNT and
 # Owner (or Project IAM Admin + Service Account Admin + Cloud Functions Developer) on PROJECT.
