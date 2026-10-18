@@ -1,11 +1,10 @@
 'use client';
 
 import { useMutation } from '@tanstack/react-query';
-import { ArrowRight, ShieldCheck, Users } from 'lucide-react';
+import { ArrowRight, Info, ShieldCheck, Users } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { Reveal } from '@/components/kavach/reveal';
 import { SetupFrame } from '@/components/setup/setup-frame';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { useRouter } from '@/i18n/navigation';
@@ -15,8 +14,10 @@ import { acceptInvite, useInvitePreview } from '@/lib/setup';
 import { useQueryClient } from '@tanstack/react-query';
 
 /**
- * S02 Sign in. The promise sits first, in a card with the shield, then the two ways in, then
- * the demo. Sections rise in order (Reveal), buttons stand on their base, errors stay in place.
+ * S02 Sign in. One card (from the Stitch sign-in): the promise with its shield tile first, then
+ * the two ways in as full-width buttons, the local-mode note as a quiet row, and the demo as a
+ * row of its own with the family's initial on a tile and "Open the demo" at its end. Sections
+ * rise in order (Reveal), buttons stand on their base, errors stay in place.
  */
 export function SignInScreen({ invite }: { invite: string | null }) {
   const t = useTranslations('setup.signIn');
@@ -66,9 +67,13 @@ export function SignInScreen({ invite }: { invite: string | null }) {
         onClick={() => signIn.mutate('guest')}
       >
         {invite && !firebaseEnabled ? t('join') : firebaseEnabled ? t('guest') : ts('continue')}
-        {!firebaseEnabled && <ArrowRight aria-hidden className="btn-arrow size-5" />}
+        <ArrowRight aria-hidden className="btn-arrow size-5" />
       </Button>
-      <p className="text-sm text-muted">{firebaseEnabled ? t('guestNote') : t('localMode')}</p>
+      {/* The note on how you get in: a quiet row with its icon, never a bare line. */}
+      <p className="panel flex items-start gap-2 text-sm text-muted">
+        <Info aria-hidden className="mt-0.5 size-4 shrink-0" />
+        <span>{firebaseEnabled ? t('guestNote') : t('localMode')}</span>
+      </p>
       {signIn.isError && (
         <p role="alert" className="panel panel-gap text-gap">
           {ts('error')}
@@ -80,6 +85,7 @@ export function SignInScreen({ invite }: { invite: string | null }) {
   if (invite) {
     return (
       <SetupFrame
+        back="/"
         title={
           preview.data
             ? t('invited', {
@@ -95,9 +101,9 @@ export function SignInScreen({ invite }: { invite: string | null }) {
           </p>
         ) : (
           preview.data && (
-            <>
+            <Card className="flex flex-col gap-6 max-sm:border-0 max-sm:bg-transparent max-sm:p-0 sm:rounded-lg sm:p-6 lg:p-8">
               <Reveal>
-                <Card className="flex items-center gap-4">
+                <Card tone="soft" className="flex items-center gap-4">
                   <span className="flex size-14 shrink-0 items-center justify-center rounded-md bg-primary-soft text-primary">
                     <Users aria-hidden className="size-7" />
                   </span>
@@ -105,7 +111,7 @@ export function SignInScreen({ invite }: { invite: string | null }) {
                 </Card>
               </Reveal>
               <Reveal delay={0.06}>{buttons}</Reveal>
-            </>
+            </Card>
           )
         )}
       </SetupFrame>
@@ -113,46 +119,59 @@ export function SignInScreen({ invite }: { invite: string | null }) {
   }
 
   return (
-    <SetupFrame title={t('title')} intro={t('intro')}>
-      <Reveal>
-        <Card className="flex items-center gap-4">
-          <span className="flex size-12 shrink-0 items-center justify-center rounded-md bg-safe-bg text-safe">
-            <ShieldCheck aria-hidden className="size-6" />
-          </span>
-          <p className="font-medium">{ts('consent.promise')}</p>
-        </Card>
-      </Reveal>
-      <Reveal delay={0.06}>{buttons}</Reveal>
-      <Reveal delay={0.12} className="mt-auto">
-        {/* The demo as a card of its own (from the Stitch sign-in): what it holds, one button. */}
-        <Card as="section" aria-labelledby="demo-title" className="flex flex-col gap-3 bg-sunken">
-          <div className="flex items-start gap-3">
-            <span className="flex size-12 shrink-0 items-center justify-center rounded-md bg-accent text-accent-ink">
-              <Users aria-hidden className="size-6" />
+    <SetupFrame back="/" title={t('title')} intro={t('intro')}>
+      {/* On a phone the page is the card; from a tablet up the card sits on the page. */}
+      <Card className="flex flex-col gap-6 max-sm:border-0 max-sm:bg-transparent max-sm:p-0 sm:rounded-lg sm:p-6 lg:p-8">
+        <Reveal>
+          <Card tone="soft" className="flex items-start gap-4">
+            <span className="flex size-12 shrink-0 items-center justify-center rounded-md bg-safe-bg text-safe">
+              <ShieldCheck aria-hidden className="size-6" />
             </span>
-            <div className="flex min-w-0 flex-1 flex-col gap-1">
-              <span className="flex flex-wrap items-center gap-2">
+            <div className="flex min-w-0 flex-col gap-1">
+              <p className="font-display text-lg font-bold leading-tight">{t('promiseTitle')}</p>
+              <p className="text-muted">{ts('consent.promise')}</p>
+            </div>
+          </Card>
+        </Reveal>
+        <Reveal delay={0.06}>{buttons}</Reveal>
+        <Reveal delay={0.12}>
+          {/* The demo as a row of its own (from the Stitch sign-in): the family's initial on a
+              tile, what the demo holds, and one button at the end. */}
+          <Card
+            as="section"
+            tone="soft"
+            aria-labelledby="demo-title"
+            className="flex flex-col gap-4"
+          >
+            <div className="flex min-w-0 items-start gap-4">
+              <span
+                aria-hidden
+                className="flex size-12 shrink-0 items-center justify-center rounded-full bg-partial-bg font-display text-xl font-bold text-partial"
+              >
+                {t('demoCard.initial')}
+              </span>
+              <div className="flex min-w-0 flex-1 flex-col gap-1">
+                <span className="label text-primary-hover">{t('demoCard.kicker')}</span>
                 <h2 id="demo-title" className="font-display text-lg font-bold leading-tight">
                   {t('demoCard.title')}
                 </h2>
-                <Badge tone="primary" className="text-xs">
-                  {t('demoCard.badge')}
-                </Badge>
-              </span>
-              <p className="text-sm text-muted">{t('demoCard.body')}</p>
+                <p className="text-sm text-muted">{t('demoCard.body')}</p>
+              </div>
             </div>
-          </div>
-          <Button
-            variant="secondary"
-            loading={demo.isPending}
-            onClick={() => demo.mutate()}
-            className="self-start"
-          >
-            {t('demoCard.open')}
-            <ArrowRight aria-hidden className="btn-arrow size-5" />
-          </Button>
-        </Card>
-      </Reveal>
+            {/* The button sits under the words, in line with them (the column is too narrow
+                for the Stitch side-by-side row once Hindi or Tamil labels come in). */}
+            <Button
+              variant="secondary"
+              loading={demo.isPending}
+              onClick={() => demo.mutate()}
+              className="self-start sm:ml-16"
+            >
+              {t('demoCard.open')}
+              <ArrowRight aria-hidden className="btn-arrow size-5" />
+            </Button>
+          </Card>
+        </Reveal>
+      </Card>
     </SetupFrame>
   );
 }
