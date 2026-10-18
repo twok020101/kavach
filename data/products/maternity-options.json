@@ -1,5 +1,5 @@
 {
-  "$comment": "Retail health plans with a maternity benefit, as quoted on an aggregator on 17 Oct 2026 for a couple in Bengaluru. Kavach shows these only as illustrative options at a hand-off (P5: category-level advice, no selling). Every plan here has a maternity waiting period, so it must be bought at least a year before the delivery to help. Premiums are not stored: they change with age, city and sum insured. The Star brochure is in this folder; the IndusInd facts come from the aggregator's summary and still need the policy wording.",
+  "$comment": "Retail health plans with a maternity benefit, as quoted on an aggregator on 17 Oct 2026 for a couple in Bengaluru. Kavach shows these only as illustrative options at a hand-off (P5: category-level advice, no selling). Every plan here has a maternity waiting period, so it must be bought at least a year before the delivery to help. Premiums are not stored: they change with age, city and sum insured. The Star brochure is not stored here (it is Star Health's copyrighted document; download the current one from starhealth.in, Star Women Care); the IndusInd facts come from the aggregator's summary and still need the policy wording.",
   "quotedOn": "2026-10-17",
   "source": "Aggregator comparison shared by the household (links expire; facts copied here)",
   "options": [
@@ -19,7 +19,7 @@
       "notes": [
         "Delivery expenses are a sub-limit per policy year that scales with the sum insured; ₹50,000 is the figure quoted for the sum insured chosen.",
         "The brochure lists a 24-month delivery waiting period for the ₹5 lakh and ₹10 lakh sums insured and 12 months from ₹15 lakh; the aggregator quote said 12 months. Verify against the policy wording before relying on it.",
-        "Brochure: data/products/star-women-care-brochure.pdf"
+        "Brochure: the current Star Women Care brochure on starhealth.in (not stored in this repo)"
       ],
       "status": "to_verify"
     },
