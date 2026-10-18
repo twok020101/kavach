@@ -15,6 +15,9 @@ const Env = z.object({
   NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
   PORT: z.coerce.number().default(8080),
   PUBLIC_WEB_URL: z.string().default('http://localhost:3000'),
+  // Extra browser origins the API accepts besides PUBLIC_WEB_URL, comma-separated
+  // (e.g. the Firebase *.hosted.app address while the custom domain's certificate is pending).
+  EXTRA_WEB_ORIGINS: z.string().optional(),
   PUBLIC_API_URL: z.string().default('http://localhost:8080'),
   FAKE_LLM: flag,
   AUTH_DISABLED: flag,
