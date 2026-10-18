@@ -7,6 +7,30 @@ Google Cloud AI Builder Cup 2026, BFSI track. Kavach remembers a household's ins
 - Plan: [`docs/implementation-plan.md`](docs/implementation-plan.md) (how we build it) and [`docs/plan`](docs/plan/README.md) (what we build)
 - Build status: [`PROGRESS.md`](PROGRESS.md)
 
+## For judges
+
+Every person, policy, hospital and letter in the demo is made up and marked SAMPLE. The demo follows the Sharma family of Bengaluru ([`docs/plan/09-demo-data-and-script.md`](docs/plan/09-demo-data-and-script.md)). Each visitor gets their own copy of the household, so judges never see each other's changes.
+
+**Try it in five minutes** (locally with `pnpm dev`, or on the deployed app):
+
+| Moment                  | Open                                      | What you should see                                                                                                                                                                      |
+| ----------------------- | ----------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| At the hospital desk    | `/en/desk?demo=1`                         | Suresh (62) is admitted for a planned angioplasty. Snap or pick the sample estimate: Kavach picks the room that avoids proportionate deduction, a saving of ₹90,000, with the rule cited |
+| The same desk in Hindi  | `/hi/desk?demo=1`                         | Kamala asks out loud in Hindi. Gemini Live answers in spoken Hindi, calling the rules engine for every rupee                                                                             |
+| A second scene          | `/en/desk?demo=1&scene=maternity`         | Priya's planned delivery at Lotus Women's Hospital: the company policy caps maternity at ₹50,000, and Kavach shows what the family will pay                                              |
+| When a claim goes wrong | Claims, with the sample settlement letter | ₹14,560 of the deductions is recoverable; Kavach drafts the appeal letter as a PDF with matching numbers                                                                                 |
+| Proof                   | `/en/proof`                               | How the numbers are checked: the rules, their sources, and the evaluation set                                                                                                            |
+
+**How it uses Google AI**
+
+- **Gemini on Vertex AI** (`@google/genai`) reads photographed hospital estimates, policy schedules and settlement letters into typed data, then plans and drafts letters. Each model call has a recorded fixture, so the whole app also runs with no keys.
+- **Gemini Live** (native audio) runs the hospital desk as a spoken conversation in Hindi or English, with tool calls into the engine.
+- **Gemini TTS and embeddings**: Hindi voice notes on WhatsApp, and clause search over policy wordings for citations.
+- **One rule:** the model never computes money. Every rupee comes from `packages/engine`, a deterministic rules engine whose rules cite the policy clause or regulation they come from.
+- **Runs on** Cloud Run (API), Firebase App Hosting (web), Firestore and Cloud Storage, in project `kavach-bfsi`.
+
+**Honest limits:** some agents have only been checked against real Gemini once (see `PROGRESS.md`, ⚠️ rows), and the evaluation accuracy number needs the real wording PDFs and a live Vertex run, so we don't quote one yet. Kavach is an assistant, not an insurer, broker or adviser ([`docs/plan/11-trust-safety-compliance.md`](docs/plan/11-trust-safety-compliance.md)).
+
 ## Repository layout
 
 ```
