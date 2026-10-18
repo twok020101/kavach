@@ -1,6 +1,7 @@
 import { spawn } from 'node:child_process';
-import { readFile } from 'node:fs/promises';
-import { resolve } from 'node:path';
+import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import { join, resolve } from 'node:path';
 import { Modality } from '@google/genai';
 import { env } from '../env';
 import { appRoot } from '../paths';
@@ -102,37 +103,47 @@ export async function toGeminiAudio(audio: { mimeType: string; data: string }) {
   return { mimeType: 'audio/wav', data: wav.toString('base64') };
 }
 
-function transcode(data: Buffer): Promise<Buffer> {
-  return new Promise((done, fail) => {
-    const ffmpeg = spawn('ffmpeg', [
-      '-hide_banner',
-      '-loglevel',
-      'error',
-      '-i',
-      'pipe:0',
-      '-ar',
-      '16000',
-      '-ac',
-      '1',
-      '-c:a',
-      'pcm_s16le',
-      '-f',
-      'wav',
-      'pipe:1',
-    ]);
-    const out: Buffer[] = [];
-    const err: Buffer[] = [];
-    ffmpeg.stdout.on('data', (chunk: Buffer) => out.push(chunk));
-    ffmpeg.stderr.on('data', (chunk: Buffer) => err.push(chunk));
-    ffmpeg.on('error', fail);
-    ffmpeg.on('close', (code) =>
-      code === 0
-        ? done(Buffer.concat(out))
-        : fail(new Error(`ffmpeg exited ${code}: ${Buffer.concat(err).toString()}`)),
-    );
-    // If ffmpeg rejects the input and exits early, the write fails with EPIPE; the close
-    // handler above reports it, so the pipe error must not crash the process.
-    ffmpeg.stdin.on('error', () => {});
-    ffmpeg.stdin.end(data);
-  });
+/**
+ * ffmpeg reads the recording from a file, not a pipe: an MP4 (Safari's `audio/mp4`) keeps its
+ * index at the end, which a non-seekable pipe cannot serve ("moov atom not found"). The file is
+ * removed afterwards whatever happens.
+ */
+async function transcode(data: Buffer): Promise<Buffer> {
+  const dir = await mkdtemp(join(tmpdir(), 'kavach-audio-'));
+  const input = join(dir, 'recording');
+  try {
+    await writeFile(input, data);
+    return await new Promise((done, fail) => {
+      const ffmpeg = spawn('ffmpeg', [
+        '-hide_banner',
+        '-loglevel',
+        'error',
+        '-i',
+        input,
+        '-ar',
+        '16000',
+        '-ac',
+        '1',
+        '-c:a',
+        'pcm_s16le',
+        '-f',
+        'wav',
+        'pipe:1',
+      ]);
+      const out: Buffer[] = [];
+      const err: Buffer[] = [];
+      ffmpeg.stdout.on('data', (chunk: Buffer) => out.push(chunk));
+      ffmpeg.stderr.on('data', (chunk: Buffer) => err.push(chunk));
+      ffmpeg.on('error', fail);
+      ffmpeg.on('close', (code) =>
+        code === 0
+          ? done(Buffer.concat(out))
+          : fail(new Error(`ffmpeg exited ${code}: ${Buffer.concat(err).toString()}`)),
+      );
+      ffmpeg.stdin.on('error', () => {});
+      ffmpeg.stdin.end();
+    });
+  } finally {
+    await rm(dir, { recursive: true, force: true });
+  }
 }
