@@ -27,12 +27,14 @@ import { RoomCompare } from '@/components/kavach/room-compare';
 import { WhyPanel } from '@/components/kavach/why-panel';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { cn } from '@/components/ui/cn';
 import { Card } from '@/components/ui/card';
 import { Disclosure } from '@/components/ui/disclosure';
 import { Spinner } from '@/components/ui/spinner';
 import { useRouter } from '@/i18n/navigation';
 import { ApiError } from '@/lib/api';
 import { deskClient } from '@/lib/desk-client';
+import { useDesktop } from '@/lib/use-media';
 import { useLiveDesk, type LiveFallback, type LiveStatus } from '@/lib/live/use-live-desk';
 import { AgentStepsTicker } from './agent-steps-ticker';
 import { CameraCapture } from './camera-capture';
@@ -318,6 +320,7 @@ export function DeskSessionScreen({
 
   const query = demo ? { demo: '1', ...(scene ? { scene } : {}) } : undefined;
   const firstName = patient?.name.split(' ')[0];
+  const desktop = useDesktop();
 
   return (
     <>
@@ -325,6 +328,7 @@ export function DeskSessionScreen({
         title={firstName ? t('title', { name: firstName }) : t('titleLoading')}
         subtitle={session.data?.hospitalName}
         query={query}
+        demoScene={demo ? (scene ?? 'hospital') : undefined}
         action={
           <Button
             variant="ghost"
@@ -338,8 +342,14 @@ export function DeskSessionScreen({
         }
       />
 
-      <div className="mx-auto w-full max-w-6xl lg:grid lg:grid-cols-[minmax(0,1fr)_380px] lg:items-start lg:gap-10 lg:px-6">
-        <main className="mx-auto flex max-w-2xl flex-col gap-4 px-4 pb-48 pt-3 lg:mx-0 lg:max-w-none lg:px-0 lg:pb-12 lg:pt-6">
+      <div className="mx-auto w-full max-w-6xl lg:grid lg:grid-cols-[minmax(0,1fr)_440px] lg:grid-rows-[auto_1fr] lg:items-start lg:gap-x-10 lg:gap-y-6 lg:px-6">
+        <main
+          className={cn(
+            'mx-auto flex max-w-2xl flex-col gap-4 px-4 pt-3 lg:col-start-1 lg:row-span-2 lg:row-start-1 lg:mx-0 lg:max-w-none lg:px-0 lg:pb-12 lg:pt-6',
+            // The answer section below carries the room for the fixed bar once there is one.
+            answer ? 'pb-4' : 'pb-48',
+          )}
+        >
           {live ? (
             <div className="relative flex flex-col items-center gap-3 py-4">
               <Badge icon={RadioTower} tone="primary" className="absolute right-0 top-0">
@@ -472,78 +482,74 @@ export function DeskSessionScreen({
               ))}
             </section>
           )}
-
-          {answer && (
-            <section
-              ref={answers}
-              aria-label={t('answers')}
-              className="flex scroll-mt-28 flex-col gap-4"
-            >
-              {answer.questionForDesk && answer.cards.some((c) => c.kind === 'billing_branch') && (
-                <Card className="flex flex-col gap-3 border-2 border-primary">
-                  <p className="font-semibold">{tl('billing.question')}</p>
-                  <div className="grid grid-cols-1 gap-2 min-[400px]:grid-cols-2">
-                    <Button
-                      variant="secondary"
-                      disabled={busy}
-                      onClick={() => answerBilling('differ')}
-                    >
-                      {tl('billing.differ')}
-                    </Button>
-                    <Button
-                      variant="secondary"
-                      disabled={busy}
-                      onClick={() => answerBilling('same')}
-                    >
-                      {tl('billing.same')}
-                    </Button>
-                  </div>
-                </Card>
-              )}
-              {answer.cards
-                .filter((card) => shownCards === 'all' || shownCards.has(card.id))
-                .map((card, i) => (
-                  <AnswerCard key={card.id} card={card} index={i}>
-                    {card.kind === 'room_compare' && evaluation.data && (
-                      <Disclosure
-                        label={t('compareRooms')}
-                        icon={<Scale aria-hidden className="size-5" />}
-                      >
-                        <RoomCompare result={evaluation.data.primary} />
-                      </Disclosure>
-                    )}
-                  </AnswerCard>
-                ))}
-
-              <Card className="p-2 sm:p-3">
-                <Disclosure label={t('why')}>
-                  {evaluation.data ? (
-                    <WhyPanel evaluation={evaluation.data} estimate={estimate} />
-                  ) : (
-                    <Spinner label={tc('loading')} />
-                  )}
-                </Disclosure>
-              </Card>
-
-              <DisclaimerBar kind="hospital" className="text-base" />
-
-              <div className="flex flex-col gap-3">
-                <Button variant="secondary" size="desk" onClick={share}>
-                  <Share2 aria-hidden className="size-6" />
-                  {shared ? t('copied') : t('share')}
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="desk"
-                  loading={end.isPending}
-                  onClick={() => end.mutate()}
-                >
-                  {t('endAndSummary')}
-                </Button>
-              </div>
-            </section>
-          )}
         </main>
+
+        {answer && (
+          <section
+            ref={answers}
+            aria-label={t('answers')}
+            className="mx-auto flex w-full max-w-2xl scroll-mt-28 flex-col gap-4 px-4 pb-48 lg:col-start-2 lg:row-start-2 lg:mx-0 lg:max-w-none lg:px-0 lg:pb-12"
+          >
+            {answer.questionForDesk && answer.cards.some((c) => c.kind === 'billing_branch') && (
+              <Card className="flex flex-col gap-3 border-2 border-primary">
+                <p className="font-semibold">{tl('billing.question')}</p>
+                <div className="grid grid-cols-1 gap-2 min-[400px]:grid-cols-2">
+                  <Button
+                    variant="secondary"
+                    disabled={busy}
+                    onClick={() => answerBilling('differ')}
+                  >
+                    {tl('billing.differ')}
+                  </Button>
+                  <Button variant="secondary" disabled={busy} onClick={() => answerBilling('same')}>
+                    {tl('billing.same')}
+                  </Button>
+                </div>
+              </Card>
+            )}
+            {answer.cards
+              .filter((card) => shownCards === 'all' || shownCards.has(card.id))
+              .map((card, i) => (
+                <AnswerCard key={card.id} card={card} index={i}>
+                  {card.kind === 'room_compare' && evaluation.data && (
+                    <Disclosure
+                      label={t('compareRooms')}
+                      icon={<Scale aria-hidden className="size-5" />}
+                    >
+                      <RoomCompare result={evaluation.data.primary} />
+                    </Disclosure>
+                  )}
+                </AnswerCard>
+              ))}
+
+            <Card className="p-2 sm:p-3">
+              <Disclosure label={t('why')} defaultOpen={desktop}>
+                {evaluation.data ? (
+                  <WhyPanel evaluation={evaluation.data} estimate={estimate} />
+                ) : (
+                  <Spinner label={tc('loading')} />
+                )}
+              </Disclosure>
+            </Card>
+
+            <DisclaimerBar kind="hospital" className="text-base" />
+
+            <div className="flex flex-col gap-3">
+              <Button variant="secondary" size="desk" onClick={share}>
+                <Share2 aria-hidden className="size-6" />
+                {shared ? t('copied') : t('share')}
+              </Button>
+              <Button
+                variant="ghost"
+                size="desk"
+                loading={end.isPending}
+                onClick={() => end.mutate()}
+              >
+                {t('endAndSummary')}
+              </Button>
+            </div>
+          </section>
+        )}
 
         <input
           ref={fileInput}
@@ -567,7 +573,13 @@ export function DeskSessionScreen({
           />
         )}
 
-        <aside className="fixed inset-x-0 bottom-0 z-20 border-t border-border bg-bg pb-[env(safe-area-inset-bottom)] lg:sticky lg:top-24 lg:border-0 lg:bg-transparent lg:pb-0 lg:pt-6">
+        <aside
+          className={cn(
+            'fixed inset-x-0 bottom-0 z-20 border-t border-border bg-bg pb-[env(safe-area-inset-bottom)] lg:col-start-2 lg:row-start-1 lg:border-0 lg:bg-transparent lg:pb-0 lg:pt-6',
+            // Sticky while the dock is only controls; once the answer sits beneath them it scrolls with it.
+            answer ? 'lg:static' : 'lg:sticky lg:top-24',
+          )}
+        >
           {live ? (
             // The one action on top, full width; mute and "type instead" below it.
             <div className="mx-auto flex max-w-2xl flex-col gap-2 px-4 py-3 lg:px-0 lg:py-0">
