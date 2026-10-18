@@ -89,7 +89,8 @@
         "own": "自己的保单"
       },
       "none": "今天没有健康保单承保 {name}。"
-    }
+    },
+    "asOfShort": "截至 {date}"
   },
   "scrubber": {
     "asOf": "截至 {date}",
@@ -147,7 +148,8 @@
     "leftOver": "剩余",
     "ofTotal": "计划中 {count}/{total}",
     "openPolicy": "打开保单",
-    "prioritised": "按优先顺序"
+    "utilised": "可用于保障的钱中有 {percent}% 已列入计划",
+    "dotPrioritised": "优先保障"
   },
   "change": {
     "title": "有什么变化？",

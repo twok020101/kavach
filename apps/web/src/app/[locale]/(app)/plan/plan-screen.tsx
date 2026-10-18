@@ -1,7 +1,7 @@
 'use client';
 
 import type { Household, Recommendation } from '@kavach/schemas';
-import { ArrowRight, ChevronRight, Clock, TriangleAlert, Wallet } from 'lucide-react';
+import { ArrowRight, ChevronRight, Clock, ShieldCheck, TriangleAlert, Wallet } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { Amount } from '@/components/kavach/amount';
@@ -66,8 +66,12 @@ function PlanView({ household }: { household: Household }) {
           <section aria-labelledby="prioritised" className="flex flex-col gap-3">
             {/* The count line over the list: how many of the engine's items are in the plan. */}
             <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1 px-1">
-              <h2 id="prioritised" className="font-display font-semibold">
-                {t('prioritised')}
+              <h2
+                id="prioritised"
+                className="flex items-center gap-2 font-display text-lg font-semibold"
+              >
+                <span aria-hidden className="size-2 shrink-0 rounded-full bg-safe" />
+                {t('dotPrioritised')}
               </h2>
               <span className="text-sm text-muted">
                 {t('ofTotal', { count: selected.length, total: plan.recommendations.length })}
@@ -87,11 +91,8 @@ function PlanView({ household }: { household: Household }) {
           </section>
 
           {later.length > 0 && (
-            // The deferred group sits on a sunken surface, so it reads as a second tier.
-            <section
-              aria-labelledby="later"
-              className="flex flex-col gap-3 rounded-md bg-sunken p-3 sm:p-4"
-            >
+            // The deferred group: its heading over a sunken tray, so it reads as a second tier.
+            <section aria-labelledby="later" className="mt-2 flex flex-col gap-3">
               <h2
                 id="later"
                 className="flex items-center gap-2 px-1 font-display text-lg font-semibold"
@@ -99,7 +100,7 @@ function PlanView({ household }: { household: Household }) {
                 <Clock aria-hidden className="size-5 text-muted" />
                 {t('later')}
               </h2>
-              <ul className="flex flex-col gap-3">
+              <ul className="flex flex-col gap-3 rounded-md bg-sunken p-3 sm:p-4">
                 {later.map((r) => (
                   <RecommendationRow
                     key={r.id}
@@ -115,7 +116,7 @@ function PlanView({ household }: { household: Household }) {
 
         <aside className="flex flex-col gap-5 lg:sticky lg:top-8">
           <Reveal>
-            <Card className="p-0 sm:p-0">
+            <Card className="p-0 shadow-1 sm:p-0">
               <button
                 onClick={() => setBudgetOpen(true)}
                 className="press flex w-full flex-col gap-4 rounded-md p-4 text-left hover:bg-sunken sm:p-5"
@@ -165,6 +166,9 @@ function PlanView({ household }: { household: Household }) {
                       style={{ width: `${Math.round(used * 100)}%` }}
                     />
                   </span>
+                  <span className="mt-1 text-sm text-muted">
+                    {t('utilised', { percent: Math.round(used * 100) })}
+                  </span>
                 </span>
               </button>
             </Card>
@@ -179,10 +183,11 @@ function PlanView({ household }: { household: Household }) {
                     {/* Each review is a warning-toned card that opens the policy it is about. */}
                     <Link
                       href={`/policies/${r.policyId}`}
-                      className="panel panel-partial press flex min-h-12 flex-col gap-2 hover:border-partial"
+                      className="press flex min-h-12 flex-col gap-2 rounded-md border border-partial/25 bg-partial-bg p-4 hover:border-partial sm:p-5"
                     >
                       <span className="flex items-start justify-between gap-3">
-                        <span className="font-display font-semibold">
+                        <span className="flex items-center gap-2 font-display font-semibold">
+                          <span aria-hidden className="size-2 shrink-0 rounded-full bg-partial" />
                           {policy(r.policyId)?.productName}
                         </span>
                         <TriangleAlert
@@ -190,8 +195,10 @@ function PlanView({ household }: { household: Household }) {
                           className="mt-0.5 size-5 shrink-0 text-partial"
                         />
                       </span>
-                      <span className="text-sm text-partial">{t(`reviewIssue.${r.issue}`)}</span>
-                      <span className="mt-1 inline-flex items-center gap-1 text-sm font-semibold text-partial">
+                      <span className="serif text-base leading-relaxed text-partial">
+                        {t(`reviewIssue.${r.issue}`)}
+                      </span>
+                      <span className="mt-1 inline-flex items-center gap-1 font-semibold text-partial">
                         {t('openPolicy')}
                         <ArrowRight aria-hidden className="size-4" />
                       </span>
@@ -202,7 +209,11 @@ function PlanView({ household }: { household: Household }) {
             </Reveal>
           )}
 
-          <DisclaimerBar kind="plan" />
+          {/* The 11 §4 footnote in the serif, under a shield (Stitch plan foot). */}
+          <div className="flex items-start gap-2 px-1">
+            <ShieldCheck aria-hidden className="mt-0.5 size-4 shrink-0 text-safe" />
+            <DisclaimerBar kind="plan" className="serif border-t-0 pt-0 leading-relaxed" />
+          </div>
         </aside>
       </div>
 

@@ -58,7 +58,7 @@ export function RecommendationRow({
   const Icon = ICONS[rec.category];
   const deferred = rec.status === 'deferred';
   const className = cn(
-    'grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-x-3 gap-y-1 rounded-md border border-border bg-surface p-4 sm:grid-cols-[auto_minmax(0,1fr)_auto_auto] sm:gap-x-4 sm:p-5',
+    'grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-x-3 gap-y-1 rounded-md border border-border bg-surface p-4 shadow-1 sm:grid-cols-[auto_minmax(0,1fr)_auto_auto] sm:gap-x-5 sm:p-6',
     // Added and removed items (S19): the sign badge on the tile says which; the border only echoes it.
     sign === '+' && 'border-safe',
     sign === '−' && 'border-border-strong opacity-80',

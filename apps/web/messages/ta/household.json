@@ -45,5 +45,10 @@
   "copayFromAge": "{age} வயதிலிருந்து {percent}% கோ-பே",
   "deductible": "{amount}-க்கு மேல் செலுத்தும்",
   "claimsUsed": "இந்த வருடம் பயன்படுத்தியது {amount}",
-  "speaks": "{language} பேசுவார்"
+  "speaks": "{language} பேசுவார்",
+  "shell": {
+    "sample": "மாதிரி குடும்பம்",
+    "steps": "{count, plural, =0 {எதுவும் காத்திருக்கவில்லை} one {# படி காத்திருக்கிறது} other {# படிகள் காத்திருக்கின்றன}}",
+    "account": "{name}: குடும்ப அமைப்புகள்"
+  }
 }

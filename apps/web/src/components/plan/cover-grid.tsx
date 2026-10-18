@@ -1,16 +1,34 @@
 'use client';
 
 import type { CoverCell, CoverMap, Household, Risk } from '@kavach/schemas';
-import { Bandage, HeartPulse, type LucideIcon, Users } from 'lucide-react';
+import {
+  Bandage,
+  Briefcase,
+  CircleAlert,
+  HeartPulse,
+  type LucideIcon,
+  Minus,
+  ShieldCheck,
+  ShieldHalf,
+  Users,
+} from 'lucide-react';
 import { motion } from 'motion/react';
 import { useTranslations } from 'next-intl';
 import { MemberAvatar } from '@/components/kavach/member-avatar';
 import { Amount } from '@/components/kavach/amount';
-import { StatusBadge } from '@/components/ui/status-badge';
 import { cn } from '@/components/ui/cn';
 
 const RISKS: Risk[] = ['health', 'life', 'accident'];
 const RISK_ICON: Record<Risk, LucideIcon> = { health: HeartPulse, life: Users, accident: Bandage };
+
+/** Each status as a bordered pill (Stitch cover matrix): tint, icon and word together. */
+const PILL: Record<CoverCell['status'], { icon: LucideIcon; className: string }> = {
+  covered: { icon: ShieldCheck, className: 'border-safe/30 bg-safe-bg text-safe' },
+  partial: { icon: ShieldHalf, className: 'border-partial/30 bg-partial-bg text-partial' },
+  contingent: { icon: Briefcase, className: 'border-partial/30 bg-partial-bg text-partial' },
+  gap: { icon: CircleAlert, className: 'border-gap/30 bg-gap-bg text-gap' },
+  na: { icon: Minus, className: 'border-transparent bg-sunken text-muted' },
+};
 
 /**
  * S09 cover map: members × risks, each cell a status. Columns where nothing applies are hidden.
@@ -51,8 +69,8 @@ export function CoverGrid({
             {shown.map((risk) => {
               const Icon = RISK_ICON[risk];
               return (
-                <th key={risk} scope="col" className="pb-2 pl-1.5 font-semibold">
-                  <span className="inline-flex min-w-0 items-center gap-1 leading-tight [overflow-wrap:anywhere]">
+                <th key={risk} scope="col" className="pb-2 pl-1.5 text-center font-semibold">
+                  <span className="inline-flex min-w-0 items-center justify-center gap-1 leading-tight [overflow-wrap:anywhere]">
                     <Icon aria-hidden className="size-3.5 shrink-0" />
                     {t(`risk.${risk}`)}
                   </span>
@@ -82,8 +100,10 @@ export function CoverGrid({
                 const c = cell(member.id, risk);
                 if (!c) return <td key={risk} className="py-2" />;
                 const missing = c.status === 'na' ? 0 : short(c);
+                const { icon: Icon, className: tone } = PILL[c.status];
+                const na = c.status === 'na';
                 return (
-                  <td key={risk} className="py-2 pl-1.5 align-middle">
+                  <td key={risk} className="py-2 pl-1.5 text-center align-middle">
                     <motion.button
                       layout
                       key={c.status}
@@ -91,31 +111,42 @@ export function CoverGrid({
                       animate={{ scale: 1, opacity: 1 }}
                       transition={{ duration: 0.35, ease: [0.2, 0.8, 0.2, 1] }}
                       onClick={() => onSelect?.(c)}
-                      disabled={c.status === 'na' || !onSelect}
-                      aria-label={`${member.name}, ${t(`risk.${risk}`)}`}
+                      disabled={na || !onSelect}
+                      aria-label={`${member.name}, ${t(`risk.${risk}`)}: ${tc(`status.${c.status}`)}`}
                       className={cn(
-                        'press flex min-h-13 w-full flex-col items-start justify-center gap-0.5 rounded-md text-left',
-                        c.status !== 'na' &&
-                          'hover:ring-2 hover:ring-primary/40 focus-visible:ring-2 focus-visible:ring-primary',
+                        'press group flex min-h-12 w-full items-center justify-center rounded-md',
+                        !na && 'focus-visible:outline-none',
                         pulseGaps && c.status === 'gap' && 'animate-pulse',
                       )}
                     >
-                      <StatusBadge
-                        status={c.status}
-                        short
-                        className="w-full min-w-0 px-1.5 text-[11px] leading-tight sm:hidden"
-                      />
-                      <StatusBadge
-                        status={c.status}
-                        className="hidden w-full text-xs leading-tight sm:inline-flex"
-                      />
-                      {missing > 0 && (
-                        <span className="hidden px-1 text-xs font-medium text-muted lg:block">
-                          {t.rich('home.short', {
-                            amount: () => <Amount value={missing} />,
-                          })}
+                      <span
+                        aria-hidden
+                        className={cn(
+                          'inline-flex min-w-0 max-w-full flex-col items-center gap-0.5 rounded-sm border px-1.5 py-1 leading-tight sm:px-3 sm:py-1.5',
+                          tone,
+                          !na &&
+                            'shadow-1 group-hover:ring-2 group-hover:ring-primary/40 group-focus-visible:ring-2 group-focus-visible:ring-primary',
+                          na && 'shadow-none',
+                        )}
+                      >
+                        <span
+                          className={cn(
+                            'inline-flex min-w-0 items-center gap-1 font-medium [overflow-wrap:anywhere]',
+                            na ? 'text-xs' : 'text-[11px] sm:text-sm',
+                          )}
+                        >
+                          <Icon className="hidden size-3.5 shrink-0 sm:block" />
+                          <span className="sm:hidden">{tc(`statusShort.${c.status}`)}</span>
+                          <span className="hidden sm:inline">{tc(`status.${c.status}`)}</span>
                         </span>
-                      )}
+                        {missing > 0 && (
+                          <span className="hidden text-xs font-semibold lg:block">
+                            {t.rich('home.short', {
+                              amount: () => <Amount value={missing} />,
+                            })}
+                          </span>
+                        )}
+                      </span>
                     </motion.button>
                   </td>
                 );

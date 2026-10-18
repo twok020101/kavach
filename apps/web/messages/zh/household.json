@@ -45,5 +45,10 @@
   "copayFromAge": "{age} 岁起 {percent}% 共同承担",
   "deductible": "支付 {amount} 以上的部分",
   "claimsUsed": "今年已用 {amount}",
-  "speaks": "会说{language}"
+  "speaks": "会说{language}",
+  "shell": {
+    "sample": "示例家庭",
+    "steps": "{count, plural, =0 {没有待办} other {# 项待办}}",
+    "account": "{name}：家庭设置"
+  }
 }

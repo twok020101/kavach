@@ -25,7 +25,14 @@
       "initial": "沙",
       "kicker": "示范家庭，已设置好"
     },
-    "promiseTitle": "我们对您家人的承诺"
+    "promiseTitle": "我们对您家人的承诺",
+    "demoCardSg": {
+      "kicker": "新加坡示例家庭",
+      "initial": "T",
+      "title": "看看 Tan 一家在医院柜台",
+      "body": "Ah Kow 在 Sample General Hospital 入院：MediShield Life、Shield 计划和病房选择，用华语。",
+      "open": "打开新加坡场景"
+    }
   },
   "consent": {
     "title": "开始之前",

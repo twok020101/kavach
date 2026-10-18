@@ -2,27 +2,23 @@
   "headline": "AI yang berdiri di sisi keluarga anda pada setiap saat insurans.",
   "subhead": "Kavach mengingati perlindungan keluarga anda dan bertindak apabila perlu: apabila hidup berubah, di kaunter hospital, dan apabila tuntutan bermasalah.",
   "tryHospital": "Cuba babak hospital",
-  "tryHospitalSub": "Anggaran contoh, Hindi atau Inggeris, kurang seminit. Tanpa log masuk.",
   "previewLabel": "Contoh jawapan",
   "previewCaption": "Apa yang Kavach beritahu keluarga di kaunter hospital",
   "momentsTitle": "Tiga saat yang penting",
   "moments": {
     "change": {
       "title": "Apabila hidup berubah",
-      "body": "“Menyertai syarikat permulaan pada 1 Dis.” Kavach nampak perlindungan ibu bapa anda tamat pada 30 Nov, menyediakan surat untuk mengekalkannya, dan mengingatkan anda di WhatsApp.",
       "stat": "Perlindungan ibu bapa dikekalkan, tidak hilang",
       "when": "Sebelum ke hospital"
     },
     "hospital": {
       "title": "Di kaunter hospital",
-      "body": "Suara dan kamera, dalam bahasa Hindi. Tunjukkan anggaran dan Kavach beritahu kad polisi mana yang patut diberi dan bilik mana yang patut diminta.",
       "stat": "<amount></amount> kurang perlu dibayar",
       "when": "Semasa kemasukan"
     },
     "claim": {
       "title": "Apabila tuntutan bermasalah",
       "body": "Hantar surat penyelesaian. Kavach menyemak setiap potongan dengan polisi anda dan menyediakan rayuan.",
-      "stat": "<amount></amount> dijumpai untuk dirayu",
       "when": "Selepas discaj"
     }
   },
@@ -57,18 +53,12 @@
     "cited": "daripada jumlah rupee datang daripada peraturan yang diuji, setiap satu dengan klausanya",
     "wordings": "perkataan polisi awam dibaca dan diuji, muka demi muka"
   },
-  "momentsIntro": "Kavach mengenali isi rumah sekali sahaja, dalam kira-kira dua minit. Kemudian ia bertindak pada tiga saat di mana keluarga India kehilangan wang.",
   "titlePlain": "Insurans keluarga anda,",
   "titleEm": "dijelaskan pada saat ia penting.",
-  "lead": "Kavach mengingati setiap polisi dalam rumah dan memberitahu anda apa yang perlu dibuat apabila hidup berubah, di kaunter hospital, dan apabila tuntutan dibayar kurang. Dalam bahasa Hindi atau Inggeris. Setiap rupee datang daripada terma polisi bertulis, dengan nombor muka surat.",
   "howItWorks": "Cara ia berfungsi",
-  "moment": {
-    "title": "Saat <saving></saving>",
-    "body": "Suresh sedang dimasukkan ke hospital. Bilik deluxe berharga kira-kira <deluxe></deluxe> daripada poket keluarga; bilik yang lebih murah kira-kira <standard></standard>. Kavach beritahu yang mana, dan mengapa, sebelum sesiapa menandatangani."
-  },
   "trustLine": "Dibina untuk Google Cloud AI Builder Cup 2026 · Data demo ditanda SAMPLE · Tiada apa yang disimpan tanpa kebenaran · Tiada bayaran, selama-lamanya.",
   "tryMaternity": "Cuba babak bersalin",
-  "tryMaternitySub": "Kelahiran anak Priya: had bersalin ₹50,000, dalam bahasa Inggeris.",
+  "tryMaternitySub": "Bersalin Priya dan had perlindungan bersalin, dalam bahasa Inggeris.",
   "kicker": "Tarik nafas. Polisi sudah pun dibaca.",
   "boot": {
     "policies": "Polisi keluarga anda: dibaca, dengan nombor muka surat",
@@ -77,31 +67,8 @@
     "tagline": "Berdiri di sisi keluarga anda pada setiap saat insurans.",
     "skip": "Ketik di mana-mana untuk teruskan"
   },
-  "family": {
-    "title": "Keluarga contoh yang Kavach sudah kenal",
-    "caption": "Lima orang, empat polisi, satu gambaran. Kavach mengenali mereka sekali sahaja, dalam kira-kira dua minit.",
-    "relations": {
-      "self": "Rahul, 34 · membayar premium",
-      "spouse": "Priya, 32",
-      "child": "Anaya, 5",
-      "father": "Suresh, 62 · pesakit",
-      "mother": "Kamala, 58 · membuka Kavach di kaunter"
-    }
-  },
   "story": {
     "caption": "Bagaimana saat hospital berlaku",
-    "step1": {
-      "title": "Kamala ketik Di hospital",
-      "body": "Dalam bahasa Hindi, di telefonnya sendiri. Kavach sudah kenal dua polisi Suresh."
-    },
-    "step2": {
-      "title": "Dia tunjukkan anggaran kepada kamera",
-      "body": "Kavach membaca tarif bilik: deluxe ₹9,000 sehari, standard ₹5,000."
-    },
-    "step3": {
-      "title": "“Minta bilik ₹5,000.”",
-      "body": "Hanya caj yang berharga mengikut bilik dipotong dalam bilik yang lebih mahal. Kavach beritahu kad mana yang patut diberi dahulu, dan apa yang patut ditanya di kaunter."
-    },
     "saving": "Kurang perlu dibayar",
     "pause": "Jeda cerita",
     "play": "Main cerita"
@@ -109,12 +76,137 @@
   "closing": {
     "title": "Jangan sekali-kali hadapi kaunter hospital tanpa persediaan.",
     "body": "Cuba dua babak dengan keluarga contoh, atau sediakan keluarga anda sendiri dalam beberapa minit. Kavach tidak menjual apa-apa dan tidak menghubungi mana-mana syarikat insurans.",
-    "hospital": "Suresh di kaunter hospital",
     "maternity": "Kelahiran anak Priya",
-    "own": "Sediakan keluarga saya",
-    "singapore": "Adegan Singapura"
+    "own": "Sediakan keluarga saya"
   },
-  "trySingapore": "Cuba adegan Singapura",
-  "trySingaporeSub": "Angioplasti Ah Kow: pelan Shield Kelas B1 ditawarkan Kelas A, dalam bahasa Mandarin.",
-  "momentKicker": "Saat {n} · {when}"
+  "momentKicker": "Saat {n} · {when}",
+  "sampleBadge": "Contoh",
+  "decision": {
+    "kicker": "Beberapa minit di kaunter kemasukan",
+    "title": "Keputusan kemasukan di {hospital}",
+    "optionA": "Pilihan A · bilik yang ditawarkan",
+    "optionB": "Pilihan B · bilik yang Kavach cadangkan",
+    "perDay": "{amount} sehari",
+    "familyPays": "Keluarga membayar",
+    "costsMore": "Kos lebih tinggi",
+    "suggested": "Kavach mencadangkan",
+    "bannerTitle": "Minta {room}: {amount} kurang untuk dibayar",
+    "bannerLabel": "Kurang dibayar",
+    "sayTitle": "Apa yang perlu dikatakan di kaunter",
+    "firstCardTitle": "Kad mana dahulu",
+    "rulesNote": "Setiap angka datang daripada terma bertulis polisi. Babak kaunter menunjukkan peraturan dan halaman di sebaliknya."
+  },
+  "chat": {
+    "name": "Kavach",
+    "voice": "Nota suara",
+    "saving": "Kurang dibayar",
+    "sample": "Perbualan contoh"
+  },
+  "whatsappSection": {
+    "kicker": "Tiada aplikasi untuk dipasang",
+    "f1Title": "Nota suara dalam bahasa anda",
+    "f1Body": "Tanya dengan lantang. Kavach menjawab dengan nota suara dan kad ringkas.",
+    "f2Title": "Keluarga turut mendengar",
+    "f2Body": "Apabila ibu atau bapa bertanya di kaunter, orang yang membayar premium mendapat jawapan yang sama.",
+    "f3Title": "Cuba nombor ujian",
+    "f3Body": "Imbas kod untuk menyertai nombor ujian WhatsApp Kavach."
+  },
+  "ex": {
+    "IN": {
+      "hospital": "City Heart Hospital",
+      "familyName": "Keluarga Sharma",
+      "lead": "Kavach mengingati setiap polisi di rumah dan memberitahu apa yang perlu dilakukan apabila hidup berubah, di kaunter hospital, dan apabila tuntutan dibayar kurang. Dalam bahasa Hindi atau Inggeris. Setiap rupee datang daripada terma polisi bertulis, lengkap dengan nombor halaman.",
+      "tryHospitalSub": "Anggaran contoh, Hindi atau Inggeris, kurang seminit. Tanpa log masuk.",
+      "momentsIntro": "Kavach mempelajari isi rumah sekali sahaja, dalam kira-kira dua minit. Kemudian ia bertindak pada tiga saat apabila keluarga India kehilangan wang.",
+      "closingHospital": "Suresh di kaunter hospital",
+      "otherTitle": "Cuba babak Singapura",
+      "otherSub": "Angioplasti Ah Kow: pelan Shield Class B1 yang ditawarkan bilik Class A, dalam bahasa Mandarin.",
+      "family": {
+        "title": "Keluarga contoh yang sudah dikenali Kavach",
+        "caption": "Lima orang, empat polisi, satu gambaran. Kavach mempelajarinya sekali sahaja, dalam kira-kira dua minit.",
+        "relations": {
+          "self": "Rahul, 34 · membayar premium",
+          "spouse": "Priya, 32",
+          "child": "Anaya, 5",
+          "father": "Suresh, 62 · pesakit",
+          "mother": "Kamala, 58 · membuka Kavach di kaunter"
+        }
+      },
+      "story": {
+        "step1Title": "Kamala menekan Di hospital",
+        "step1Body": "Dalam bahasa Hindi, pada telefonnya sendiri. Kavach sudah mengenali kedua-dua polisi Suresh.",
+        "step2Title": "Dia menunjukkan anggaran kepada kamera",
+        "step2Body": "Kavach membaca tarif bilik: deluxe {quoted} sehari, standard {lower}.",
+        "step3Title": "“Minta bilik {lower}.”",
+        "step3Body": "Hanya caj yang berkait dengan harga bilik dipotong di bilik yang lebih mahal. Kavach memberitahu kad mana yang patut diberi dahulu, dan apa yang perlu diminta di kaunter."
+      },
+      "decision": {
+        "patient": "Suresh, 62 · angioplasti terancang · dua polisi dalam keluarga",
+        "roomQuoted": "Bilik deluxe",
+        "roomLower": "Bilik standard",
+        "roomLowerShort": "bilik standard",
+        "why": "Polisi Suresh membayar bilik sehingga had tertentu. Melebihi had itu, syarikat insurans turut memotong caj pakar bedah, dewan bedah dan caj lain yang berkait dengan harga bilik, dalam nisbah yang sama.",
+        "script": "“Tolong tempahkan bilik standard untuk bapa saya, pada {amount} sehari atau kurang.”",
+        "firstCard": "Beri kad polisi ibu bapa dahulu; polisi yang satu lagi menanggung baki."
+      },
+      "moments": {
+        "change": "“Menyertai syarikat permulaan pada 1 Dis.” Kavach nampak perlindungan ibu bapa anda tamat pada 30 Nov, menyediakan surat untuk mengekalkannya, dan mengingatkan anda di WhatsApp.",
+        "hospital": "Suara dan kamera, dalam bahasa Hindi. Tunjukkan anggaran dan Kavach beritahu kad polisi mana yang patut diberi dan bilik mana yang patut diminta.",
+        "claimStat": "<amount></amount> dijumpai untuk dirayu"
+      },
+      "whatsappBody": "Hantar foto anggaran atau nota suara dalam bahasa Hindi. Kavach membalas dengan nota suara dan kad.",
+      "chat": {
+        "ask": "Kaunter menawarkan bilik deluxe pada {quoted} sehari. Bolehkah kami ambil?",
+        "reply": "Minta bilik standard pada {lower} sehari. Di bilik deluxe, polisi turut memotong caj pakar bedah dan dewan bedah."
+      }
+    },
+    "SG": {
+      "hospital": "Sample General Hospital",
+      "familyName": "Keluarga Tan, Singapura",
+      "lead": "Kavach mengingati setiap polisi di rumah dan memberitahu apa yang perlu dilakukan apabila hidup berubah, di kaunter hospital, dan apabila tuntutan dibayar kurang. Dalam bahasa Mandarin, Melayu atau Inggeris. Setiap dolar datang daripada terma polisi bertulis, lengkap dengan nombor halaman.",
+      "tryHospitalSub": "Anggaran contoh, Mandarin, Melayu atau Inggeris, kurang seminit. Tanpa log masuk.",
+      "momentsIntro": "Kavach mempelajari isi rumah sekali sahaja, dalam kira-kira dua minit. Kemudian ia bertindak pada tiga saat apabila keluarga kehilangan wang.",
+      "closingHospital": "Ah Kow di kaunter hospital",
+      "otherTitle": "Cuba babak India",
+      "otherSub": "Angioplasti Suresh di City Heart Hospital, dalam bahasa Hindi.",
+      "family": {
+        "title": "Keluarga contoh yang sudah dikenali Kavach",
+        "caption": "Lima orang, MediShield Life dan satu pelan Shield, satu gambaran. Kavach mempelajarinya sekali sahaja, dalam kira-kira dua minit.",
+        "relations": {
+          "self": "Wei-Ming, 38 · membayar premium",
+          "spouse": "Hui-Ling, 36",
+          "child": "Jia-En, 6",
+          "father": "Ah Kow, 68 · pesakit",
+          "mother": "Siew-Hong, 64"
+        }
+      },
+      "story": {
+        "step1Title": "Keluarga menekan Di hospital",
+        "step1Body": "Dalam bahasa Mandarin, pada telefon mereka sendiri. Kavach sudah mengenali MediShield Life Ah Kow dan pelan Shield beliau.",
+        "step2Title": "Mereka menunjukkan anggaran kepada kamera",
+        "step2Body": "Kavach membaca caj wad: Class A {quoted} sehari, Class B1 {lower}.",
+        "step3Title": "“Minta wad Class B1.”",
+        "step3Body": "Pelan Shield beliau dibeli untuk Class B1. Di Class A, pelan itu hanya membayar sebahagian daripada bil. Kavach memberitahu kad mana yang patut diberi dahulu, dan apa yang perlu diminta di kaunter."
+      },
+      "decision": {
+        "patient": "Ah Kow, 68 · angioplasti terancang · pelan Shield dibeli untuk Class B1",
+        "roomQuoted": "Wad Class A",
+        "roomLower": "Wad Class B1",
+        "roomLowerShort": "wad Class B1",
+        "why": "Pelan Shield Ah Kow dibeli untuk wad Class B1. Di wad Class A, pelan hanya membayar sebahagian daripada bil, jadi keluarga membayar jauh lebih banyak untuk rawatan yang sama.",
+        "script": "“Tolong masukkan bapa saya ke wad Class B1.”",
+        "firstCard": "Beri kad pelan Shield dahulu; MediShield Life merupakan sebahagian daripadanya."
+      },
+      "moments": {
+        "change": "“Bertukar kerja bulan depan.” Kavach menyemak perlindungan mana yang tamat bersama pekerjaan, apa yang masih dibayar oleh pelan Shield keluarga, dan mengingatkan anda di WhatsApp.",
+        "hospital": "Suara dan kamera, dalam bahasa Mandarin atau Melayu. Tunjukkan anggaran dan Kavach beritahu kad mana yang patut diberi dan wad mana yang patut diminta.",
+        "claimStat": "Setiap potongan disemak berdasarkan pelan"
+      },
+      "whatsappBody": "Hantar foto anggaran atau nota suara dalam bahasa Mandarin atau Melayu. Kavach membalas dengan nota suara dan kad.",
+      "chat": {
+        "ask": "Hospital menawarkan wad Class A pada {quoted} sehari. Patutkah kami ambil?",
+        "reply": "Minta wad Class B1 pada {lower} sehari. Di Class A, pelan Shield beliau hanya membayar sebahagian daripada bil."
+      }
+    }
+  }
 }

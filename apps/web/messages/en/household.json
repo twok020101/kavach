@@ -45,5 +45,10 @@
   "copayFromAge": "{percent}% co-pay from age {age}",
   "deductible": "Pays above {amount}",
   "claimsUsed": "Used this year {amount}",
-  "speaks": "Speaks {language}"
+  "speaks": "Speaks {language}",
+  "shell": {
+    "sample": "Sample family",
+    "steps": "{count, plural, =0 {Nothing waiting} one {# step waiting} other {# steps waiting}}",
+    "account": "{name}: family settings"
+  }
 }

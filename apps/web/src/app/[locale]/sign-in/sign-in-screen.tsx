@@ -1,13 +1,16 @@
 'use client';
 
 import { useMutation } from '@tanstack/react-query';
-import { ArrowRight, Info, ShieldCheck, Users } from 'lucide-react';
-import { useTranslations } from 'next-intl';
+import type { Locale } from '@kavach/schemas';
+import { ArrowRight, Globe, Info, ShieldCheck, Users } from 'lucide-react';
+import { useLocale, useTranslations } from 'next-intl';
+import type { ReactNode } from 'react';
 import { Reveal } from '@/components/kavach/reveal';
 import { SetupFrame } from '@/components/setup/setup-frame';
-import { Button } from '@/components/ui/button';
+import { Button, buttonClasses } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { useRouter } from '@/i18n/navigation';
+import { Link, useRouter } from '@/i18n/navigation';
+import { marketForLocale } from '@/lib/market';
 import { firebaseEnabled, signInAsGuest, signInWithGoogle } from '@/lib/firebase';
 import { startDemo } from '@/lib/session';
 import { acceptInvite, useInvitePreview } from '@/lib/setup';
@@ -25,6 +28,11 @@ export function SignInScreen({ invite }: { invite: string | null }) {
   const router = useRouter();
   const queryClient = useQueryClient();
   const preview = useInvitePreview(invite);
+  const locale = useLocale() as Locale;
+  // Mandarin and Malay readers are in Singapore: their sample family comes first. The Singapore
+  // scene opens in the reader's language, or in Mandarin from Hindi (an India language).
+  const sgFirst = marketForLocale(locale) === 'SG';
+  const sgLocale: Locale = marketForLocale(locale) === 'IN' ? 'zh' : locale;
 
   // Signing in, then: join the inviting family, or start setting up your own.
   const signIn = useMutation({
@@ -134,45 +142,94 @@ export function SignInScreen({ invite }: { invite: string | null }) {
           </Card>
         </Reveal>
         <Reveal delay={0.06}>{buttons}</Reveal>
-        <Reveal delay={0.12}>
-          {/* The demo as a row of its own (from the Stitch sign-in): the family's initial on a
-              tile, what the demo holds, and one button at the end. */}
-          <Card
-            as="section"
-            tone="soft"
-            aria-labelledby="demo-title"
-            className="flex flex-col gap-4"
-          >
-            <div className="flex min-w-0 items-start gap-4">
-              <span
-                aria-hidden
-                className="flex size-12 shrink-0 items-center justify-center rounded-full bg-partial-bg font-display text-xl font-bold text-partial"
+        <Reveal delay={0.12} className="flex flex-col gap-3">
+          {/* The two sample families (from the Stitch sign-in demo row): the household's own
+              market first. The Sharmas open the app; the Tans open the Singapore desk scene. */}
+          {(sgFirst ? ['sg', 'in'] : ['in', 'sg']).map((which) =>
+            which === 'in' ? (
+              <DemoRow
+                key="in"
+                id="demo-in"
+                initial={t('demoCard.initial')}
+                kicker={t('demoCard.kicker')}
+                title={t('demoCard.title')}
+                body={t('demoCard.body')}
               >
-                {t('demoCard.initial')}
-              </span>
-              <div className="flex min-w-0 flex-1 flex-col gap-1">
-                <span className="label text-primary-hover">{t('demoCard.kicker')}</span>
-                <h2 id="demo-title" className="font-display text-lg font-bold leading-tight">
-                  {t('demoCard.title')}
-                </h2>
-                <p className="text-sm text-muted">{t('demoCard.body')}</p>
-              </div>
-            </div>
-            {/* The button sits under the words, in line with them (the column is too narrow
-                for the Stitch side-by-side row once Hindi or Tamil labels come in). */}
-            <Button
-              variant="secondary"
-              loading={demo.isPending}
-              onClick={() => demo.mutate()}
-              className="self-start sm:ml-16"
-            >
-              {t('demoCard.open')}
-              <ArrowRight aria-hidden className="btn-arrow size-5" />
-            </Button>
-          </Card>
+                <Button
+                  variant="secondary"
+                  loading={demo.isPending}
+                  onClick={() => demo.mutate()}
+                  className="self-start sm:ml-16"
+                >
+                  {t('demoCard.open')}
+                  <ArrowRight aria-hidden className="btn-arrow size-5" />
+                </Button>
+              </DemoRow>
+            ) : (
+              <DemoRow
+                key="sg"
+                id="demo-sg"
+                initial={t('demoCardSg.initial')}
+                kicker={t('demoCardSg.kicker')}
+                title={t('demoCardSg.title')}
+                body={t('demoCardSg.body')}
+              >
+                <Link
+                  href={{ pathname: '/desk', query: { demo: '1', scene: 'singapore' } }}
+                  locale={sgLocale}
+                  className={buttonClasses({
+                    variant: 'secondary',
+                    className: 'self-start sm:ml-16',
+                  })}
+                >
+                  <Globe aria-hidden className="size-5" />
+                  {t('demoCardSg.open')}
+                  <ArrowRight aria-hidden className="btn-arrow size-5" />
+                </Link>
+              </DemoRow>
+            ),
+          )}
         </Reveal>
       </Card>
     </SetupFrame>
+  );
+}
+
+/** One sample family as a row: its initial on a tile, what it holds, and its way in. */
+function DemoRow({
+  id,
+  initial,
+  kicker,
+  title,
+  body,
+  children,
+}: {
+  id: string;
+  initial: string;
+  kicker: string;
+  title: string;
+  body: string;
+  children: ReactNode;
+}) {
+  return (
+    <Card as="section" tone="soft" aria-labelledby={id} className="flex flex-col gap-4">
+      <div className="flex min-w-0 items-start gap-4">
+        <span
+          aria-hidden
+          className="flex size-12 shrink-0 items-center justify-center rounded-full bg-partial-bg font-display text-xl font-bold text-partial"
+        >
+          {initial}
+        </span>
+        <div className="flex min-w-0 flex-1 flex-col gap-1">
+          <span className="label text-primary-hover">{kicker}</span>
+          <h2 id={id} className="font-display text-lg font-bold leading-tight">
+            {title}
+          </h2>
+          <p className="text-sm text-muted">{body}</p>
+        </div>
+      </div>
+      {children}
+    </Card>
   );
 }
 

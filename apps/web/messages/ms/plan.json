@@ -89,7 +89,8 @@
         "own": "polisi sendiri"
       },
       "none": "Tiada polisi kesihatan melindungi {name} hari ini."
-    }
+    },
+    "asOfShort": "Setakat {date}"
   },
   "scrubber": {
     "asOf": "Setakat {date}",
@@ -147,7 +148,8 @@
     "leftOver": "Baki",
     "ofTotal": "{count} daripada {total} dalam pelan",
     "openPolicy": "Buka polisi",
-    "prioritised": "Mengikut keutamaan"
+    "utilised": "{percent}% daripada wang bebas untuk perlindungan ada dalam pelan",
+    "dotPrioritised": "Perlindungan mengikut keutamaan"
   },
   "change": {
     "title": "Apa yang berubah?",

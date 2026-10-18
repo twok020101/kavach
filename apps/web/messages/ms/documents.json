@@ -78,7 +78,8 @@
       "ending": "Tamat {date}",
       "planned": "Dirancang",
       "ended": "Sudah tamat"
-    }
+    },
+    "count": "{count, plural, other {# polisi}}"
   },
   "policy": {
     "notFound": "Polisi ini tidak lagi ada dalam keluarga.",

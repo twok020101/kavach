@@ -78,7 +78,8 @@
       "ending": "{date} को ख़त्म",
       "planned": "आगे शुरू होगी",
       "ended": "ख़त्म"
-    }
+    },
+    "count": "{count, plural, one {# पॉलिसी} other {# पॉलिसियाँ}}"
   },
   "policy": {
     "notFound": "यह पॉलिसी अब परिवार में नहीं है.",

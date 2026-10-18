@@ -78,7 +78,8 @@
       "ending": "{date} 到期",
       "planned": "待生效",
       "ended": "已到期"
-    }
+    },
+    "count": "{count, plural, other {# 份保单}}"
   },
   "policy": {
     "notFound": "这份保单已不在家庭中。",

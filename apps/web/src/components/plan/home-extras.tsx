@@ -93,21 +93,21 @@ export function QuickActions({ household }: { household: Household }) {
   }
   return (
     <section aria-label={t('title')}>
-      <ul className="grid gap-3 sm:grid-cols-3">
+      <ul className="grid gap-3 sm:grid-cols-3 lg:gap-4">
         {items.map(({ href, icon: Icon, label, hint }) => (
           <li key={href}>
             <Link
               href={href}
-              className="press flex min-h-20 items-center gap-3 rounded-md border border-border bg-surface p-3 hover:border-primary"
+              className="press flex h-full min-h-20 items-start gap-3 rounded-md border border-border bg-surface p-4 shadow-1 hover:border-primary"
             >
-              <span className="flex size-11 shrink-0 items-center justify-center rounded-md bg-primary-soft text-primary">
+              <span className="flex size-10 shrink-0 items-center justify-center rounded-md bg-primary-soft text-primary">
                 <Icon aria-hidden className="size-5" />
               </span>
-              <span className="flex min-w-0 flex-1 flex-col">
-                <span className="font-semibold leading-snug">{label}</span>
+              <span className="flex min-w-0 flex-1 flex-col gap-1">
+                <span className="font-display font-semibold leading-snug">{label}</span>
                 <span className="text-sm text-muted">{hint}</span>
               </span>
-              <ArrowRight aria-hidden className="size-5 shrink-0 text-muted" />
+              <ArrowRight aria-hidden className="mt-0.5 size-5 shrink-0 text-muted" />
             </Link>
           </li>
         ))}

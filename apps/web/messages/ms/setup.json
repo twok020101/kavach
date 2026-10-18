@@ -25,7 +25,14 @@
       "initial": "S",
       "kicker": "Keluarga sampel, sudah disediakan"
     },
-    "promiseTitle": "Janji kami kepada keluarga anda"
+    "promiseTitle": "Janji kami kepada keluarga anda",
+    "demoCardSg": {
+      "kicker": "Keluarga contoh di Singapura",
+      "initial": "T",
+      "title": "Lihat keluarga Tan di kaunter hospital",
+      "body": "Kemasukan Ah Kow di Sample General Hospital: MediShield Life, pelan Shield dan pilihan wad, dalam bahasa Mandarin.",
+      "open": "Buka babak Singapura"
+    }
   },
   "consent": {
     "title": "Sebelum kita mula",

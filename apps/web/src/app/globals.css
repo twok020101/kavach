@@ -2,19 +2,23 @@
 
 /* Design tokens from docs/plan/07-design-system.md §11.
    The desk re-declares the light tokens, so it stays light inside a dark page. */
+/* Design tokens: the Stitch design (design/stitch_ui_modernization_and_redesign/kavach/DESIGN.md)
+   on the 07 token names. Lavender surfaces, navy ink, indigo primary, marigold accent.
+   The desk re-declares the light tokens, so it stays light inside a dark page. */
 :root,
 [data-mode='desk'] {
   color-scheme: light;
-  --bg: #fbfaf7;
+  --bg: #faf8ff;
   --surface: #ffffff;
-  --surface-sunken: #f5f3ee;
-  --border: #e4e0d7;
-  --border-strong: #a39d90;
-  --text: #1c1a17;
-  --text-muted: #5e6472;
+  --surface-sunken: #f2f3ff;
+  --surface-inset: #ebedff;
+  --border: #dcdfee;
+  --border-strong: #757683;
+  --text: #0d1a3c;
+  --text-muted: #444652;
   --primary: #2e45a0;
   --primary-hover: #23357a;
-  --primary-soft: #e3e8f8;
+  --primary-soft: #dde1ff;
   --on-primary: #ffffff;
   --accent: #f4a62a;
   --accent-ink: #0f1b3d;
@@ -32,49 +36,53 @@
   --status-na: #6b665c;
   --status-na-bg: #ece9e2;
   --citation: #23357a;
-  --citation-bg: #f2f4fc;
-  /* Radii per 07 §5: 6 inputs and chips, 12 cards, 20 sheets and big buttons. */
-  --radius-sm: 6px;
-  --radius-md: 12px;
-  --radius-lg: 20px;
-  /* Elevation (07 §5): 0 is the default (flat, bordered); 2 only for sheets and popovers.
-     No raised cards, no accent glow, no colour wash (plain register, spec 2026-10-17). */
-  --shadow-1: none;
-  --shadow-2: 0 8px 24px rgba(15, 27, 61, 0.12);
+  --citation-bg: #f2f3ff;
+  /* Radii (DESIGN.md Shapes): 0.5rem inputs, chips and nested panels; 1rem cards and buttons;
+     1.5rem sheets, banners and hero frames; pills for status chips. */
+  --radius-sm: 0.5rem;
+  --radius-md: 1rem;
+  --radius-lg: 1.5rem;
+  /* Elevation (DESIGN.md Elevation & Depth): ambient shadows tinted with navy ink, never black.
+     1 rests under cards, hover lifts interactive cards, 2 floats sheets and popovers. */
+  --shadow-1: 0 1px 3px rgba(15, 27, 61, 0.04), 0 4px 12px rgba(15, 27, 61, 0.02);
+  --shadow-hover: 0 4px 12px rgba(46, 69, 160, 0.08), 0 12px 28px rgba(15, 27, 61, 0.04);
+  --shadow-2: 0 8px 32px rgba(15, 27, 61, 0.12), 0 2px 6px rgba(15, 27, 61, 0.04);
   --shadow-accent: none;
   --wash: none;
 }
 
 [data-theme='dark'] {
   color-scheme: dark;
-  --bg: #12141c;
-  --surface: #1a1d28;
-  --surface-sunken: #151821;
-  --border: #2d3245;
-  --border-strong: #5e6472;
-  --text: #edebe6;
-  --text-muted: #9aa0b4;
-  --primary: #8fa3f0;
-  --primary-hover: #a9b9f4;
-  --primary-soft: #23294a;
-  --on-primary: #12141c;
+  --bg: #0b1230;
+  --surface: #121a3f;
+  --surface-sunken: #0f1636;
+  --surface-inset: #182250;
+  --border: #2a3466;
+  --border-strong: #6b76a8;
+  --text: #eff0ff;
+  --text-muted: #b3b9d6;
+  --primary: #adbaff;
+  --primary-hover: #c6cfff;
+  --primary-soft: #223068;
+  --on-primary: #0b1230;
   --accent: #f4a62a;
-  --accent-ink: #12141c;
+  --accent-ink: #0b1230;
   --accent-soft: #3a2a10;
   --accent-hover: #e99b1c;
-  --base-primary: #5668b3;
+  --base-primary: #6f7fcf;
   --base-accent: #a86a08;
-  --status-safe: #5bc48a;
-  --status-safe-bg: #173326;
-  --status-partial: #f0b44c;
+  --status-safe: #7ad09b;
+  --status-safe-bg: #15321f;
+  --status-partial: #ffb956;
   --status-partial-bg: #3a2a10;
-  --status-gap: #f28b7d;
+  --status-gap: #ffb4ab;
   --status-gap-bg: #3d1d1a;
-  --status-na: #9aa0b4;
-  --status-na-bg: #23263a;
-  --citation: #b8c4f5;
-  --citation-bg: #1f2540;
-  --shadow-1: none;
+  --status-na: #b3b9d6;
+  --status-na-bg: #1f2850;
+  --citation: #c6cfff;
+  --citation-bg: #182250;
+  --shadow-1: 0 1px 3px rgba(0, 0, 0, 0.3), 0 4px 12px rgba(0, 0, 0, 0.18);
+  --shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.35), 0 12px 28px rgba(0, 0, 0, 0.25);
   --shadow-2: 0 12px 32px rgba(0, 0, 0, 0.5);
   --shadow-accent: none;
   --wash: none;
@@ -86,7 +94,7 @@
   --surface: #ffffff;
   --text: #0b0b0c;
   --text-muted: #34312b;
-  --border: #ddd8ce;
+  --border: #c5c5d4;
 }
 
 /* Larger text (S27 Settings). The desk sets its own size. */
@@ -106,6 +114,7 @@ html:has([data-mode='desk']) {
   --color-bg: var(--bg);
   --color-surface: var(--surface);
   --color-sunken: var(--surface-sunken);
+  --color-inset: var(--surface-inset);
   --color-border: var(--border);
   --color-border-strong: var(--border-strong);
   --color-text: var(--text);
@@ -132,6 +141,7 @@ html:has([data-mode='desk']) {
   --radius-md: var(--radius-md);
   --radius-lg: var(--radius-lg);
   --shadow-1: var(--shadow-1);
+  --shadow-hover: var(--shadow-hover);
   --shadow-2: var(--shadow-2);
   --shadow-accent: var(--shadow-accent);
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
@@ -145,7 +155,9 @@ html:has([data-mode='desk']) {
   --font-display:
     var(--font-jakarta), var(--font-noto-deva), var(--font-noto-tamil), var(--font-noto-sc),
     sans-serif;
-  --font-serif: var(--font-source-serif), serif;
+  --font-serif:
+    var(--font-source-serif), var(--font-noto-deva), var(--font-noto-tamil), var(--font-noto-sc),
+    Georgia, serif;
   --font-mono: var(--font-jetbrains), ui-monospace, monospace;
 }
 
@@ -407,7 +419,20 @@ html:has([data-mode='desk']) {
     transform: none;
   }
 
-  /* A panel: sunken fill with a 6 px left rule (info, next step, missing). */
+  /* A card: white, bordered, resting on the ambient shadow (DESIGN.md Layer 1). */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-1);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .card-hover:hover {
+      box-shadow: var(--shadow-hover);
+    }
+  }
+
+  /* A panel: inset data inside a card (DESIGN.md Layer 2): sunken fill, nested radius, no shadow. */
   .panel {
     background: var(--surface-sunken);
     border: 1px solid var(--border);
@@ -431,6 +456,21 @@ html:has([data-mode='desk']) {
     letter-spacing: 0.06em;
     text-transform: uppercase;
     color: var(--text-muted);
+  }
+
+  /* label-caps (DESIGN.md): 11 px, 600, 0.06 em, uppercase. Eyebrows and tiny headers. */
+  .label-caps {
+    font-size: 11px;
+    line-height: 16px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  /* Citations and policy wording: Source Serif 4 (DESIGN.md Typography). */
+  .serif {
+    font-family: var(--font-serif);
   }
 
   /* Thin hairline used between stacked rows. */
@@ -498,8 +538,10 @@ html:has([data-mode='desk']) {
 }
 
 /* All amounts use tabular figures so columns line up. */
-.amount {
-  font-feature-settings: 'tnum';
+.amount,
+.tnum {
+  font-feature-settings: 'tnum' 1;
+  font-variant-numeric: tabular-nums;
 }
 
 :lang(hi),

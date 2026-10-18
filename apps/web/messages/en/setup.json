@@ -25,6 +25,13 @@
       "title": "Explore the Sharma family demo",
       "body": "Five people, four policies and a hospital admission already set up, so you can see every screen with real numbers.",
       "open": "Open the demo"
+    },
+    "demoCardSg": {
+      "kicker": "Sample family in Singapore",
+      "initial": "T",
+      "title": "See the Tan family at the hospital desk",
+      "body": "Ah Kow’s admission at Sample General Hospital: MediShield Life, a Shield plan and the ward choice, in Mandarin.",
+      "open": "Open the Singapore scene"
     }
   },
   "consent": {
