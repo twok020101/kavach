@@ -48,11 +48,14 @@ gcloud functions deploy "$FUNCTION" --gen2 --region="$REGION" --runtime=nodejs22
   --set-env-vars="GOOGLE_CLOUD_PROJECT=${PROJECT}" --memory=256Mi --quiet
 
 # One budget per project; delete every earlier copy (one id per line) so the amount is right.
-gcloud billing budgets list --billing-account="$BILLING_ACCOUNT" \
-  --filter="displayName=kavach-cap" --format="value(name)" 2>/dev/null |
-  while IFS= read -r budget; do
-    [ -n "$budget" ] && gcloud billing budgets delete "$budget" --quiet
-  done
+if ! EXISTING="$(gcloud billing budgets list --billing-account="$BILLING_ACCOUNT" \
+  --filter="displayName=kavach-cap" --format="value(name)")"; then
+  echo "Could not list the budgets on $BILLING_ACCOUNT; check the roles above." >&2
+  exit 1
+fi
+for budget in $EXISTING; do
+  gcloud billing budgets delete "$budget" --quiet
+done
 # No monitoring channels: the e-mails go to the billing admins by default, and an empty
 # channels flag is rejected by some gcloud versions.
 gcloud billing budgets create --billing-account="$BILLING_ACCOUNT" \
