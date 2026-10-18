@@ -120,6 +120,13 @@
     "defer": {
       "employer_cover": "Covered by {employer}'s group policy for now. Urgent if the job changes.",
       "budget": "Later: doesn't fit this month's budget."
+    },
+    "purpose": {
+      "term_life": "Income for the family if the earner dies",
+      "personal_accident": "Income if an accident stops work",
+      "device": "Loss, theft and damage",
+      "family_health": "Hospital bills, with no job attached",
+      "parents_health": "Hospital bills in their own name"
     }
   },
   "plan": {

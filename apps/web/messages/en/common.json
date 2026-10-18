@@ -107,5 +107,6 @@
     }
   },
   "copy": "Copy",
-  "copied": "Copied"
+  "copied": "Copied",
+  "activeFamily": "Active family"
 }

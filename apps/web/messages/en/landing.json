@@ -101,5 +101,12 @@
     "saving": "Less to pay",
     "pause": "Pause the story",
     "play": "Play the story"
+  },
+  "closing": {
+    "title": "Never face a hospital desk unprepared.",
+    "body": "Try the two scenes on the sample family, or set up your own in a few minutes. Kavach sells nothing and contacts no insurer.",
+    "hospital": "Suresh at the hospital desk",
+    "maternity": "Priya's delivery",
+    "own": "Set up my family"
   }
 }

@@ -1,6 +1,7 @@
 'use client';
 
 import {
+  ChevronsUpDown,
   Clock,
   Ellipsis,
   FileWarning,
@@ -9,6 +10,7 @@ import {
   House,
   ListChecks,
   type LucideIcon,
+  Users,
 } from 'lucide-react';
 import { motion, useReducedMotion } from 'motion/react';
 import { useTranslations } from 'next-intl';
@@ -99,12 +101,23 @@ export function AppShell({
 
       {/* Desktop left nav */}
       <aside className="fixed inset-y-0 left-0 z-30 hidden w-66 flex-col gap-6 border-r border-border bg-surface px-4 py-5 lg:flex">
-        <div className="flex flex-col gap-1 px-2">
-          <Link href="/home" className="inline-flex" aria-label="Kavach">
+        <div className="flex flex-col gap-3">
+          <Link href="/home" className="inline-flex px-2" aria-label="Kavach">
             <Logo />
           </Link>
           {householdName && (
-            <span className="truncate text-sm font-medium text-muted">{householdName}</span>
+            // The family block (from the Stitch sidebar): who this is for, and the way to Settings.
+            <Link
+              href="/settings"
+              className="press flex items-center gap-2 rounded-md bg-sunken px-3 py-2 hover:bg-primary-soft"
+            >
+              <Users aria-hidden className="size-5 shrink-0 text-primary" />
+              <span className="flex min-w-0 flex-1 flex-col">
+                <span className="label">{t('activeFamily')}</span>
+                <span className="truncate font-semibold leading-tight">{householdName}</span>
+              </span>
+              <ChevronsUpDown aria-hidden className="size-4 shrink-0 text-muted" />
+            </Link>
           )}
         </div>
         <Link

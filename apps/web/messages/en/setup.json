@@ -16,7 +16,13 @@
     "invited": "{inviter} invited you to the {household}",
     "invitedAs": "You'll join as {name}. You'll see your cover and the hospital button.",
     "join": "Join the family",
-    "inviteGone": "This invite has expired or was already used. Ask for a new link."
+    "inviteGone": "This invite has expired or was already used. Ask for a new link.",
+    "demoCard": {
+      "badge": "No setup",
+      "title": "Explore the Sharma family demo",
+      "body": "Five people, four policies and a hospital admission already set up, so you can see every screen with real numbers.",
+      "open": "Open the demo"
+    }
   },
   "consent": {
     "title": "Before we start",
@@ -24,19 +30,23 @@
     "purposes": {
       "planning": {
         "label": "Use my family, money and policy details to plan cover",
-        "hint": "Needed to show your family's cover."
+        "hint": "Needed to show your family's cover.",
+        "note": "Kept only while your family is set up here; delete it any time from Settings."
       },
       "documents": {
         "label": "Read the documents I upload",
-        "hint": "Policies, benefit summaries, hospital estimates."
+        "hint": "Policies, benefit summaries, hospital estimates.",
+        "note": "Only the documents you upload. Nothing is fetched from an insurer."
       },
       "health": {
         "label": "Health details (for example, diabetes)",
-        "hint": "Optional. Helps at the hospital. Without it, hospital advice may be less precise."
+        "hint": "Optional. Helps at the hospital. Without it, hospital advice may be less precise.",
+        "note": "Never shared with an insurer or anyone else."
       },
       "whatsapp": {
         "label": "WhatsApp messages to my family",
-        "hint": "Optional. Alerts and dated reminders."
+        "hint": "Optional. Alerts and dated reminders.",
+        "note": "Alerts and reminders only. Never promotions."
       }
     },
     "required": "Kavach needs at least the first one to work.",

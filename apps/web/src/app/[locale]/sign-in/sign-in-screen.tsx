@@ -5,6 +5,7 @@ import { ArrowRight, ShieldCheck, Users } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { Reveal } from '@/components/kavach/reveal';
 import { SetupFrame } from '@/components/setup/setup-frame';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { useRouter } from '@/i18n/navigation';
@@ -123,19 +124,34 @@ export function SignInScreen({ invite }: { invite: string | null }) {
       </Reveal>
       <Reveal delay={0.06}>{buttons}</Reveal>
       <Reveal delay={0.12} className="mt-auto">
-        <div className="flex flex-wrap items-center justify-between gap-3 border-t border-border pt-4">
-          <p className="text-muted">{t('demo')}</p>
+        {/* The demo as a card of its own (from the Stitch sign-in): what it holds, one button. */}
+        <Card as="section" aria-labelledby="demo-title" className="flex flex-col gap-3 bg-sunken">
+          <div className="flex items-start gap-3">
+            <span className="flex size-12 shrink-0 items-center justify-center rounded-md bg-accent text-accent-ink">
+              <Users aria-hidden className="size-6" />
+            </span>
+            <div className="flex min-w-0 flex-1 flex-col gap-1">
+              <span className="flex flex-wrap items-center gap-2">
+                <h2 id="demo-title" className="font-display text-lg font-bold leading-tight">
+                  {t('demoCard.title')}
+                </h2>
+                <Badge tone="primary" className="text-xs">
+                  {t('demoCard.badge')}
+                </Badge>
+              </span>
+              <p className="text-sm text-muted">{t('demoCard.body')}</p>
+            </div>
+          </div>
           <Button
-            variant="ghost"
-            size="sm"
+            variant="secondary"
             loading={demo.isPending}
             onClick={() => demo.mutate()}
-            className="-mr-3"
+            className="self-start"
           >
-            {t('demoLink')}
+            {t('demoCard.open')}
             <ArrowRight aria-hidden className="btn-arrow size-5" />
           </Button>
-        </div>
+        </Card>
       </Reveal>
     </SetupFrame>
   );

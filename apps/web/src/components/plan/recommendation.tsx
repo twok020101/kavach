@@ -99,7 +99,13 @@ export function RecommendationRow({
         )}
       </div>
       <div className="flex shrink-0 items-center gap-1">
-        <Amount value={rec.cover} className="font-display text-base font-bold sm:text-lg" />
+        <span className="flex flex-col items-end">
+          <Amount value={rec.cover} className="font-display text-base font-bold sm:text-lg" />
+          {/* What the cover is for, under the figure (from the Stitch plan rows). */}
+          <span className="hidden max-w-44 text-right text-xs leading-tight text-muted sm:block">
+            {t(`purpose.${rec.category}`)}
+          </span>
+        </span>
         {onSelect && <ChevronRight aria-hidden className="size-5 text-muted" />}
       </div>
     </>

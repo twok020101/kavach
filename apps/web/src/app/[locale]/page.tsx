@@ -238,6 +238,38 @@ export default async function LandingPage({ params }: PageProps<'/[locale]'>) {
               <p className="text-sm text-muted">{t('trustLine')}</p>
             </Reveal>
           </section>
+
+          {/* The closing call (from the Stitch landing): the two scenes and the way to your own family. */}
+          <section aria-labelledby="closing-title" className="rounded-lg bg-sunken p-6 sm:p-8">
+            <Reveal className="flex flex-col gap-5">
+              <div className="flex max-w-2xl flex-col gap-2">
+                <h2 id="closing-title" className="font-display text-2xl font-bold sm:text-3xl">
+                  {t('closing.title')}
+                </h2>
+                <p className="text-muted">{t('closing.body')}</p>
+              </div>
+              <div className="flex flex-wrap gap-3">
+                <Link
+                  href={{ pathname: '/desk', query: { demo: '1' } }}
+                  className={buttonClasses({ variant: 'accent', size: 'lg' })}
+                >
+                  <Hospital aria-hidden className="size-6" />
+                  {t('closing.hospital')}
+                </Link>
+                <Link
+                  href={{ pathname: '/desk', query: { demo: '1', scene: 'maternity' } }}
+                  className={buttonClasses({ variant: 'secondary', size: 'lg' })}
+                >
+                  <Baby aria-hidden className="size-6" />
+                  {t('closing.maternity')}
+                </Link>
+                <Link href="/sign-in" className={buttonClasses({ variant: 'ghost', size: 'lg' })}>
+                  {t('closing.own')}
+                  <ArrowRight aria-hidden className="size-5" />
+                </Link>
+              </div>
+            </Reveal>
+          </section>
         </main>
 
         <EvidenceBand wordings={counts.wordings} checked={counts.checked} />

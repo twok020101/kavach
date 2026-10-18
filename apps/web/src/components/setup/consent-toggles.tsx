@@ -1,6 +1,7 @@
 'use client';
 
 import { ConsentPurpose } from '@kavach/schemas';
+import { Lock } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { Badge } from '../ui/badge';
 import { cn } from '../ui/cn';
@@ -58,6 +59,11 @@ export function ConsentToggles({
                   </Badge>
                 </span>
                 <span className="text-sm text-muted">{tp(`${purpose}.hint`)}</span>
+                {/* What is never done with it: the line that makes the choice an informed one. */}
+                <span className="flex items-center gap-1 text-xs text-muted">
+                  <Lock aria-hidden className="size-3.5 shrink-0" />
+                  {tp(`${purpose}.note`)}
+                </span>
               </span>
             </label>
           </li>
