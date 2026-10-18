@@ -43,6 +43,8 @@ export type Copy = {
     limit: string;
     above: string;
   };
+  /** The policy has no maternity benefit at all (R-MT-001 with limit 0). */
+  noMaternity: { title: string; body: (policy: string) => string };
   sameCharges: (lower: RoomCategory, quoted: RoomCategory) => string;
   packagePrice: (procedure: string, lower: RoomCategory) => string;
   text: {
@@ -130,6 +132,11 @@ const en: Copy = {
     limit: 'Policy pays at most',
     above: 'Above the limit (yours to pay)',
   },
+  noMaternity: {
+    title: 'No maternity cover on this policy',
+    body: (policy) =>
+      `The ${policy} does not cover a delivery, so the hospital bill is yours to pay. Check the exclusions in the policy schedule, and ask the TPA desk to confirm before you sign.`,
+  },
   sameCharges: (lower, quoted) =>
     `Are the surgeon, OT, nursing and doctor charges in the ${en.room(lower)} room different from the ${en.room(quoted)} room, or the same for every room?`,
   packagePrice: (procedure, lower) =>
@@ -206,6 +213,11 @@ const hi: Copy = {
     next: 'अगली बार के लिए: मैटरनिटी वाली रिटेल हेल्थ पॉलिसियाँ मिलती हैं, पर हर एक में साल भर या ज़्यादा का वेटिंग पीरियड होता है, इसलिए प्रेग्नेंसी से काफ़ी पहले लेने पर ही काम आती हैं। जन्म के 90 दिन के अंदर बच्चे को पॉलिसी में जोड़िए।',
     limit: 'पॉलिसी ज़्यादा से ज़्यादा देगी',
     above: 'लिमिट से ऊपर (आपको देना होगा)',
+  },
+  noMaternity: {
+    title: 'इस पॉलिसी में मैटरनिटी कवर नहीं है',
+    body: (policy) =>
+      `${policy} डिलीवरी को कवर नहीं करती, इसलिए अस्पताल का बिल आपको देना होगा। पॉलिसी शेड्यूल के एक्सक्लूज़न देखिए, और साइन करने से पहले TPA डेस्क से पुष्टि कर लीजिए।`,
   },
   sameCharges: (lower, quoted) =>
     `क्या ${hi.room(lower)} कमरे में सर्जन, OT, नर्सिंग और डॉक्टर के चार्ज ${hi.room(quoted)} कमरे से अलग हैं, या हर कमरे में एक जैसे?`,

@@ -156,6 +156,32 @@ function explain(
     });
   }
 
+  // No maternity benefit at all (R-MT-001 with limit 0) and nothing paid: a card says why, or the
+  // family sees the whole bill as theirs with no reason (issue #25).
+  const noBenefit =
+    rec.policyPays === 0
+      ? ev.trace.find(
+          (f) =>
+            f.ruleId === 'R-MT-001' &&
+            f.inputs.roomCategoryId === rec.roomCategoryId &&
+            f.inputs.limit === 0,
+        )
+      : undefined;
+  const noBenefitPolicy = noBenefit && byId.get(String(noBenefit.inputs.policyId));
+  if (noBenefit && noBenefitPolicy) {
+    cards.splice(2, 0, {
+      id: 'no_maternity',
+      kind: 'limit_cap',
+      title: t.noMaternity.title,
+      body: `${t.noMaternity.body(nick(noBenefitPolicy))}\n${t.cap.next}`,
+      amounts: [
+        { label: t.cap.above, amount: Number(noBenefit.inputs.eligible ?? 0), emphasis: true },
+      ],
+      ruleIds: ['R-MT-001'],
+      verified: true,
+    });
+  }
+
   if (alternate) {
     cards.push({
       id: 'billing_branch',
