@@ -78,7 +78,11 @@
       "hospital": "Suresh · angioplasty",
       "maternity": "Priya · delivery",
       "singapore": "Ah Kow · Singapore"
-    }
+    },
+    "admitted": "Admitted",
+    "memberChip": "{name} ({relation}, {age})",
+    "controls": "Quick desk controls",
+    "sendPrompts": "Send these to family on WhatsApp"
   },
   "summary": {
     "title": "Session summary",

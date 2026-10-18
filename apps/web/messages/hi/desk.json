@@ -78,7 +78,11 @@
       "hospital": "सुरेश · एंजियोप्लास्टी",
       "maternity": "प्रिया · डिलीवरी",
       "singapore": "आह काओ · सिंगापुर"
-    }
+    },
+    "admitted": "भर्ती",
+    "memberChip": "{name} ({relation}, {age})",
+    "controls": "डेस्क के ज़रूरी कंट्रोल",
+    "sendPrompts": "ये सवाल परिवार को WhatsApp पर भेजें"
   },
   "summary": {
     "title": "सारांश",

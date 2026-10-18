@@ -10,17 +10,20 @@
     "change": {
       "title": "Apabila hidup berubah",
       "body": "“Menyertai syarikat permulaan pada 1 Dis.” Kavach nampak perlindungan ibu bapa anda tamat pada 30 Nov, menyediakan surat untuk mengekalkannya, dan mengingatkan anda di WhatsApp.",
-      "stat": "Perlindungan ibu bapa dikekalkan, tidak hilang"
+      "stat": "Perlindungan ibu bapa dikekalkan, tidak hilang",
+      "when": "Sebelum ke hospital"
     },
     "hospital": {
       "title": "Di kaunter hospital",
       "body": "Suara dan kamera, dalam bahasa Hindi. Tunjukkan anggaran dan Kavach beritahu kad polisi mana yang patut diberi dan bilik mana yang patut diminta.",
-      "stat": "<amount></amount> kurang perlu dibayar"
+      "stat": "<amount></amount> kurang perlu dibayar",
+      "when": "Semasa kemasukan"
     },
     "claim": {
       "title": "Apabila tuntutan bermasalah",
       "body": "Hantar surat penyelesaian. Kavach menyemak setiap potongan dengan polisi anda dan menyediakan rayuan.",
-      "stat": "<amount></amount> dijumpai untuk dirayu"
+      "stat": "<amount></amount> dijumpai untuk dirayu",
+      "when": "Selepas discaj"
     }
   },
   "whatsapp": {
@@ -51,7 +54,8 @@
   "stats": {
     "desk": "kurang perlu dibayar, dengan meminta bilik yang betul di kaunter hospital",
     "claim": "dijumpai untuk dirayu dalam satu surat penyelesaian",
-    "cited": "daripada jumlah rupee datang daripada peraturan yang diuji, setiap satu dengan klausanya"
+    "cited": "daripada jumlah rupee datang daripada peraturan yang diuji, setiap satu dengan klausanya",
+    "wordings": "perkataan polisi awam dibaca dan diuji, muka demi muka"
   },
   "momentsIntro": "Kavach mengenali isi rumah sekali sahaja, dalam kira-kira dua minit. Kemudian ia bertindak pada tiga saat di mana keluarga India kehilangan wang.",
   "titlePlain": "Insurans keluarga anda,",
@@ -111,5 +115,6 @@
     "singapore": "Adegan Singapura"
   },
   "trySingapore": "Cuba adegan Singapura",
-  "trySingaporeSub": "Angioplasti Ah Kow: pelan Shield Kelas B1 ditawarkan Kelas A, dalam bahasa Mandarin."
+  "trySingaporeSub": "Angioplasti Ah Kow: pelan Shield Kelas B1 ditawarkan Kelas A, dalam bahasa Mandarin.",
+  "momentKicker": "Saat {n} · {when}"
 }

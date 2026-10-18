@@ -1,7 +1,7 @@
 'use client';
 
 import type { CoverCell, Household } from '@kavach/schemas';
-import { Briefcase } from 'lucide-react';
+import { Briefcase, Info } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { Amount } from '@/components/kavach/amount';
 import { buttonClasses } from '@/components/ui/button';
@@ -13,8 +13,21 @@ import { RuleList } from './rule-list';
 
 const LAYERS = ['employer', 'personal', 'statutory'] as const;
 
-/** S10: what a member needs for one risk, what they have by layer, and why. */
-export function CellDetail({ household, cell }: { household: Household; cell: CoverCell }) {
+/**
+ * S10: what a member needs for one risk, what they have by layer, and why. Laid out like the
+ * Stitch inspector: Needs / Has side by side on a sunken strip, one sunken tile per policy under
+ * its layer, the fix as a full-width button, the Why disclosure last.
+ */
+export function CellDetail({
+  household,
+  cell,
+  showStatus = true,
+}: {
+  household: Household;
+  cell: CoverCell;
+  /** Off when the caller already shows the status next to the title (the laptop inspector). */
+  showStatus?: boolean;
+}) {
   const t = useTranslations('plan');
   const date = useDate();
   const policies = household.policies.filter((p) => cell.policyIds.includes(p.id));
@@ -22,16 +35,21 @@ export function CellDetail({ household, cell }: { household: Household; cell: Co
 
   return (
     <div className="flex flex-col gap-4">
-      <StatusBadge status={cell.status} className="self-start" />
-      <dl className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-1">
-        <dt className="text-muted">{t('cell.needs')}</dt>
-        <dd className="text-right font-semibold">
-          <Amount value={cell.need} />
-        </dd>
-        <dt className="text-muted">{t('cell.has')}</dt>
-        <dd className="text-right font-semibold">
-          <Amount value={cell.have.employer + cell.have.personal + cell.have.statutory} />
-        </dd>
+      {showStatus && <StatusBadge status={cell.status} className="self-start" />}
+      <dl className="grid grid-cols-2 gap-x-4 rounded-md bg-sunken px-4 py-3">
+        {/* Label over the figure on a phone; label and figure on one line where there is room. */}
+        <div className="flex flex-col gap-0.5 border-r border-border pr-4 sm:flex-row sm:flex-wrap sm:items-baseline sm:justify-between sm:gap-x-3">
+          <dt className="text-sm text-muted sm:text-base">{t('cell.needs')}</dt>
+          <dd className="font-display text-lg font-bold">
+            <Amount value={cell.need} />
+          </dd>
+        </div>
+        <div className="flex flex-col gap-0.5 sm:flex-row sm:flex-wrap sm:items-baseline sm:justify-between sm:gap-x-3">
+          <dt className="text-sm text-muted sm:text-base">{t('cell.has')}</dt>
+          <dd className="font-display text-lg font-bold">
+            <Amount value={cell.have.employer + cell.have.personal + cell.have.statutory} />
+          </dd>
+        </div>
       </dl>
 
       {LAYERS.map((layer) => {
@@ -42,19 +60,17 @@ export function CellDetail({ household, cell }: { household: Household; cell: Co
         );
         if (inLayer.length === 0) return null;
         return (
-          <section key={layer} className="flex flex-col gap-2">
-            <h3 className="text-sm font-semibold uppercase tracking-wide text-muted">
-              {t(`layer.${layer}`)}
-            </h3>
+          <section key={layer} className="flex flex-col gap-1.5">
+            <h3 className="label">{t(`layer.${layer}`)}</h3>
             {inLayer.map((p) => (
-              <div key={p.id} className="rounded-md border border-border p-3">
-                <div className="flex items-baseline justify-between gap-2">
-                  <span className="font-semibold">{p.productName}</span>
-                  <Amount value={p.sumInsured} className="text-sm" />
+              <div key={p.id} className="rounded-md border border-border bg-sunken p-3">
+                <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-0.5">
+                  <span className="font-display font-semibold">{p.productName}</span>
+                  <Amount value={p.sumInsured} className="font-semibold" />
                 </div>
                 {p.source === 'employer' && (
-                  <p className="mt-1 flex items-center gap-1 text-sm text-partial">
-                    <Briefcase aria-hidden className="size-4" />
+                  <p className="mt-1 flex items-start gap-1.5 text-sm text-partial">
+                    <Briefcase aria-hidden className="mt-0.5 size-4 shrink-0" />
                     {t('cell.endsWithJob', {
                       name: holder(p.holderMemberId),
                       date: date(p.endDate, true),
@@ -62,10 +78,13 @@ export function CellDetail({ household, cell }: { household: Household; cell: Co
                   </p>
                 )}
                 {p.kind === 'super_top_up' && (
-                  <p className="mt-1 text-sm text-muted">
-                    {t.rich('cell.topUpAbove', {
-                      amount: () => <Amount value={p.terms.deductible} />,
-                    })}
+                  <p className="mt-1 flex items-start gap-1.5 text-sm text-muted">
+                    <Info aria-hidden className="mt-0.5 size-4 shrink-0" />
+                    <span>
+                      {t.rich('cell.topUpAbove', {
+                        amount: () => <Amount value={p.terms.deductible} />,
+                      })}
+                    </span>
                   </p>
                 )}
               </div>
@@ -75,15 +94,15 @@ export function CellDetail({ household, cell }: { household: Household; cell: Co
       })}
 
       {cell.issues.map((issue) => (
-        <p key={issue} className="rounded-md bg-partial-bg p-3 text-sm text-partial">
+        <p key={issue} className="panel panel-partial text-sm text-partial">
           {t(`issue.${issue}`)}
         </p>
       ))}
       {cell.status === 'gap' && cell.issues.length === 0 && policies.length === 0 && (
-        <p className="rounded-md bg-gap-bg p-3 text-sm text-gap">{t('cell.nothing')}</p>
+        <p className="panel panel-gap text-sm text-gap">{t('cell.nothing')}</p>
       )}
 
-      <Link href="/plan" className={buttonClasses({ variant: 'secondary' })}>
+      <Link href="/plan" className={buttonClasses({ variant: 'secondary', className: 'w-full' })}>
         {t('cell.seeFix')}
       </Link>
 

@@ -144,7 +144,10 @@
     },
     "disclaimer": "Premiums are illustrative, not a quote. Kavach doesn't sell insurance; talk to a licensed adviser before you buy.",
     "allocated": "In the plan",
-    "leftOver": "Left over"
+    "leftOver": "Left over",
+    "prioritised": "In order of priority",
+    "ofTotal": "{count} of {total} in the plan",
+    "openPolicy": "Open the policy"
   },
   "change": {
     "title": "What's changing?",

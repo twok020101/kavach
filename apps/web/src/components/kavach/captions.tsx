@@ -24,14 +24,22 @@ export function Captions({ lines, className }: { lines: CaptionLine[]; className
           <li
             key={line.id}
             ref={i === lines.length - 1 ? end : undefined}
-            className={cn('flex items-end gap-2', agent ? 'justify-start' : 'justify-end')}
+            className={cn('flex items-start gap-2', agent ? 'justify-start' : 'justify-end')}
           >
-            {agent && <LogoMark className="mb-1 size-6 shrink-0" />}
+            {/* Kavach speaks from its shield tile; the person's line sits on the right. */}
+            {agent && (
+              <span
+                aria-hidden
+                className="mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-md border border-border bg-surface"
+              >
+                <LogoMark className="size-5" />
+              </span>
+            )}
             <div
               className={cn(
                 'max-w-[88%] rounded-lg px-3 py-2 text-base',
                 agent
-                  ? 'rounded-bl-sm border border-border bg-surface font-semibold text-text'
+                  ? 'rounded-tl-sm border border-border bg-surface font-semibold text-text'
                   : 'rounded-br-sm bg-primary-soft text-text',
               )}
             >

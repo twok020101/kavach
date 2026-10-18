@@ -144,7 +144,10 @@
     },
     "disclaimer": "Premium hanya ilustrasi, bukan sebut harga. Kavach tidak menjual insurans; berbincang dengan penasihat berlesen sebelum anda membeli.",
     "allocated": "Dalam pelan",
-    "leftOver": "Baki"
+    "leftOver": "Baki",
+    "ofTotal": "{count} daripada {total} dalam pelan",
+    "openPolicy": "Buka polisi",
+    "prioritised": "Mengikut keutamaan"
   },
   "change": {
     "title": "Apa yang berubah?",

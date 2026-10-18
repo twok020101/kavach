@@ -6,18 +6,22 @@
   "previewLabel": "Example answer",
   "previewCaption": "What Kavach tells the family at the hospital desk",
   "momentsTitle": "Three moments that matter",
+  "momentKicker": "Moment {n} · {when}",
   "moments": {
     "change": {
+      "when": "Before the hospital",
       "title": "When life changes",
       "body": "“Joining a startup on 1 Dec.” Kavach sees that your parents’ cover ends on 30 Nov, drafts the letter to keep it, and reminds you on WhatsApp.",
       "stat": "Parents’ cover kept, not lost"
     },
     "hospital": {
+      "when": "At admission",
       "title": "At the hospital desk",
       "body": "Voice and camera, in Hindi. Show the estimate and Kavach says which policy card to give and which room to ask for.",
       "stat": "<amount></amount> less to pay"
     },
     "claim": {
+      "when": "After discharge",
       "title": "When a claim goes wrong",
       "body": "Send the settlement letter. Kavach checks every deduction against your policy and drafts the appeal.",
       "stat": "<amount></amount> found to appeal"
@@ -51,7 +55,8 @@
   "stats": {
     "desk": "less to pay, by asking for the right room at the hospital desk",
     "claim": "found to appeal in one settlement letter",
-    "cited": "of rupee amounts come from tested rules, each with its clause"
+    "cited": "of rupee amounts come from tested rules, each with its clause",
+    "wordings": "public policy wordings read and tested, page by page"
   },
   "momentsIntro": "Kavach learns the household once, in about two minutes. Then it acts at the three moments where Indian families lose money.",
   "titlePlain": "Your family's insurance,",

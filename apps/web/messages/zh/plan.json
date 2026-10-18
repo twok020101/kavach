@@ -144,7 +144,10 @@
     },
     "disclaimer": "保费仅为示例，不是报价。Kavach 不销售保险；购买前请咨询持牌顾问。",
     "allocated": "已列入计划",
-    "leftOver": "剩余"
+    "leftOver": "剩余",
+    "ofTotal": "计划中 {count}/{total}",
+    "openPolicy": "打开保单",
+    "prioritised": "按优先顺序"
   },
   "change": {
     "title": "有什么变化？",

@@ -3,11 +3,14 @@
 import { motion } from 'motion/react';
 import { useTranslations } from 'next-intl';
 import { useEffect, useState, useSyncExternalStore } from 'react';
+import { routing } from '@/i18n/routing';
 
 const RUN_MS = 1800;
 const LIFT_MS = 560;
 const EASE_OUT: [number, number, number, number] = [0.23, 1, 0.32, 1];
 const root = () => document.documentElement;
+/** The landing page in any configured locale: "/", "/en", "/ta/" and so on, nothing deeper. */
+const LANDING = new RegExp(`^/(${routing.locales.join('|')})?/?$`);
 
 /**
  * Whether this load gets the opening, decided once. public/theme.js normally marks it before
@@ -17,9 +20,14 @@ const root = () => document.documentElement;
 let wanted: boolean | undefined;
 const noop = () => () => {};
 function decide(): boolean {
-  if (root().classList.contains('booting')) return true;
   try {
-    const landing = /^\/(en|hi)?\/?$/.test(location.pathname);
+    const landing = LANDING.test(location.pathname);
+    if (root().classList.contains('booting')) {
+      // theme.js accepts any two-letter prefix; only a configured locale's landing keeps the mark.
+      if (landing) return true;
+      root().classList.remove('booting');
+      return false;
+    }
     const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
     const force = /[?&]boot=1(&|$)/.test(location.search);
     const nav = performance.getEntriesByType('navigation')[0] as

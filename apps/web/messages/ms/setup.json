@@ -21,8 +21,11 @@
       "badge": "Tanpa persediaan",
       "title": "Terokai demo keluarga Sharma",
       "body": "Lima orang, empat polisi dan satu kemasukan hospital sudah disediakan, jadi anda boleh melihat setiap skrin dengan angka sebenar.",
-      "open": "Buka demo"
-    }
+      "open": "Buka demo",
+      "initial": "S",
+      "kicker": "Keluarga sampel, sudah disediakan"
+    },
+    "promiseTitle": "Janji kami kepada keluarga anda"
   },
   "consent": {
     "title": "Sebelum kita mula",
@@ -54,7 +57,8 @@
     "agree": "Setuju dan teruskan",
     "essential": "Penting",
     "optional": "Pilihan",
-    "count": "{on} daripada {total} kebenaran dihidupkan"
+    "count": "{on} daripada {total} kebenaran dihidupkan",
+    "promiseTitle": "Janji kami"
   },
   "family": {
     "title": "Ceritakan tentang keluarga anda",
@@ -196,6 +200,7 @@
     "claim": {
       "title": "Apabila tuntutan bermasalah",
       "body": "Setiap potongan disemak dengan polisi, rayuan disediakan."
-    }
+    },
+    "lead": "Kavach membaca setiap polisi di rumah sekali, kemudian memberitahu apa yang perlu dibuat pada tiga saat keluarga kehilangan wang. Dalam bahasa anda, dengan nombor muka surat."
   }
 }

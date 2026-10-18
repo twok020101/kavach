@@ -6,6 +6,8 @@ import {
   Camera,
   FileText,
   Keyboard,
+  MessageCircle,
+  MessageSquareText,
   Mic,
   MicOff,
   RadioTower,
@@ -13,6 +15,7 @@ import {
   Share2,
   Scale,
   TriangleAlert,
+  X,
 } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 import { useCallback, useEffect, useRef, useState, type FormEvent } from 'react';
@@ -26,7 +29,7 @@ import { ListeningOrb } from '@/components/kavach/listening-orb';
 import { RoomCompare } from '@/components/kavach/room-compare';
 import { WhyPanel } from '@/components/kavach/why-panel';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
+import { Button, buttonClasses } from '@/components/ui/button';
 import { cn } from '@/components/ui/cn';
 import { Card } from '@/components/ui/card';
 import { Disclosure } from '@/components/ui/disclosure';
@@ -327,23 +330,34 @@ export function DeskSessionScreen({
   const query = demo ? { demo: '1', ...(scene ? { scene } : {}) } : undefined;
   const firstName = patient?.name.split(' ')[0];
   const desktop = useDesktop();
+  // The admitted row: everyone in the family, the patient marked (Stitch 10/11).
+  // The "ask the desk" lines, ready to hand to the family on WhatsApp (no number: they pick the chat).
+  const waLink = (text: string) => `https://wa.me/?text=${encodeURIComponent(text)}`;
 
   return (
     <CountryProvider country={household.data?.country}>
       <DeskHeader
         title={firstName ? t('title', { name: firstName }) : t('titleLoading')}
         subtitle={session.data?.hospitalName}
+        status={
+          live ? (
+            <Badge icon={RadioTower} tone="primary" className="shrink-0">
+              {tl('badge')}
+            </Badge>
+          ) : (
+            <Badge icon={MessageSquareText} tone="neutral" className="shrink-0">
+              {t('textMode')}
+            </Badge>
+          )
+        }
         query={query}
         demoScene={demo ? (scene ?? 'hospital') : undefined}
+        members={household.data?.members}
+        patientId={session.data?.patientMemberId}
         action={
-          <Button
-            variant="ghost"
-            size="sm"
-
-            loading={end.isPending}
-            onClick={() => end.mutate()}
-          >
+          <Button variant="ghost" size="sm" loading={end.isPending} onClick={() => end.mutate()}>
             {t('end')}
+            <X aria-hidden className="size-5" />
           </Button>
         }
       />
@@ -357,16 +371,20 @@ export function DeskSessionScreen({
           )}
         >
           {live ? (
-            <div className="relative flex flex-col items-center gap-3 py-4">
-              <Badge icon={RadioTower} tone="primary" className="absolute right-0 top-0">
-                {tl('badge')}
-              </Badge>
+            // The listening card: the orb, its state in words, and what to do (Stitch 10/11).
+            <Card
+              as="section"
+              aria-label={tl('badge')}
+              // Room above and below for the orb's slow sonar rings, which reach past the sphere.
+              className="flex flex-col items-center gap-4 py-16 text-center sm:py-16"
+            >
               <ListeningOrb
                 size={voice.status === 'off' ? 'md' : 'lg'}
                 state={voice.muted ? 'idle' : orbState(voice.status)}
                 label={voice.muted ? tl('orb.muted') : tl(`orb.${liveLabel(voice.status)}`)}
               />
-            </div>
+              <p className="max-w-md text-base text-muted">{tl('talkHint')}</p>
+            </Card>
           ) : null}
 
           <Captions lines={captions} />
@@ -383,16 +401,24 @@ export function DeskSessionScreen({
                 {t('capture.title')}
               </h2>
               <p className="text-muted">{t('capture.hint')}</p>
-              <Button size="desk" onClick={showEstimate}>
-                <Camera aria-hidden className="size-6" />
-                {t('capture.photo')}
-              </Button>
-              {demo && (
-                <Button variant="secondary" size="desk" onClick={() => capture.mutate('sample')}>
-                  <FileText aria-hidden className="size-6" />
-                  {t('capture.sample')}
+              {/* The two big buttons side by side on a laptop, stacked on a phone (Stitch 10/11). */}
+              <div className={cn('grid gap-3', demo && 'lg:grid-cols-2')}>
+                <Button size="desk" className="px-4 text-center" onClick={showEstimate}>
+                  <Camera aria-hidden className="size-6 shrink-0" />
+                  {t('capture.photo')}
                 </Button>
-              )}
+                {demo && (
+                  <Button
+                    variant="secondary"
+                    size="desk"
+                    className="px-4 text-center"
+                    onClick={() => capture.mutate('sample')}
+                  >
+                    <FileText aria-hidden className="size-6 shrink-0" />
+                    {t('capture.sample')}
+                  </Button>
+                )}
+              </div>
             </Card>
           )}
 
@@ -459,7 +485,7 @@ export function DeskSessionScreen({
                 </>
               )}
               {estimate.lines.length > 0 && (
-                <Disclosure label={t('estimate.lines')} className="-mb-1">
+                <Disclosure label={t('estimate.lines')} defaultOpen={desktop} className="-mb-1">
                   <EstimateLines estimate={estimate} result={evaluation.data?.primary} />
                 </Disclosure>
               )}
@@ -525,6 +551,22 @@ export function DeskSessionScreen({
                       <RoomCompare result={evaluation.data.primary} />
                     </Disclosure>
                   )}
+                  {card.kind === 'ask_desk' && (
+                    // The exact lines, handed to whoever is at the counter (Stitch 10/11).
+                    <a
+                      href={waLink(`${card.title}\n${card.body}`)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={buttonClasses({
+                        variant: 'secondary',
+                        size: 'desk',
+                        className: 'mt-1 px-4 text-center',
+                      })}
+                    >
+                      <MessageCircle aria-hidden className="size-6 shrink-0" />
+                      {t('sendPrompts')}
+                    </a>
+                  )}
                 </AnswerCard>
               ))}
 
@@ -586,103 +628,107 @@ export function DeskSessionScreen({
             answer ? 'lg:static' : 'lg:sticky lg:top-24',
           )}
         >
-          {live ? (
-            // The one action on top, full width; mute and "type instead" below it.
-            <div className="mx-auto flex max-w-2xl flex-col gap-2 px-4 py-3 lg:px-0 lg:py-0">
-              <Button
-                variant="accent"
-                size="desk"
-                className="px-4 text-center"
-                disabled={busy}
-                onClick={showEstimate}
-              >
-                <Camera aria-hidden className="size-6 shrink-0" />
-                {tl('showEstimate')}
-              </Button>
-              <div className="grid grid-cols-2 gap-2">
+          {/* On a laptop the dock is its own card, "Quick desk controls" (Stitch 10/11). */}
+          <div className="lg:rounded-md lg:border lg:border-border lg:bg-surface lg:p-4">
+            <h2 className="label mb-3 hidden lg:block">{t('controls')}</h2>
+            {live ? (
+              // The one action on top, full width; mute and "type instead" below it.
+              <div className="mx-auto flex max-w-2xl flex-col gap-2 px-4 py-3 lg:px-0 lg:py-0">
                 <Button
-                  variant={voice.muted ? 'secondary' : 'primary'}
-                  className="min-h-14"
-                  aria-pressed={voice.muted}
-                  disabled={voice.status === 'connecting'}
-                  onClick={voice.toggleMute}
+                  variant="accent"
+                  size="desk"
+                  className="px-4 text-center"
+                  disabled={busy}
+                  onClick={showEstimate}
                 >
-                  {voice.muted ? (
-                    <MicOff aria-hidden className="size-6" />
-                  ) : (
-                    <Mic aria-hidden className="size-6" />
-                  )}
-                  <span className="truncate">{voice.muted ? tl('unmute') : tl('muteShort')}</span>
+                  <Camera aria-hidden className="size-6 shrink-0" />
+                  {tl('showEstimate')}
                 </Button>
-                <Button variant="secondary" className="min-h-14" onClick={stopLive}>
-                  <Keyboard aria-hidden className="size-6" />
-                  <span className="truncate">{tl('typeInstead')}</span>
-                </Button>
-              </div>
-            </div>
-          ) : (
-            <div className="mx-auto flex max-w-2xl flex-col gap-2 px-4 py-3 lg:px-0 lg:py-0">
-              {fallback && (
-                <div
-                  role="alert"
-                  className="flex flex-col gap-2 rounded-md border-2 border-partial bg-partial-bg p-3 text-base text-text"
-                >
-                  <p className="flex items-center gap-2 font-semibold text-partial">
-                    <TriangleAlert aria-hidden className="size-5 shrink-0" />
-                    {tl('fallback.title')}
-                  </p>
-                  <p>{tl(`fallback.${fallbackMessage(fallback)}`)}</p>
-                  <div className="flex flex-wrap gap-2">
-                    {fallback !== 'time_limit' && (
-                      <Button variant="secondary" size="sm" onClick={startLive}>
-                        <Mic aria-hidden className="size-5" />
-                        {tl('fallback.retry')}
-                      </Button>
+                <div className="grid grid-cols-2 gap-2">
+                  <Button
+                    variant={voice.muted ? 'secondary' : 'primary'}
+                    className="min-h-14"
+                    aria-pressed={voice.muted}
+                    disabled={voice.status === 'connecting'}
+                    onClick={voice.toggleMute}
+                  >
+                    {voice.muted ? (
+                      <MicOff aria-hidden className="size-6" />
+                    ) : (
+                      <Mic aria-hidden className="size-6" />
                     )}
-                    <Button variant="ghost" size="sm" onClick={() => setFallback(undefined)}>
-                      {tl('fallback.dismiss')}
-                    </Button>
-                  </div>
+                    <span className="truncate">{voice.muted ? tl('unmute') : tl('muteShort')}</span>
+                  </Button>
+                  <Button variant="secondary" className="min-h-14" onClick={stopLive}>
+                    <Keyboard aria-hidden className="size-6" />
+                    <span className="truncate">{tl('typeInstead')}</span>
+                  </Button>
                 </div>
-              )}
-              {!fallback && (
-                <Button variant="accent" size="desk" onClick={startLive}>
-                  <Mic aria-hidden className="size-6" />
-                  {tl('talk')}
-                </Button>
-              )}
-              <form onSubmit={submit} className="flex items-stretch gap-2">
-                <label htmlFor="desk-question" className="sr-only">
-                  {t('questionLabel')}
-                </label>
-                {/* Grows with the question (up to five lines) so every word stays in view; Enter sends, Shift+Enter breaks a line. */}
-                <textarea
-                  id="desk-question"
-                  ref={questionBox}
-                  rows={1}
-                  value={question}
-                  onChange={(e) => setQuestion(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' && !e.shiftKey && !e.nativeEvent.isComposing) {
-                      e.preventDefault();
-                      e.currentTarget.form?.requestSubmit();
-                    }
-                  }}
-                  placeholder={t('questionPlaceholder')}
-                  autoComplete="off"
-                  className="max-h-44 min-h-16 min-w-0 flex-1 resize-none rounded-md border-2 border-border-strong bg-surface px-3 py-4 text-lg leading-snug placeholder:text-muted focus-visible:border-primary"
-                />
-                <Button
-                  type="submit"
-                  className="min-h-16 min-w-16 shrink-0 px-0"
-                  aria-label={t('send')}
-                  disabled={busy || !question.trim()}
-                >
-                  <Send aria-hidden className="size-7" />
-                </Button>
-              </form>
-            </div>
-          )}
+              </div>
+            ) : (
+              <div className="mx-auto flex max-w-2xl flex-col gap-2 px-4 py-3 lg:px-0 lg:py-0">
+                {fallback && (
+                  <div
+                    role="alert"
+                    className="flex flex-col gap-2 rounded-md border-2 border-partial bg-partial-bg p-3 text-base text-text"
+                  >
+                    <p className="flex items-center gap-2 font-semibold text-partial">
+                      <TriangleAlert aria-hidden className="size-5 shrink-0" />
+                      {tl('fallback.title')}
+                    </p>
+                    <p>{tl(`fallback.${fallbackMessage(fallback)}`)}</p>
+                    <div className="flex flex-wrap gap-2">
+                      {fallback !== 'time_limit' && (
+                        <Button variant="secondary" size="sm" onClick={startLive}>
+                          <Mic aria-hidden className="size-5" />
+                          {tl('fallback.retry')}
+                        </Button>
+                      )}
+                      <Button variant="ghost" size="sm" onClick={() => setFallback(undefined)}>
+                        {tl('fallback.dismiss')}
+                      </Button>
+                    </div>
+                  </div>
+                )}
+                {!fallback && (
+                  <Button variant="accent" size="desk" onClick={startLive}>
+                    <Mic aria-hidden className="size-6" />
+                    {tl('talk')}
+                  </Button>
+                )}
+                <form onSubmit={submit} className="flex items-stretch gap-2">
+                  <label htmlFor="desk-question" className="sr-only">
+                    {t('questionLabel')}
+                  </label>
+                  {/* Grows with the question (up to five lines) so every word stays in view; Enter sends, Shift+Enter breaks a line. */}
+                  <textarea
+                    id="desk-question"
+                    ref={questionBox}
+                    rows={1}
+                    value={question}
+                    onChange={(e) => setQuestion(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' && !e.shiftKey && !e.nativeEvent.isComposing) {
+                        e.preventDefault();
+                        e.currentTarget.form?.requestSubmit();
+                      }
+                    }}
+                    placeholder={t('questionPlaceholder')}
+                    autoComplete="off"
+                    className="max-h-44 min-h-16 min-w-0 flex-1 resize-none rounded-md border-2 border-border-strong bg-surface px-3 py-4 text-lg leading-snug placeholder:text-muted focus-visible:border-primary"
+                  />
+                  <Button
+                    type="submit"
+                    className="min-h-16 min-w-16 shrink-0 px-0"
+                    aria-label={t('send')}
+                    disabled={busy || !question.trim()}
+                  >
+                    <Send aria-hidden className="size-7" />
+                  </Button>
+                </form>
+              </div>
+            )}
+          </div>
         </aside>
       </div>
     </CountryProvider>

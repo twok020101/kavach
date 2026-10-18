@@ -78,7 +78,11 @@
       "hospital": "Suresh · 血管成形术",
       "maternity": "Priya · 分娩",
       "singapore": "阿九 · 新加坡"
-    }
+    },
+    "admitted": "住院人",
+    "controls": "柜台快捷操作",
+    "memberChip": "{name}（{relation}，{age}）",
+    "sendPrompts": "把这些发给家人的 WhatsApp"
   },
   "summary": {
     "title": "本次摘要",

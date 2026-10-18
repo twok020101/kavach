@@ -10,7 +10,10 @@ try {
   if (d) e.dataset.theme = 'dark';
   var s = localStorage.getItem('kavach.textScale');
   if (s === 'large' || s === 'xlarge') e.dataset.textScale = s;
-  var landing = /^\/(en|hi)?\/?$/.test(location.pathname);
+  // Any locale's landing page ("/", "/en", "/ta/", ...). This script cannot import the locale list,
+  // so it accepts any two-letter segment; boot.tsx applies the strict routing.locales list and
+  // clears the mark if the segment is not a configured locale.
+  var landing = /^\/([a-z]{2})?\/?$/.test(location.pathname);
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   // Plays on the first visit in a tab and again on a refresh of the landing page; ?boot=1 forces
   // it; moving back to the landing from inside the app does not replay it; reduced motion skips it.

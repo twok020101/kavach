@@ -10,17 +10,20 @@
     "change": {
       "title": "生活有变化时",
       "body": "“12月1日加入一家初创公司。”Kavach 发现您父母的保障将于11月30日终止，拟好保留保障的信，并在 WhatsApp 上提醒您。",
-      "stat": "父母的保障得以保留，没有失去"
+      "stat": "父母的保障得以保留，没有失去",
+      "when": "入院之前"
     },
     "hospital": {
       "title": "在医院柜台",
       "body": "语音和摄像头，用印地语。出示估价单，Kavach 会告诉您该给哪张保单卡、该要哪种病房。",
-      "stat": "少付 <amount></amount>"
+      "stat": "少付 <amount></amount>",
+      "when": "办理入院时"
     },
     "claim": {
       "title": "索赔出问题时",
       "body": "发来理赔结算信。Kavach 把每一项扣减对照您的保单核查，并拟好申诉信。",
-      "stat": "发现 <amount></amount> 可申诉"
+      "stat": "发现 <amount></amount> 可申诉",
+      "when": "出院之后"
     }
   },
   "whatsapp": {
@@ -51,7 +54,8 @@
   "stats": {
     "desk": "少付的金额，只因在医院柜台要对了病房",
     "claim": "在一封理赔结算信中发现可申诉的金额",
-    "cited": "的卢比金额来自经过测试的规则，每个都附有条款"
+    "cited": "的卢比金额来自经过测试的规则，每个都附有条款",
+    "wordings": "公开保单条款逐页阅读并测试"
   },
   "momentsIntro": "Kavach 只需约两分钟了解一次您的家庭。之后，它会在印度家庭最容易损失金钱的三个时刻行动。",
   "titlePlain": "您全家的保险，",
@@ -111,5 +115,6 @@
     "singapore": "新加坡场景"
   },
   "trySingapore": "试试新加坡场景",
-  "trySingaporeSub": "阿九的血管成形术：B1 级 Shield 计划，医院提供 A 级病房，华语回答。"
+  "trySingaporeSub": "阿九的血管成形术：B1 级 Shield 计划，医院提供 A 级病房，华语回答。",
+  "momentKicker": "时刻 {n} · {when}"
 }

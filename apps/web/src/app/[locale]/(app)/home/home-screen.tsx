@@ -4,6 +4,7 @@ import type { CoverCell, Household } from '@kavach/schemas';
 import {
   ArrowRight,
   Briefcase,
+  CalendarDays,
   PenLine,
   RotateCcw,
   ShieldAlert,
@@ -18,6 +19,7 @@ import { Reveal } from '@/components/kavach/reveal';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { cn } from '@/components/ui/cn';
+import { StatusBadge } from '@/components/ui/status-badge';
 import { CellDetail } from '@/components/plan/cell-detail';
 import { CoverGrid } from '@/components/plan/cover-grid';
 import { DateScrubber } from '@/components/plan/date-scrubber';
@@ -101,7 +103,9 @@ function Home({ household }: { household: Household }) {
       <header className="flex flex-wrap items-end justify-between gap-3">
         <Greeting household={household} needs={drafts.length} asOf={today} />
         {household.isDemo && (
-          <div className="flex items-center gap-1 rounded-md border border-border py-1 pl-3 pr-1 text-sm font-medium text-accent-ink dark:text-text">
+          // The demo clock as a quiet soft-indigo card (Stitch 06), not a bordered pill.
+          <div className="flex min-h-12 flex-wrap items-center gap-x-2 gap-y-1 rounded-md bg-primary-soft py-1.5 pl-3 pr-1.5 text-sm font-medium">
+            <CalendarDays aria-hidden className="size-4 shrink-0 text-primary-hover" />
             <span>{t('demoDate', { date: date(today, true) })}</span>
             <Button
               variant="ghost"
@@ -184,7 +188,7 @@ function Home({ household }: { household: Household }) {
 
         <Reveal className="lg:col-start-1 lg:row-span-5 lg:row-start-1">
           <Card className="flex flex-col gap-4">
-            <div className="flex items-center justify-between gap-3">
+            <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2">
               <h2 className="font-display text-xl font-bold">{t('mapTitle')}</h2>
               {onJob > 0 && (
                 <span className="inline-flex items-center gap-1 rounded-sm bg-partial-bg px-2.5 py-1 text-xs font-semibold text-partial">
@@ -217,12 +221,16 @@ function Home({ household }: { household: Household }) {
           <div key={selected.memberId + selected.risk} className="lg:col-start-1">
             <Card as="section" aria-labelledby="cell-title" className="flex flex-col gap-4">
               <div className="flex items-start justify-between gap-3">
-                <h2 id="cell-title" className="font-display text-xl font-bold">
-                  {t('cellTitle', {
-                    name: member(selected.memberId),
-                    risk: tp(`risk.${selected.risk}`),
-                  })}
-                </h2>
+                {/* Title and status on one line (Stitch inspector header). */}
+                <div className="flex min-w-0 flex-wrap items-center gap-x-3 gap-y-1">
+                  <h2 id="cell-title" className="font-display text-xl font-bold">
+                    {t('cellTitle', {
+                      name: member(selected.memberId),
+                      risk: tp(`risk.${selected.risk}`),
+                    })}
+                  </h2>
+                  <StatusBadge status={selected.status} />
+                </div>
                 <button
                   type="button"
                   onClick={() => setSelected(undefined)}
@@ -232,7 +240,7 @@ function Home({ household }: { household: Household }) {
                   <X aria-hidden className="size-5" />
                 </button>
               </div>
-              <CellDetail household={household} cell={selected} />
+              <CellDetail household={household} cell={selected} showStatus={false} />
             </Card>
           </div>
         )}
@@ -284,8 +292,8 @@ function Stat({
   const shown = useCountUp(n, 600);
   return (
     <div className={cn('flex flex-col items-center gap-0.5 rounded-md px-2 py-2', tones[tone])}>
-      <dt className="flex items-center gap-1 text-xs font-semibold">
-        <Icon aria-hidden className="size-4" />
+      <dt className="flex min-w-0 flex-wrap items-center justify-center gap-1 text-center text-xs font-semibold [overflow-wrap:anywhere]">
+        <Icon aria-hidden className="size-4 shrink-0" />
         {label}
       </dt>
       <dd className="font-display text-2xl font-bold tabular-nums">

@@ -78,7 +78,11 @@
       "hospital": "Suresh · ஆஞ்சியோபிளாஸ்டி",
       "maternity": "Priya · பிரசவம்",
       "singapore": "ஆ காவ் · சிங்கப்பூர்"
-    }
+    },
+    "admitted": "அனுமதிக்கப்பட்டவர்",
+    "controls": "டெஸ்க் முக்கிய கட்டுப்பாடுகள்",
+    "memberChip": "{name} ({relation}, {age})",
+    "sendPrompts": "இவற்றை குடும்பத்திற்கு WhatsApp-இல் அனுப்பவும்"
   },
   "summary": {
     "title": "அமர்வுச் சுருக்கம்",

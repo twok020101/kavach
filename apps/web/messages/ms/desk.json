@@ -78,7 +78,11 @@
       "hospital": "Suresh · angioplasti",
       "maternity": "Priya · bersalin",
       "singapore": "Ah Kow · Singapura"
-    }
+    },
+    "admitted": "Dimasukkan",
+    "controls": "Kawalan kaunter pantas",
+    "memberChip": "{name} ({relation}, {age})",
+    "sendPrompts": "Hantar ini kepada keluarga di WhatsApp"
   },
   "summary": {
     "title": "Ringkasan sesi",
