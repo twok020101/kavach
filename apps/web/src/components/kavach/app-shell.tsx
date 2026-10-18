@@ -67,8 +67,14 @@ export function AppShell({
 }) {
   const t = useTranslations('common');
   const pathname = usePathname();
-  const isActive = (href: string) =>
-    href === '/settings' ? pathname.startsWith('/settings') : pathname.startsWith(href);
+  // More owns Settings and Steps everywhere; on the phone also Timeline and Claims, which live
+  // under it there (issue #26), so some tab is always lit.
+  const moreRoutes = (phone: boolean) =>
+    phone ? ['/settings', '/actions', '/timeline', '/claims'] : ['/settings', '/actions'];
+  const isActive = (href: string, phone = false) =>
+    href === '/settings'
+      ? moreRoutes(phone).some((route) => pathname.startsWith(route))
+      : pathname.startsWith(href);
 
   return (
     <div className="flex min-h-dvh flex-col lg:pl-66">
@@ -157,7 +163,7 @@ export function AppShell({
             <PhoneTab
               key={tab.key}
               tab={tab}
-              active={isActive(tab.href)}
+              active={isActive(tab.href, true)}
               label={t(`nav.${tab.key}`)}
             />
           ))}
@@ -174,7 +180,7 @@ export function AppShell({
             <PhoneTab
               key={tab.key}
               tab={tab}
-              active={isActive(tab.href)}
+              active={isActive(tab.href, true)}
               label={t(`nav.${tab.key}`)}
             />
           ))}
