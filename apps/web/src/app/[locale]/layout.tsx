@@ -51,7 +51,8 @@ export default async function LocaleLayout({ children, params }: LayoutProps<'/[
     // public/theme.js sets data-theme before React loads, so React must not warn about it.
     <html lang={locale} className={fonts.join(' ')} suppressHydrationWarning>
       <head>
-        {/* Async so React can hoist it; it is tiny and runs before the page has painted. */}
+        {/* Async so React can hoist it; it is tiny and runs before the page has painted. The
+            opening (components/kavach/boot.tsx) repeats its decision, so a late run cannot hide it. */}
         <script async src="/theme.js" />
       </head>
       <body className="min-h-dvh antialiased">

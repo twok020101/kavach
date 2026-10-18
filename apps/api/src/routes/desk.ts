@@ -15,6 +15,7 @@ import type { FastifyRequest } from 'fastify';
 import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod';
 import { z } from 'zod';
 import type { EstimateImage } from '../agents/estimate-reader';
+import { prepareEstimatePhoto } from '../desk/photo';
 import { loadHousehold, requireUser } from '../auth';
 import {
   captureEstimate,
@@ -37,8 +38,25 @@ const CaptureQuery = z.object({
     .optional(),
 });
 
-const SAMPLE_PHOTO = resolve(repoRoot, 'data/samples/city-heart-estimate-photo.png');
-const IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/heic', 'application/pdf'];
+/** The sample estimate photo for each recorded reading; the HX-1 angioplasty by default. */
+const SAMPLE_PHOTOS: Record<string, string> = {
+  'estimate-city-heart': 'city-heart-estimate-photo.png',
+  'estimate-lotus-maternity': 'lotus-maternity-estimate-photo.png',
+};
+const samplePhoto = (fixture = 'estimate-city-heart') =>
+  resolve(
+    repoRoot,
+    'data/samples',
+    SAMPLE_PHOTOS[fixture] ?? SAMPLE_PHOTOS['estimate-city-heart']!,
+  );
+const IMAGE_TYPES = [
+  'image/jpeg',
+  'image/png',
+  'image/webp',
+  'image/heic',
+  'image/heif',
+  'application/pdf',
+];
 
 /** The text-and-photo hospital desk (docs/plan/06-api.md "Moment 2"). */
 export const deskRoutes: FastifyPluginAsyncZod = async (app) => {
@@ -95,7 +113,7 @@ export const deskRoutes: FastifyPluginAsyncZod = async (app) => {
     },
     async (request) => {
       const household = await loadHousehold(request, request.params.hid);
-      const data = await readFile(SAMPLE_PHOTO);
+      const data = await readFile(samplePhoto(request.query.fixture));
       return captureEstimate(
         household,
         request.params.sid,
@@ -145,7 +163,9 @@ async function uploadedImages(request: FastifyRequest): Promise<EstimateImage[]>
     if (!IMAGE_TYPES.includes(part.mimetype)) {
       throw badRequest(`Unsupported file type ${part.mimetype}: send a photo or PDF`);
     }
-    images.push({ data: await part.toBuffer(), mimeType: part.mimetype });
+    images.push(
+      await prepareEstimatePhoto({ data: await part.toBuffer(), mimeType: part.mimetype }),
+    );
   }
   if (images.length === 0) throw badRequest('No estimate photo in the upload');
   return images;

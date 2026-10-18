@@ -7,13 +7,17 @@
     "language": "Answers in",
     "start": "Start",
     "pickFirst": "Pick who is admitted to start.",
-    "privacy": "The camera is used only when you take a photo of the estimate. Nothing is shared without you."
+    "privacy": "The camera is used only when you take a photo of the estimate. Nothing is shared without you.",
+    "demoNoteMaternity": "Demo: Priya is admitted at Lotus Women’s Hospital for a planned normal delivery. The company policy caps maternity at ₹50,000. Answers come in English; you can change both."
   },
   "session": {
     "title": "Helping with {name}",
     "titleLoading": "Help at the hospital",
     "end": "End",
-    "orb": { "thinking": "Kavach is checking", "ready": "Ready: show the estimate or type" },
+    "orb": {
+      "thinking": "Kavach is checking",
+      "ready": "Ready: show the estimate or type"
+    },
     "textMode": "Text mode",
     "greeting": "Namaste. Take a photo of the hospital estimate, then ask me your question.",
     "sampleSent": "Using the sample estimate",
@@ -38,7 +42,16 @@
       "days": "{days, plural, one {# day} other {# days}}",
       "rooms": "Room types on the estimate",
       "check": "Does this look right?",
-      "retake": "Retake"
+      "retake": "Retake",
+      "lines": "What is on the estimate",
+      "quotedFor": "As quoted for {room}",
+      "total": "Estimate total",
+      "mark": {
+        "nonPayable": "Not payable",
+        "aboveLimit": "Above the room limit",
+        "ratio": "Reduced with the room",
+        "icu": "ICU: never reduced"
+      }
     },
     "answers": "Answer",
     "compareRooms": "Compare rooms",
@@ -53,7 +66,17 @@
     },
     "questionLabel": "Your question",
     "questionPlaceholder": "Type your question",
-    "send": "Send"
+    "send": "Send",
+    "askTitle": "Common questions",
+    "captureUnreadable": "That photo format can't be read here. iPhone HEIC photos need the camera set to 'Most Compatible', or send a screenshot of the photo. Then try again.",
+    "captureTooBig": "That photo is too large to send. Take it again at a normal size, or send a screenshot.",
+    "estimateUnclear": "I couldn’t use this as an estimate. {note}",
+    "packageRead": "I have read {hospital}’s package prices: {rooms, plural, one {# package} other {# packages}}. Now ask me which one to take.",
+    "scene": {
+      "label": "Demo scene",
+      "hospital": "Suresh · angioplasty",
+      "maternity": "Priya · delivery"
+    }
   },
   "summary": {
     "title": "Session summary",

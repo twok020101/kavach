@@ -144,6 +144,38 @@ const list: Rule[] = [
     status: 'to_verify',
     sources: [IRDAI_2020, IRDAI_2024],
   },
+  {
+    id: 'R-MT-001',
+    name: 'Maternity capped at the defined limit',
+    statement:
+      'For a delivery, a policy pays at most its maternity limit (one figure for a normal delivery, often a higher one for a caesarean), whatever the room. The cap applies after the other deductions. A policy with no maternity benefit pays nothing for a delivery.',
+    status: 'to_verify',
+    sources: [WORDING, BENEFITS],
+  },
+  {
+    id: 'R-MT-002',
+    name: 'Maternity waiting period',
+    statement:
+      'A policy pays for a delivery only after its maternity waiting period, counted from the start of continuous cover. Employer group policies usually have none; retail plans typically wait 12 to 24 months.',
+    status: 'to_verify',
+    sources: [WORDING],
+  },
+  {
+    id: 'R-MT-003',
+    name: 'Newborn covered inside the maternity limit',
+    statement:
+      "The newborn's hospital expenses in the first days (commonly 90) are paid inside the mother's maternity limit, not on top of it, unless the policy says otherwise.",
+    status: 'to_verify',
+    sources: [WORDING, BENEFITS],
+  },
+  {
+    id: 'R-CLM-009',
+    name: 'Deduction for the maternity limit',
+    statement:
+      "An 'excess of defined / ailment limit' deduction on a delivery claim is valid when it equals the amount above the policy's maternity limit. Nothing to appeal; the fix is more cover before the next pregnancy.",
+    status: 'to_verify',
+    sources: [WORDING],
+  },
   // Planning heuristics behind the cover map and plan (docs/plan/05 §3–§8).
   {
     id: 'R-HN-010',

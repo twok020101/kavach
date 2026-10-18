@@ -27,6 +27,13 @@ export const LineHead = z.enum([
 ]);
 export type LineHead = z.infer<typeof LineHead>;
 
+/**
+ * What the admission is for. Maternity admissions are paid inside the policy's maternity
+ * limit (R-MT-001); everything else is `general`.
+ */
+export const Treatment = z.enum(['general', 'maternity_normal', 'maternity_csection']);
+export type Treatment = z.infer<typeof Treatment>;
+
 export const RoomCategory = z.object({
   id: z.string(),
   label: z.string(),
@@ -51,6 +58,8 @@ export const HospitalEstimate = z.object({
   hospitalName: z.string(),
   patientName: z.string().optional(),
   procedure: z.string(),
+  /** Set to a maternity value when the estimate is for a delivery. */
+  treatment: Treatment.default('general'),
   admissionType: z.enum(['planned', 'emergency']),
   days: z.number().int().positive(),
   billingType: BillingType,

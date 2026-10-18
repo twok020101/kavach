@@ -32,7 +32,7 @@ export default function PoliciesPage() {
   return (
     <div className="flex flex-col gap-6">
       <header className="flex flex-col gap-1">
-        <h1 className="font-display text-2xl font-bold">{t('vault.title')}</h1>
+        <h1 className="font-display text-3xl font-bold tracking-tight">{t('vault.title')}</h1>
         <p className="text-muted">{t('vault.intro')}</p>
       </header>
 
@@ -75,11 +75,17 @@ function PolicyRow({ policy, household }: { policy: Policy; household: Household
     <li>
       <Link
         href={`/policies/${policy.id}`}
-        className="flex flex-col gap-2 rounded-md border border-border bg-surface p-4 hover:border-primary"
+        className="press flex flex-col gap-3 rounded-md border border-border bg-surface p-4 hover:border-primary"
       >
-        <div className="flex items-start justify-between gap-2">
-          <div className="min-w-0">
-            <p className="font-semibold">{policy.productName}</p>
+        <div className="flex items-start gap-3">
+          <span
+            aria-hidden
+            className="flex size-11 shrink-0 items-center justify-center rounded-md bg-primary-soft font-display text-lg font-bold text-primary-hover"
+          >
+            {policy.insurer.slice(0, 1)}
+          </span>
+          <div className="min-w-0 flex-1">
+            <p className="font-semibold leading-snug">{policy.productName}</p>
             <p className="text-sm text-muted">
               {policy.insurer} · {t(`kindsPolicy.${policy.kind}`)}
             </p>

@@ -8,7 +8,7 @@ import {
 } from '@google/genai';
 import { deskLiveTools } from '../agents/desk-live';
 import { env } from '../env';
-import { genai, models } from '../lib/gemini';
+import { genaiLive, models } from '../lib/gemini';
 import { notes, type BackendOptions, type LiveBackend } from './backend';
 
 /**
@@ -25,44 +25,89 @@ export async function connectGeminiLive(opts: BackendOptions): Promise<LiveBacke
   // Transcription arrives in pieces; captions show the turn so far.
   let userText = '';
   let agentText = '';
+  // Each connect() gets a generation number, so a close or error from an older model socket
+  // (replaced by a reconnect) is ignored, while one from the socket being opened is handled.
+  // Checking the session object itself would throw if the socket closes mid-handshake,
+  // before `connect` has returned it.
+  let generation = 0;
 
-  async function connect() {
-    const next = await genai().live.connect({
-      model: models.live,
-      config: {
-        responseModalities: [Modality.AUDIO],
-        systemInstruction: opts.systemInstruction,
-        tools: [{ functionDeclarations: deskLiveTools }],
-        speechConfig: {
-          voiceConfig: { prebuiltVoiceConfig: { voiceName: env.KAVACH_LIVE_VOICE } },
-        },
-        inputAudioTranscription: {},
-        outputAudioTranscription: {},
-        // A hospital corridor is loud: start a turn only on clear speech, and wait a little
-        // longer before deciding the person has finished.
-        realtimeInputConfig: {
-          automaticActivityDetection: {
-            startOfSpeechSensitivity: StartSensitivity.START_SENSITIVITY_LOW,
-            endOfSpeechSensitivity: EndSensitivity.END_SENSITIVITY_LOW,
-            prefixPaddingMs: 300,
-            silenceDurationMs: 900,
+  /**
+   * Opens one model socket. Settles only once the handshake is complete: a close or an error
+   * before that rejects, because the SDK's own promise would otherwise wait forever (issue #22),
+   * and a stale resume handle or a wrong region must never leave the family in silence.
+   */
+  function connect(): Promise<void> {
+    const mine = ++generation;
+    let ready = false;
+    return new Promise<void>((resolve, reject) => {
+      genaiLive()
+        .live.connect({
+          model: models.live,
+          config: {
+            responseModalities: [Modality.AUDIO],
+            systemInstruction: opts.systemInstruction,
+            tools: [{ functionDeclarations: deskLiveTools }],
+            speechConfig: {
+              voiceConfig: { prebuiltVoiceConfig: { voiceName: env.KAVACH_LIVE_VOICE } },
+            },
+            inputAudioTranscription: {},
+            outputAudioTranscription: {},
+            // A hospital corridor is loud: start a turn only on clear speech, and wait a little
+            // longer before deciding the person has finished.
+            realtimeInputConfig: {
+              automaticActivityDetection: {
+                startOfSpeechSensitivity: StartSensitivity.START_SENSITIVITY_LOW,
+                endOfSpeechSensitivity: EndSensitivity.END_SENSITIVITY_LOW,
+                prefixPaddingMs: 300,
+                silenceDurationMs: 900,
+              },
+              activityHandling: ActivityHandling.START_OF_ACTIVITY_INTERRUPTS,
+            },
+            sessionResumption: { handle },
+            contextWindowCompression: { slidingWindow: {} },
           },
-          activityHandling: ActivityHandling.START_OF_ACTIVITY_INTERRUPTS,
-        },
-        sessionResumption: { handle },
-        contextWindowCompression: { slidingWindow: {} },
-      },
-      callbacks: {
-        onmessage: (message) => void onMessage(message),
-        onerror: (event) => opts.onFatal(`Gemini Live error: ${event.message}`),
-        onclose: (event) => {
-          if (closed || next !== session) return;
-          if (handle) void reconnect();
-          else opts.onFatal(`Gemini Live closed: ${event.code} ${event.reason}`);
-        },
-      },
+          callbacks: {
+            onmessage: (message) => void onMessage(message),
+            onerror: (event) => {
+              if (closed || mine !== generation) return;
+              if (!ready) reject(new Error(`Gemini Live error during handshake: ${event.message}`));
+              else opts.onFatal(`Gemini Live error: ${event.message}`);
+            },
+            onclose: (event) => {
+              if (closed || mine !== generation) return;
+              if (!ready) {
+                reject(
+                  new Error(`Gemini Live closed during handshake: ${event.code} ${event.reason}`),
+                );
+                return;
+              }
+              if (handle) void reconnect();
+              else opts.onFatal(`Gemini Live closed: ${event.code} ${event.reason}`);
+            },
+          },
+        })
+        .then((next) => {
+          // A socket that finished its handshake after being replaced is closed, not adopted.
+          if (closed || mine !== generation) {
+            next.close();
+            return;
+          }
+          ready = true;
+          session = next;
+          resolve();
+        }, reject);
     });
-    session = next;
+  }
+
+  /** Connects with the resume handle; if that handshake fails, drops the handle and tries once fresh. */
+  async function open() {
+    try {
+      await connect();
+    } catch (error) {
+      if (!handle) throw error;
+      handle = undefined;
+      await connect();
+    }
   }
 
   async function reconnect() {
@@ -70,7 +115,7 @@ export async function connectGeminiLive(opts: BackendOptions): Promise<LiveBacke
     reconnecting = true;
     const old = session;
     try {
-      await connect();
+      await open();
       old?.close();
     } catch (error) {
       opts.onFatal(`Gemini Live reconnect failed: ${String(error)}`);
@@ -138,7 +183,7 @@ export async function connectGeminiLive(opts: BackendOptions): Promise<LiveBacke
       turnComplete: true,
     });
 
-  await connect();
+  await open();
 
   return {
     audio: (data) =>

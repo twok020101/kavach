@@ -1,9 +1,11 @@
 'use client';
 
 import { useMutation } from '@tanstack/react-query';
-import { ShieldCheck, Users } from 'lucide-react';
+import { ArrowRight, ShieldCheck, Users } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import { Reveal } from '@/components/kavach/reveal';
 import { SetupFrame } from '@/components/setup/setup-frame';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { useRouter } from '@/i18n/navigation';
@@ -12,6 +14,10 @@ import { startDemo } from '@/lib/session';
 import { acceptInvite, useInvitePreview } from '@/lib/setup';
 import { useQueryClient } from '@tanstack/react-query';
 
+/**
+ * S02 Sign in. The promise sits first, in a card with the shield, then the two ways in, then
+ * the demo. Sections rise in order (Reveal), buttons stand on their base, errors stay in place.
+ */
 export function SignInScreen({ invite }: { invite: string | null }) {
   const t = useTranslations('setup.signIn');
   const ts = useTranslations('setup');
@@ -60,9 +66,14 @@ export function SignInScreen({ invite }: { invite: string | null }) {
         onClick={() => signIn.mutate('guest')}
       >
         {invite && !firebaseEnabled ? t('join') : firebaseEnabled ? t('guest') : ts('continue')}
+        {!firebaseEnabled && <ArrowRight aria-hidden className="btn-arrow size-5" />}
       </Button>
       <p className="text-sm text-muted">{firebaseEnabled ? t('guestNote') : t('localMode')}</p>
-      {signIn.isError && <p className="rounded-md bg-gap-bg p-3 text-gap">{ts('error')}</p>}
+      {signIn.isError && (
+        <p role="alert" className="panel panel-gap text-gap">
+          {ts('error')}
+        </p>
+      )}
     </div>
   );
 
@@ -79,17 +90,21 @@ export function SignInScreen({ invite }: { invite: string | null }) {
         }
       >
         {preview.isError ? (
-          <p className="rounded-md bg-gap-bg p-3 text-gap">{t('inviteGone')}</p>
+          <p role="alert" className="panel panel-gap text-gap">
+            {t('inviteGone')}
+          </p>
         ) : (
           preview.data && (
             <>
-              <Card className="flex items-center gap-4">
-                <span className="flex size-14 items-center justify-center rounded-full bg-primary-soft text-primary">
-                  <Users aria-hidden className="size-7" />
-                </span>
-                <p className="text-lg">{t('invitedAs', { name: preview.data.memberName })}</p>
-              </Card>
-              {buttons}
+              <Reveal>
+                <Card className="flex items-center gap-4">
+                  <span className="flex size-14 shrink-0 items-center justify-center rounded-md bg-primary-soft text-primary">
+                    <Users aria-hidden className="size-7" />
+                  </span>
+                  <p className="text-lg">{t('invitedAs', { name: preview.data.memberName })}</p>
+                </Card>
+              </Reveal>
+              <Reveal delay={0.06}>{buttons}</Reveal>
             </>
           )
         )}
@@ -99,21 +114,45 @@ export function SignInScreen({ invite }: { invite: string | null }) {
 
   return (
     <SetupFrame title={t('title')} intro={t('intro')}>
-      <div className="flex items-center gap-3 rounded-md bg-primary-soft p-4 text-primary-hover">
-        <ShieldCheck aria-hidden className="size-8 shrink-0" />
-        <p className="font-medium">{ts('consent.promise')}</p>
-      </div>
-      {buttons}
-      <p className="mt-auto border-t border-border pt-4 text-muted">
-        {t('demo')}{' '}
-        <button
-          className="font-semibold text-primary underline disabled:opacity-50"
-          disabled={demo.isPending}
-          onClick={() => demo.mutate()}
-        >
-          {t('demoLink')}
-        </button>
-      </p>
+      <Reveal>
+        <Card className="flex items-center gap-4">
+          <span className="flex size-12 shrink-0 items-center justify-center rounded-md bg-safe-bg text-safe">
+            <ShieldCheck aria-hidden className="size-6" />
+          </span>
+          <p className="font-medium">{ts('consent.promise')}</p>
+        </Card>
+      </Reveal>
+      <Reveal delay={0.06}>{buttons}</Reveal>
+      <Reveal delay={0.12} className="mt-auto">
+        {/* The demo as a card of its own (from the Stitch sign-in): what it holds, one button. */}
+        <Card as="section" aria-labelledby="demo-title" className="flex flex-col gap-3 bg-sunken">
+          <div className="flex items-start gap-3">
+            <span className="flex size-12 shrink-0 items-center justify-center rounded-md bg-accent text-accent-ink">
+              <Users aria-hidden className="size-6" />
+            </span>
+            <div className="flex min-w-0 flex-1 flex-col gap-1">
+              <span className="flex flex-wrap items-center gap-2">
+                <h2 id="demo-title" className="font-display text-lg font-bold leading-tight">
+                  {t('demoCard.title')}
+                </h2>
+                <Badge tone="primary" className="text-xs">
+                  {t('demoCard.badge')}
+                </Badge>
+              </span>
+              <p className="text-sm text-muted">{t('demoCard.body')}</p>
+            </div>
+          </div>
+          <Button
+            variant="secondary"
+            loading={demo.isPending}
+            onClick={() => demo.mutate()}
+            className="self-start"
+          >
+            {t('demoCard.open')}
+            <ArrowRight aria-hidden className="btn-arrow size-5" />
+          </Button>
+        </Card>
+      </Reveal>
     </SetupFrame>
   );
 }

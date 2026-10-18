@@ -33,6 +33,8 @@ export const IntakeResult = z.object({
   familyName: z.string().nullable(),
   city: z.string().nullable(),
   members: z.array(IntakeMember),
+  /** What the agent heard (a voice note transcribed, or the typed sentence), for the family to check. */
+  transcript: z.string().nullable().optional(),
 });
 export type IntakeResult = z.infer<typeof IntakeResult>;
 

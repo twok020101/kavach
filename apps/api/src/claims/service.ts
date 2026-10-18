@@ -9,7 +9,7 @@ import {
   type SettlementLetter,
 } from '@kavach/schemas';
 import { draftAppeal } from '../agents/appeal-drafter';
-import { readSettlementLetter } from '../agents/claim-letter-reader';
+import { classifyClaimDocument, readSettlementLetter } from '../agents/claim-letter-reader';
 import { blobs } from '../lib/blobs';
 import { listClauses } from '../retrieval/clauses';
 import { store } from '../store';
@@ -23,7 +23,22 @@ const claimsOf = (householdId: string) => `households/${householdId}/claimCases`
 const httpError = (statusCode: number, message: string, extra: object = {}) =>
   Object.assign(new Error(message), { statusCode, ...extra });
 
-export type LetterFile = { filename: string; mimeType: string; bytes: Buffer; isSample?: boolean };
+const notALetter = (looksLike?: string) =>
+  httpError(
+    422,
+    `This is not a claim settlement letter${looksLike ? `: it looks like ${looksLike.replace(/[.\s]+$/, '')}` : ''}. Upload the insurer's settlement or claim approval letter.`,
+  );
+
+export type LetterFile = {
+  filename: string;
+  mimeType: string;
+  bytes: Buffer;
+  isSample?: boolean;
+  /** With FAKE_LLM=1, which recorded reading to return. */
+  fixture?: string;
+  /** With FAKE_LLM=1, which recorded classification to return (e.g. `claim-letter-kind-brochure`). */
+  kindFixture?: string;
+};
 
 export async function listClaims(householdId: string) {
   const claims = await store.list<ClaimCase>(claimsOf(householdId));
@@ -57,7 +72,10 @@ export async function createClaim(household: Household, file: LetterFile) {
   });
 
   try {
-    const letter = await readSettlementLetter(file);
+    const kind = await classifyClaimDocument(file, { fixture: file.kindFixture });
+    if (!kind.isSettlementLetter) throw notALetter(kind.description);
+    const letter = await readSettlementLetter(file, { fixture: file.fixture });
+    if (letter.isSettlementLetter === false) throw notALetter(letter.documentDescription);
     const memberId = matchPatient(household, letter.patientName);
     const policy = matchPolicy(household, letter, memberId);
     const productKey = await findProductKey(policy, letter);

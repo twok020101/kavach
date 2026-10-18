@@ -83,7 +83,13 @@
       "terms": {
         "roomRentLimitPerDay": 5000,
         "copayPercent": 0,
-        "proportionateDeduction": true
+        "proportionateDeduction": true,
+        "maternity": {
+          "limitNormal": 50000,
+          "limitCsection": 75000,
+          "newbornDays": 90,
+          "waitingMonths": 0
+        }
       }
     },
     "pol_gmc_startup": {
@@ -99,9 +105,15 @@
       "startDate": "2026-12-01",
       "endDate": "2027-11-30",
       "terms": {
-        "roomRentLimitPerDay": 3000,
+        "roomRentLimitPerDay": 2500,
         "copayPercent": 0,
-        "proportionateDeduction": true
+        "proportionateDeduction": false,
+        "maternity": {
+          "limitNormal": 50000,
+          "limitCsection": 75000,
+          "newbornDays": 90,
+          "waitingMonths": 0
+        }
       }
     },
     "pol_parents_migrated": {
@@ -231,6 +243,30 @@
         "pol_motor": {
           "startDate": "2027-01-10",
           "endDate": "2028-01-09"
+        }
+      }
+    },
+    "maternity": {
+      "$comment": "Priya's planned normal delivery at Lotus Women's Hospital (MX-1, modelled on a real anonymised claim). The hospital prices by room (general ward, twin sharing, non-AC, AC); the family took the non-AC room at ₹2,750 against a ₹2,500 eligibility, so a small room deduction applies, and the Orbit Labs policy's ₹50,000 maternity cap takes the rest.",
+      "asOf": "2027-07-20",
+      "policies": [
+        "pol_gmc_startup",
+        "pol_parents_migrated",
+        "pol_supertopup",
+        "pol_lic_endow",
+        "pol_motor"
+      ],
+      "changes": {
+        "pol_parents_migrated": {
+          "claimsUsedThisYear": 204640
+        },
+        "pol_motor": {
+          "startDate": "2027-01-10",
+          "endDate": "2028-01-09"
+        },
+        "pol_supertopup": {
+          "startDate": "2027-06-15",
+          "endDate": "2028-06-14"
         }
       }
     }

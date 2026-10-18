@@ -53,7 +53,7 @@ function Replan({ household, id }: { household: Household; id: string }) {
           <span className={played ? 'text-muted' : 'text-primary'}>{date(before.asOf)}</span>
           <div className="mx-2 h-1 flex-1 rounded-full bg-sunken">
             <div
-              className="h-1 rounded-full bg-primary transition-all duration-700"
+              className="h-1 rounded-sm bg-primary transition-[width] duration-600 ease-[var(--ease-out-strong)]"
               style={{ width: played ? '100%' : '0%' }}
             />
           </div>

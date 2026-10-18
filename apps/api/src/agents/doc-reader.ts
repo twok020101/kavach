@@ -13,7 +13,8 @@ TASK
    start and end dates, and the terms: room rent limit per day, ICU limit per day, co-pay percent and the
    minimum age it applies from, deductible, and whether proportionate deduction applies.
 3. List the insured persons as printed (name, relation, age). For group cover, fill "employment".
-4. For any other document, write a one-line "summary" and leave "policy" out.
+4. For any other document, write a "summary" of one or two plain sentences (at most 300 characters)
+   saying what the document is and what it shows, and leave "policy" out. Never pad the summary.
 
 RULES
 - Copy numbers exactly as printed. Convert "5,00,000" and "5 lakh" to 500000. Never round.
@@ -47,7 +48,7 @@ export async function readDocument(input: {
   instructions?: string;
 }) {
   const family = input.members.map(({ name, relation, age }) => ({ name, relation, age }));
-  return generateStructured({
+  const reading = await generateStructured({
     model: models.pro,
     schema: DocExtraction,
     systemInstruction: PROMPT,
@@ -70,4 +71,20 @@ export async function readDocument(input: {
     ],
     fixture: input.fixture ?? fixtureFor(input.filename),
   });
+  return { ...reading, summary: tidySummary(reading.summary) };
+}
+
+/**
+ * Keeps a summary to a short paragraph. A model can run away inside a free-text field
+ * ("Done. Final. Ready. Okay…" for pages); the text is cut where very short sentences start
+ * repeating, then capped at three sentences and 360 characters.
+ */
+export function tidySummary(text: string | undefined): string | undefined {
+  if (!text) return text;
+  let s = text.replace(/\s+/g, ' ').trim();
+  const runaway = s.search(/(?:\b[\w'’-]{1,12}[.!]\s+){6,}/);
+  if (runaway > 0) s = s.slice(0, runaway).trim();
+  const sentences = s.match(/[^.!?]+[.!?]+(?:\s|$)/g);
+  if (sentences) s = sentences.slice(0, 3).join('').trim();
+  return s.length > 360 ? `${s.slice(0, 357).trimEnd()}…` : s;
 }

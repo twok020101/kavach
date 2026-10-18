@@ -37,5 +37,6 @@
     "other": "Live voice isn't working right now. Kavach switched to text mode: the answers are the same.",
     "retry": "Try voice again",
     "dismiss": "Dismiss"
-  }
+  },
+  "muteShort": "Mute"
 }

@@ -1,0 +1,84 @@
+{
+  "hospitalName": "Lotus Women's Hospital, Bengaluru",
+  "patientName": "Priya Sharma",
+  "procedure": "Normal delivery (spontaneous vertex delivery)",
+  "treatment": "maternity_normal",
+  "admissionType": "planned",
+  "days": 2,
+  "billingType": "differential",
+  "roomCategories": [
+    { "id": "nonac", "label": "Non-AC Single", "rentPerDay": 2750 },
+    { "id": "general", "label": "General Ward", "rentPerDay": 2000 },
+    { "id": "twin", "label": "Twin Sharing", "rentPerDay": 2400 },
+    { "id": "ac", "label": "AC Single", "rentPerDay": 4500 }
+  ],
+  "lines": [
+    {
+      "head": "room",
+      "label": "Bed charges × 2 days",
+      "pricedByRoom": true,
+      "amounts": { "general": 4000, "twin": 4800, "nonac": 5500, "ac": 9000 }
+    },
+    {
+      "head": "nursing",
+      "label": "Nursing charges × 2 days",
+      "pricedByRoom": true,
+      "amounts": { "general": 2400, "twin": 2800, "nonac": 3000, "ac": 4000 }
+    },
+    {
+      "head": "ot",
+      "label": "Labour room charges",
+      "pricedByRoom": true,
+      "amounts": { "general": 17000, "twin": 18000, "nonac": 19050, "ac": 22000 }
+    },
+    {
+      "head": "surgeon",
+      "label": "Obstetrician professional charges",
+      "pricedByRoom": true,
+      "amounts": { "general": 26000, "twin": 27500, "nonac": 28750, "ac": 32000 }
+    },
+    {
+      "head": "doctor_visits",
+      "label": "Doctor visits × 2",
+      "pricedByRoom": true,
+      "amounts": { "general": 2400, "twin": 2800, "nonac": 3000, "ac": 4000 }
+    },
+    {
+      "head": "other",
+      "label": "Paediatrician – newborn check (day 1)",
+      "pricedByRoom": false,
+      "amounts": { "general": 5000, "twin": 5000, "nonac": 5000, "ac": 5000 }
+    },
+    {
+      "head": "diagnostics",
+      "label": "Monitoring (NIBP, foetal monitor) & preparation",
+      "pricedByRoom": false,
+      "amounts": { "general": 3200, "twin": 3200, "nonac": 3200, "ac": 3200 }
+    },
+    {
+      "head": "pharmacy",
+      "label": "Pharmacy (drugs)",
+      "pricedByRoom": false,
+      "amounts": { "general": 6700, "twin": 6700, "nonac": 6700, "ac": 6700 }
+    },
+    {
+      "head": "consumables",
+      "label": "Consumables (IV set, cannula, pads)",
+      "pricedByRoom": false,
+      "amounts": { "general": 1150, "twin": 1150, "nonac": 1150, "ac": 1150 }
+    },
+    {
+      "head": "non_payable",
+      "label": "Non-payable items (registration, shoe cover, apron, baby kit bag)",
+      "pricedByRoom": false,
+      "amounts": { "general": 1900, "twin": 1900, "nonac": 1900, "ac": 1900 }
+    }
+  ],
+  "printedTotals": { "general": 69750, "twin": 73850, "nonac": 77250, "ac": 88950 },
+  "needsConfirmation": false,
+  "notes": [
+    "Estimate LWH/EST/2027/01182 dated 18-07-2027, quoted for the Non-AC Single room; printed totals ₹69,750 (General Ward), ₹73,850 (Twin Sharing), ₹77,250 (Non-AC Single) and ₹88,950 (AC Single) match the lines.",
+    "Tariff note: bed, nursing, labour room, obstetrician and doctor visit charges are levied by room category; paediatrician, monitoring, pharmacy and consumables at actuals.",
+    "Caesarean section, if needed, is quoted separately on admission (indicative ₹1,35,000 in the General Ward)."
+  ]
+}

@@ -35,7 +35,7 @@ export function DateScrubber({
         </label>
         {value !== from && (
           <button
-            className="min-h-10 px-2 text-sm text-primary underline"
+            className="press min-h-10 rounded-md px-2.5 text-sm font-semibold text-primary hover:bg-primary-soft"
             onClick={() => onChange(from)}
           >
             {t('today')}
@@ -51,13 +51,13 @@ export function DateScrubber({
           value={offset}
           onChange={(e) => onChange(addDays(from, Number(e.target.value)))}
           aria-valuetext={date(value, true)}
-          className="h-10 w-full cursor-pointer accent-primary"
+          className="h-10 w-full cursor-pointer"
         />
         {inRange.map((pin) => (
           <span
             key={pin.date + pin.label}
             aria-hidden
-            className="pointer-events-none absolute top-0 h-2.5 w-0.5 bg-accent"
+            className="pointer-events-none absolute top-[11px] h-[18px] w-0.5 rounded-full bg-accent"
             style={{ left: `calc(${(daysBetween(from, pin.date) / days) * 100}% )` }}
           />
         ))}
@@ -69,7 +69,7 @@ export function DateScrubber({
               <button
                 onClick={() => onChange(pin.date)}
                 className={cn(
-                  'min-h-9 rounded-full border px-3 text-xs font-medium',
+                  'press min-h-9 rounded-full border px-3 text-xs font-medium',
                   pin.date === value
                     ? 'border-primary bg-primary text-on-primary'
                     : 'border-border bg-surface hover:border-primary',

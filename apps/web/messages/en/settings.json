@@ -13,7 +13,8 @@
     "textSize": "Text size",
     "textSizes": {
       "normal": "Normal",
-      "large": "Large"
+      "large": "Large",
+      "xlarge": "Extra large"
     },
     "toggle": "Switch light or dark theme"
   },
@@ -24,7 +25,15 @@
     "edit": "Edit family and money",
     "editHint": "People, ages, income and spending",
     "demo": "Demo controls",
-    "demoHint": "Jump to a moment of the Sharma family's story"
+    "demoHint": "Jump to a moment of the Sharma family's story",
+    "timeline": "Timeline",
+    "timelineHint": "What happened and what is coming",
+    "claims": "Claims",
+    "claimsHint": "Settlement letters checked, appeals drafted",
+    "actions": "Your steps",
+    "actionsHint": "Letters and reminders waiting for you",
+    "viewAs": "See the app as {name}",
+    "viewAsHint": "The simple home a family member gets: one button, their cover, who to call"
   },
   "consent": {
     "title": "What Kavach may use",
@@ -151,6 +160,8 @@
     },
     "partnerContinue": "Continue to partner",
     "partnerDemo": "Demo — no real purchase. In the live product this opens the partner's page with only what you ticked.",
-    "partnerBack": "Back"
+    "partnerBack": "Back",
+    "itemPremiumLabel": "Premium",
+    "perMonthShort": "per month"
   }
 }

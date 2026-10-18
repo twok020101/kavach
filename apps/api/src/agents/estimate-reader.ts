@@ -2,6 +2,7 @@ import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { formatInr } from '@kavach/engine';
 import { HospitalEstimate, type EstimateLine } from '@kavach/schemas';
+import type { z } from 'zod';
 import { generateStructured, models } from '../lib/gemini';
 import { appRoot } from '../paths';
 
@@ -36,8 +37,66 @@ export async function readEstimate(
       },
     ],
     fixture,
+    repair: repairReading,
   });
   return checkEstimate(reading);
+}
+
+/**
+ * The model's JSON did not fit the schema. That happens for a photo that is not an estimate
+ * (it answers with `days: 0` and no lines, as the prompt asks, which the strict schema rejects)
+ * or for decimals and odd types. Round the numbers and make the stay at least a day, and if it
+ * still does not fit, hand back an empty estimate that must be confirmed, with the reason, so
+ * the desk says "check the estimate first" instead of failing.
+ */
+export function repairReading(raw: unknown, issues: z.ZodError): HospitalEstimate {
+  const fixed = roundNumbers(raw) as Record<string, unknown>;
+  if (typeof fixed.days !== 'number' || !(fixed.days >= 1)) fixed.days = 1;
+  const second = HospitalEstimate.safeParse({ ...fixed, needsConfirmation: true });
+  const notes = Array.isArray(fixed.notes) ? fixed.notes.filter((n) => typeof n === 'string') : [];
+  const hasLines = Array.isArray(fixed.lines) && fixed.lines.length > 0;
+  // A package poster has no lines, only a price per room; it is still an estimate.
+  const hasPackage =
+    !!fixed.packagePrices &&
+    typeof fixed.packagePrices === 'object' &&
+    Object.keys(fixed.packagePrices as object).length > 0;
+  if (second.success && (hasLines || hasPackage)) {
+    return {
+      ...second.data,
+      notes: [...second.data.notes, 'Some fields were adjusted while reading; please check them.'],
+    };
+  }
+  const reason = issues.issues
+    .slice(0, 3)
+    .map((i) => `${i.path.join('.') || 'estimate'}: ${i.message}`)
+    .join('; ');
+  return {
+    hospitalName: typeof fixed.hospitalName === 'string' ? fixed.hospitalName : 'Unknown hospital',
+    procedure: typeof fixed.procedure === 'string' ? fixed.procedure : 'Unknown',
+    treatment: 'general',
+    admissionType: 'planned',
+    days: 1,
+    billingType: 'unknown',
+    roomCategories: [{ id: 'unknown', label: 'Unknown room', rentPerDay: 0 }],
+    lines: [],
+    needsConfirmation: true,
+    notes: [
+      ...(notes as string[]),
+      `This could not be read as a hospital estimate (${reason}). Take a photo of the printed estimate with the room charges, or type the numbers.`,
+    ],
+  };
+}
+
+/** Whole rupees everywhere: rounds every number in the model's JSON (estimates print no paise). */
+function roundNumbers(value: unknown): unknown {
+  if (typeof value === 'number') return Number.isFinite(value) ? Math.round(value) : 0;
+  if (Array.isArray(value)) return value.map(roundNumbers);
+  if (value && typeof value === 'object') {
+    return Object.fromEntries(
+      Object.entries(value as Record<string, unknown>).map(([k, v]) => [k, roundNumbers(v)]),
+    );
+  }
+  return value;
 }
 
 /** Deterministic checks on what the model read. Fixes only what is certain; flags the rest. */
@@ -49,10 +108,41 @@ export function checkEstimate(reading: HospitalEstimate): HospitalEstimate {
     unsure = true;
   };
 
-  const rooms = reading.roomCategories;
+  const packaged =
+    reading.billingType === 'package' &&
+    Object.keys(reading.packagePrices ?? {}).length > 0 &&
+    reading.roomCategories.some((r) => reading.packagePrices?.[r.id] !== undefined);
+  if (reading.lines.length === 0 && !packaged) {
+    // Nothing to check: say so once (the reader's own note says what the photo shows).
+    flag('No charges could be read from the estimate.');
+    return { ...reading, needsConfirmation: true, notes };
+  }
+  // A package list prices whole rooms; its categories must each carry a package price.
+  if (packaged) {
+    const unpriced = reading.roomCategories.filter(
+      (r) => reading.packagePrices?.[r.id] === undefined,
+    );
+    for (const r of unpriced) notes.push(`${r.label}: no package price printed; ask the desk.`);
+  }
+
+  // Estimates often print a rent-only tariff table (General Ward … Suite) next to charges
+  // priced for two or three rooms. A category with no charge in any line and no printed
+  // total is tariff-only: the desk cannot compare it, so it is set aside with a note rather
+  // than flagged as unreadable. The quoted room (first) always stays.
+  const priced = (id: string) =>
+    reading.lines.some((l) => l.amounts[id] !== undefined) ||
+    reading.printedTotals?.[id] !== undefined ||
+    reading.packagePrices?.[id] !== undefined;
+  const tariffOnly = reading.roomCategories.filter((r, i) => i > 0 && !priced(r.id));
+  const rooms = reading.roomCategories.filter((r) => !tariffOnly.includes(r));
+  if (tariffOnly.length > 0) {
+    notes.push(
+      `Tariff lists ${tariffOnly.map((r) => `${r.label} (${formatInr(r.rentPerDay)}/day)`).join(', ')} without estimated charges; ask the desk for an estimate in that room if needed.`,
+    );
+  }
+
   const roomIds = new Set(rooms.map((r) => r.id));
   if (roomIds.size !== rooms.length) flag('Two room categories have the same id.');
-  if (reading.lines.length === 0) flag('No charges could be read from the estimate.');
 
   const lines = reading.lines.map((line) => withConsistentPricing(line, rooms.length, notes));
 
@@ -95,7 +185,7 @@ export function checkEstimate(reading: HospitalEstimate): HospitalEstimate {
     }
   }
 
-  return { ...reading, lines, needsConfirmation: unsure, notes };
+  return { ...reading, roomCategories: rooms, lines, needsConfirmation: unsure, notes };
 }
 
 /** A head's amount in one room: its own column, or the single amount when it isn't priced by room. */

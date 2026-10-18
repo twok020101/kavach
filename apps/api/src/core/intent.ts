@@ -1,4 +1,4 @@
-import type { BillingType, Locale } from '@kavach/schemas';
+import type { BillingType, Locale, RoomCategory } from '@kavach/schemas';
 
 /**
  * Simple keyword reading of what the family typed or said. The desk core needs only two things
@@ -30,6 +30,36 @@ const SAME = [
 ];
 const DIFFERENT = [/\bdifferent\b/i, /\bdiffer/i, /\balag\b/i, /\bbadal/i, /अलग/, /बदल/];
 const PACKAGE = [/\bpackage\b/i, /पैकेज/];
+
+/** Words people use for each kind of room, in English, Hinglish and Hindi. */
+const ROOM_WORDS: [RegExp, RegExp][] = [
+  // [matches the room's label, matches the utterance]
+  [/general|ward/i, /\bgeneral\b|\bward\b|जनरल|वार्ड/i],
+  [/twin|sharing|double|two[- ]bed/i, /\btwin\b|\bsharing\b|\bdouble\b|\bdo\s*bed|शेयरिंग|डबल/i],
+  [/non[- ]?ac/i, /\bnon[- ]?ac\b|\bbina\s*ac\b|नॉन[- ]?एसी|बिना\s*एसी/i],
+  [/(?<!non[- ])(?<!non)\bac\b/i, /(?<!non[- ])(?<!non)\bac\b|\ba\/c\b|(?<!नॉन[- ])एसी/i],
+  [/deluxe/i, /\bdeluxe\b|डीलक्स/i],
+  [/suite/i, /\bsuite\b|सुइट/i],
+  [/single/i, /\bsingle\b|\bakela\b|सिंगल/i],
+  [/private/i, /\bprivate\b|प्राइवेट/i],
+];
+
+/**
+ * The room category the family named in what they typed or said, if any: "can we take the twin
+ * sharing?", "AC wala kamra", "जनरल वार्ड". The most specific match wins (non-AC before AC).
+ */
+export function detectRoomMention(
+  text: string | undefined,
+  rooms: RoomCategory[],
+): RoomCategory | undefined {
+  if (!text?.trim()) return undefined;
+  for (const [labelPattern, utterancePattern] of ROOM_WORDS) {
+    if (!utterancePattern.test(text)) continue;
+    const room = rooms.find((r) => labelPattern.test(r.label));
+    if (room) return room;
+  }
+  return undefined;
+}
 
 /** The family's answer to "are the charges the same in every room?", if the text gives one. */
 export function detectBillingAnswer(text: string | undefined): BillingType | undefined {

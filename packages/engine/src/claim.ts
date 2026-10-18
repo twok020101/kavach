@@ -11,7 +11,11 @@ import { fire } from './rules';
 
 type LetterDeduction = SettlementLetter['deductions'][number];
 type Category = NonNullable<LetterDeduction['category']>;
-type Verdict = Pick<AssessedDeduction, 'verdict' | 'ruleId' | 'reason'> & { citationKey?: string };
+type Verdict = Pick<AssessedDeduction, 'verdict' | 'ruleId' | 'reason'> & {
+  citationKey?: string;
+  /** The part of the deduction that is recoverable, when it is not the whole of it. */
+  recoverableBase?: number;
+};
 
 /**
  * Reads each deduction on a settlement letter and says whether it is valid, challengeable
@@ -26,9 +30,11 @@ export function assessClaim(
   const rate = terms.copayFromAge === undefined || letter.copayApplied > 0 ? terms.copayPercent : 0;
   const trace: RuleFiring[] = [];
 
+  const totalDeducted = sum(letter.deductions.map((d) => d.amount));
   const deductions: AssessedDeduction[] = letter.deductions.map((d) => {
-    const v = judge(categorise(d), bill, policy);
-    const recoverable = v.verdict === 'valid' ? 0 : roundRupees((d.amount * (100 - rate)) / 100);
+    const v = judge(categorise(d), d, bill, policy, totalDeducted - d.amount);
+    const base = v.recoverableBase ?? d.amount;
+    const recoverable = v.verdict === 'valid' ? 0 : roundRupees((base * (100 - rate)) / 100);
     trace.push(
       fire(v.ruleId!, { label: d.label, amount: d.amount }, { verdict: v.verdict, recoverable }),
     );
@@ -90,10 +96,19 @@ function categorise(d: LetterDeduction): Category {
   if (/non[- ]?payable|non[- ]?medical/.test(text)) return 'non_payable';
   if (/consumable/.test(text)) return 'consumables';
   if (/room rent|room charges/.test(text)) return 'room_excess';
+  if (/ailment limit|defined limit|maternity limit|sub-?limit|delivery limit/.test(text))
+    return 'ailment_limit';
   return 'other';
 }
 
-function judge(category: Category, bill: ClaimBill, policy: Policy): Verdict {
+function judge(
+  category: Category,
+  d: LetterDeduction,
+  bill: ClaimBill,
+  policy: Policy,
+  /** What the letter deducted on its other lines, so the cap is applied to the rest of the bill. */
+  otherDeductions: number,
+): Verdict {
   const limit = policy.terms.roomRentLimitPerDay;
   const rent = bill.roomRentPerDay;
   const withinLimit = rent !== undefined && (limit === undefined || rent <= limit);
@@ -163,6 +178,40 @@ function judge(category: Category, bill: ClaimBill, policy: Policy): Verdict {
             ruleId: 'R-HL-008',
             reason: `Room rent above the limit is not payable${roomFacts}.`,
           };
+    case 'ailment_limit': {
+      const m = policy.terms.maternity;
+      const text = `${d.label} ${d.reasonGiven ?? ''}`.toLowerCase();
+      const maternity =
+        /maternity|delivery|childbirth|pregnan|caesarean|cesarean|c-section|lscs/.test(text);
+      if (m && maternity) {
+        // R-CLM-009: the cut for the cap can only be what the bill leaves above the cap once the
+        // letter's other deductions are taken off; anything more is an over-deduction.
+        const csection = /caesarean|cesarean|c-section|lscs/.test(text);
+        const cap = csection ? (m.limitCsection ?? m.limitNormal) : m.limitNormal;
+        const expected = Math.max(0, bill.total - otherDeductions - cap);
+        if (d.amount <= expected) {
+          return {
+            verdict: 'valid',
+            ruleId: 'R-CLM-009',
+            reason: `Maternity on this policy is capped at ${formatInr(cap)}; the insurer paid up to the cap. Nothing to appeal here: the fix is more cover before the next pregnancy.`,
+            citationKey: 'maternity',
+          };
+        }
+        return {
+          verdict: 'challengeable',
+          ruleId: 'R-CLM-009',
+          reason: `The maternity limit is ${formatInr(cap)}, so at most ${formatInr(expected)} of this bill can be cut for it, not ${formatInr(d.amount)}. Ask for the difference.`,
+          citationKey: 'maternity',
+          recoverableBase: d.amount - expected,
+        };
+      }
+      return {
+        verdict: 'possibly',
+        ruleId: 'R-CLM-006',
+        reason:
+          'The letter cites a defined limit the policy terms Kavach has do not show; ask the insurer which clause sets it and for how much.',
+      };
+    }
     default:
       return {
         verdict: 'possibly',

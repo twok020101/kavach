@@ -1,0 +1,40 @@
+{
+  "insurer": "Sample Insurer D",
+  "claimNumber": "SID/CL/2027/0091127",
+  "policyNumber": "SID/GMC/ORBIT/2026",
+  "patientName": "Priya Sharma",
+  "hospitalName": "Lotus Women's Hospital, Bengaluru",
+  "billAmount": 77250,
+  "approvedAmount": 50000,
+  "deductions": [
+    {
+      "label": "Non-payable items",
+      "amount": 1900,
+      "reasonGiven": "Registration, shoe cover, apron and baby kit bag are not payable (List I – Items for which coverage is not available)",
+      "category": "non_payable"
+    },
+    {
+      "label": "Excess of room rent charges for higher room opted",
+      "amount": 500,
+      "reasonGiven": "Room rent ₹2,750/day against eligibility ₹2,500/day for 2 days",
+      "category": "room_excess"
+    },
+    {
+      "label": "Excess of defined / ailment limit",
+      "amount": 24850,
+      "reasonGiven": "Maternity benefit limited to ₹50,000 per normal delivery under the group policy (Schedule of Benefits, item 7)",
+      "category": "ailment_limit",
+      "clauseRef": "7"
+    }
+  ],
+  "copayApplied": 0,
+  "letterDate": "2027-08-12",
+  "diagnosis": "Single spontaneous delivery (O80.0)",
+  "admissionDate": "2027-07-20",
+  "dischargeDate": "2027-07-22",
+  "roomCategory": "Non-AC Single",
+  "roomRentPerDay": 2750,
+  "roomEligibilityPerDay": 2500,
+  "icuStay": false,
+  "grievanceEmail": "grievance@insurer-d-sample.example"
+}

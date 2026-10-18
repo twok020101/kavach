@@ -14,13 +14,32 @@ const look: Record<CoverStatus, { tone: BadgeTone; icon: typeof ShieldCheck }> =
   na: { tone: 'na', icon: Minus },
 };
 
-/** Cover status as colour + icon + word, never colour alone. */
-export function StatusBadge({ status, className }: { status: CoverStatus; className?: string }) {
+/**
+ * Cover status as colour + icon + word, never colour alone. `short` uses the one-word form
+ * for tight grids on a phone; assistive tech still hears the full status.
+ */
+export function StatusBadge({
+  status,
+  short = false,
+  className,
+}: {
+  status: CoverStatus;
+  short?: boolean;
+  className?: string;
+}) {
   const t = useTranslations('common.status');
+  const ts = useTranslations('common.statusShort');
   const { tone, icon } = look[status];
   return (
     <Badge tone={tone} icon={icon} className={className}>
-      {t(status)}
+      {short ? (
+        <>
+          <span aria-hidden>{ts(status)}</span>
+          <span className="sr-only">{t(status)}</span>
+        </>
+      ) : (
+        t(status)
+      )}
     </Badge>
   );
 }

@@ -6,4 +6,7 @@
 export const landingNumbers = {
   hospitalSaving: 90000,
   claimRecoverable: 14560,
+  /** HX-1 out of pocket in the quoted (deluxe) room and in the room within the limit. */
+  hx1Deluxe: 150800,
+  hx1Standard: 60800,
 };

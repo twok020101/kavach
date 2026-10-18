@@ -57,9 +57,9 @@ export function HoldToSpeak({ onRecorded }: { onRecorded: (note: VoiceNote) => v
         onKeyUp={(e) => (e.key === ' ' || e.key === 'Enter') && stop()}
         aria-pressed={recording}
         className={cn(
-          'flex min-h-12 select-none items-center gap-2 rounded-full border-2 px-5 font-semibold transition-colors',
+          'press flex min-h-12 select-none items-center gap-2 rounded-full border-2 px-5 font-semibold',
           recording
-            ? 'border-accent bg-accent text-accent-ink'
+            ? 'border-accent bg-accent text-accent-ink ring-8 ring-accent/20'
             : 'border-primary bg-surface text-primary hover:bg-primary-soft',
         )}
       >

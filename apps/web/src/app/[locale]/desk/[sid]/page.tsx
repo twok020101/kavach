@@ -8,6 +8,12 @@ export default async function DeskSessionPage({
 }: PageProps<'/[locale]/desk/[sid]'>) {
   const { locale, sid } = await params;
   setRequestLocale(locale);
-  const { demo } = await searchParams;
-  return <DeskSessionScreen sid={sid} demo={demo === '1'} />;
+  const { demo, scene } = await searchParams;
+  return (
+    <DeskSessionScreen
+      sid={sid}
+      demo={demo === '1'}
+      scene={scene === 'maternity' ? 'maternity' : undefined}
+    />
+  );
 }

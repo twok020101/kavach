@@ -19,7 +19,7 @@ import { z } from 'zod';
 import { api, apiUrl } from './api';
 import { getIdToken } from './firebase';
 import { householdQueryKey } from './household';
-import { rememberHouseholdId } from './session';
+import { rememberHouseholdId, rememberMemberId } from './session';
 
 const call = async <S extends z.ZodType>(
   path: string,
@@ -226,11 +226,12 @@ export function useInvitePreview(token: string | null) {
 }
 
 export async function acceptInvite(token: string) {
-  const { householdId } = await call(
+  const { householdId, memberId } = await call(
     `/v1/invites/${token}/accept`,
     z.object({ householdId: z.string(), memberId: z.string() }),
     { method: 'POST', json: {} },
   );
   rememberHouseholdId(householdId);
+  rememberMemberId(memberId);
   return householdId;
 }

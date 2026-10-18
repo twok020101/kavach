@@ -10,7 +10,7 @@ export function RuleList({ ids }: { ids: string[] }) {
   return (
     <ol className="flex flex-col gap-2">
       {rules.map((r) => (
-        <li key={r.id} className="rounded-md border border-border p-3">
+        <li key={r.id} className="rounded-md bg-sunken p-3">
           <div className="flex flex-wrap items-center gap-2">
             <RuleId id={r.id} />
             <VerifiedBadge verified={r.status === 'verified'} />
@@ -18,7 +18,11 @@ export function RuleList({ ids }: { ids: string[] }) {
           <p className="mt-2 text-sm">{r.statement}</p>
           <div className="mt-2 flex flex-wrap gap-1.5">
             {r.sources.map((s) => (
-              <CitationChip key={s.title} label={s.title} href={s.url} />
+              <CitationChip
+                key={s.title}
+                label={s.title.replace(/\s*\(docs\/[^)]*\)/, '')}
+                href={s.url}
+              />
             ))}
           </div>
         </li>
