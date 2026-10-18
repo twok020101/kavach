@@ -124,8 +124,8 @@ function BrandPanel() {
   ] as const;
   return (
     <aside className="relative hidden w-[42%] max-w-xl flex-col justify-between overflow-hidden bg-primary p-10 text-on-primary lg:flex">
-      {/* The mark, large and quiet, behind the words: the two arcs that hold the family. */}
-      <LogoMark className="pointer-events-none absolute -bottom-20 -right-16 size-[26rem] opacity-[0.09] [--primary:#fff]" />
+      {/* The mark, large and quiet, behind the words: the shield that holds the family. */}
+      <LogoMark className="pointer-events-none absolute -bottom-20 -right-16 size-[26rem] opacity-[0.12]" />
       <Link href="/" className="relative inline-flex items-center gap-3" aria-label="Kavach">
         <span className="rounded-md bg-surface p-1.5">
           <LogoMark className="size-8" />
