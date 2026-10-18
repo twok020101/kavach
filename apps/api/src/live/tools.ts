@@ -3,6 +3,7 @@ import {
   HospitalEstimate,
   type Locale,
   type LiveServerMessage,
+  Treatment,
 } from '@kavach/schemas';
 import { z } from 'zod';
 import type { DeskPort } from './port';
@@ -21,19 +22,20 @@ const SpokenEstimate = z.object({
     .min(1),
   quotedTotal: z.number().nonnegative().optional(),
   quotedRoom: z.string().trim().optional(),
+  /** Everything except room rent, when known on its own; stays the same when only the days change. */
+  otherCharges: z.number().nonnegative().optional(),
   billingType: BillingType.optional(),
+  /** A delivery gets the maternity cap; the default is a general admission. */
+  treatment: Treatment.optional(),
 });
-
-const slug = (label: string) =>
-  label
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '_')
-    .replace(/^_|_$/g, '');
 
 /**
  * Builds a HospitalEstimate from what was said: one room line priced per room (rent x days) and,
- * when a total was quoted, one "other charges" line that is the same in every room. The billing
- * type stays unknown unless stated, so the engine computes both branches and asks the one question.
+ * when a total or the other charges were given, one "other charges" line, the same figure in every
+ * room but marked as priced by room, so the differential branch cuts it with the room ratio the way
+ * an insurer would. Room ids are by position (a Hindi label has no Latin letters to slug). The
+ * billing type stays unknown unless stated, so the engine computes both branches and asks the one
+ * question.
  */
 function estimateFromSpeech(input: z.infer<typeof SpokenEstimate>): HospitalEstimate {
   const quoted = input.quotedRoom?.toLowerCase();
@@ -44,8 +46,8 @@ function estimateFromSpeech(input: z.infer<typeof SpokenEstimate>): HospitalEsti
       )
     : 0;
   const ordered = [input.rooms[quotedIndex]!, ...input.rooms.filter((_, i) => i !== quotedIndex)];
-  const rooms = ordered.map((r) => ({
-    id: slug(r.label),
+  const rooms = ordered.map((r, i) => ({
+    id: `room_${i + 1}`,
     label: r.label,
     rentPerDay: Math.round(r.rentPerDay),
   }));
@@ -58,18 +60,24 @@ function estimateFromSpeech(input: z.infer<typeof SpokenEstimate>): HospitalEsti
       amounts: roomAmounts,
     },
   ];
-  if (input.quotedTotal !== undefined) {
-    const other = Math.max(0, Math.round(input.quotedTotal) - rooms[0]!.rentPerDay * input.days);
+  const other =
+    input.otherCharges !== undefined
+      ? Math.round(input.otherCharges)
+      : input.quotedTotal !== undefined
+        ? Math.max(0, Math.round(input.quotedTotal) - rooms[0]!.rentPerDay * input.days)
+        : undefined;
+  if (other !== undefined) {
     lines.push({
       head: 'other',
       label: 'Other hospital charges (as told at the desk)',
-      pricedByRoom: false,
+      pricedByRoom: true,
       amounts: Object.fromEntries(rooms.map((r) => [r.id, other])),
     });
   }
   return HospitalEstimate.parse({
     hospitalName: input.hospitalName ?? 'Hospital (as told at the desk)',
     procedure: input.procedure ?? 'Treatment (as told at the desk)',
+    treatment: input.treatment ?? 'general',
     admissionType: input.admissionType ?? 'planned',
     days: input.days,
     billingType: input.billingType ?? 'unknown',
@@ -127,13 +135,16 @@ export function deskTools(port: DeskPort, emit: Emit, language: () => Locale) {
         port.spokenEstimate(estimateFromSpeech(parsed.data)),
       );
       emit({ type: 'estimate', estimate });
+      const other = estimate.lines.find((l) => l.head === 'other');
       return {
         status: 'ok',
         days: estimate.days,
+        treatment: estimate.treatment,
         billingType: estimate.billingType,
         roomCategories: estimate.roomCategories,
+        otherCharges: other ? Object.values(other.amounts)[0] : undefined,
         instruction:
-          'Recorded. Now call evaluate_options. Do not ask for these figures again; ask for a photo of the printed estimate at most once, later.',
+          'Recorded. Now call evaluate_options. Do not ask for these figures again; ask for a photo of the printed estimate at most once, later. For a what-if with more days, call this tool again with the new days, the same rooms and this otherCharges value.',
       };
     },
 

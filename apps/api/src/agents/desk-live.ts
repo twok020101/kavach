@@ -64,7 +64,19 @@ export const deskLiveTools = [
         },
         quotedTotal: {
           type: 'number',
-          description: 'The total the hospital quoted in rupees, if any.',
+          description:
+            'The total the hospital quoted in rupees for the quoted room and the days given, if any.',
+        },
+        otherCharges: {
+          type: 'number',
+          description:
+            'Everything except room rent, in rupees, when known on its own (the last result returns it). Pass it unchanged when only the days change.',
+        },
+        treatment: {
+          type: 'string',
+          enum: ['general', 'maternity_normal', 'maternity_csection'],
+          description:
+            'maternity_normal or maternity_csection when the admission is a delivery, so the maternity limit applies; general otherwise.',
         },
         quotedRoom: {
           type: 'string',
