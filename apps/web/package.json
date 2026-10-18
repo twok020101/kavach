@@ -18,7 +18,7 @@
     "firebase": "^13.0.0",
     "lucide-react": "^1.58.0",
     "motion": "^14.3.0",
-    "next": "^16.4.2",
+    "next": "16.4.2",
     "next-intl": "^4.14.9",
     "qrcode": "^1.5.4",
     "react": "^19.3.1",
