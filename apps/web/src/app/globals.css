@@ -139,9 +139,11 @@ html:has([data-mode='desk']) {
   /* Strong curves (Emil Kowalski): built-in easings are too weak to read as intentional. */
   --ease-out-strong: cubic-bezier(0.23, 1, 0.32, 1);
   --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
-  --font-sans: var(--font-inter), var(--font-noto-deva), var(--font-noto-tamil), var(--font-noto-sc), system-ui,
-    sans-serif;
-  --font-display: var(--font-jakarta), var(--font-noto-deva), var(--font-noto-tamil), var(--font-noto-sc),
+  --font-sans:
+    var(--font-inter), var(--font-noto-deva), var(--font-noto-tamil), var(--font-noto-sc),
+    system-ui, sans-serif;
+  --font-display:
+    var(--font-jakarta), var(--font-noto-deva), var(--font-noto-tamil), var(--font-noto-sc),
     sans-serif;
   --font-serif: var(--font-source-serif), serif;
   --font-mono: var(--font-jetbrains), ui-monospace, monospace;

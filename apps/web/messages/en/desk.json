@@ -8,7 +8,8 @@
     "start": "Start",
     "pickFirst": "Pick who is admitted to start.",
     "privacy": "The camera is used only when you take a photo of the estimate. Nothing is shared without you.",
-    "demoNoteMaternity": "Demo: Priya is admitted at Lotus Women’s Hospital for a planned normal delivery. The company policy caps maternity at ₹50,000. Answers come in English; you can change both."
+    "demoNoteMaternity": "Demo: Priya is admitted at Lotus Women’s Hospital for a planned normal delivery. The company policy caps maternity at ₹50,000. Answers come in English; you can change both.",
+    "demoNoteSingapore": "Demo: the Tan family in Singapore. Ah Kow is admitted at Sample General Hospital for a planned angioplasty; his Shield plan is bought for Class B1 and the hospital offers Class A. Answers come in Mandarin; you can change both."
   },
   "session": {
     "title": "Helping with {name}",
@@ -75,7 +76,8 @@
     "scene": {
       "label": "Demo scene",
       "hospital": "Suresh · angioplasty",
-      "maternity": "Priya · delivery"
+      "maternity": "Priya · delivery",
+      "singapore": "Ah Kow · Singapore"
     }
   },
   "summary": {

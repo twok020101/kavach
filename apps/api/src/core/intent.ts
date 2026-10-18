@@ -70,6 +70,23 @@ export function detectRoomMention(
 }
 
 /** The family's answer to "are the charges the same in every room?", if the text gives one. */
+/**
+ * Singapore: a typed or spoken answer to the panel question. "He is on the panel and
+ * pre-authorised" → panel; "not on the panel" → nonPanel; anything else leaves it open.
+ */
+export function detectPanelAnswer(text: string | undefined): 'panel' | 'nonPanel' | undefined {
+  if (!text) return undefined;
+  const s = text.toLowerCase();
+  if (/\b(not|isn'?t|non)[ -]?(on|in)?\s?(the )?panel\b|\bno pre-?auth/i.test(s)) return 'nonPanel';
+  if (
+    /\b(on|in) (the |our |their )?panel\b|\bpanel (doctor|specialist)\b|pre-?auth\w* (is |was |has been )?(done|obtained|approved|given)/i.test(
+      s,
+    )
+  )
+    return 'panel';
+  return undefined;
+}
+
 export function detectBillingAnswer(text: string | undefined): BillingType | undefined {
   if (!text) return undefined;
   const has = (patterns: RegExp[]) => patterns.some((p) => p.test(text));

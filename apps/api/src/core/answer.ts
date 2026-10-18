@@ -1,4 +1,4 @@
-import { buildDeskSay, evaluateHospital } from '@kavach/engine';
+import { buildDeskSay, evaluateHospital, isSgPolicy } from '@kavach/engine';
 import type {
   BillingType,
   BranchResult,
@@ -15,7 +15,7 @@ import type {
 } from '@kavach/schemas';
 import { deskPatient, policyName, policyNickname, type DeskPatient } from './context';
 import { copyFor, type Copy } from './copy';
-import { detectBillingAnswer, detectLocale, detectRoomMention } from './intent';
+import { detectBillingAnswer, detectLocale, detectPanelAnswer, detectRoomMention } from './intent';
 
 /**
  * The desk core. Every door (text-and-photo desk, live session, WhatsApp) calls this one
@@ -42,6 +42,7 @@ export function answer(
     (estimate.billingType === 'unknown' ? detectBillingAnswer(inputs.utteranceText) : undefined);
   const evaluation = evaluateDesk(patient, estimate, {
     billingTypeAnswer,
+    panel: panelOf(inputs.panelAnswer ?? detectPanelAnswer(inputs.utteranceText)),
     roomOptions: inputs.roomOptions,
   });
   return explain(
@@ -59,7 +60,7 @@ export function answer(
 export function evaluateDesk(
   patient: DeskPatient,
   estimate: HospitalEstimate,
-  opts: { billingTypeAnswer?: BillingType; roomOptions?: RoomCategory[] } = {},
+  opts: { billingTypeAnswer?: BillingType; panel?: boolean; roomOptions?: RoomCategory[] } = {},
 ): DeskEvaluation {
   if (patient.policies.length === 0) {
     throw Object.assign(new Error('No health policy covers this patient'), { statusCode: 422 });
@@ -68,8 +69,16 @@ export function evaluateDesk(
     opts.billingTypeAnswer && opts.billingTypeAnswer !== 'unknown'
       ? opts.billingTypeAnswer
       : estimate.billingType;
-  return evaluateHospital(patient.engine, { ...estimate, billingType }, opts.roomOptions);
+  return evaluateHospital(
+    { ...patient.engine, panel: opts.panel },
+    { ...estimate, billingType },
+    opts.roomOptions,
+  );
 }
+
+/** The Singapore panel answer as the engine's flag: undefined keeps both branches open. */
+export const panelOf = (answer: 'panel' | 'nonPanel' | undefined) =>
+  answer === undefined ? undefined : answer === 'panel';
 
 function explain(
   household: Household,
@@ -261,7 +270,7 @@ function explain(
 
   return {
     text,
-    say: buildDeskSay(ev, lang, { policyNames: spoken }),
+    say: buildDeskSay(ev, lang, { policyNames: spoken, country: household.country }),
     cards,
     questionForDesk: question,
     trace: ev.trace,
@@ -310,6 +319,8 @@ function localQuestion(
   t: Copy,
 ): string | undefined {
   if (!ev.questionForDesk) return undefined;
+  // A Singapore evaluation asks one question only: panel and pre-authorisation (R-SG-010).
+  if (policies.some(isSgPolicy)) return t.panelQuestion;
   const quoted = estimate.roomCategories[0]!;
   const lower = lowerRoom(estimate.roomCategories, policies);
   return ev.primary.billingType === 'package'

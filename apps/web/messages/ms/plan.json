@@ -70,7 +70,7 @@
       "claim": "Semak surat tuntutan",
       "claimHint": "Setiap potongan, dengan polisi",
       "invite": "Beri {name} butang hospital",
-      "inviteHint": "Log masuk sendiri, dalam bahasa Hindi"
+      "inviteHint": "Log masuk sendiri, dalam bahasa {language}"
     },
     "comingUp": {
       "title": "Akan datang",

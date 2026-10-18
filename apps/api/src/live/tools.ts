@@ -131,6 +131,16 @@ export function deskTools(port: DeskPort, emit: Emit, language: () => Locale) {
     async record_spoken_estimate(args) {
       const parsed = SpokenEstimate.safeParse(args);
       if (!parsed.success) return { error: parsed.error.issues.map((i) => i.message).join('; ') };
+      // A question that only names a ward ("they offered Class A") must not replace a read estimate.
+      const hasFigures =
+        parsed.data.rooms.some((r) => r.rentPerDay > 0) || !!parsed.data.quotedTotal;
+      if (!hasFigures && (await port.estimate())) {
+        return {
+          status: 'ignored',
+          instruction:
+            'An estimate has already been read and no new figures were spoken. Call evaluate_options with the question instead.',
+        };
+      }
       const { estimate } = await step('reading', () =>
         port.spokenEstimate(estimateFromSpeech(parsed.data)),
       );
@@ -150,10 +160,15 @@ export function deskTools(port: DeskPort, emit: Emit, language: () => Locale) {
 
     async evaluate_options(args) {
       const billing = BillingType.safeParse(args.billingTypeAnswer);
+      const panel =
+        args.panelAnswer === 'panel' || args.panelAnswer === 'nonPanel'
+          ? args.panelAnswer
+          : undefined;
       const reply = await step('policies', () =>
         port.evaluate({
           question: typeof args.question === 'string' ? args.question : undefined,
           billingTypeAnswer: billing.success ? billing.data : undefined,
+          panelAnswer: panel,
           language: language(),
         }),
       );

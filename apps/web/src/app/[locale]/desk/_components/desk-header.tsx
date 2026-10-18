@@ -4,6 +4,7 @@ import { X } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import type { ReactNode } from 'react';
 import { LanguageSwitch } from '@/components/kavach/language-switch';
+import type { DemoScene } from '@/lib/desk-client';
 import { LogoMark } from '@/components/kavach/logo';
 import { cn } from '@/components/ui/cn';
 import { Link } from '@/i18n/navigation';
@@ -21,8 +22,8 @@ export function DeskHeader({
   query?: Record<string, string>;
   /** The close or end control; defaults to nothing. */
   action?: ReactNode;
-  /** In the demo, which scene this is: the other one is a tap away (from the Stitch desk). */
-  demoScene?: 'hospital' | 'maternity';
+  /** In the demo, which scene this is: the others are a tap away (from the Stitch desk). */
+  demoScene?: DemoScene;
 }) {
   const t = useTranslations('desk');
   const ts = useTranslations('desk.session.scene');
@@ -41,12 +42,12 @@ export function DeskHeader({
         {subtitle && <p className="truncate text-sm text-muted">{subtitle}</p>}
         {demoScene && (
           <nav aria-label={ts('label')} className="hidden gap-2 pt-1 sm:flex">
-            {(['hospital', 'maternity'] as const).map((s) => (
+            {(['hospital', 'maternity', 'singapore'] as const).map((s) => (
               <Link
                 key={s}
                 href={{
                   pathname: '/desk',
-                  query: { demo: '1', ...(s === 'maternity' ? { scene: s } : {}) },
+                  query: { demo: '1', ...(s === 'hospital' ? {} : { scene: s }) },
                 }}
                 aria-current={s === demoScene ? 'page' : undefined}
                 className={cn(

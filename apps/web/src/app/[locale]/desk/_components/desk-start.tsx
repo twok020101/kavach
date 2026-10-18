@@ -11,15 +11,19 @@ import { cn } from '@/components/ui/cn';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Link, useRouter } from '@/i18n/navigation';
 import { routing } from '@/i18n/routing';
-import { deskClient } from '@/lib/desk-client';
+import { deskClient, type DemoScene } from '@/lib/desk-client';
 import { CloseIcon, DeskHeader } from './desk-header';
 
-export type DeskScene = 'maternity';
+export type DeskScene = Exclude<DemoScene, 'hospital'>;
 
-/** The demo scenes: Suresh's angioplasty in Hindi (HX-1), or Priya's delivery in English (MX-1). */
-const SCENES: Record<DeskScene | 'hospital', { patient: string; language: Locale }> = {
+/**
+ * The demo scenes: Suresh's angioplasty in Hindi (HX-1), Priya's delivery in English (MX-1),
+ * or Ah Kow's angioplasty in Singapore, in Mandarin (SX-1).
+ */
+const SCENES: Record<DemoScene, { patient: string; language: Locale }> = {
   hospital: { patient: 'mem_suresh', language: 'hi' },
   maternity: { patient: 'mem_priya', language: 'en' },
+  singapore: { patient: 'mem_ahkow', language: 'zh' },
 };
 
 /** S21 Hospital start: who is admitted, which language, one big Start. Fewest elements of any screen. */
@@ -73,7 +77,11 @@ export function DeskStart({ demo, scene }: { demo: boolean; scene?: DeskScene })
           {demo && (
             <p className="panel flex gap-2 text-base">
               <Info aria-hidden className="mt-1 size-5 shrink-0" />
-              {scene === 'maternity' ? t('demoNoteMaternity') : t('demoNote')}
+              {scene === 'maternity'
+                ? t('demoNoteMaternity')
+                : scene === 'singapore'
+                  ? t('demoNoteSingapore')
+                  : t('demoNote')}
             </p>
           )}
 

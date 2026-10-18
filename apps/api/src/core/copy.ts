@@ -51,6 +51,8 @@ export type Copy = {
   waiting: { title: string; body: (policy: string, until: string) => string };
   sameCharges: (lower: RoomCategory, quoted: RoomCategory) => string;
   packagePrice: (procedure: string, lower: RoomCategory) => string;
+  /** Singapore (R-SG-010): the one question the rider cap depends on. */
+  panelQuestion: string;
   text: {
     switchRoom: (
       rec: RoomCategory,
@@ -168,6 +170,8 @@ const en: Factory = (money, country) => {
       `Are the surgeon, OT, nursing and doctor charges in the ${room(lower)} room different from the ${room(quoted)} room, or the same for every room?`,
     packagePrice: (procedure, lower) =>
       `What is the package price for ${procedure} in the ${room(lower)} room?`,
+    panelQuestion:
+      "Is the specialist on the insurer's panel, and has pre-authorisation been obtained? With both, the rider caps this year's co-payment.",
     text: {
       switchRoom: (rec, recPays, worst, worstPays, saving) =>
         `Ask for ${short(rec)}: you pay about ${money(recPays)} instead of about ${money(worstPays)} in ${short(worst)} (${money(saving)} less).`,
@@ -275,6 +279,8 @@ const hi: Factory = (money, country) => {
       `क्या ${room(lower)} कमरे में सर्जन, OT, नर्सिंग और डॉक्टर के चार्ज ${room(quoted)} कमरे से अलग हैं, या हर कमरे में एक जैसे?`,
     packagePrice: (procedure, lower) =>
       `${room(lower)} कमरे में ${procedure} का पैकेज रेट कितना है?`,
+    panelQuestion:
+      'क्या स्पेशलिस्ट बीमा कंपनी के पैनल में हैं, और क्या प्री-ऑथराइज़ेशन मिल गया है? दोनों हों तो राइडर इस साल के को-पेमेंट की सीमा तय करता है।',
     text: {
       switchRoom: (rec, recPays, worst, worstPays, saving) =>
         `${short(rec)} माँगिए: लगभग ${money(recPays)} देने होंगे, ${short(worst)} में लगभग ${money(worstPays)} (${money(saving)} कम)।`,
@@ -382,6 +388,8 @@ const ta: Factory = (money, country) => {
       `${room(lower)} அறையில் சர்ஜன், OT, நர்சிங் மற்றும் டாக்டர் கட்டணங்கள் ${room(quoted)} அறையை விட வேறா, அல்லது எல்லா அறைகளுக்கும் ஒன்றா?`,
     packagePrice: (procedure, lower) =>
       `${room(lower)} அறையில் ${procedure}-க்கான பேக்கேஜ் விலை என்ன?`,
+    panelQuestion:
+      'நிபுணர் காப்பீட்டு நிறுவனத்தின் பேனலில் உள்ளாரா, முன் அனுமதி (pre-authorisation) பெறப்பட்டதா? இரண்டும் இருந்தால் ரைடர் இந்த ஆண்டின் கோ-பேமென்ட்டுக்கு வரம்பு வைக்கும்.',
     text: {
       switchRoom: (rec, recPays, worst, worstPays, saving) =>
         `${short(rec)}யைக் கேளுங்கள்: ${short(worst)}யில் சுமார் ${money(worstPays)}-க்குப் பதிலாக சுமார் ${money(recPays)} செலுத்துவீர்கள் (${money(saving)} குறைவு).`,
@@ -480,6 +488,8 @@ const zh: Factory = (money, country) => {
     sameCharges: (lower, quoted) =>
       `${room(lower)}的外科医生、手术室、护理和医生费用，和${room(quoted)}一样，还是每种病房都不同？`,
     packagePrice: (procedure, lower) => `${room(lower)}的${procedure}配套价是多少？`,
+    panelQuestion:
+      '专科医生是否在保险公司的指定名单（panel）内？是否已获得预先批准？两者都具备，附加险才会为今年的共付额设上限。',
     text: {
       switchRoom: (rec, recPays, worst, worstPays, saving) =>
         `请要求${short(rec)}：您大约自付${money(recPays)}，而不是${short(worst)}的大约${money(worstPays)}（少付${money(saving)}）。`,
@@ -581,6 +591,8 @@ const ms: Factory = (money, country) => {
       `Adakah caj pakar bedah, OT, kejururawatan dan doktor di bilik ${room(lower)} berbeza daripada bilik ${room(quoted)}, atau sama untuk setiap bilik?`,
     packagePrice: (procedure, lower) =>
       `Berapakah harga pakej untuk ${procedure} di bilik ${room(lower)}?`,
+    panelQuestion:
+      'Adakah pakar itu dalam panel syarikat insurans, dan adakah pra-kelulusan telah diperoleh? Dengan kedua-duanya, rider menghadkan bayaran bersama tahun ini.',
     text: {
       switchRoom: (rec, recPays, worst, worstPays, saving) =>
         `Minta ${short(rec)}: anda bayar kira-kira ${money(recPays)} dan bukan kira-kira ${money(worstPays)} di ${short(worst)} (${money(saving)} kurang).`,

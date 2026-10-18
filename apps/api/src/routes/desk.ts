@@ -42,6 +42,7 @@ const CaptureQuery = z.object({
 const SAMPLE_PHOTOS: Record<string, string> = {
   'estimate-city-heart': 'city-heart-estimate-photo.png',
   'estimate-lotus-maternity': 'lotus-maternity-estimate-photo.png',
+  'estimate-sample-general-sg': 'sample-general-sg-estimate-photo.png',
 };
 const samplePhoto = (fixture = 'estimate-city-heart') =>
   resolve(

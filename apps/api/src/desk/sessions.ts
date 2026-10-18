@@ -12,7 +12,7 @@ import type {
   RoomCategory,
 } from '@kavach/schemas';
 import { readEstimate, type EstimateImage } from '../agents/estimate-reader';
-import { answer, evaluateDesk } from '../core/answer';
+import { answer, evaluateDesk, panelOf } from '../core/answer';
 import { deskContext, deskPatient, policyNickname } from '../core/context';
 import { alertHouseholdOwner } from '../channels/whatsapp/notify';
 import { blobs } from '../lib/blobs';
@@ -71,7 +71,7 @@ export async function captureEstimate(
     await blobs.put(path, img.data, img.mimeType);
     capturePaths.push(path);
   }
-  const estimate = await readEstimate(images, opts);
+  const estimate = await readEstimate(images, { ...opts, country: household.country });
   const reply = answer(household, session.patientMemberId, { estimate }, session.language);
   const updated: DeskSession = {
     ...session,
@@ -115,6 +115,7 @@ export async function takeTurn(household: Household, sid: string, body: DeskTurn
   const session = await activeSession(household, sid);
   const estimate = body.estimate ?? session.estimate;
   const billingTypeAnswer = body.billingTypeAnswer ?? session.billingTypeAnswer;
+  const panelAnswer = body.panelAnswer ?? session.panelAnswer;
   const reply: DeskAnswer = answer(
     household,
     session.patientMemberId,
@@ -122,6 +123,7 @@ export async function takeTurn(household: Household, sid: string, body: DeskTurn
       estimate,
       utteranceText: body.text,
       billingTypeAnswer,
+      panelAnswer,
       // The first question gets the opening answer; later ones get the per-room follow-up.
       followUp: Boolean(session.lastQuestion && session.lastAnswer?.cards.length),
     },
@@ -131,6 +133,7 @@ export async function takeTurn(household: Household, sid: string, body: DeskTurn
     ...session,
     estimate,
     billingTypeAnswer,
+    panelAnswer,
     lastQuestion: body.text?.trim() || session.lastQuestion,
     lastAnswer: reply,
     language: reply.locale ?? session.language,
@@ -155,7 +158,11 @@ export async function evaluateSession(
     throw Object.assign(new Error('No estimate yet: capture one first'), { statusCode: 409 });
   }
   const patient = deskPatient(household, session.patientMemberId);
-  const opts = { billingTypeAnswer: session.billingTypeAnswer, roomOptions };
+  const opts = {
+    billingTypeAnswer: session.billingTypeAnswer,
+    panel: panelOf(session.panelAnswer),
+    roomOptions,
+  };
   const evaluation = evaluateDesk(patient, session.estimate, opts);
   if (evaluation.primary.billingType !== 'differential' || evaluation.alternate) return evaluation;
   const flat = evaluateDesk(patient, session.estimate, { ...opts, billingTypeAnswer: 'flat' });
@@ -192,6 +199,7 @@ function summarise(household: Household, session: DeskSession): Record<Locale, s
 
   const ev = evaluateDesk(patient, session.estimate!, {
     billingTypeAnswer: session.billingTypeAnswer,
+    panel: panelOf(session.panelAnswer),
   });
   const rec = ev.primary.options.find(
     (o) => o.roomCategoryId === ev.primary.recommendedRoomCategoryId,

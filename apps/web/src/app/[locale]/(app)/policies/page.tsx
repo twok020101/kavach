@@ -1,7 +1,6 @@
 'use client';
 
 import type { Household, Policy } from '@kavach/schemas';
-import { formatInr } from '@kavach/engine';
 import { ChevronRight, Plus } from 'lucide-react';
 import { useFormatter, useTranslations } from 'next-intl';
 import { isHealth, policyStatus } from '@/components/documents/status';
@@ -9,6 +8,7 @@ import { keyTerms, memberNames } from '@/components/documents/terms';
 import { Badge, type BadgeTone } from '@/components/ui/badge';
 import { buttonClasses } from '@/components/ui/button';
 import { Link } from '@/i18n/navigation';
+import { useMoney } from '@/lib/country';
 import { useHousehold } from '@/lib/household';
 
 const TONES: Record<ReturnType<typeof policyStatus>, BadgeTone> = {
@@ -69,7 +69,10 @@ function PolicyRow({ policy, household }: { policy: Policy; household: Household
   const date = (iso: string) => format.dateTime(new Date(iso), { dateStyle: 'medium' });
   const status = policyStatus(policy, household);
   // Key terms other than the sum insured, which is on the row already.
-  const terms = isHealth(policy) ? keyTerms(policy, t).filter((x) => x.key !== 'sumInsured') : [];
+  const money = useMoney();
+  const terms = isHealth(policy)
+    ? keyTerms(policy, t, money).filter((x) => x.key !== 'sumInsured')
+    : [];
 
   return (
     <li>
@@ -93,7 +96,7 @@ function PolicyRow({ policy, household }: { policy: Policy; household: Household
           <ChevronRight aria-hidden className="size-5 shrink-0 text-muted" />
         </div>
         <p className="amount text-sm">
-          {t('policy.sumInsured', { amount: formatInr(policy.sumInsured) })} ·{' '}
+          {t('policy.sumInsured', { amount: money(policy.sumInsured) })} ·{' '}
           {t('covers', { names: memberNames(household, policy.coveredMemberIds) })}
         </p>
         <div className="flex flex-wrap gap-2">

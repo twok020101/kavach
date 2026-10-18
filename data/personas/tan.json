@@ -10,7 +10,7 @@
     "members": [
       {
         "id": "mem_weiming",
-        "name": "Wei Ming",
+        "name": "Wei-Ming Tan",
         "relation": "self",
         "age": 38,
         "language": "en",
@@ -19,17 +19,23 @@
       },
       {
         "id": "mem_huiling",
-        "name": "Hui Ling",
+        "name": "Hui-Ling Lim",
         "relation": "spouse",
         "age": 36,
         "language": "zh",
         "phone": "+6580000002",
         "earning": true
       },
-      { "id": "mem_jiaen", "name": "Jia En", "relation": "child", "age": 6, "language": "en" },
+      {
+        "id": "mem_jiaen",
+        "name": "Jia-En Tan",
+        "relation": "child",
+        "age": 6,
+        "language": "en"
+      },
       {
         "id": "mem_ahkow",
-        "name": "Ah Kow",
+        "name": "Ah-Kow Tan",
         "relation": "parent",
         "age": 68,
         "language": "zh",
@@ -39,7 +45,7 @@
       },
       {
         "id": "mem_siewhong",
-        "name": "Siew Hong",
+        "name": "Siew-Hong Lee",
         "relation": "parent",
         "age": 64,
         "language": "ms",
@@ -57,8 +63,8 @@
     },
     "assets": []
   },
-  "policies": [
-    {
+  "policies": {
+    "pol_mshl_weiming": {
       "id": "pol_mshl_weiming",
       "kind": "medishield_life",
       "insurer": "CPF Board (MediShield Life)",
@@ -69,9 +75,14 @@
       "sumInsured": 200000,
       "startDate": "2027-01-01",
       "endDate": "2027-12-31",
-      "terms": { "copayPercent": 0, "deductible": 0, "proportionateDeduction": false, "citations": {} }
+      "terms": {
+        "copayPercent": 0,
+        "deductible": 0,
+        "proportionateDeduction": false,
+        "citations": {}
+      }
     },
-    {
+    "pol_mshl_huiling": {
       "id": "pol_mshl_huiling",
       "kind": "medishield_life",
       "insurer": "CPF Board (MediShield Life)",
@@ -82,9 +93,14 @@
       "sumInsured": 200000,
       "startDate": "2027-01-01",
       "endDate": "2027-12-31",
-      "terms": { "copayPercent": 0, "deductible": 0, "proportionateDeduction": false, "citations": {} }
+      "terms": {
+        "copayPercent": 0,
+        "deductible": 0,
+        "proportionateDeduction": false,
+        "citations": {}
+      }
     },
-    {
+    "pol_mshl_jiaen": {
       "id": "pol_mshl_jiaen",
       "kind": "medishield_life",
       "insurer": "CPF Board (MediShield Life)",
@@ -95,9 +111,14 @@
       "sumInsured": 200000,
       "startDate": "2027-01-01",
       "endDate": "2027-12-31",
-      "terms": { "copayPercent": 0, "deductible": 0, "proportionateDeduction": false, "citations": {} }
+      "terms": {
+        "copayPercent": 0,
+        "deductible": 0,
+        "proportionateDeduction": false,
+        "citations": {}
+      }
     },
-    {
+    "pol_mshl_ahkow": {
       "id": "pol_mshl_ahkow",
       "kind": "medishield_life",
       "insurer": "CPF Board (MediShield Life)",
@@ -108,9 +129,14 @@
       "sumInsured": 200000,
       "startDate": "2027-01-01",
       "endDate": "2027-12-31",
-      "terms": { "copayPercent": 0, "deductible": 0, "proportionateDeduction": false, "citations": {} }
+      "terms": {
+        "copayPercent": 0,
+        "deductible": 0,
+        "proportionateDeduction": false,
+        "citations": {}
+      }
     },
-    {
+    "pol_mshl_siewhong": {
       "id": "pol_mshl_siewhong",
       "kind": "medishield_life",
       "insurer": "CPF Board (MediShield Life)",
@@ -121,9 +147,14 @@
       "sumInsured": 200000,
       "startDate": "2027-01-01",
       "endDate": "2027-12-31",
-      "terms": { "copayPercent": 0, "deductible": 0, "proportionateDeduction": false, "citations": {} }
+      "terms": {
+        "copayPercent": 0,
+        "deductible": 0,
+        "proportionateDeduction": false,
+        "citations": {}
+      }
     },
-    {
+    "pol_ip_ahkow": {
       "id": "pol_ip_ahkow",
       "kind": "integrated_shield",
       "insurer": "Sample Insurer SG",
@@ -144,10 +175,22 @@
         "citations": {},
         "sg": {
           "wardEntitlement": "B1",
-          "prorationByWard": { "A": 0.5, "private": 0.25 },
-          "deductibleByWard": { "C": 1500, "B2": 2000, "B1": 2000, "A": 2500, "private": 3500 },
-          "deductibleByWardFrom81": { "C": 2000, "B2": 3000, "B1": 3000, "A": 3000, "private": 3000 },
-          "coinsurance": [{ "percent": 10 }],
+          "prorationByWard": {
+            "A": 0.5,
+            "private": 0.25
+          },
+          "deductibleByWard": {
+            "C": 1500,
+            "B2": 2000,
+            "B1": 2500,
+            "A": 2500,
+            "private": 2500
+          },
+          "coinsurance": [
+            {
+              "percent": 10
+            }
+          ],
           "policyYearLimit": 500000,
           "rider": {
             "copayPercent": 5,
@@ -158,7 +201,7 @@
         }
       }
     },
-    {
+    "pol_term_weiming": {
       "id": "pol_term_weiming",
       "kind": "term_life",
       "insurer": "Sample Insurer SG",
@@ -170,9 +213,14 @@
       "premiumAnnual": 720,
       "startDate": "2024-02-01",
       "endDate": "2044-01-31",
-      "terms": { "copayPercent": 0, "deductible": 0, "proportionateDeduction": false, "citations": {} }
+      "terms": {
+        "copayPercent": 0,
+        "deductible": 0,
+        "proportionateDeduction": false,
+        "citations": {}
+      }
     }
-  ],
+  },
   "checkpoints": {
     "setup": {
       "$comment": "The family as set up on 1 March 2027.",
@@ -186,7 +234,7 @@
         "pol_ip_ahkow",
         "pol_term_weiming"
       ],
-      "changes": null
+      "changes": {}
     },
     "hospital": {
       "$comment": "Ah Kow's planned angioplasty at Sample General Hospital (restructured); Wei Ming opens Kavach at the admission desk. The plan is bought for Class B1; the hospital offers Class A.",
@@ -200,7 +248,7 @@
         "pol_ip_ahkow",
         "pol_term_weiming"
       ],
-      "changes": null
+      "changes": {}
     }
   }
 }

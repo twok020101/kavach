@@ -107,6 +107,9 @@
     "body": "在样本家庭上试试这两个场景，或者花几分钟设置您自己的家庭。Kavach 不卖任何东西，也不联系任何保险公司。",
     "hospital": "Suresh 在医院柜台",
     "maternity": "Priya 的分娩",
-    "own": "设置我的家庭"
-  }
+    "own": "设置我的家庭",
+    "singapore": "新加坡场景"
+  },
+  "trySingapore": "试试新加坡场景",
+  "trySingaporeSub": "阿九的血管成形术：B1 级 Shield 计划，医院提供 A 级病房，华语回答。"
 }

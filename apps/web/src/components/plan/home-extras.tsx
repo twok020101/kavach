@@ -1,6 +1,5 @@
 'use client';
 
-import { formatInr } from '@kavach/engine';
 import type { Household, Member, Policy } from '@kavach/schemas';
 import {
   ArrowRight,
@@ -16,6 +15,7 @@ import { MemberAvatar } from '@/components/kavach/member-avatar';
 import { Card } from '@/components/ui/card';
 import { cn } from '@/components/ui/cn';
 import { Link } from '@/i18n/navigation';
+import { useMoney } from '@/lib/country';
 import { daysBetween, useDate } from './format';
 import type { Pin } from './date-scrubber';
 
@@ -68,6 +68,7 @@ export function Greeting({
 /** Three plain things to do, as large targets. */
 export function QuickActions({ household }: { household: Household }) {
   const t = useTranslations('plan.home.quick');
+  const tc = useTranslations('common');
   // The person who most needs her own login: the parent who will be at the desk rather than in
   // the bed (the younger parent who does not speak English, Kamala in the sample family), else any parent.
   const parents = household.members.filter((m) => m.relation === 'parent');
@@ -87,7 +88,7 @@ export function QuickActions({ household }: { household: Household }) {
       href: '/settings/access',
       icon: UserPlus,
       label: t('invite', { name: invitee.name.split(' ')[0] ?? invitee.name }),
-      hint: t('inviteHint'),
+      hint: t('inviteHint', { language: tc(`languages.${invitee?.language ?? 'en'}`) }),
     });
   }
   return (
@@ -184,6 +185,7 @@ function nick(p: Policy, household: Household, t: (k: string) => string) {
  */
 export function ReadyPanel({ household, asOf }: { household: Household; asOf: string }) {
   const t = useTranslations('plan.home.ready');
+  const money = useMoney();
   const people: Member[] = [
     ...household.members.filter((m) => m.relation === 'parent' || m.relation === 'parent_in_law'),
     ...household.members.filter((m) => m.relation === 'self'),
@@ -215,7 +217,7 @@ export function ReadyPanel({ household, asOf }: { household: Household; asOf: st
                   ? t('line', {
                       name: m.name.split(' ')[0] ?? m.name,
                       policy: nick(first, household, t),
-                      limit: limit ? formatInr(limit) : 'none',
+                      limit: limit ? money(limit) : 'none',
                     })
                   : t('none', { name: m.name.split(' ')[0] ?? m.name })}
               </span>

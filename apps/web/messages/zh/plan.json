@@ -70,7 +70,7 @@
       "claim": "核查理赔信",
       "claimHint": "每一项扣减，对照保单",
       "invite": "把医院按钮交给 {name}",
-      "inviteHint": "她自己的登录，用印地语"
+      "inviteHint": "自己的登录，用{language}"
     },
     "comingUp": {
       "title": "即将到来",

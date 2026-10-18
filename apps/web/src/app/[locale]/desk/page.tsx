@@ -6,5 +6,6 @@ export default async function DeskStartPage({ params, searchParams }: PageProps<
   const { locale } = await params;
   setRequestLocale(locale);
   const { demo, scene } = await searchParams;
-  return <DeskStart demo={demo === '1'} scene={scene === 'maternity' ? 'maternity' : undefined} />;
+  const picked = scene === 'maternity' || scene === 'singapore' ? scene : undefined;
+  return <DeskStart demo={demo === '1'} scene={picked} />;
 }

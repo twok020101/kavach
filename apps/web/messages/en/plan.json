@@ -70,7 +70,7 @@
       "claim": "Check a claim letter",
       "claimHint": "Every deduction, against the policy",
       "invite": "Give {name} the hospital button",
-      "inviteHint": "Her own login, in Hindi"
+      "inviteHint": "Their own login, in {language}"
     },
     "comingUp": {
       "title": "Coming up",

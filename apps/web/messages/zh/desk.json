@@ -8,7 +8,8 @@
     "start": "开始",
     "pickFirst": "请先选择住院的人。",
     "privacy": "摄像头只在您拍摄估价单时使用。未经您同意，不会分享任何内容。",
-    "demoNoteMaternity": "演示：Priya 在 Lotus Women’s Hospital 入院，预约顺产。公司保单的生育限额为 ₹50,000。回答用英语；两者都可以更改。"
+    "demoNoteMaternity": "演示：Priya 在 Lotus Women’s Hospital 入院，预约顺产。公司保单的生育限额为 ₹50,000。回答用英语；两者都可以更改。",
+    "demoNoteSingapore": "演示：新加坡的陈家。阿九因计划中的血管成形术入住 Sample General Hospital；他的 Shield 综合健保计划按 B1 级病房投保，医院提供的是 A 级病房。回答以华语给出；两者都可以更改。"
   },
   "session": {
     "title": "正在协助 {name}",
@@ -75,7 +76,8 @@
     "scene": {
       "label": "演示场景",
       "hospital": "Suresh · 血管成形术",
-      "maternity": "Priya · 分娩"
+      "maternity": "Priya · 分娩",
+      "singapore": "阿九 · 新加坡"
     }
   },
   "summary": {

@@ -107,6 +107,9 @@
     "body": "Try the two scenes on the sample family, or set up your own in a few minutes. Kavach sells nothing and contacts no insurer.",
     "hospital": "Suresh at the hospital desk",
     "maternity": "Priya's delivery",
-    "own": "Set up my family"
-  }
+    "own": "Set up my family",
+    "singapore": "Singapore scene"
+  },
+  "trySingapore": "Try the Singapore scene",
+  "trySingaporeSub": "Ah Kow’s angioplasty: a Class B1 Shield plan offered Class A, in Mandarin."
 }
