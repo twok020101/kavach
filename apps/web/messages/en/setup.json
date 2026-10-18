@@ -17,8 +17,11 @@
     "invitedAs": "You'll join as {name}. You'll see your cover and the hospital button.",
     "join": "Join the family",
     "inviteGone": "This invite has expired or was already used. Ask for a new link.",
+    "promiseTitle": "Our promise to your family",
     "demoCard": {
       "badge": "No setup",
+      "kicker": "Sample family, already set up",
+      "initial": "S",
       "title": "Explore the Sharma family demo",
       "body": "Five people, four policies and a hospital admission already set up, so you can see every screen with real numbers.",
       "open": "Open the demo"
@@ -50,6 +53,7 @@
       }
     },
     "required": "Kavach needs at least the first one to work.",
+    "promiseTitle": "Our promise",
     "promise": "We never sell your data. We never contact insurers for you. You can download or delete everything at any time from Settings.",
     "agree": "Agree and continue",
     "essential": "Essential",
@@ -184,6 +188,7 @@
   },
   "brand": {
     "tagline": "Standing beside your family at every insurance moment.",
+    "lead": "Kavach reads every policy in the house once, then tells you what to do at the three moments where families lose money. In Hindi or English, with the page number.",
     "promise": "We never sell your data and never contact insurers for you.",
     "change": {
       "title": "When life changes",
