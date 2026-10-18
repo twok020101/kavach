@@ -23,4 +23,11 @@ for s in META_WHATSAPP_TOKEN META_APP_SECRET META_WEBHOOK_VERIFY_TOKEN \
          TWILIO_AUTH_TOKEN DEMO_ADMIN_KEY; do
   gcloud secrets create "$s" --replication-policy=automatic || true
 done
+# Let Cloud Run's default identity call Gemini, Firestore, Storage and read the secrets.
+SA="$(gcloud projects describe "$PROJECT" --format 'value(projectNumber)')-compute@developer.gserviceaccount.com"
+for role in roles/aiplatform.user roles/datastore.user roles/storage.objectAdmin \
+            roles/secretmanager.secretAccessor; do
+  gcloud projects add-iam-policy-binding "$PROJECT" --member "serviceAccount:${SA}" \
+    --role "$role" --condition None >/dev/null
+done
 echo "Bootstrap done for $PROJECT in $REGION."
