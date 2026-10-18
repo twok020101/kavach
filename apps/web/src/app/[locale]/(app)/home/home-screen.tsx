@@ -9,6 +9,7 @@ import {
   ShieldAlert,
   ShieldCheck,
   ShieldHalf,
+  X,
 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
@@ -32,6 +33,7 @@ import { Link } from '@/i18n/navigation';
 import { useDemoControls } from '@/lib/household';
 import { useStoredMemberId } from '@/lib/session';
 import { useCountUp } from '@/lib/use-count-up';
+import { useDesktop } from '@/lib/use-media';
 
 const SCRUB_DAYS = 180;
 
@@ -58,11 +60,14 @@ function HomeOrMember({ household }: { household: Household }) {
 function Home({ household }: { household: Household }) {
   const t = useTranslations('plan.home');
   const tp = useTranslations('plan');
+  const tc = useTranslations('common');
   const date = useDate();
   const today = household.asOf ?? new Date().toISOString().slice(0, 10);
   const [asOf, setAsOf] = useState(today);
   const [debounced, setDebounced] = useState(today);
   const [selected, setSelected] = useState<CoverCell>();
+  // On a laptop the chosen cell opens in place under the map; on a phone it is a sheet.
+  const desktop = useDesktop();
   useEffect(() => {
     const id = setTimeout(() => setDebounced(asOf), 250);
     return () => clearTimeout(id);
@@ -207,6 +212,31 @@ function Home({ household }: { household: Household }) {
           </Card>
         </Reveal>
 
+        {selected && desktop && (
+          // Shown at once (no scroll reveal): the person just tapped the cell and is looking here.
+          <div key={selected.memberId + selected.risk} className="lg:col-start-1">
+            <Card as="section" aria-labelledby="cell-title" className="flex flex-col gap-4">
+              <div className="flex items-start justify-between gap-3">
+                <h2 id="cell-title" className="font-display text-xl font-bold">
+                  {t('cellTitle', {
+                    name: member(selected.memberId),
+                    risk: tp(`risk.${selected.risk}`),
+                  })}
+                </h2>
+                <button
+                  type="button"
+                  onClick={() => setSelected(undefined)}
+                  aria-label={tc('close')}
+                  className="press -mr-2 -mt-2 flex size-11 shrink-0 items-center justify-center rounded-md text-muted hover:bg-sunken"
+                >
+                  <X aria-hidden className="size-5" />
+                </button>
+              </div>
+              <CellDetail household={household} cell={selected} />
+            </Card>
+          </div>
+        )}
+
         <Reveal delay={0.1} className="lg:col-start-2">
           <ComingUp pins={pins} from={today} />
         </Reveal>
@@ -221,7 +251,7 @@ function Home({ household }: { household: Household }) {
       </Reveal>
 
       <Sheet
-        open={!!selected}
+        open={!!selected && !desktop}
         onClose={() => setSelected(undefined)}
         title={
           selected
