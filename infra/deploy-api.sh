@@ -43,6 +43,12 @@ for k in KAVACH_MODEL_PRO KAVACH_MODEL_FLASH KAVACH_MODEL_LIVE KAVACH_MODEL_TTS 
   if [[ -n "${!k:-}" ]]; then VARS+=",${k}=${!k}"; fi
 done
 
+# The admin key guards /v1/admin routes; never fall back to the public default.
+if ! gcloud secrets versions describe latest --secret DEMO_ADMIN_KEY --project "$PROJECT" >/dev/null 2>&1; then
+  openssl rand -hex 24 | tr -d '\n' | gcloud secrets versions add DEMO_ADMIN_KEY --project "$PROJECT" --data-file=-
+  echo "Generated a random DEMO_ADMIN_KEY (read it with: gcloud secrets versions access latest --secret DEMO_ADMIN_KEY)."
+fi
+
 # Secrets: only the ones that have a value, so the API deploys before the WhatsApp keys exist.
 SECRETS=""
 for s in DEMO_ADMIN_KEY META_WHATSAPP_TOKEN META_APP_SECRET META_WEBHOOK_VERIFY_TOKEN TWILIO_AUTH_TOKEN; do
