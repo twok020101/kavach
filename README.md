@@ -59,9 +59,9 @@ WhatsApp is a second door to the same agent: messages go through `apps/api/src/c
 
 ## Deploying
 
-1. `PROJECT=<id> REGION=asia-south1 ./infra/bootstrap.sh` (once): enables APIs, creates Firestore, the bucket, the image repository and empty secrets.
+1. `PROJECT=<id> REGION=asia-south1 ./infra/bootstrap.sh` (once): enables APIs, creates Firestore, the bucket, the image repository and empty secrets, and gives Cloud Run's identity access to Gemini, Firestore, Storage and the secrets.
 2. Add secret values: `printf '%s' "<value>" | gcloud secrets versions add <NAME> --data-file=-`.
-3. API: `PROJECT=<id> ./infra/deploy-api.sh` (Cloud Build → Cloud Run, min 1 instance, WebSockets on).
+3. API: `PROJECT=<id> WEB_URL=https://<web-domain> ./infra/deploy-api.sh` (Cloud Build → Cloud Run, min 1 instance, WebSockets on). Model IDs come from the shell or `.env`; the script stops if any is still a placeholder. Secrets without a value are skipped.
 4. Web: connect the repo to Firebase App Hosting with root `apps/web`; settings are in `apps/web/apphosting.yaml`.
 
 ## How features are built
