@@ -25,7 +25,7 @@ export function LanguageSwitch({
   return (
     <nav
       aria-label={t('language')}
-      className={cn('inline-flex rounded-sm border border-border bg-surface p-0.5', className)}
+      className={cn('inline-flex rounded-md bg-surface-container-low p-1', className)}
     >
       {routing.locales.map((l) => (
         <Link
@@ -36,8 +36,10 @@ export function LanguageSwitch({
           aria-current={l === locale ? 'true' : undefined}
           className={cn(
             'press flex items-center justify-center rounded-sm font-semibold',
-            compact ? 'min-h-9 min-w-8 px-1.5 text-xs' : 'min-h-11 min-w-10 px-2.5 text-sm',
-            l === locale ? 'bg-primary-soft text-primary-hover' : 'text-muted hover:text-text',
+            compact ? 'min-h-9 min-w-8 px-1.5 text-xs' : 'min-h-10 min-w-10 px-2.5 text-sm',
+            l === locale
+              ? 'bg-surface text-on-surface shadow-1'
+              : 'text-on-surface-variant hover:text-text',
           )}
         >
           <span className="sr-only">{t(`languages.${l}`)}</span>

@@ -54,6 +54,16 @@ export default async function LocaleLayout({ children, params }: LayoutProps<'/[
         {/* Async so React can hoist it; it is tiny and runs before the page has painted. The
             opening (components/kavach/boot.tsx) repeats its decision, so a late run cannot hide it. */}
         <script async src="/theme.js" />
+        {/* Material Symbols Outlined, the Stitch icon set (components/kavach/icon.tsx). A variable
+            icon font is not offered by next/font, so it loads as a stylesheet; `block` keeps the
+            ligature names from flashing as words while it arrives. */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        {/* eslint-disable-next-line @next/next/no-page-custom-font -- an icon font, not text */}
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,300..600,0..1,0&display=block"
+        />
       </head>
       <body className="min-h-dvh antialiased">
         <NextIntlClientProvider>

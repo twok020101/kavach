@@ -108,5 +108,27 @@
   },
   "copy": "Copy",
   "copied": "Copied",
-  "activeFamily": "Active family"
+  "activeFamily": "Active family",
+  "back": "Back",
+  "prototype": "Prototype",
+  "brandPanel": {
+    "deva": "कवच",
+    "eyebrow": "Healthcare & insurance shield",
+    "chip": "Every rupee cited to a clause",
+    "tagline": "Standing beside your family at every insurance moment.",
+    "lead": "A protective shield that guides multi-generational Indian families through cashless approvals, policy sub-limits and hospital claims.",
+    "change": {
+      "title": "When life changes",
+      "body": "Adapting cover for ageing parents, critical milestones and new family members."
+    },
+    "hospital": {
+      "title": "At the hospital desk",
+      "body": "Live cashless help: room-rent traps caught, which card to give first, what to ask the TPA desk."
+    },
+    "claim": {
+      "title": "When a claim goes wrong",
+      "body": "Every deduction checked clause by clause; the appeal and ombudsman letter drafted for you."
+    },
+    "footer": "Your consent, your data: built to India's Digital Personal Data Protection (DPDP) Act, 2023."
+  }
 }
