@@ -7,6 +7,8 @@
     "language": "Answers in",
     "start": "Start",
     "pickFirst": "Pick who is admitted to start.",
+    "loadFailed": "The family didn’t load.",
+    "loadOffline": "Kavach can’t reach its server right now, so the family didn’t load. Check the connection and try again.",
     "privacy": "The camera is used only when you take a photo of the estimate. Nothing is shared without you.",
     "demoNoteMaternity": "Demo: Priya is admitted at Lotus Women’s Hospital for a planned normal delivery. The company policy caps maternity at ₹50,000. Answers come in English; you can change both.",
     "prepare": {
@@ -22,6 +24,7 @@
       },
       "note": "Demo data. Every amount on the next screen comes from the policy rules.",
       "failed": "The scene didn’t start. Pick who is admitted below and start it yourself.",
+      "offline": "Kavach can’t reach its server right now, so the scene didn’t start. Check the connection and try again.",
       "retry": "Try again"
     },
     "demoNoteSingapore": "Demo: the Tan family in Singapore. Ah Kow is admitted at Sample General Hospital for a planned angioplasty; his Shield plan is bought for Class B1 and the hospital offers Class A. Answers come in Mandarin; you can change both."

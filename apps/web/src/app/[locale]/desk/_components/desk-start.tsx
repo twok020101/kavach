@@ -28,6 +28,18 @@ const SCENES: Record<DemoScene, { patient: string; language: Locale }> = {
   singapore: { patient: 'mem_ahkow', language: 'zh' },
 };
 
+/** Each language in its own script; the reader's name for it goes underneath. */
+const AUTONYM: Record<Locale, string> = {
+  en: 'English',
+  hi: 'हिंदी',
+  ta: 'தமிழ்',
+  zh: '华语',
+  ms: 'Bahasa Melayu',
+};
+
+/** fetch() rejects with a TypeError when the server can't be reached (offline, or CORS). */
+const unreachable = (error: unknown) => error instanceof TypeError;
+
 /**
  * S21 Hospital start: who is admitted, which language, one big Start. In the demo the scene
  * starts by itself (the family moved to the scene's checkpoint, the session opened in the
@@ -56,6 +68,12 @@ export function DeskStart({ demo, scene }: { demo: boolean; scene?: DeskScene })
     queryFn: deskClient.getHousehold,
     enabled: manual,
   });
+  const members = household.data?.members;
+  // Only someone in this family can be admitted: the scene's patient counts as picked only once
+  // the family shows them.
+  const chosen = members?.some((m) => m.id === patientId) ? patientId : null;
+  // A demo whose family never loaded can still retry the whole scene.
+  const retryScene = demo && !members;
   const start = useMutation({
     mutationFn: async (input: { patientMemberId: string; language: Locale }) => {
       setPhase(0);
@@ -145,7 +163,7 @@ export function DeskStart({ demo, scene }: { demo: boolean; scene?: DeskScene })
           {demo && start.isError && (
             <p role="alert" className="panel panel-partial flex gap-2 text-base">
               <Icon name="warning" className="mt-0.5 text-xl text-partial" />
-              {t('prepare.failed')}
+              {unreachable(start.error) ? t('prepare.offline') : t('prepare.failed')}
             </p>
           )}
           {demo && (
@@ -161,7 +179,29 @@ export function DeskStart({ demo, scene }: { demo: boolean; scene?: DeskScene })
 
           <fieldset>
             <legend className="mb-3 font-display text-2xl font-bold">{t('who')}</legend>
-            {household.isPending ? (
+            {household.isError ? (
+              // In a demo the alert above says why and the big button retries the whole scene.
+              <div
+                role={retryScene ? undefined : 'alert'}
+                className="flex flex-col items-start gap-3 rounded-md border border-dashed border-border-strong bg-surface p-5 sm:flex-row sm:items-center"
+              >
+                <Icon name="cloud_off" className="text-2xl text-muted" />
+                <p className="flex-1 text-base text-muted">
+                  {!retryScene && unreachable(household.error) ? t('loadOffline') : t('loadFailed')}
+                </p>
+                {!retryScene && (
+                  <Button
+                    variant="secondary"
+                    size="sm"
+                    loading={household.isFetching}
+                    onClick={() => household.refetch()}
+                  >
+                    <Icon name="refresh" className="text-lg" />
+                    {t('prepare.retry')}
+                  </Button>
+                )}
+              </div>
+            ) : household.isPending ? (
               <div className="grid grid-cols-2 gap-3">
                 {Array.from({ length: 4 }, (_, i) => (
                   <Skeleton key={i} className="h-20" />
@@ -169,8 +209,8 @@ export function DeskStart({ demo, scene }: { demo: boolean; scene?: DeskScene })
               </div>
             ) : (
               <div className="flex flex-col gap-2">
-                {household.data?.members.map((m) => {
-                  const on = patientId === m.id;
+                {members?.map((m) => {
+                  const on = chosen === m.id;
                   return (
                     <label
                       key={m.id}
@@ -201,16 +241,20 @@ export function DeskStart({ demo, scene }: { demo: boolean; scene?: DeskScene })
 
           <fieldset>
             <legend className="mb-3 font-display text-2xl font-bold">{t('language')}</legend>
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-              {routing.locales.map((l) => {
+            {/* Rows that fill the width (3 + 2 from a tablet up, 2 + 2 + 1 on a phone): no empty cell. */}
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-6">
+              {routing.locales.map((l, i) => {
                 const on = language === l;
+                const name = tc(`languages.${l}`);
+                const last = i === routing.locales.length - 1;
                 return (
                   <label
                     key={l}
-                    lang={l}
                     className={cn(
                       tile,
-                      'min-h-16 justify-center text-lg font-semibold',
+                      'min-h-16 flex-col justify-center gap-0 px-8 text-center',
+                      i < 3 ? 'sm:col-span-2' : 'sm:col-span-3',
+                      last && 'col-span-2',
                       on ? selectedTile : idleTile,
                     )}
                   >
@@ -222,8 +266,19 @@ export function DeskStart({ demo, scene }: { demo: boolean; scene?: DeskScene })
                       onChange={() => setLanguage(l)}
                       className="sr-only"
                     />
-                    {on && <Icon name="check" weight={600} className="text-xl text-primary" />}
-                    {tc(`languages.${l}`)}
+                    {on && (
+                      <Icon
+                        name="check_circle"
+                        fill
+                        className="absolute right-2.5 top-2.5 text-xl text-primary"
+                      />
+                    )}
+                    <span lang={l} className="text-lg font-semibold leading-snug">
+                      {AUTONYM[l]}
+                    </span>
+                    {name !== AUTONYM[l] && (
+                      <span className="text-sm leading-snug text-muted">{name}</span>
+                    )}
                   </label>
                 );
               })}
@@ -238,15 +293,17 @@ export function DeskStart({ demo, scene }: { demo: boolean; scene?: DeskScene })
             <Button
               variant="accent"
               size="desk"
-              disabled={!patientId}
+              disabled={!chosen && !retryScene}
               loading={start.isPending}
-              onClick={() => start.mutate({ patientMemberId: patientId!, language })}
+              onClick={() => start.mutate({ patientMemberId: chosen ?? preset.patient, language })}
             >
               <Icon name="mic" fill className="text-2xl" />
               {demo && start.isError ? t('prepare.retry') : t('start')}
               <Icon name="arrow_forward" className="text-2xl" />
             </Button>
-            {!patientId && <p className="text-center text-base text-muted">{t('pickFirst')}</p>}
+            {!chosen && !retryScene && (
+              <p className="text-center text-base text-muted">{t('pickFirst')}</p>
+            )}
             {start.isError && !demo && (
               <p role="alert" className="text-center text-gap">
                 {tc('error')}

@@ -7,6 +7,8 @@
     "language": "Jawapan dalam",
     "start": "Mula",
     "pickFirst": "Pilih siapa yang dimasukkan ke hospital untuk bermula.",
+    "loadFailed": "Butiran keluarga tidak dapat dimuatkan.",
+    "loadOffline": "Kavach tidak dapat menghubungi pelayannya sekarang, jadi butiran keluarga tidak dimuatkan. Semak sambungan dan cuba lagi.",
     "privacy": "Kamera hanya digunakan apabila anda mengambil foto anggaran. Tiada apa yang dikongsi tanpa anda.",
     "demoNoteMaternity": "Demo: Priya dimasukkan ke Lotus Women’s Hospital untuk kelahiran normal yang dirancang. Polisi syarikat mengehadkan bersalin pada ₹50,000. Jawapan dalam bahasa Inggeris; anda boleh menukar kedua-duanya.",
     "prepare": {
@@ -22,6 +24,7 @@
       },
       "note": "Data demo. Setiap amaun di skrin seterusnya datang daripada peraturan polisi.",
       "failed": "Babak tidak dapat dimulakan. Pilih siapa yang dimasukkan ke hospital di bawah dan mulakannya sendiri.",
+      "offline": "Kavach tidak dapat menghubungi pelayannya sekarang, jadi babak demo tidak bermula. Semak sambungan dan cuba lagi.",
       "retry": "Cuba lagi"
     },
     "demoNoteSingapore": "Demo: keluarga Tan di Singapura. Ah Kow dimasukkan ke Sample General Hospital untuk angioplasti yang dirancang; pelan Shield beliau dibeli untuk Kelas B1 dan hospital menawarkan Kelas A. Jawapan dalam bahasa Mandarin; anda boleh menukar kedua-duanya."

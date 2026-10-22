@@ -7,6 +7,8 @@
     "language": "回答语言",
     "start": "开始",
     "pickFirst": "请先选择住院的人。",
+    "loadFailed": "未能载入家人资料。",
+    "loadOffline": "Kavach 目前无法连接服务器，所以未能载入家人资料。请检查网络后再试。",
     "privacy": "摄像头只在您拍摄估价单时使用。未经您同意，不会分享任何内容。",
     "demoNoteMaternity": "演示：Priya 在 Lotus Women’s Hospital 入院，预约顺产。公司保单的生育限额为 ₹50,000。回答用英语；两者都可以更改。",
     "prepare": {
@@ -22,6 +24,7 @@
       },
       "note": "演示数据。下一个画面上的每个金额都来自保单规则。",
       "failed": "场景没有启动。请在下面选择住院的人，自己开始。",
+      "offline": "Kavach 目前无法连接服务器，所以演示场景没有开始。请检查网络后再试。",
       "retry": "再试一次"
     },
     "demoNoteSingapore": "演示：新加坡的 Tan 一家。Ah Kow 因计划中的血管成形术入住 Sample General Hospital；他的 Shield 综合健保计划按 B1 级病房投保，医院提供的是 A 级病房。回答以华语给出；两者都可以更改。"
