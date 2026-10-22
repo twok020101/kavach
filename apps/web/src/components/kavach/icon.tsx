@@ -24,7 +24,8 @@ export function Icon({
     <span
       aria-hidden
       translate="no"
-      className={cn('msym', className)}
+      // leading-none last: a text-* size class would otherwise bring a tall line-height and clip the glyph.
+      className={cn('msym', className, 'leading-none')}
       style={
         {
           ...(fill ? { '--msym-fill': 1 } : null),

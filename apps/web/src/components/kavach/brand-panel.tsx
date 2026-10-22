@@ -45,7 +45,7 @@ export function BrandPanel({ className }: { className?: string }) {
   return (
     <aside
       className={cn(
-        'brand-panel relative hidden flex-col overflow-hidden px-10 py-10 lg:sticky lg:top-0 lg:flex lg:h-dvh xl:px-12',
+        'brand-panel no-scrollbar relative hidden flex-col overflow-y-auto overflow-x-hidden px-10 py-8 lg:sticky lg:top-0 lg:flex lg:h-dvh xl:px-12 [@media(min-height:960px)]:py-10',
         className,
       )}
     >
@@ -53,30 +53,30 @@ export function BrandPanel({ className }: { className?: string }) {
       <LogoMark className="pointer-events-none absolute -bottom-24 -right-24 size-[28rem] opacity-[0.06] grayscale invert" />
       <BrandLockup className="relative" />
 
-      <div className="relative mt-12 flex max-w-xl flex-col gap-6">
+      <div className="relative mt-8 flex max-w-xl flex-col gap-5 [@media(min-height:960px)]:mt-12 [@media(min-height:960px)]:gap-6">
         <span className="rise-in inline-flex w-fit items-center gap-1.5 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-label-caps uppercase">
           <Icon name="verified_user" className="text-sm" />
           {t('chip')}
         </span>
         <h2
-          className="rise-in font-display text-[2.75rem] font-bold leading-[1.12] tracking-[-0.025em] xl:text-5xl xl:leading-[1.1]"
+          className="rise-in max-w-[30rem] font-display text-[clamp(2.25rem,2.4vh+1.25rem,3rem)] font-bold leading-[1.1] tracking-[-0.025em]"
           style={{ '--i': 1 } as CSSProperties}
         >
           {t('tagline')}
         </h2>
         <p
-          className="rise-in text-body-lg text-white/85 xl:text-xl xl:leading-8"
+          className="rise-in text-body-lg text-white/85 [@media(min-height:960px)]:xl:text-xl [@media(min-height:960px)]:xl:leading-8"
           style={{ '--i': 2 } as CSSProperties}
         >
           {t('lead')}
         </p>
       </div>
 
-      <ul className="relative mt-10 flex max-w-xl flex-col gap-4">
+      <ul className="relative mt-7 flex max-w-xl flex-col gap-3 [@media(min-height:960px)]:mt-10 [@media(min-height:960px)]:gap-4">
         {MOMENTS.map(({ key, icon }, i) => (
           <li
             key={key}
-            className="brand-tile rise-in flex items-start gap-4 p-5"
+            className="brand-tile rise-in flex items-start gap-4 p-4 [@media(min-height:960px)]:p-5"
             style={{ '--i': 3 + i } as CSSProperties}
           >
             <span className="flex size-12 shrink-0 items-center justify-center rounded-full bg-white/15">
@@ -90,7 +90,7 @@ export function BrandPanel({ className }: { className?: string }) {
         ))}
       </ul>
 
-      <p className="relative mt-auto flex items-start gap-2 border-t border-white/15 pt-6 font-serif text-citation-md text-white/80">
+      <p className="relative mt-auto flex items-start gap-2 border-t border-white/15 pt-5 font-serif text-citation-md text-white/80">
         <Icon name="lock" className="mt-0.5 text-base" />
         <span>{t('footer')}</span>
       </p>
@@ -118,9 +118,12 @@ export function SplitFrame({
   back,
   backLabel,
   band = true,
+  query,
   children,
   className,
 }: {
+  /** Query kept when the language changes (e.g. the launch screen's `next`). */
+  query?: Record<string, string>;
   /** Where Back goes; omit to hide it. */
   back?: string;
   backLabel?: string;
@@ -146,7 +149,7 @@ export function SplitFrame({
             </Link>
           ) : null}
           <div className="ml-auto flex items-center gap-2">
-            <LanguageSwitch />
+            <LanguageSwitch query={query} />
             <ThemeToggle />
           </div>
         </header>

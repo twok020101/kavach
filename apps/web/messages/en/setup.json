@@ -7,59 +7,110 @@
   "signIn": {
     "title": "Your family's insurance, in one place",
     "intro": "Sign in to keep your family's cover, documents and plan safe and in sync.",
-    "google": "Continue with Google",
+    "statusChip": "Prototype · demo data",
+    "dpdp": "Built to the DPDP Act, 2023",
+    "tabsLabel": "Ways to sign in",
+    "tabs": {
+      "quick": "Quick access",
+      "otp": "Mobile OTP",
+      "abha": "ABHA ID"
+    },
+    "continueShield": "Continue to Family Shield",
+    "google": "Sign in with Google",
     "googleOff": "Google sign-in is switched off in this hackathon prototype. Continue without an account to try everything.",
     "guest": "Continue without an account",
     "guestNote": "We keep your family on this device. You can add an account later.",
     "localMode": "Local mode: sign-in is switched off, so you'll go straight in.",
+    "noSetup": "No setup",
+    "offBadge": "Not switched on",
+    "useQuick": "Use Quick access",
+    "otp": {
+      "title": "Sign in with your mobile number",
+      "phone": "Mobile number",
+      "send": "Send OTP",
+      "off": "Signing in with a one-time password (OTP) is not switched on in this prototype. Quick access lets you try everything."
+    },
+    "abha": {
+      "title": "Sign in with your ABHA ID",
+      "label": "ABHA number (14 digits)",
+      "what": "ABHA is your Ayushman Bharat Health Account number.",
+      "continue": "Continue with ABHA",
+      "off": "Signing in with ABHA is not switched on in this prototype. Quick access lets you try everything."
+    },
     "demo": "Just looking?",
     "demoLink": "Try the demo family",
     "invited": "{inviter} invited you to the {household}",
     "invitedAs": "You'll join as {name}. You'll see your cover and the hospital button.",
     "join": "Join the family",
     "inviteGone": "This invite has expired or was already used. Ask for a new link.",
-    "promiseTitle": "Our promise to your family",
+    "promiseTitle": "Our privacy promise",
+    "promisePill": "Zero selling",
     "demoCard": {
       "badge": "No setup",
       "kicker": "Sample family, already set up",
-      "initial": "S",
+      "initial": "श",
       "title": "Explore the Sharma family demo",
       "body": "Five people, four policies and a hospital admission already set up, so you can see every screen with real numbers.",
-      "open": "Open the demo"
+      "meta": "{people} people · {policies} policies · demo data",
+      "open": "Open demo"
+    },
+    "facts": {
+      "title": "Kavach, in plain facts",
+      "chip": "Prototype",
+      "languages": "Languages",
+      "purposes": "Consent choices",
+      "sold": "Data sold"
+    },
+    "help": {
+      "hospital": "At the hospital now?",
+      "whatsapp": "WhatsApp help"
     }
+  },
+  "launch": {
+    "homeTitle": "Protection active",
+    "homeBody": "Your family's policies are ready.",
+    "homePill": "Opening your dashboard",
+    "otherPill": "Opening Kavach",
+    "setupTitle": "You're signed in",
+    "setupBody": "Next, a few short steps to set up your family.",
+    "setupPill": "Opening setup"
   },
   "consent": {
     "title": "Before we start",
-    "intro": "Kavach keeps your family's details to give you advice. Choose what we may use.",
+    "intro": "Kavach keeps your family's details only to give you advice. Choose what we may use, one purpose at a time, under India's Digital Personal Data Protection (DPDP) Act, 2023.",
+    "chip": "Consent under the DPDP Act, 2023",
+    "changeNote": "You can change this any time in Settings",
     "purposes": {
       "planning": {
         "label": "Use my family, money and policy details to plan cover",
-        "hint": "Needed to show your family's cover.",
+        "hint": "Needed to show your family's cover, find the gaps between policies, and size what to add.",
         "note": "Kept only while your family is set up here; delete it any time from Settings."
       },
       "documents": {
         "label": "Read the documents I upload",
-        "hint": "Policies, benefit summaries, hospital estimates.",
+        "hint": "Policies, benefit summaries, hospital estimates and claim letters, read so every rupee can point to its page.",
         "note": "Only the documents you upload. Nothing is fetched from an insurer."
       },
       "health": {
         "label": "Health details (for example, diabetes)",
-        "hint": "Optional. Helps at the hospital. Without it, hospital advice may be less precise.",
-        "note": "Never shared with an insurer or anyone else."
+        "hint": "Long-term conditions change waiting periods and what to ask for at the hospital. Never shared with an insurer or anyone else.",
+        "note": "You can switch this off any time in Settings.",
+        "warn": "Without this, hospital advice may be less precise."
       },
       "whatsapp": {
         "label": "WhatsApp messages to my family",
-        "hint": "Optional. Alerts and dated reminders.",
+        "hint": "Hospital alerts and dated reminders, on the phones of the family members you choose.",
         "note": "Alerts and reminders only. Never promotions."
       }
     },
     "required": "Kavach needs at least the first one to work.",
     "promiseTitle": "Our promise",
     "promise": "We never sell your data. We never contact insurers for you. You can download or delete everything at any time from Settings.",
+    "guarantee": "We <b>never sell your data</b>. We never contact insurers for you. You can download or delete everything at any time from Settings.",
     "agree": "Agree and continue",
     "essential": "Essential",
     "optional": "Optional",
-    "count": "{on} of {total} permissions on"
+    "count": "{on} of {total} purposes on"
   },
   "family": {
     "title": "Tell us about your family",

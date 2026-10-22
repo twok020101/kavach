@@ -1,1 +1,65 @@
 /* Sign-in, the launch loader and the DPDP consent screens (Stitch split layout). */
+
+@layer components {
+  /* Launch loader: the green seal settles in and sends out one soft ring. */
+  .launch-seal {
+    animation: launch-pop 520ms var(--ease-out-expo) both;
+  }
+  .launch-seal::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    border: 2px solid color-mix(in srgb, var(--m3-tertiary-fixed-dim) 70%, transparent);
+    animation: launch-ring 900ms 200ms var(--ease-out-expo) both;
+  }
+  .launch-spin {
+    animation: launch-spin 900ms linear infinite;
+  }
+  @keyframes launch-pop {
+    from {
+      opacity: 0;
+      transform: scale(0.82);
+    }
+  }
+  @keyframes launch-ring {
+    from {
+      opacity: 1;
+      transform: scale(1);
+    }
+    to {
+      opacity: 0;
+      transform: scale(1.6);
+    }
+  }
+  @keyframes launch-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  /* Sign-in tabs: the white pill slides under the chosen tab. */
+  .auth-tabs__pill {
+    transition: transform 280ms var(--ease-out-strong);
+  }
+
+  /* A tab panel fades up when it is chosen. */
+  .auth-panel {
+    animation: stagger-rise 360ms var(--ease-out-expo) both;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .launch-seal,
+  .launch-seal::after,
+  .launch-spin,
+  .auth-panel {
+    animation: none;
+  }
+  .launch-seal::after {
+    opacity: 0;
+  }
+  .auth-tabs__pill {
+    transition: none;
+  }
+}
