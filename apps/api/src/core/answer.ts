@@ -26,8 +26,10 @@ export function answer(
   patientId: string,
   inputs: DeskInputs,
   locale: Locale,
+  /** The live desk answers in the language chosen on screen, whatever words the question uses. */
+  opts: { lockLanguage?: boolean } = {},
 ): DeskAnswer {
-  const lang = detectLocale(inputs.utteranceText, locale);
+  const lang = opts.lockLanguage ? locale : detectLocale(inputs.utteranceText, locale);
   const t = COPY[lang];
   const patient = deskPatient(household, patientId);
   const { estimate } = inputs;

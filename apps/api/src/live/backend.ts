@@ -33,5 +33,6 @@ export const notes = {
     '[capture] The estimate photo has been captured. Call read_estimate, then evaluate_options.',
   billing: (b: BillingType) =>
     `[billing answer] The desk says the billing type is "${b}". Call evaluate_options with billingTypeAnswer "${b}" and tell the family the result.`,
-  language: (l: Locale) => `[language] Speak ${l === 'hi' ? 'Hindi' : 'English'} from now on.`,
+  language: (l: Locale) =>
+    `[language] The family switched the screen to ${l === 'hi' ? 'Hindi' : 'English'}. Speak only ${l === 'hi' ? 'Hindi' : 'English'} from now on.`,
 };

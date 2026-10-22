@@ -52,7 +52,13 @@ export function inProcessDesk(householdId: string, sessionId: string): DeskPort 
     },
     estimate: async () => (await session()).estimate,
     evaluate: async ({ question, billingTypeAnswer, language }) =>
-      takeTurn(await household(), sessionId, { text: question, billingTypeAnswer, language }),
+      // The spoken line follows the language on screen, not the words the model passed along.
+      takeTurn(
+        await household(),
+        sessionId,
+        { text: question, billingTypeAnswer, language },
+        { lockLanguage: true },
+      ),
     spokenEstimate: async (estimate) =>
       recordSpokenEstimate(await household(), sessionId, estimate),
     lastAnswer: async () => (await session()).lastAnswer,

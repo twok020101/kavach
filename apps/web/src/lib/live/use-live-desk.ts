@@ -105,6 +105,11 @@ export function useLiveDesk(sessionId: string, language: Locale, handlers: LiveH
 
   useEffect(() => () => shutdown(false), [shutdown]);
 
+  // The language switch can keep this page mounted; an open live session must follow it.
+  useEffect(() => {
+    parts.current.socket?.setLanguage(language);
+  }, [language]);
+
   return {
     status,
     muted,

@@ -6,6 +6,10 @@ import { appRoot } from '../paths';
 
 const template = readFileSync(resolve(appRoot, 'src/agents/prompts/desk-live.md'), 'utf8');
 
+const HINDI_STYLE = `Hindi style: natural spoken Hindi with common English insurance words kept in English ("room rent", "policy", "TPA",
+"cashless"). Example: "Pehle parents wali policy ka card TPA desk par dijiye. Sign karne se pehle TPA desk se confirm
+kar lijiye."`;
+
 /** The DeskAgent system instruction (docs/plan/03-gemini-and-agents.md §4.6) for one patient. */
 export function deskLiveInstruction(context: DeskContext, language: Locale): string {
   const { patient } = context;
@@ -20,6 +24,8 @@ export function deskLiveInstruction(context: DeskContext, language: Locale): str
       .join('; ') || 'none';
   const values: Record<string, string> = {
     language: language === 'hi' ? 'Hindi' : 'English',
+    // Only a Hindi session gets the Hindi style notes, so an English one has no Hindi to copy.
+    language_style: language === 'hi' ? HINDI_STYLE : '',
     patient_name: patient.name,
     age: String(patient.age),
     relation: patient.relation,
