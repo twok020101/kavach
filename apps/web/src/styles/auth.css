@@ -47,6 +47,28 @@
   .auth-panel {
     animation: stagger-rise 360ms var(--ease-out-expo) both;
   }
+
+  /* The trust badges above the sign-in card: one pill shape, one type size, any length. */
+  .auth-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    min-height: 1.75rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 999px;
+    font-size: var(--text-label-caps);
+    line-height: var(--text-label-caps--line-height);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+}
+
+/* Chinese has no capitals to carry an 11px eyebrow: a touch larger, without the tracking.
+   Unlayered, so it wins over the text-label-caps utility on the sign-in and setup screens. */
+.auth-card :is(.text-label-caps, .auth-badge):lang(zh) {
+  font-size: 0.75rem;
+  letter-spacing: 0.02em;
 }
 
 @media (prefers-reduced-motion: reduce) {

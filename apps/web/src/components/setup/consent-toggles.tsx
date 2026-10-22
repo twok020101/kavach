@@ -89,7 +89,7 @@ export function ConsentToggles({
                     </span>
                     <span
                       className={cn(
-                        'inline-flex items-center rounded-[4px] px-1.5 py-0.5 text-[10px] font-semibold uppercase leading-4 tracking-[0.06em]',
+                        'inline-flex items-center rounded-[4px] px-1.5 py-0.5 text-label-caps uppercase',
                         essential
                           ? 'bg-surface-container-high text-primary'
                           : 'bg-surface-container-highest text-on-surface-variant',
@@ -110,8 +110,8 @@ export function ConsentToggles({
                 {/* The footnote: what is never done with it, or what an optional one changes. */}
                 <span
                   className={cn(
-                    'mt-0.5 flex items-start gap-1.5 font-serif text-[0.8125rem] leading-5',
-                    warn ? 'text-secondary' : 'text-on-surface-variant/80',
+                    'mt-0.5 flex items-start gap-1.5 font-serif text-citation-md',
+                    warn ? 'text-secondary' : 'text-on-surface-variant',
                   )}
                 >
                   <Icon name={warn ? 'info' : ICONS[purpose].note} className="mt-[3px] text-sm" />

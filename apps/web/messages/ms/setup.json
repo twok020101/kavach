@@ -4,12 +4,14 @@
   "continue": "Teruskan",
   "error": "Itu tidak berjaya. Sila cuba lagi.",
   "loading": "Sedang memuatkan…",
+  "loadError": "Kami tidak dapat memuatkan butiran keluarga anda. Semak sambungan anda dan cuba lagi.",
+  "retry": "Cuba lagi",
   "signIn": {
     "title": "Insurans keluarga anda, di satu tempat",
     "intro": "Log masuk untuk memastikan perlindungan, dokumen dan pelan keluarga anda selamat dan disegerakkan.",
     "statusChip": "Prototaip · data demo",
     "dpdp": "Dibina mengikut Akta DPDP, 2023",
-    "dpdpSg": "Tiada apa dibaca tanpa kebenaran anda",
+    "dpdpSg": "Dibina mengikut PDPA Singapura",
     "tabsLabel": "Cara untuk log masuk",
     "tabs": {
       "quick": "Akses pantas",
@@ -46,7 +48,7 @@
       "continue": "Teruskan dengan Singpass",
       "off": "Log masuk dengan Singpass belum dihidupkan dalam prototaip ini. Akses pantas membolehkan anda mencuba semuanya."
     },
-    "demo": "Sekadar melihat-lihat?",
+    "demo": "Sekadar melihat? Cuba keluarga contoh",
     "demoLink": "Cuba keluarga demo",
     "invited": "{inviter} menjemput anda ke {household}",
     "invitedAs": "Anda akan menyertai sebagai {name}. Anda akan nampak perlindungan anda dan butang hospital.",
@@ -56,8 +58,8 @@
     "promisePill": "Data tidak dijual",
     "demoCard": {
       "badge": "Tanpa persediaan",
-      "kicker": "Keluarga sampel, sudah disediakan",
-      "initial": "श",
+      "kicker": "Keluarga contoh · India",
+      "initial": "S",
       "title": "Terokai demo keluarga Sharma",
       "body": "Lima orang, empat polisi dan satu kemasukan hospital sudah disediakan, jadi anda boleh melihat setiap skrin dengan angka sebenar.",
       "meta": "{people} orang · {policies} polisi · data demo",
@@ -75,7 +77,7 @@
       "whatsapp": "Bantuan WhatsApp"
     },
     "demoCardSg": {
-      "kicker": "Keluarga contoh di Singapura",
+      "kicker": "Keluarga contoh · Singapura",
       "initial": "T",
       "title": "Lihat keluarga Tan di kaunter hospital",
       "body": "Kemasukan Ah Kow di Sample General Hospital: MediShield Life, pelan Shield dan pilihan wad, dalam bahasa Melayu.",
@@ -96,7 +98,7 @@
     "intro": "Kavach menyimpan butiran keluarga anda hanya untuk memberi nasihat. Pilih apa yang kami boleh guna, satu tujuan pada satu masa, di bawah Akta Perlindungan Data Peribadi Digital (DPDP) India, 2023.",
     "introSg": "Kavach menyimpan butiran keluarga anda hanya untuk memberi nasihat. Pilih apa yang kami boleh guna, satu tujuan pada satu masa. Tiada apa yang dibaca atau disimpan tanpa persetujuan anda, dan anda boleh mengubahnya kemudian.",
     "chip": "Kebenaran di bawah Akta DPDP, 2023",
-    "chipSg": "Kebenaran anda, satu tujuan pada satu masa",
+    "chipSg": "Kebenaran mengikut PDPA Singapura",
     "changeNote": "Anda boleh mengubah ini bila-bila masa dalam Tetapan",
     "purposes": {
       "planning": {
@@ -136,8 +138,10 @@
     "intro": "Siapa yang bergantung pada anda? Satu ayat sudah cukup.",
     "label": "Keluarga anda, dalam kata-kata anda",
     "placeholder": "Saya Rahul, 34, di Bengaluru. Isteri Priya, anak perempuan Anaya berumur 5, dan ibu bapa saya tinggal bersama kami…",
+    "placeholderSg": "Saya Wei-Ming, 38, di Tampines. Isteri Hui-Ling, anak lelaki Jia-En berumur 6, dan ibu bapa saya tinggal bersama kami…",
     "try": "Cuba:",
     "example": "Saya, isteri saya Priya, anak perempuan Anaya, dan ibu bapa saya di Pune",
+    "exampleSg": "Saya, isteri saya Hui-Ling, anak lelaki Jia-En, dan ibu bapa saya di Tampines",
     "speak": "Tahan untuk bercakap",
     "listening": "Mendengar… lepaskan apabila selesai",
     "micBlocked": "Kami tidak dapat menggunakan mikrofon. Sila taip sahaja.",

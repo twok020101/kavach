@@ -17,8 +17,12 @@ import { startDemo } from '@/lib/session';
 import { marketForLocale } from '@/lib/market';
 import { acceptInvite, useInvitePreview } from '@/lib/setup';
 
-/** The Sharma family at the `setup` checkpoint (data/personas/sharma.json): 5 people, 4 policies. */
-const DEMO_COUNTS = { people: 5, policies: 4 };
+/**
+ * The sample families at their `setup` checkpoints (data/personas/sharma.json, tan.json): the
+ * Sharmas are 5 people with 4 policies; the Tans 5 people with 7 (a MediShield Life each, a
+ * Shield plan and a term policy).
+ */
+const DEMO_COUNTS = { IN: { people: 5, policies: 4 }, SG: { people: 5, policies: 7 } };
 /** The Twilio sandbox number, when WhatsApp is set up (as on the member home). */
 const WA_NUMBER = process.env.NEXT_PUBLIC_TWILIO_SANDBOX_NUMBER?.replace(/\D/g, '');
 
@@ -78,42 +82,39 @@ export function SignInScreen({ invite }: { invite: string | null }) {
       <PrivacyPromise title={t('promiseTitle')} pill={t('promisePill')}>
         {ts('consent.promise')}
       </PrivacyPromise>
-      <Button
-        size="lg"
-        className="sign-in-cta w-full rounded-xl"
-        loading={signIn.isPending}
-        onClick={() => signIn.mutate()}
-      >
-        <span className="font-display">
-          {invite ? t('join') : firebaseEnabled ? t('guest') : t('continueShield')}
-        </span>
-        <Icon name="arrow_forward" className="btn-arrow text-xl" />
-      </Button>
+      {/* The way in, with what it does in one quiet line under it. */}
+      <div className="flex flex-col gap-2">
+        <Button
+          size="lg"
+          className="sign-in-cta w-full rounded-xl"
+          loading={signIn.isPending}
+          onClick={() => signIn.mutate()}
+          aria-describedby="quick-note"
+        >
+          <span className="font-display">
+            {invite ? t('join') : firebaseEnabled ? t('guest') : t('continueShield')}
+          </span>
+          <Icon name="arrow_forward" className="btn-arrow text-xl" />
+        </Button>
+        <AuthNote id="quick-note" icon="bolt">
+          {firebaseEnabled ? t('guestNote') : t('localMode')}
+        </AuthNote>
+      </div>
       {/* Shown, not hidden, so it is clear the account option exists but is off for now. */}
-      <div className="flex flex-col gap-1.5">
+      <div className="flex flex-col gap-2">
         <button
           type="button"
           disabled
           aria-describedby="google-off"
-          className="flex min-h-12 w-full cursor-not-allowed items-center justify-center gap-3 rounded-xl border border-border bg-surface text-on-surface opacity-70 shadow-1"
+          className="flex min-h-12 w-full cursor-not-allowed items-center justify-center gap-3 rounded-xl border border-border bg-surface text-on-surface-variant"
         >
-          <GoogleMark />
+          <GoogleMark className="size-5 opacity-60" />
           <span className="font-display text-title-md">{t('google')}</span>
         </button>
-        <p id="google-off" className="px-1 text-body-sm text-on-surface-variant">
+        <AuthNote id="google-off" icon="toggle_off">
           {t('googleOff')}
-        </p>
+        </AuthNote>
       </div>
-      {/* How you get in today: a quiet row with its icon, never a bare line. */}
-      <p className="flex items-start gap-2 rounded-md bg-surface-container px-4 py-2.5 text-on-surface-variant">
-        <Icon name="info" className="mt-0.5 text-lg text-secondary" />
-        <span className="flex-1 text-body-md">
-          {firebaseEnabled ? t('guestNote') : t('localMode')}
-        </span>
-        <span className="mt-0.5 shrink-0 text-label-caps uppercase text-secondary">
-          {t('noSetup')}
-        </span>
-      </p>
       {signIn.isError && (
         <p role="alert" className="panel panel-gap text-gap">
           {ts('error')}
@@ -225,18 +226,21 @@ export function SignInScreen({ invite }: { invite: string | null }) {
       </div>
 
       {/* The two sample families, each a row of its own: the reader's market first. The Sharmas
-          open the app; the Tans open the Singapore desk scene. */}
-      <div className="flex flex-col gap-3">
+          open the app; the Tans open the Singapore desk scene. Both rows share one shape:
+          monogram, market eyebrow, title, counts, and the way in under the words. */}
+      <section aria-labelledby="demo-heading" className="flex flex-col gap-3">
+        <h2 id="demo-heading" className="text-label-caps uppercase text-on-surface-variant">
+          {t('demo')}
+        </h2>
         {(sgFirst ? (['sg', 'in'] as const) : (['in', 'sg'] as const)).map((which) =>
           which === 'in' ? (
             <DemoRow
               key="in"
               id="demo-in"
               initial={t('demoCard.initial')}
-              initialLang="hi"
               kicker={t('demoCard.kicker')}
               title={t('demoCard.title')}
-              meta={t('demoCard.meta', DEMO_COUNTS)}
+              meta={t('demoCard.meta', DEMO_COUNTS.IN)}
             >
               <Button
                 variant="soft"
@@ -255,7 +259,7 @@ export function SignInScreen({ invite }: { invite: string | null }) {
               initial={t('demoCardSg.initial')}
               kicker={t('demoCardSg.kicker')}
               title={t('demoCardSg.title')}
-              meta={t('demoCardSg.body')}
+              meta={t('demoCard.meta', DEMO_COUNTS.SG)}
             >
               <Link
                 href={{ pathname: '/desk', query: { demo: '1', scene: 'singapore' } }}
@@ -268,7 +272,7 @@ export function SignInScreen({ invite }: { invite: string | null }) {
             </DemoRow>
           ),
         )}
-      </div>
+      </section>
       {demo.isError && (
         <p role="alert" className="panel panel-gap -mt-2 text-gap">
           {ts('error')}
@@ -313,13 +317,15 @@ export function SignInScreen({ invite }: { invite: string | null }) {
 }
 
 const DEMO_BUTTON =
-  'shrink-0 self-start bg-surface-container-highest text-primary hover:bg-primary hover:text-on-primary sm:self-center';
+  'min-h-12 bg-surface-container-highest px-4 text-primary hover:bg-primary hover:text-on-primary';
 
-/** One sample family as a row: its initial on a tile, what it holds, and its way in. */
+/**
+ * One sample family as a row: its monogram, the market as an eyebrow, the title over the full
+ * width (never squeezed beside the button), then the counts and the way in.
+ */
 function DemoRow({
   id,
   initial,
-  initialLang,
   kicker,
   title,
   meta,
@@ -327,35 +333,46 @@ function DemoRow({
 }: {
   id: string;
   initial: string;
-  initialLang?: string;
   kicker: string;
   title: string;
   meta: string;
   children: ReactNode;
 }) {
   return (
-    <section
+    <article
       aria-labelledby={id}
-      className="flex flex-col gap-4 rounded-lg bg-surface-container-low p-4 sm:flex-row sm:items-center sm:p-5"
+      className="flex items-start gap-4 rounded-lg bg-surface-container-low p-4 sm:p-5"
     >
-      <div className="flex min-w-0 flex-1 items-center gap-4">
-        <span
-          aria-hidden
-          lang={initialLang}
-          className="flex size-12 shrink-0 items-center justify-center rounded-full bg-secondary-fixed font-display text-headline-sm text-secondary"
-        >
-          {initial}
-        </span>
-        <div className="flex min-w-0 flex-col gap-0.5">
+      <span
+        aria-hidden
+        className="flex size-11 shrink-0 items-center justify-center rounded-full bg-secondary-fixed font-display text-headline-sm font-bold text-secondary"
+      >
+        {initial}
+      </span>
+      <div className="flex min-w-0 flex-1 flex-col gap-2">
+        <div className="flex min-w-0 flex-col gap-1">
           <span className="text-label-caps uppercase text-secondary">{kicker}</span>
-          <h2 id={id} className="font-display text-title-md text-on-surface">
+          <h3 id={id} className="font-display text-title-md text-on-surface">
             {title}
-          </h2>
+          </h3>
+        </div>
+        {/* The counts and the way in share a line when there is room, and stack when not. */}
+        <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-3">
           <p className="text-body-sm text-on-surface-variant">{meta}</p>
+          {children}
         </div>
       </div>
-      {children}
-    </section>
+    </article>
+  );
+}
+
+/** A quiet one-line note under an action: its icon and the words, in one size everywhere. */
+function AuthNote({ id, icon, children }: { id: string; icon: string; children: ReactNode }) {
+  return (
+    <p id={id} className="flex items-start gap-2 px-1 text-body-sm text-on-surface-variant">
+      <Icon name={icon} className="mt-px text-base text-secondary" />
+      <span className="max-w-[60ch]">{children}</span>
+    </p>
   );
 }
 
@@ -375,17 +392,20 @@ function SignInCard({
     <SplitFrame back={back}>
       <main id="main" className="mx-auto flex w-full max-w-2xl flex-1 flex-col justify-center">
         {/* On a phone the page is the card; from a tablet up the white card sits on the page. */}
-        <div className="stagger flex flex-col gap-6 pt-2 sm:rounded-xl sm:bg-surface sm:p-8 sm:shadow-[0_4px_24px_rgba(13,26,60,0.06)] sm:ring-1 sm:ring-border/50 lg:p-10">
-          <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
-            <span className="inline-flex items-center gap-2 rounded-full bg-surface-container px-3 py-1 text-label-caps uppercase text-primary">
+        <div className="auth-card stagger flex flex-col gap-6 pt-2 sm:rounded-xl sm:bg-surface sm:p-8 sm:shadow-[0_4px_24px_rgba(13,26,60,0.06)] sm:ring-1 sm:ring-border/50 lg:p-10">
+          {/* Two true badges, one shape: what this is (a prototype on demo data) and the
+              privacy law it is built to for the reader's market (DPDP in India, PDPA in
+              Singapore). Neither is a certification. */}
+          <ul className="flex flex-wrap items-center gap-2">
+            <li className="auth-badge bg-surface-container text-primary">
               <span className="live-dot" />
               {statusChip}
-            </span>
-            <span className="inline-flex items-center gap-1.5 font-serif text-citation-sm text-on-surface-variant">
-              <Icon name="shield" fill className="text-base text-safe" />
+            </li>
+            <li className="auth-badge bg-safe-bg text-safe">
+              <Icon name="shield" fill className="text-sm" />
               {dpdp}
-            </span>
-          </div>
+            </li>
+          </ul>
           {children}
         </div>
       </main>
@@ -416,7 +436,7 @@ function PrivacyPromise({
           <h2 id="privacy-promise" className="font-display text-title-md text-on-surface">
             {title}
           </h2>
-          <span className="rounded-[4px] bg-tertiary/10 px-1.5 py-0.5 text-[10px] font-semibold uppercase leading-4 tracking-[0.06em] text-tertiary-container">
+          <span className="rounded-[4px] bg-tertiary/10 px-1.5 py-0.5 text-label-caps uppercase text-tertiary">
             {pill}
           </span>
         </div>

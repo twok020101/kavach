@@ -1,6 +1,7 @@
 {
   "title": "डेमो परिवार",
   "intro": "शर्मा परिवार की आपकी अपनी कॉपी. कहानी के किसी भी पल पर लौटें.",
+  "introSg": "सिंगापुर के Tan परिवार की आपकी अपनी कॉपी. कहानी के किसी भी पल पर लौटें.",
   "loading": "डेमो परिवार तैयार हो रहा है…",
   "error": "परिवार की जानकारी नहीं मिली. क्या API चल रहा है?",
   "retry": "फिर से कोशिश करें",
@@ -25,7 +26,8 @@
   },
   "speaksHindi": "हिंदी बोलती/बोलते हैं",
   "conditions": {
-    "diabetes_t2": "टाइप 2 डायबिटीज़"
+    "diabetes_t2": "टाइप 2 डायबिटीज़",
+    "hypertension": "हाई ब्लड प्रेशर"
   },
   "policiesHeading": "पॉलिसियाँ",
   "kinds": {
@@ -35,7 +37,9 @@
     "term_life": "टर्म लाइफ़",
     "personal_accident": "पर्सनल एक्सीडेंट",
     "endowment": "एंडोमेंट",
-    "motor": "मोटर"
+    "motor": "मोटर",
+    "medishield_life": "MediShield Life",
+    "integrated_shield": "Integrated Shield Plan"
   },
   "sumInsured": "कवर {amount}",
   "covers": "{names} के लिए",

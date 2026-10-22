@@ -3,7 +3,55 @@
 import { useTranslations } from 'next-intl';
 import type { ReactNode } from 'react';
 import { SplitFrame } from '../kavach/brand-panel';
+import { Icon } from '../kavach/icon';
+import { Button } from '../ui/button';
 import { cn } from '../ui/cn';
+import { Skeleton } from '../ui/skeleton';
+
+/**
+ * What a setup step shows before its family has loaded: a message and a retry when the load
+ * failed (never an empty screen), else grey blocks in the shape of the step.
+ */
+export function SetupLoadState({
+  error,
+  retrying,
+  onRetry,
+  rows = 3,
+}: {
+  error: unknown;
+  retrying?: boolean;
+  onRetry: () => void;
+  rows?: number;
+}) {
+  const t = useTranslations('setup');
+  if (error) {
+    return (
+      <div
+        role="alert"
+        className="flex flex-col items-start gap-3 rounded-lg bg-gap-bg p-4 text-gap sm:p-5"
+      >
+        <p className="flex items-start gap-2 text-body-md">
+          <Icon name="error" className="mt-0.5 text-lg" />
+          {t('loadError')}
+        </p>
+        <Button variant="secondary" loading={retrying} onClick={onRetry}>
+          <Icon name="refresh" className="text-xl" />
+          {t('retry')}
+        </Button>
+      </div>
+    );
+  }
+  return (
+    <div className="flex flex-col gap-3">
+      <p role="status" className="sr-only">
+        {t('loading')}
+      </p>
+      {Array.from({ length: rows }, (_, i) => (
+        <Skeleton key={i} className="h-16 rounded-lg" />
+      ))}
+    </div>
+  );
+}
 
 export const SETUP_STEPS = 4;
 const STEP_KEYS = ['family', 'money', 'documents', 'questions'] as const;
@@ -31,9 +79,10 @@ export function StepProgress({ step }: { step: number }) {
                 )}
               />
             </span>
+            {/* Long Malay and Tamil step names wrap under their bar rather than lose letters. */}
             <span
               className={cn(
-                'truncate text-xs font-semibold uppercase tracking-[0.06em]',
+                'text-label-caps uppercase [overflow-wrap:anywhere]',
                 state === 'current' ? 'text-primary' : 'text-on-surface-variant',
               )}
             >
@@ -77,7 +126,7 @@ export function SetupFrame({
   return (
     <SplitFrame back={back} backLabel={t('back')} className="pb-0 lg:pb-0">
       <div className="mx-auto flex w-full max-w-2xl flex-1 flex-col">
-        <main id="main" className="flex flex-1 flex-col gap-6 pb-8 pt-4 lg:pt-6">
+        <main id="main" className="auth-card flex flex-1 flex-col gap-6 pb-8 pt-4 lg:pt-6">
           {top}
           {step !== undefined && <StepProgress step={step} />}
           <div className="flex flex-col gap-2">

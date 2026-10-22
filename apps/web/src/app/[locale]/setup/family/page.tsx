@@ -5,11 +5,13 @@ import { useLocale, useTranslations } from 'next-intl';
 import { useState } from 'react';
 import type { Locale } from '@kavach/schemas';
 import { AgentSteps } from '@/components/kavach/agent-steps';
+import { Icon } from '@/components/kavach/icon';
 import { HoldToSpeak, type VoiceNote } from '@/components/setup/hold-to-speak';
-import { SetupFrame } from '@/components/setup/setup-frame';
+import { SetupFrame, SetupLoadState } from '@/components/setup/setup-frame';
 import { useSetupHousehold } from '@/components/setup/use-setup-household';
 import { Button } from '@/components/ui/button';
 import { useRouter } from '@/i18n/navigation';
+import { marketForLocale } from '@/lib/market';
 import { saveIntake, useParseFamily } from '@/lib/setup';
 
 /** S04 Tell us about your family: one sentence, typed or spoken, read by the IntakeAgent. */
@@ -18,11 +20,14 @@ export default function FamilyPage() {
   const ts = useTranslations('setup');
   const locale = useLocale() as Locale;
   const router = useRouter();
-  const { data: household } = useSetupHousehold();
+  const { data: household, error, refetch, isFetching } = useSetupHousehold();
   const parse = useParseFamily(household?.id);
   const [text, setText] = useState('');
   const [voice, setVoice] = useState<VoiceNote>();
   const [found, setFound] = useState<number>();
+  // A Singapore reader's example family lives in Singapore, not Pune or Bengaluru.
+  const sg = marketForLocale(locale) === 'SG';
+  const example = t(sg ? 'exampleSg' : 'example');
 
   const submit = () =>
     parse.mutate(
@@ -61,6 +66,11 @@ export default function FamilyPage() {
         </Button>
       }
     >
+      {/* The sentence can be typed while the family loads; a failed load says so, with retry. */}
+      {error && !household && (
+        <SetupLoadState error={error} retrying={isFetching} onRetry={() => refetch()} />
+      )}
+
       <label className="flex flex-col gap-2">
         <span className="sr-only">{t('label')}</span>
         <textarea
@@ -68,18 +78,19 @@ export default function FamilyPage() {
           onChange={(e) => setText(e.target.value)}
           rows={5}
           maxLength={1000}
-          placeholder={t('placeholder')}
-          className="w-full rounded-md border border-border-strong bg-surface p-4 text-lg placeholder:text-muted/70"
+          placeholder={t(sg ? 'placeholderSg' : 'placeholder')}
+          className="w-full rounded-lg border border-outline-variant bg-surface p-4 text-body-lg text-on-surface shadow-1 placeholder:text-on-surface-variant/70 focus-visible:border-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
         />
       </label>
 
       {voice ? (
-        <p className="flex items-center gap-2 self-center rounded-full bg-primary-soft px-4 py-2 text-primary-hover">
+        <p className="flex items-center gap-2 self-center rounded-full bg-primary-soft py-1 pl-4 pr-1 text-body-md font-medium text-primary">
           {t('voiceReady', { seconds: voice.seconds })}
           <button
+            type="button"
             onClick={() => setVoice(undefined)}
             aria-label={t('clearVoice')}
-            className="flex size-8 items-center justify-center rounded-full hover:bg-surface"
+            className="flex size-10 items-center justify-center rounded-full hover:bg-surface focus-visible:outline-2 focus-visible:outline-primary"
           >
             <X aria-hidden className="size-4" />
           </button>
@@ -88,15 +99,17 @@ export default function FamilyPage() {
         <HoldToSpeak onRecorded={setVoice} />
       )}
 
-      <p className="text-muted">
-        {t('try')}{' '}
+      {/* An example sentence to start from, in the reader's language. */}
+      <div className="flex flex-col gap-1 rounded-lg bg-surface-container-low p-4">
+        <span className="text-label-caps uppercase text-on-surface-variant">{t('try')}</span>
         <button
-          className="text-left font-medium text-primary underline"
-          onClick={() => setText(t('example'))}
+          type="button"
+          className="max-w-[60ch] text-left text-body-md font-medium text-primary underline decoration-primary/40 underline-offset-4 hover:decoration-primary"
+          onClick={() => setText(example)}
         >
-          “{t('example')}”
+          “{example}”
         </button>
-      </p>
+      </div>
 
       {working && (
         <AgentSteps
@@ -106,8 +119,21 @@ export default function FamilyPage() {
           ]}
         />
       )}
-      {found === 0 && <p className="rounded-md bg-partial-bg p-3 text-partial">{t('nobody')}</p>}
-      {parse.isError && <p className="rounded-md bg-gap-bg p-3 text-gap">{ts('error')}</p>}
+      {found === 0 && (
+        <p
+          role="status"
+          className="flex items-start gap-2 rounded-lg bg-partial-bg p-4 text-partial"
+        >
+          <Icon name="info" className="mt-0.5 text-lg" />
+          {t('nobody')}
+        </p>
+      )}
+      {parse.isError && (
+        <p role="alert" className="flex items-start gap-2 rounded-lg bg-gap-bg p-4 text-gap">
+          <Icon name="error" className="mt-0.5 text-lg" />
+          {ts('error')}
+        </p>
+      )}
     </SetupFrame>
   );
 }

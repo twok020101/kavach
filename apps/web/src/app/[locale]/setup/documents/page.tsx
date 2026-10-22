@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 import { useRef, useState } from 'react';
 import { useAddSamples, useDocuments, useUploadDocuments } from '@/components/documents/api';
 import { DocumentCard } from '@/components/documents/DocumentCard';
+import { Icon } from '@/components/kavach/icon';
 import { SetupFrame } from '@/components/setup/setup-frame';
 import { Button, buttonClasses } from '@/components/ui/button';
 import { cn } from '@/components/ui/cn';
@@ -16,7 +17,7 @@ const ACCEPT = 'application/pdf,image/png,image/jpeg,image/webp,image/heic';
 /** S07 Documents: upload policies and summaries, watch them being read, confirm what was found. */
 export default function DocumentsSetupPage() {
   const t = useTranslations('documents');
-  const { data: household, error, refetch } = useHousehold();
+  const { data: household, error, refetch, isFetching } = useHousehold();
   const documents = useDocuments(household?.id);
   const { uploads, upload } = useUploadDocuments(household?.id);
   const samples = useAddSamples(household?.id);
@@ -26,6 +27,7 @@ export default function DocumentsSetupPage() {
 
   const onFiles = (files: FileList | null) => files?.length && upload([...files]);
   const hasSamples = documents.data?.some((d) => d.isSample);
+  const hasDocuments = Boolean(documents.data?.length);
 
   return (
     <SetupFrame
@@ -34,26 +36,40 @@ export default function DocumentsSetupPage() {
       title={t('setup.title')}
       intro={t('setup.intro')}
       footer={
-        <div className="flex w-full items-center justify-between gap-3">
-          <span className="text-sm text-muted">
+        <div className="flex w-full flex-wrap items-center justify-between gap-x-4 gap-y-2">
+          <span className="text-body-md text-on-surface-variant">
             {t('setup.none')}{' '}
-            <Link href="/setup/questions" className="font-medium text-primary underline">
+            <Link
+              href="/setup/questions"
+              className="inline-flex min-h-12 items-center font-medium text-primary underline underline-offset-4"
+            >
               {t('setup.skip')}
             </Link>
           </span>
-          <Link href="/setup/questions" className={buttonClasses()}>
+          {/* One primary per view: choosing files leads until there is something to continue with. */}
+          <Link
+            href="/setup/questions"
+            className={buttonClasses({ size: 'lg', variant: hasDocuments ? 'primary' : 'soft' })}
+          >
             {t('setup.continue')}
           </Link>
         </div>
       }
     >
       {error && (
-        <p className="rounded-md bg-gap-bg p-3 text-gap">
-          {t('error')}{' '}
-          <button className="underline" onClick={() => refetch()}>
+        <div
+          role="alert"
+          className="flex flex-col items-start gap-3 rounded-lg bg-gap-bg p-4 text-gap sm:p-5"
+        >
+          <p className="flex items-start gap-2 text-body-md">
+            <Icon name="error" className="mt-0.5 text-lg" />
+            {t('error')}
+          </p>
+          <Button variant="secondary" loading={isFetching} onClick={() => refetch()}>
+            <Icon name="refresh" className="text-xl" />
             {t('retry')}
-          </button>
-        </p>
+          </Button>
+        </div>
       )}
 
       <section
@@ -68,12 +84,14 @@ export default function DocumentsSetupPage() {
           onFiles(e.dataTransfer.files);
         }}
         className={cn(
-          'flex flex-col items-center gap-3 rounded-lg border-2 border-dashed p-6 text-center',
-          dragging ? 'border-primary bg-primary-soft' : 'border-border-strong bg-surface',
+          'flex flex-col items-center gap-4 rounded-lg border-2 border-dashed p-6 text-center transition-colors sm:p-8',
+          dragging ? 'border-primary bg-primary-soft' : 'border-outline-variant bg-surface',
         )}
       >
-        <FileUp aria-hidden className="size-8 text-muted" />
-        <p className="font-medium">{t('setup.drop')}</p>
+        <span className="flex size-12 items-center justify-center rounded-full bg-primary-soft text-primary">
+          <FileUp aria-hidden className="size-6" />
+        </span>
+        <p className="font-display text-title-md text-on-surface">{t('setup.drop')}</p>
         <div className="flex flex-wrap justify-center gap-2">
           <Button disabled={!household} onClick={() => fileInput.current?.click()}>
             {t('setup.choose')}
@@ -105,7 +123,8 @@ export default function DocumentsSetupPage() {
         />
       </section>
 
-      {household?.isDemo && !hasSamples && (
+      {/* The sample documents are the Sharmas' Indian policies: offered to India's demo only. */}
+      {household?.isDemo && household.country === 'IN' && !hasSamples && (
         <Button
           variant="ghost"
           loading={samples.isPending}
@@ -120,13 +139,44 @@ export default function DocumentsSetupPage() {
       {uploads.map((u) => (
         <p
           key={u.name}
-          className={cn('rounded-md p-3 text-sm', u.failed ? 'bg-gap-bg text-gap' : 'bg-sunken')}
+          role={u.failed ? 'alert' : 'status'}
+          className={cn(
+            'flex items-start gap-2 rounded-lg p-3 text-body-md',
+            u.failed ? 'bg-gap-bg text-gap' : 'bg-surface-container-low text-on-surface',
+          )}
         >
+          <Icon name={u.failed ? 'error' : 'upload'} className="mt-0.5 text-lg" />
           {u.failed
             ? t('setup.uploadFailed', { name: u.name })
             : t('setup.uploading', { name: u.name, percent: Math.round(u.percent) })}
         </p>
       ))}
+
+      {samples.isError && (
+        <p role="alert" className="flex items-start gap-2 rounded-lg bg-gap-bg p-4 text-gap">
+          <Icon name="error" className="mt-0.5 text-lg" />
+          {t('error')}
+        </p>
+      )}
+
+      {documents.isError && (
+        <div
+          role="alert"
+          className="flex flex-wrap items-center justify-between gap-3 rounded-lg bg-gap-bg p-4 text-gap"
+        >
+          <p className="flex items-start gap-2 text-body-md">
+            <Icon name="error" className="mt-0.5 text-lg" />
+            {t('error')}
+          </p>
+          <Button
+            variant="secondary"
+            loading={documents.isFetching}
+            onClick={() => documents.refetch()}
+          >
+            {t('retry')}
+          </Button>
+        </div>
+      )}
 
       {household && (
         <div className="flex flex-col gap-3">

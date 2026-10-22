@@ -1,6 +1,7 @@
 {
   "title": "演示家庭",
   "intro": "您自己的 Sharma 一家副本。可以重置到故事的任何时刻。",
+  "introSg": "您自己的新加坡 Tan 一家副本。可以重置到故事的任何时刻。",
   "loading": "正在设置演示家庭…",
   "error": "无法加载家庭。API 在运行吗？",
   "retry": "再试一次",
@@ -25,7 +26,8 @@
   },
   "speaksHindi": "说印地语",
   "conditions": {
-    "diabetes_t2": "二型糖尿病"
+    "diabetes_t2": "二型糖尿病",
+    "hypertension": "高血压"
   },
   "policiesHeading": "保单",
   "kinds": {
@@ -35,7 +37,9 @@
     "term_life": "定期人寿保险",
     "personal_accident": "个人意外保险",
     "endowment": "储蓄保险",
-    "motor": "汽车保险"
+    "motor": "汽车保险",
+    "medishield_life": "MediShield Life",
+    "integrated_shield": "Integrated Shield Plan"
   },
   "sumInsured": "保额 {amount}",
   "covers": "承保 {names}",

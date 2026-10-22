@@ -1,14 +1,15 @@
 'use client';
 
+import { formatMoney } from '@kavach/engine';
 import type { DocumentRecord, Household } from '@kavach/schemas';
 import { Check, FileText } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import { AgentSteps } from '../kavach/agent-steps';
+import { Icon } from '../kavach/icon';
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
 import { Card } from '../ui/card';
-import { useMoney } from '@/lib/country';
 import { useConfirmDocument } from './api';
 import { ClauseChip } from './ClauseSheet';
 import { TermList } from './TermList';
@@ -25,23 +26,31 @@ export function DocumentCard({
   household: Household;
 }) {
   const t = useTranslations('documents');
-  const money = useMoney();
+  // Amounts in the household's own currency (₹ for India, S$ for Singapore), whatever the page.
+  const money = (amount: number) => formatMoney(amount, household.country);
   const confirm = useConfirmDocument(household.id);
   const extraction = document.extraction;
   const policy = extraction?.policy;
 
   return (
-    <Card as="article" className="flex flex-col gap-3">
+    <Card as="article" className="flex flex-col gap-4">
       <header className="flex items-start gap-3">
-        <FileText aria-hidden className="mt-0.5 size-5 shrink-0 text-muted" />
+        <span className="flex size-10 shrink-0 items-center justify-center rounded-md bg-primary-soft text-primary">
+          <FileText aria-hidden className="size-5" />
+        </span>
         <div className="min-w-0 flex-1">
-          <h3 className="truncate font-semibold">{document.filename}</h3>
+          <h3
+            className="truncate font-display text-title-md text-on-surface"
+            title={document.filename}
+          >
+            {document.filename}
+          </h3>
           {document.status === 'read' && (
-            <p className="text-sm text-muted">{t(`kinds.${document.kind}`)}</p>
+            <p className="text-body-sm text-on-surface-variant">{t(`kinds.${document.kind}`)}</p>
           )}
         </div>
         {document.isSample && (
-          <Badge tone="partial" className="text-xs font-bold tracking-wide">
+          <Badge tone="partial" className="text-label-caps uppercase">
             {t('sample')}
           </Badge>
         )}
@@ -52,17 +61,21 @@ export function DocumentCard({
       )}
 
       {document.status === 'failed' && (
-        <p className="rounded-sm bg-gap-bg p-2 text-sm text-gap">
+        <p
+          role="alert"
+          className="flex items-start gap-2 rounded-md bg-gap-bg p-3 text-body-md text-gap"
+        >
+          <Icon name="error" className="mt-0.5 text-lg" />
           {t('failed', { error: document.error ?? '' })}
         </p>
       )}
 
       {extraction && policy && (
-        <div className="flex flex-col gap-2">
-          <div>
-            <p className="font-medium">{policy.productName}</p>
-            <p className="text-sm text-muted">{policy.insurer}</p>
-            <p className="text-sm text-muted">
+        <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-0.5">
+            <p className="font-display text-title-md text-on-surface">{policy.productName}</p>
+            <p className="text-body-sm text-on-surface-variant">{policy.insurer}</p>
+            <p className="text-body-sm text-on-surface-variant">
               {t('covers', {
                 names: memberNames(
                   household,
@@ -71,16 +84,23 @@ export function DocumentCard({
               })}
             </p>
           </div>
-          <h4 className="text-xs font-semibold tracking-wide text-muted uppercase">{t('check')}</h4>
+          <h4 className="text-label-caps uppercase text-on-surface-variant">{t('check')}</h4>
           <TermList terms={keyTerms(policy, t, money)} householdId={household.id} />
         </div>
       )}
 
       {extraction && !policy && (
         <div className="flex flex-col gap-2">
-          {extraction.summary && <p className="line-clamp-4 text-sm">{extraction.summary}</p>}
+          {extraction.summary && (
+            <p className="line-clamp-4 max-w-[70ch] text-body-md text-on-surface">
+              {extraction.summary}
+            </p>
+          )}
           {extraction.citations.map((citation) => (
-            <p key={citation.quote} className="flex items-start gap-2 text-sm text-muted">
+            <p
+              key={citation.quote}
+              className="flex items-start gap-2 text-body-sm text-on-surface-variant"
+            >
               <span className="flex-1 font-serif">“{citation.quote}”</span>
               <ClauseChip citation={citation} householdId={household.id} />
             </p>
@@ -90,22 +110,34 @@ export function DocumentCard({
 
       {policy &&
         (document.confirmedPolicyId ? (
-          <p className="flex items-center justify-between gap-2 rounded-sm bg-safe-bg p-2 text-sm text-safe">
-            <span className="flex items-center gap-1">
+          <p className="flex flex-wrap items-center justify-between gap-2 rounded-md bg-safe-bg px-3 py-1 text-body-md text-safe">
+            <span className="flex items-center gap-1.5">
               <Check aria-hidden className="size-4" />
               {t('confirmed')}
             </span>
             <Link
               href={`/policies/${document.confirmedPolicyId}`}
-              className="font-semibold underline"
+              className="inline-flex min-h-12 items-center font-semibold underline underline-offset-4"
             >
               {t('viewPolicy')}
             </Link>
           </p>
         ) : (
-          <Button loading={confirm.isPending} onClick={() => confirm.mutate(document.id)}>
-            {confirm.isPending ? t('confirming') : t('confirm')}
-          </Button>
+          <>
+            <Button
+              className="self-start"
+              loading={confirm.isPending}
+              onClick={() => confirm.mutate(document.id)}
+            >
+              {confirm.isPending ? t('confirming') : t('confirm')}
+            </Button>
+            {confirm.isError && (
+              <p role="alert" className="flex items-start gap-2 text-body-md text-gap">
+                <Icon name="error" className="mt-0.5 text-lg" />
+                {t('error')}
+              </p>
+            )}
+          </>
         ))}
     </Card>
   );
@@ -130,5 +162,5 @@ function ReadingSteps({ document }: { document: DocumentRecord }) {
           ? ('active' as const)
           : ('pending' as const),
   }));
-  return <AgentSteps steps={steps} className="text-sm" />;
+  return <AgentSteps steps={steps} className="text-body-sm" />;
 }

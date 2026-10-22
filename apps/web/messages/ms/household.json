@@ -1,6 +1,7 @@
 {
   "title": "Isi rumah demo",
   "intro": "Salinan keluarga Sharma anda sendiri. Tetapkan semula ke mana-mana saat dalam cerita.",
+  "introSg": "Salinan keluarga Tan di Singapura anda sendiri. Tetapkan semula ke mana-mana saat dalam cerita.",
   "loading": "Menyediakan isi rumah demo…",
   "error": "Tidak dapat memuatkan isi rumah. Adakah API sedang berjalan?",
   "retry": "Cuba lagi",
@@ -25,7 +26,8 @@
   },
   "speaksHindi": "Bercakap bahasa Hindi",
   "conditions": {
-    "diabetes_t2": "Diabetes jenis 2"
+    "diabetes_t2": "Diabetes jenis 2",
+    "hypertension": "Darah tinggi"
   },
   "policiesHeading": "Polisi",
   "kinds": {
@@ -35,7 +37,9 @@
     "term_life": "Hayat bertempoh",
     "personal_accident": "Kemalangan diri",
     "endowment": "Endowmen",
-    "motor": "Motor"
+    "motor": "Motor",
+    "medishield_life": "MediShield Life",
+    "integrated_shield": "Integrated Shield Plan"
   },
   "sumInsured": "Perlindungan {amount}",
   "covers": "Melindungi {names}",

@@ -4,12 +4,14 @@
   "continue": "Continue",
   "error": "That didn't work. Please try again.",
   "loading": "Loading…",
+  "loadError": "We couldn't load your family's details. Check your connection and try again.",
+  "retry": "Try again",
   "signIn": {
     "title": "Your family's insurance, in one place",
     "intro": "Sign in to keep your family's cover, documents and plan safe and in sync.",
     "statusChip": "Prototype · demo data",
     "dpdp": "Built to the DPDP Act, 2023",
-    "dpdpSg": "Nothing read without your consent",
+    "dpdpSg": "Built to Singapore’s PDPA",
     "tabsLabel": "Ways to sign in",
     "tabs": {
       "quick": "Quick access",
@@ -46,7 +48,7 @@
       "continue": "Continue with Singpass",
       "off": "Signing in with Singpass is not switched on in this prototype. Quick access lets you try everything."
     },
-    "demo": "Just looking?",
+    "demo": "Just looking? Try a sample family",
     "demoLink": "Try the demo family",
     "invited": "{inviter} invited you to the {household}",
     "invitedAs": "You'll join as {name}. You'll see your cover and the hospital button.",
@@ -56,8 +58,8 @@
     "promisePill": "Zero selling",
     "demoCard": {
       "badge": "No setup",
-      "kicker": "Sample family, already set up",
-      "initial": "श",
+      "kicker": "Sample family · India",
+      "initial": "S",
       "title": "Explore the Sharma family demo",
       "body": "Five people, four policies and a hospital admission already set up, so you can see every screen with real numbers.",
       "meta": "{people} people · {policies} policies · demo data",
@@ -75,7 +77,7 @@
       "whatsapp": "WhatsApp help"
     },
     "demoCardSg": {
-      "kicker": "Sample family in Singapore",
+      "kicker": "Sample family · Singapore",
       "initial": "T",
       "title": "See the Tan family at the hospital desk",
       "body": "Ah Kow’s admission at Sample General Hospital: MediShield Life, a Shield plan and the ward choice, in Mandarin.",
@@ -96,7 +98,7 @@
     "intro": "Kavach keeps your family's details only to give you advice. Choose what we may use, one purpose at a time, under India's Digital Personal Data Protection (DPDP) Act, 2023.",
     "introSg": "Kavach keeps your family’s details only to give you advice. Choose what we may use, one purpose at a time. Nothing is read or stored without your yes, and you can change it later.",
     "chip": "Consent under the DPDP Act, 2023",
-    "chipSg": "Your consent, one purpose at a time",
+    "chipSg": "Consent built to Singapore’s PDPA",
     "changeNote": "You can change this any time in Settings",
     "purposes": {
       "planning": {
@@ -136,8 +138,10 @@
     "intro": "Who depends on you? One sentence is enough.",
     "label": "Your family, in your words",
     "placeholder": "I'm Rahul, 34, in Bengaluru. Wife Priya, daughter Anaya is 5, and my parents live with us…",
+    "placeholderSg": "I'm Wei-Ming, 38, in Tampines. Wife Hui-Ling, son Jia-En is 6, and my parents live with us…",
     "try": "Try:",
     "example": "Me, my wife Priya, daughter Anaya, and my parents in Pune",
+    "exampleSg": "Me, my wife Hui-Ling, our son Jia-En, and my parents in Tampines",
     "speak": "Hold to speak",
     "listening": "Listening… let go when you're done",
     "micBlocked": "We couldn't use the microphone. Please type instead.",

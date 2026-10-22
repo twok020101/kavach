@@ -4,12 +4,14 @@
   "continue": "继续",
   "error": "没有成功。请再试一次。",
   "loading": "加载中…",
+  "loadError": "无法载入您的家庭资料。请检查网络连接后再试一次。",
+  "retry": "再试一次",
   "signIn": {
     "title": "您全家的保险，集中在一处",
     "intro": "登录以妥善保存并同步您全家的保障、文件和计划。",
     "statusChip": "原型 · 演示数据",
     "dpdp": "遵循《2023年数字个人数据保护法》（DPDP）",
-    "dpdpSg": "未经您同意，不读取任何内容",
+    "dpdpSg": "按新加坡 PDPA 设计",
     "tabsLabel": "登录方式",
     "tabs": {
       "quick": "快速进入",
@@ -46,7 +48,7 @@
       "continue": "用 Singpass 继续",
       "off": "这个原型尚未开启 Singpass 登录。用快速进入就能试用所有功能。"
     },
-    "demo": "只是看看？",
+    "demo": "只是看看？试试示例家庭",
     "demoLink": "试试演示家庭",
     "invited": "{inviter} 邀请您加入 {household}",
     "invitedAs": "您将以 {name} 的身份加入。您会看到自己的保障和医院按钮。",
@@ -58,8 +60,8 @@
       "body": "五个人、四份保单和一次住院都已设置好，您可以用真实数字查看每个画面。",
       "meta": "{people} 人 · {policies} 份保单 · 演示数据",
       "open": "打开演示",
-      "initial": "श",
-      "kicker": "示范家庭，已设置好"
+      "initial": "S",
+      "kicker": "示例家庭 · 印度"
     },
     "facts": {
       "title": "Kavach 一览",
@@ -75,7 +77,7 @@
     "promiseTitle": "我们的隐私承诺",
     "promisePill": "绝不出售",
     "demoCardSg": {
-      "kicker": "新加坡示例家庭",
+      "kicker": "示例家庭 · 新加坡",
       "initial": "T",
       "title": "看看 Tan 一家在医院柜台",
       "body": "Ah Kow 在 Sample General Hospital 入院：MediShield Life、Shield 计划和病房选择，用华语。",
@@ -96,7 +98,7 @@
     "intro": "Kavach 保存您的家庭资料，只为给您提供建议。请依照印度《2023年数字个人数据保护法》（DPDP），逐项选择我们可以使用的内容。",
     "introSg": "Kavach 保存您的家庭资料，只为给您提供建议。请逐项选择我们可以使用的内容。没有您的同意，不读取、不保存任何内容，之后也可以随时更改。",
     "chip": "依照《2023年 DPDP 法》征求同意",
-    "chipSg": "您的同意，逐项决定",
+    "chipSg": "按新加坡 PDPA 征求同意",
     "changeNote": "您可以随时在设置中更改",
     "purposes": {
       "planning": {
@@ -136,8 +138,10 @@
     "intro": "谁依靠您？一句话就够了。",
     "label": "用您自己的话说说您的家庭",
     "placeholder": "我是 Rahul，34 岁，住在 Bengaluru。太太 Priya，女儿 Anaya 5 岁，我父母和我们同住…",
+    "placeholderSg": "我是 Wei-Ming，38 岁，住在 Tampines。太太 Hui-Ling，儿子 Jia-En 6 岁，我父母和我们同住…",
     "try": "试试：",
     "example": "我、我太太 Priya、女儿 Anaya，还有我在 Pune 的父母",
+    "exampleSg": "我、我太太 Hui-Ling、儿子 Jia-En，还有住在 Tampines 的父母",
     "speak": "按住说话",
     "listening": "正在听… 说完后松开",
     "micBlocked": "无法使用麦克风。请改为输入。",

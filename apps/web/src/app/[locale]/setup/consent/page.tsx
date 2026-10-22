@@ -32,11 +32,11 @@ export default function ConsentPage() {
       top={
         // What this screen is, and that the choice is not final (both true).
         <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-surface-container-high px-3 py-1.5 text-label-caps uppercase text-on-surface-variant">
-            <Icon name="policy" className="text-base text-primary" />
+          <span className="auth-badge bg-surface-container-high text-primary">
+            <Icon name="policy" className="text-sm" />
             {t(sg ? 'chipSg' : 'chip')}
           </span>
-          <span className="inline-flex items-center gap-1.5 font-serif text-citation-sm text-on-surface-variant">
+          <span className="inline-flex items-center gap-1.5 text-body-sm text-on-surface-variant">
             <Icon name="check_circle" className="text-base text-tertiary" />
             {t('changeNote')}
           </span>
@@ -53,7 +53,12 @@ export default function ConsentPage() {
           >
             {t('count', { on: consents.length, total: ConsentPurpose.options.length })}
           </p>
-          <Link href="/sign-in" className={buttonClasses({ variant: 'soft', size: 'lg' })}>
+          {/* On a phone Back is already in the bar at the top: the footer keeps its width for
+              the one primary action, which long Malay labels need. */}
+          <Link
+            href="/sign-in"
+            className={buttonClasses({ variant: 'soft', size: 'lg', className: 'max-sm:hidden' })}
+          >
             {ts('back')}
           </Link>
           <Button
