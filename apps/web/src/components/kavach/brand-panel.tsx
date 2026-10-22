@@ -1,8 +1,10 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
+import type { Locale } from '@kavach/schemas';
+import { useLocale, useTranslations } from 'next-intl';
 import type { CSSProperties, ReactNode } from 'react';
 import { Link } from '@/i18n/navigation';
+import { marketForLocale } from '@/lib/market';
 import { cn } from '../ui/cn';
 import { Icon } from './icon';
 import { LanguageSwitch } from './language-switch';
@@ -41,7 +43,10 @@ export function BrandLockup({ className }: { className?: string }) {
  * the brand, a chip, the promise, the three moments as glass tiles, and the DPDP line.
  */
 export function BrandPanel({ className }: { className?: string }) {
-  const t = useTranslations('common.brandPanel');
+  const tp = useTranslations('common.brandPanel');
+  // Singapore readers get Singapore's words (dollars, Shield plans, the PDPA) where India's differ.
+  const sg = marketForLocale(useLocale() as Locale) === 'SG';
+  const t = (key: string) => tp(sg && tp.has(`sg.${key}`) ? `sg.${key}` : key);
   return (
     <aside
       className={cn(

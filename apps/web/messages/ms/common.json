@@ -134,6 +134,17 @@
       "title": "Apabila tuntutan bermasalah",
       "body": "Setiap potongan disemak klausa demi klausa; surat rayuan dan surat kepada ombudsman disediakan untuk anda."
     },
-    "footer": "Kebenaran anda, data anda: dibina mengikut Akta Perlindungan Data Peribadi Digital (DPDP) India, 2023."
+    "footer": "Kebenaran anda, data anda: dibina mengikut Akta Perlindungan Data Peribadi Digital (DPDP) India, 2023.",
+    "sg": {
+      "chip": "Setiap dolar dirujuk kepada peraturan",
+      "lead": "Perisai pelindung yang membimbing keluarga Singapura pelbagai generasi melalui MediShield Life, Integrated Shield Plan, rider dan pilihan wad.",
+      "hospital": {
+        "body": "Bantuan langsung semasa kemasukan: kelas wad yang dibayar penuh oleh pelan anda, berapa kos pengurangan berkadar di atasnya, kad mana yang perlu ditunjukkan dahulu."
+      },
+      "claim": {
+        "body": "Setiap potongan disemak mengikut terma MediShield Life dan pelan Shield anda; surat rayuan kepada syarikat insurans disediakan untuk anda."
+      },
+      "footer": "Kebenaran anda, data anda: dibina mengikut Akta Perlindungan Data Peribadi (PDPA) Singapura."
+    }
   }
 }

@@ -134,6 +134,17 @@
       "title": "When a claim goes wrong",
       "body": "Every deduction checked clause by clause; the appeal and ombudsman letter drafted for you."
     },
-    "footer": "Your consent, your data: built to India's Digital Personal Data Protection (DPDP) Act, 2023."
+    "footer": "Your consent, your data: built to India's Digital Personal Data Protection (DPDP) Act, 2023.",
+    "sg": {
+      "chip": "Every dollar cited to a rule",
+      "lead": "A protective shield that guides multi-generational Singapore families through MediShield Life, Integrated Shield Plans, riders and the ward they choose.",
+      "hospital": {
+        "body": "Live help at admission: which ward class your plan pays as charged, what pro-ration costs above it, which card to show first."
+      },
+      "claim": {
+        "body": "Every deduction checked against MediShield Life and your Shield plan’s terms; the appeal to your insurer drafted for you."
+      },
+      "footer": "Your consent, your data: built to Singapore’s Personal Data Protection Act (PDPA)."
+    }
   }
 }
