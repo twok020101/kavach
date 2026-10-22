@@ -59,7 +59,7 @@ export default async function LocaleLayout({ children, params }: LayoutProps<'/[
             ligature names from flashing as words while it arrives. */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        {/* eslint-disable-next-line @next/next/no-page-custom-font -- an icon font, not text */}
+        {/* eslint-disable-next-line @next/next/no-page-custom-font, @next/next/google-font-display -- an icon font: `block` hides ligature names, there is no text to swap */}
         <link
           rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,300..600,0..1,0&display=block"
