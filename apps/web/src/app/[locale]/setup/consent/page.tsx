@@ -1,18 +1,21 @@
 'use client';
 
-import { ConsentPurpose } from '@kavach/schemas';
-import { useTranslations } from 'next-intl';
+import { ConsentPurpose, type Locale } from '@kavach/schemas';
+import { useLocale, useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { Icon } from '@/components/kavach/icon';
 import { ConsentToggles } from '@/components/setup/consent-toggles';
 import { SetupFrame } from '@/components/setup/setup-frame';
 import { Button, buttonClasses } from '@/components/ui/button';
 import { Link, useRouter } from '@/i18n/navigation';
+import { marketForLocale } from '@/lib/market';
 import { useCreateHousehold } from '@/lib/setup';
 
 /**
  * S03 Consent (Stitch "DPDP statutory consent"): a separate yes for each purpose before any
- * personal or health data, the promise, and a footer with the live count, Back and Agree.
+ * personal or health data, the promise, and a footer with the live count, Back and Agree. A
+ * Singapore reader (Mandarin, Malay) is not told about India's DPDP Act: the chip and intro say
+ * what is true everywhere, one yes per purpose (`chipSg`, `introSg`).
  */
 export default function ConsentPage() {
   const t = useTranslations('setup.consent');
@@ -21,6 +24,7 @@ export default function ConsentPage() {
   const [consents, setConsents] = useState<ConsentPurpose[]>(['planning', 'documents']);
   const create = useCreateHousehold();
   const ready = consents.includes('planning');
+  const sg = marketForLocale(useLocale() as Locale) === 'SG';
 
   return (
     <SetupFrame
@@ -30,7 +34,7 @@ export default function ConsentPage() {
         <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
           <span className="inline-flex items-center gap-1.5 rounded-full bg-surface-container-high px-3 py-1.5 text-label-caps uppercase text-on-surface-variant">
             <Icon name="policy" className="text-base text-primary" />
-            {t('chip')}
+            {t(sg ? 'chipSg' : 'chip')}
           </span>
           <span className="inline-flex items-center gap-1.5 font-serif text-citation-sm text-on-surface-variant">
             <Icon name="check_circle" className="text-base text-tertiary" />
@@ -39,7 +43,7 @@ export default function ConsentPage() {
         </div>
       }
       title={t('title')}
-      intro={t('intro')}
+      intro={t(sg ? 'introSg' : 'intro')}
       footer={
         // The live count on the left, Back and the one primary action on the right (Stitch 04).
         <div className="flex w-full flex-wrap items-center gap-3">

@@ -46,6 +46,9 @@ export function SignInScreen({ invite }: { invite: string | null }) {
   // Mandarin and Malay readers are in Singapore: their sample family comes first. The Singapore
   // scene opens in the reader's language, or in Mandarin from Hindi (an India language).
   const sgFirst = marketForLocale(locale) === 'SG';
+  const sg = sgFirst;
+  // India signs in with ABHA, Singapore with Singpass: both designed, both switched off here.
+  const id = sg ? 'singpass' : 'abha';
   const sgLocale: Locale = marketForLocale(locale) === 'IN' ? 'zh' : locale;
 
   // Signing in, then: join the inviting family, or start setting up your own. Google sign-in
@@ -126,7 +129,7 @@ export function SignInScreen({ invite }: { invite: string | null }) {
 
   if (invite) {
     return (
-      <SignInCard back="/" statusChip={t('statusChip')} dpdp={t('dpdp')}>
+      <SignInCard back="/" statusChip={t('statusChip')} dpdp={t(sg ? 'dpdpSg' : 'dpdp')}>
         <h1 className="font-display text-[1.75rem] font-bold leading-9 tracking-[-0.015em] text-on-surface sm:text-headline-lg">
           {preview.data
             ? t('invited', {
@@ -157,7 +160,7 @@ export function SignInScreen({ invite }: { invite: string | null }) {
   }
 
   return (
-    <SignInCard back="/" statusChip={t('statusChip')} dpdp={t('dpdp')}>
+    <SignInCard back="/" statusChip={t('statusChip')} dpdp={t(sg ? 'dpdpSg' : 'dpdp')}>
       <div className="flex flex-col gap-2">
         <h1 className="font-display text-[1.75rem] font-bold leading-9 tracking-[-0.015em] text-on-surface sm:text-headline-lg">
           {t('title')}
@@ -174,7 +177,7 @@ export function SignInScreen({ invite }: { invite: string | null }) {
           tabs={[
             { id: 'quick', label: t('tabs.quick') },
             { id: 'otp', label: t('tabs.otp') },
-            { id: 'abha', label: t('tabs.abha') },
+            { id: 'abha', label: t(`tabs.${id}`) },
           ]}
         />
         <div {...tabPanelProps(TABS_ID, 'quick', method)} className="auth-panel">
@@ -201,19 +204,19 @@ export function SignInScreen({ invite }: { invite: string | null }) {
         </div>
         <div {...tabPanelProps(TABS_ID, 'abha', method)} className="auth-panel">
           <NotOnPanel
-            title={t('abha.title')}
+            title={t(`${id}.title`)}
             badge={t('offBadge')}
-            action={t('abha.continue')}
-            note={{ id: 'abha-off', text: t('abha.off') }}
+            action={t(`${id}.continue`)}
+            note={{ id: 'abha-off', text: t(`${id}.off`) }}
             backLabel={t('useQuick')}
             onBack={backToQuick}
             field={
               <DisabledField
                 id="abha-number"
-                label={t('abha.label')}
-                hint={t('abha.what')}
-                placeholder="00-0000-0000-0000"
-                inputMode="numeric"
+                label={t(`${id}.label`)}
+                hint={t(`${id}.what`)}
+                placeholder={sg ? 'S0000000A' : '00-0000-0000-0000'}
+                inputMode={sg ? 'text' : 'numeric'}
                 describedBy="abha-off"
               />
             }

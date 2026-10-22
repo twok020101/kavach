@@ -12,6 +12,7 @@ import { Card } from '@/components/ui/card';
 import { Disclosure } from '@/components/ui/disclosure';
 import { Spinner } from '@/components/ui/spinner';
 import { Link } from '@/i18n/navigation';
+import { CountryProvider } from '@/lib/country';
 import { deskClient } from '@/lib/desk-client';
 import { DeskHeader } from './desk-header';
 
@@ -20,13 +21,14 @@ export function DeskSummaryScreen({ sid }: { sid: string }) {
   const t = useTranslations('desk.summary');
   const tc = useTranslations('common');
   const locale = useLocale() as Locale;
-  // The summary is kept in the screen's language and English (or Hindi when the screen is English).
-  const other: Locale = locale === 'en' ? 'hi' : 'en';
   const [copied, setCopied] = useState(false);
 
   // Ending is idempotent, so the summary can be fetched again after a reload.
   const result = useQuery({ queryKey: ['desk', 'end', sid], queryFn: () => deskClient.end(sid) });
   const household = useQuery({ queryKey: ['desk', 'household'], queryFn: deskClient.getHousehold });
+  // The summary is kept in the screen's language and English; when the screen is English, in the
+  // market's other language (Mandarin for a Singapore family, Hindi in India).
+  const other: Locale = locale !== 'en' ? 'en' : household.data?.country === 'SG' ? 'zh' : 'hi';
   const patient = household.data?.members.find(
     (m) => m.id === result.data?.session.patientMemberId,
   );
@@ -48,7 +50,7 @@ export function DeskSummaryScreen({ sid }: { sid: string }) {
   }
 
   return (
-    <>
+    <CountryProvider country={household.data?.country}>
       <DeskHeader title={t('title')} subtitle={result.data?.session.hospitalName} />
       <main className="mx-auto flex max-w-2xl flex-col gap-5 px-4 pb-12 pt-5">
         {result.isPending ? (
@@ -117,6 +119,6 @@ export function DeskSummaryScreen({ sid }: { sid: string }) {
           </>
         )}
       </main>
-    </>
+    </CountryProvider>
   );
 }

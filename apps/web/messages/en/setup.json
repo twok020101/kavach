@@ -9,11 +9,13 @@
     "intro": "Sign in to keep your family's cover, documents and plan safe and in sync.",
     "statusChip": "Prototype · demo data",
     "dpdp": "Built to the DPDP Act, 2023",
+    "dpdpSg": "Nothing read without your consent",
     "tabsLabel": "Ways to sign in",
     "tabs": {
       "quick": "Quick access",
       "otp": "Mobile OTP",
-      "abha": "ABHA ID"
+      "abha": "ABHA ID",
+      "singpass": "Singpass"
     },
     "continueShield": "Continue to Family Shield",
     "google": "Sign in with Google",
@@ -36,6 +38,13 @@
       "what": "ABHA is your Ayushman Bharat Health Account number.",
       "continue": "Continue with ABHA",
       "off": "Signing in with ABHA is not switched on in this prototype. Quick access lets you try everything."
+    },
+    "singpass": {
+      "title": "Sign in with Singpass",
+      "label": "Singpass ID (NRIC or FIN)",
+      "what": "Singpass is Singapore’s national digital identity.",
+      "continue": "Continue with Singpass",
+      "off": "Signing in with Singpass is not switched on in this prototype. Quick access lets you try everything."
     },
     "demo": "Just looking?",
     "demoLink": "Try the demo family",
@@ -85,7 +94,9 @@
   "consent": {
     "title": "Before we start",
     "intro": "Kavach keeps your family's details only to give you advice. Choose what we may use, one purpose at a time, under India's Digital Personal Data Protection (DPDP) Act, 2023.",
+    "introSg": "Kavach keeps your family’s details only to give you advice. Choose what we may use, one purpose at a time. Nothing is read or stored without your yes, and you can change it later.",
     "chip": "Consent under the DPDP Act, 2023",
+    "chipSg": "Your consent, one purpose at a time",
     "changeNote": "You can change this any time in Settings",
     "purposes": {
       "planning": {
@@ -96,6 +107,7 @@
       "documents": {
         "label": "Read the documents I upload",
         "hint": "Policies, benefit summaries, hospital estimates and claim letters, read so every rupee can point to its page.",
+        "hintSg": "Policies, benefit summaries, hospital estimates and claim letters, read so every dollar can point to its page.",
         "note": "Only the documents you upload. Nothing is fetched from an insurer."
       },
       "health": {

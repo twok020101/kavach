@@ -80,7 +80,7 @@ export function DisabledField({
   prefix?: string;
   placeholder?: string;
   describedBy: string;
-  inputMode?: 'tel' | 'numeric';
+  inputMode?: 'tel' | 'numeric' | 'text';
 }) {
   return (
     <div className="flex flex-col gap-1.5">

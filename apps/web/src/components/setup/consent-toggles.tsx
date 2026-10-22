@@ -1,7 +1,8 @@
 'use client';
 
-import { ConsentPurpose } from '@kavach/schemas';
-import { useTranslations } from 'next-intl';
+import { ConsentPurpose, type Locale } from '@kavach/schemas';
+import { useLocale, useTranslations } from 'next-intl';
+import { marketForLocale } from '@/lib/market';
 import { Icon } from '../kavach/icon';
 import { cn } from '../ui/cn';
 
@@ -34,6 +35,10 @@ export function ConsentToggles({
 }) {
   const t = useTranslations('setup.consent');
   const tp = useTranslations('setup.consent.purposes');
+  // Singapore readers read "every dollar" where India's say "every rupee" (`hintSg`).
+  const sg = marketForLocale(useLocale() as Locale) === 'SG';
+  const hint = (purpose: ConsentPurpose) =>
+    sg && tp.has(`${purpose}.hintSg`) ? tp(`${purpose}.hintSg`) : tp(`${purpose}.hint`);
   return (
     <ul className="flex flex-col gap-4">
       {ConsentPurpose.options.map((purpose) => {
@@ -101,9 +106,7 @@ export function ConsentToggles({
                     )}
                   />
                 </span>
-                <span className="text-body-md text-on-surface-variant">
-                  {tp(`${purpose}.hint`)}
-                </span>
+                <span className="text-body-md text-on-surface-variant">{hint(purpose)}</span>
                 {/* The footnote: what is never done with it, or what an optional one changes. */}
                 <span
                   className={cn(
