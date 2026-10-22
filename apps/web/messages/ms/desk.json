@@ -1,0 +1,130 @@
+{
+  "modeNote": "Mod hospital: teks besar dan kontras tinggi.",
+  "start": {
+    "title": "Bantuan di hospital",
+    "demoNote": "Demo: keluarga Sharma di City Heart Hospital. Suresh dimasukkan ke hospital untuk angioplasti yang dirancang, dan jawapannya dalam bahasa Hindi. Anda boleh menukar kedua-duanya.",
+    "who": "Siapa yang dimasukkan ke hospital?",
+    "language": "Jawapan dalam",
+    "start": "Mula",
+    "pickFirst": "Pilih siapa yang dimasukkan ke hospital untuk bermula.",
+    "privacy": "Kamera hanya digunakan apabila anda mengambil foto anggaran. Tiada apa yang dikongsi tanpa anda.",
+    "demoNoteMaternity": "Demo: Priya dimasukkan ke Lotus Women’s Hospital untuk kelahiran normal yang dirancang. Polisi syarikat mengehadkan bersalin pada ₹50,000. Jawapan dalam bahasa Inggeris; anda boleh menukar kedua-duanya.",
+    "demoNoteSingapore": "Demo: keluarga Tan di Singapura. Ah Kow dimasukkan ke Sample General Hospital untuk angioplasti yang dirancang; pelan Shield beliau dibeli untuk Kelas B1 dan hospital menawarkan Kelas A. Jawapan dalam bahasa Mandarin; anda boleh menukar kedua-duanya."
+  },
+  "session": {
+    "title": "Membantu {name}",
+    "titleLoading": "Bantuan di hospital",
+    "end": "Tamat",
+    "orb": {
+      "thinking": "Kavach sedang menyemak",
+      "ready": "Sedia: tunjukkan anggaran atau taip"
+    },
+    "textMode": "Mod teks",
+    "greeting": "Salam. Ambil foto anggaran hospital, kemudian tanya soalan anda.",
+    "sampleSent": "Menggunakan anggaran contoh",
+    "photoSent": "Foto anggaran",
+    "estimateRead": "Saya sudah membaca anggaran {hospital}: {days, plural, one {# hari} other {# hari}}, {rooms} jenis bilik. Sekarang tanya saya bilik mana yang patut diambil.",
+    "captureFailed": "Saya tidak dapat membaca foto itu. Sila ambil semula dengan seluruh muka surat dalam bingkai.",
+    "steps": {
+      "reading": "Membaca anggaran",
+      "tariff": "Mencari tarif bilik",
+      "policies": "Menyemak polisi keluarga",
+      "rooms": "Membandingkan bilik",
+      "verify": "Menyemak setiap angka"
+    },
+    "capture": {
+      "title": "Tunjukkan anggaran hospital",
+      "hint": "Pastikan seluruh muka surat dalam bingkai, dengan cahaya yang baik.",
+      "photo": "Ambil foto anggaran",
+      "sample": "Guna anggaran contoh"
+    },
+    "estimate": {
+      "photoAlt": "Foto anggaran anda",
+      "days": "{days, plural, one {# hari} other {# hari}}",
+      "rooms": "Jenis bilik dalam anggaran",
+      "check": "Adakah ini betul?",
+      "retake": "Ambil semula",
+      "lines": "Apa yang ada dalam anggaran",
+      "quotedFor": "Seperti yang disebut untuk {room}",
+      "total": "Jumlah anggaran",
+      "mark": {
+        "nonPayable": "Tidak dibayar",
+        "aboveLimit": "Melebihi had bilik",
+        "ratio": "Dikurangkan mengikut bilik",
+        "icu": "ICU: tidak pernah dikurangkan",
+        "covered": "Dilindungi"
+      },
+      "sample": "Contoh"
+    },
+    "answers": "Jawapan",
+    "compareRooms": "Bandingkan bilik",
+    "why": "Mengapa angka ini?",
+    "share": "Hantar kepada keluarga",
+    "copied": "Disalin. Tampal dalam WhatsApp.",
+    "endAndSummary": "Tamat dan lihat ringkasan",
+    "suggestions": "Soalan yang dicadangkan",
+    "suggest": {
+      "room": "Bilik mana yang patut kami ambil?",
+      "card": "Kad polisi mana yang patut saya beri dahulu?"
+    },
+    "questionLabel": "Soalan anda",
+    "questionPlaceholder": "Taip soalan anda",
+    "send": "Hantar",
+    "askTitle": "Soalan lazim",
+    "captureUnreadable": "Format foto itu tidak dapat dibaca di sini. Foto HEIC iPhone memerlukan kamera ditetapkan kepada 'Most Compatible', atau hantar tangkapan skrin foto itu. Kemudian cuba lagi.",
+    "captureTooBig": "Foto itu terlalu besar untuk dihantar. Ambil semula pada saiz biasa, atau hantar tangkapan skrin.",
+    "estimateUnclear": "Saya tidak dapat menggunakan ini sebagai anggaran. {note}",
+    "packageRead": "Saya sudah membaca harga pakej {hospital}: {rooms, plural, one {# pakej} other {# pakej}}. Sekarang tanya saya yang mana patut diambil.",
+    "scene": {
+      "label": "Babak demo",
+      "hospital": "Suresh · angioplasti",
+      "maternity": "Priya · bersalin",
+      "singapore": "Ah Kow · Singapura"
+    },
+    "admitted": "Dimasukkan",
+    "controls": "Kawalan kaunter pantas",
+    "memberChip": "{name} ({relation}, {age})",
+    "sendPrompts": "Hantar ini kepada keluarga di WhatsApp",
+    "result": {
+      "title": "Keputusan Kavach",
+      "save": "Jimat <amount></amount>",
+      "noSaving": "Setiap bilik sama kosnya kepada keluarga",
+      "reason": "{room} paling murah untuk keluarga selepas peraturan polisi digunakan.",
+      "reasonSame": "Minta {room}; polisi melayan setiap bilik dengan sama.",
+      "ask": "Minta {room}",
+      "perDay": "sehari",
+      "recommendedChip": "Cadangan Kavach",
+      "costsMoreChip": "Kos lebih tinggi",
+      "familyPays": "Keluarga bayar"
+    },
+    "askDesk": {
+      "title": "Tanya kaunter kemasukan sekarang",
+      "intro": "Bacakan ini di kaunter, atau salin.",
+      "ask": "Tanya kaunter",
+      "say": "Apa kata Kavach"
+    },
+    "rules": {
+      "title": "Peraturan polisi yang digunakan",
+      "count": "{count, plural, one {# peraturan} other {# peraturan}}",
+      "details": "Lihat kiraan setiap peraturan"
+    },
+    "textNote": {
+      "title": "Mod teks",
+      "body": "Taip soalan anda, atau ketik Bercakap dengan Kavach untuk bercakap."
+    }
+  },
+  "summary": {
+    "title": "Ringkasan sesi",
+    "heading": "Apa yang Kavach nasihatkan untuk {name}",
+    "otherLanguage": "Baca dalam bahasa lain",
+    "empty": "Tiada jawapan diberikan dalam sesi ini.",
+    "saved": "Disimpan ke garis masa keluarga",
+    "cards": "Kad jawapan",
+    "claimHint": "Jika tuntutan dikurangkan kemudian,",
+    "claimLink": "muat naik surat penyelesaian di sini.",
+    "share": "Hantar ringkasan kepada keluarga",
+    "copied": "Disalin. Tampal dalam WhatsApp.",
+    "newSession": "Mula semula",
+    "home": "Kembali ke laman utama"
+  }
+}

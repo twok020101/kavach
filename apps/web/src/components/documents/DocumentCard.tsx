@@ -8,6 +8,7 @@ import { AgentSteps } from '../kavach/agent-steps';
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
 import { Card } from '../ui/card';
+import { useMoney } from '@/lib/country';
 import { useConfirmDocument } from './api';
 import { ClauseChip } from './ClauseSheet';
 import { TermList } from './TermList';
@@ -24,6 +25,7 @@ export function DocumentCard({
   household: Household;
 }) {
   const t = useTranslations('documents');
+  const money = useMoney();
   const confirm = useConfirmDocument(household.id);
   const extraction = document.extraction;
   const policy = extraction?.policy;
@@ -70,7 +72,7 @@ export function DocumentCard({
             </p>
           </div>
           <h4 className="text-xs font-semibold tracking-wide text-muted uppercase">{t('check')}</h4>
-          <TermList terms={keyTerms(policy, t)} householdId={household.id} />
+          <TermList terms={keyTerms(policy, t, money)} householdId={household.id} />
         </div>
       )}
 

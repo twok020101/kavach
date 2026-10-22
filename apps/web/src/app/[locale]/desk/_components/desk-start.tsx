@@ -12,15 +12,20 @@ import { Button, buttonClasses } from '@/components/ui/button';
 import { cn } from '@/components/ui/cn';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Link, useRouter } from '@/i18n/navigation';
-import { deskClient } from '@/lib/desk-client';
+import { routing } from '@/i18n/routing';
+import { deskClient, type DemoScene } from '@/lib/desk-client';
 import { CloseIcon, DeskHeader } from './desk-header';
 
-export type DeskScene = 'maternity';
+export type DeskScene = Exclude<DemoScene, 'hospital'>;
 
-/** The demo scenes: Suresh's angioplasty in Hindi (HX-1), or Priya's delivery in English (MX-1). */
-const SCENES: Record<DeskScene | 'hospital', { patient: string; language: Locale }> = {
+/**
+ * The demo scenes: Suresh's angioplasty in Hindi (HX-1), Priya's delivery in English (MX-1),
+ * or Ah Kow's angioplasty in Singapore, in Mandarin (SX-1).
+ */
+const SCENES: Record<DemoScene, { patient: string; language: Locale }> = {
   hospital: { patient: 'mem_suresh', language: 'hi' },
   maternity: { patient: 'mem_priya', language: 'en' },
+  singapore: { patient: 'mem_ahkow', language: 'zh' },
 };
 
 /**
@@ -35,7 +40,9 @@ export function DeskStart({ demo, scene }: { demo: boolean; scene?: DeskScene })
   const router = useRouter();
   const preset = SCENES[scene ?? 'hospital'];
   const [patientId, setPatientId] = useState<string | null>(demo ? preset.patient : null);
-  const [language, setLanguage] = useState<Locale>(demo ? preset.language : locale);
+  // The Singapore scene answers in Malay when the page is in Malay, else Mandarin.
+  const presetLanguage: Locale = scene === 'singapore' && locale === 'ms' ? 'ms' : preset.language;
+  const [language, setLanguage] = useState<Locale>(demo ? presetLanguage : locale);
   /** The demo starts by itself; the picker shows for a real family, or if the demo start failed. */
   const [manual, setManual] = useState(!demo);
   const [phase, setPhase] = useState(0);
@@ -70,8 +77,8 @@ export function DeskStart({ demo, scene }: { demo: boolean; scene?: DeskScene })
   useEffect(() => {
     if (!demo || autoStarted.current) return;
     autoStarted.current = true;
-    start.mutate({ patientMemberId: preset.patient, language: preset.language });
-  }, [demo, preset, start]);
+    start.mutate({ patientMemberId: preset.patient, language: presetLanguage });
+  }, [demo, preset, presetLanguage, start]);
 
   const header = (
     <DeskHeader
@@ -104,7 +111,7 @@ export function DeskStart({ demo, scene }: { demo: boolean; scene?: DeskScene })
             <div className="-mt-3 flex flex-col items-center gap-1">
               <span className="label text-primary-hover">{t('prepare.eyebrow')}</span>
               <p id="prepare-title" className="text-base text-muted">
-                {scene === 'maternity' ? t('prepare.maternity') : t('prepare.hospital')}
+                {t(`prepare.${scene ?? 'hospital'}`)}
               </p>
             </div>
             <div className="desk-prepare-bar w-full max-w-xs" aria-hidden />
@@ -144,7 +151,11 @@ export function DeskStart({ demo, scene }: { demo: boolean; scene?: DeskScene })
           {demo && (
             <p className="panel flex gap-2 text-base">
               <Icon name="info" className="mt-0.5 text-xl" />
-              {scene === 'maternity' ? t('demoNoteMaternity') : t('demoNote')}
+              {scene === 'maternity'
+                ? t('demoNoteMaternity')
+                : scene === 'singapore'
+                  ? t('demoNoteSingapore')
+                  : t('demoNote')}
             </p>
           )}
 
@@ -190,8 +201,8 @@ export function DeskStart({ demo, scene }: { demo: boolean; scene?: DeskScene })
 
           <fieldset>
             <legend className="mb-3 font-display text-2xl font-bold">{t('language')}</legend>
-            <div className="grid grid-cols-2 gap-3">
-              {(['hi', 'en'] as const).map((l) => {
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+              {routing.locales.map((l) => {
                 const on = language === l;
                 return (
                   <label

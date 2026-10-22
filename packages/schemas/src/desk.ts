@@ -33,6 +33,8 @@ export const DeskInputs = z.object({
   utteranceText: z.string().optional(),
   roomOptions: z.array(RoomCategory).optional(),
   billingTypeAnswer: BillingType.optional(),
+  /** Singapore: whether the specialist is on the insurer's panel with pre-authorisation (rider cap). */
+  panelAnswer: z.enum(['panel', 'nonPanel']).optional(),
   /** True when the session already had an answer: the text is a follow-up question. */
   followUp: z.boolean().optional(),
 });
@@ -62,6 +64,8 @@ export const DeskSession = z.object({
   lastAnswer: DeskAnswer.optional(),
   /** The family's answer to "are charges the same in every room?", used until a new estimate arrives. */
   billingTypeAnswer: BillingType.optional(),
+  /** Singapore: the desk's answer to the panel and pre-authorisation question (rider cap). */
+  panelAnswer: z.enum(['panel', 'nonPanel']).optional(),
   /** The last question typed or spoken; once set, later questions are answered as follow-ups. */
   lastQuestion: z.string().optional(),
   /** Blob paths of the estimate photos read in this session. */
@@ -129,6 +133,7 @@ export const DeskTurnBody = z.object({
   text: z.string().max(2000).optional(),
   language: Locale.optional(),
   billingTypeAnswer: BillingType.optional(),
+  panelAnswer: z.enum(['panel', 'nonPanel']).optional(),
   estimate: HospitalEstimate.optional(),
 });
 export type DeskTurnBody = z.infer<typeof DeskTurnBody>;

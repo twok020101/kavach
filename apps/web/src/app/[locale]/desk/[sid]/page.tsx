@@ -13,7 +13,7 @@ export default async function DeskSessionPage({
     <DeskSessionScreen
       sid={sid}
       demo={demo === '1'}
-      scene={scene === 'maternity' ? 'maternity' : undefined}
+      scene={scene === 'maternity' || scene === 'singapore' ? scene : undefined}
     />
   );
 }

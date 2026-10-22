@@ -1,0 +1,212 @@
+{
+  "headline": "在每一个保险时刻，陪在您家人身边的 AI。",
+  "subhead": "Kavach 记住您全家的保障，并在关键时刻行动：生活有变化时、在医院柜台时、以及索赔出问题时。",
+  "tryHospital": "试试医院场景",
+  "previewLabel": "回答示例",
+  "previewCaption": "Kavach 在医院柜台对家人说的话",
+  "momentsTitle": "三个关键时刻",
+  "moments": {
+    "change": {
+      "title": "生活有变化时",
+      "stat": "父母的保障得以保留，没有失去",
+      "when": "入院之前"
+    },
+    "hospital": {
+      "title": "在医院柜台",
+      "stat": "少付 <amount></amount>",
+      "when": "办理入院时"
+    },
+    "claim": {
+      "title": "索赔出问题时",
+      "body": "发来理赔结算信。Kavach 把每一项扣减对照您的保单核查，并拟好申诉信。",
+      "when": "出院之后"
+    }
+  },
+  "whatsapp": {
+    "title": "没有应用？在 WhatsApp 上也能得到同样的答案",
+    "body": "发一张估价单照片或一段印地语语音。Kavach 会用语音和一张卡片回复。",
+    "qrAlt": "二维码：打开 WhatsApp 并带上加入 Kavach 测试号码的消息",
+    "openOnPhone": "在这部手机上？打开 WhatsApp",
+    "notConfigured": "WhatsApp 测试号码尚未设置。",
+    "step1": "用手机相机扫描二维码。WhatsApp 会打开并带上一条加入消息。",
+    "step2": "发送那条消息，加入 Kavach 的测试号码。",
+    "step3": "发送 RAHUL 即可在手机上收到家庭提醒，然后发一张估价单照片或一段语音。",
+    "note": "这使用的是 WhatsApp 测试号码。加入有效期为 3 天；之后请重新扫描。",
+    "joinText": "或者在 WhatsApp 上把“{join}”发送到 {number}。"
+  },
+  "trust": {
+    "title": "每个数字都有依据",
+    "body": "卢比金额都来自经过测试的规则，绝不是猜测。点“为什么是这些数字？”，查看每个数字背后的规则和条款。"
+  },
+  "footer": {
+    "disclaimer": "仅为指引，不是保单推荐。请向您的保险公司或 TPA 柜台确认。",
+    "sample": "本演示中的一切都是虚构的样本数据。",
+    "built": "基于 Gemini 和 Google Cloud 构建。"
+  },
+  "headlineMark": "每一个保险时刻",
+  "eyebrow": "印地语和英语 · 语音优先 · 为全家而建",
+  "tryFamily": "用 Sharma 一家试试",
+  "statsLabel": "Kavach 在样本家庭中的发现",
+  "stats": {
+    "desk": "少付的金额，只因在医院柜台要对了病房",
+    "claim": "在一封理赔结算信中发现可申诉的金额",
+    "cited": "的卢比金额来自经过测试的规则，每个都附有条款",
+    "wordings": "公开保单条款逐页阅读并测试"
+  },
+  "titlePlain": "您全家的保险，",
+  "titleEm": "在关键时刻讲清楚。",
+  "howItWorks": "它是如何运作的",
+  "trustLine": "为 Google Cloud AI Builder Cup 2026 而建 · 演示数据标有 SAMPLE · 未经同意不保存任何内容 · 绝不涉及付款。",
+  "tryMaternity": "试试生育场景",
+  "tryMaternitySub": "Priya 的分娩与生育保障上限，用英语。",
+  "kicker": "深呼吸。保单已经读好了。",
+  "boot": {
+    "policies": "您家的保单：已读取，附页码",
+    "rules": "医院和生育规则：已理解",
+    "beside": "陪在您身边，用印地语或英语",
+    "tagline": "在每一个保险时刻，陪在您家人身边。",
+    "skip": "点击任意处继续"
+  },
+  "story": {
+    "caption": "医院时刻是这样进行的",
+    "saving": "少付",
+    "pause": "暂停故事",
+    "play": "播放故事"
+  },
+  "closing": {
+    "title": "面对医院柜台，再也不会毫无准备。",
+    "body": "在样本家庭上试试这两个场景，或者花几分钟设置您自己的家庭。Kavach 不卖任何东西，也不联系任何保险公司。",
+    "maternity": "Priya 的分娩",
+    "own": "设置我的家庭"
+  },
+  "momentKicker": "时刻 {n} · {when}",
+  "sampleBadge": "示例",
+  "decision": {
+    "kicker": "入院柜台前的那几分钟",
+    "title": "在 {hospital} 的入院决定",
+    "optionA": "方案 A · 院方提供的病房",
+    "optionB": "方案 B · Kavach 建议的病房",
+    "perDay": "每天 {amount}",
+    "familyPays": "家人需支付",
+    "costsMore": "费用更高",
+    "suggested": "Kavach 建议",
+    "bannerTitle": "要求{room}：少付 {amount}",
+    "bannerLabel": "少付",
+    "sayTitle": "在柜台怎么说",
+    "firstCardTitle": "先出示哪张卡",
+    "rulesNote": "每个数字都来自保单的书面条款。柜台场景会显示相关规则及其所在页面。"
+  },
+  "chat": {
+    "name": "Kavach",
+    "voice": "语音留言",
+    "saving": "少付",
+    "sample": "示例对话"
+  },
+  "whatsappSection": {
+    "kicker": "无需安装应用",
+    "f1Title": "用您的语言发语音留言",
+    "f1Body": "直接开口问。Kavach 会用语音留言和一张简短的卡片回答。",
+    "f2Title": "家人也能听到",
+    "f2Body": "当父母在柜台询问时，缴付保费的人也会收到同样的答复。",
+    "f3Title": "试试测试号码",
+    "f3Body": "扫描二维码，加入 Kavach 的 WhatsApp 测试号码。"
+  },
+  "ex": {
+    "IN": {
+      "hospital": "City Heart Hospital",
+      "familyName": "Sharma 一家",
+      "lead": "Kavach 记住家里的每一份保单，并在生活有变化时、在医院柜台时、以及索赔金额偏低时告诉您该怎么做。支持印地语或英语。每一笔卢比金额都来自书面保单条款，并附有页码。",
+      "tryHospitalSub": "样本估价单，印地语或英语，不到一分钟。无需登录。",
+      "momentsIntro": "Kavach 只需了解一次家庭情况，大约两分钟。之后，它会在印度家庭容易损失金钱的三个时刻采取行动。",
+      "closingHospital": "Suresh 在医院柜台",
+      "otherTitle": "试试新加坡场景",
+      "otherSub": "Ah Kow 的血管成形术：Class B1 Shield 计划，院方却提供 Class A 病房，用华语。",
+      "family": {
+        "title": "Kavach 已经认识的示例家庭",
+        "caption": "五个人，四份保单，一目了然。Kavach 只用了一次，大约两分钟，就记住了。",
+        "relations": {
+          "self": "Rahul，34岁 · 缴付保费",
+          "spouse": "Priya，32岁",
+          "child": "Anaya，5岁",
+          "father": "Suresh，62岁 · 患者",
+          "mother": "Kamala，58岁 · 在柜台打开 Kavach"
+        }
+      },
+      "story": {
+        "step1Title": "Kamala 点按“在医院”",
+        "step1Body": "用印地语，在她自己的手机上。Kavach 已经了解 Suresh 的两份保单。",
+        "step2Title": "她把估价单给摄像头看",
+        "step2Body": "Kavach 读取病房收费表：豪华间每天 {quoted}，标准间 {lower}。",
+        "step3Title": "“要求{lower}的病房。”",
+        "step3Body": "住进较贵的病房，只有与房价挂钩的费用会被削减。Kavach 会告诉您先给哪张卡，以及向柜台提什么要求。"
+      },
+      "decision": {
+        "patient": "Suresh，62岁 · 预约的血管成形术 · 家里有两份保单",
+        "roomQuoted": "豪华间",
+        "roomLower": "标准间",
+        "roomLowerShort": "标准间",
+        "why": "Suresh 的保单对病房费用设有上限。超出上限后，保险公司也会按同样比例削减外科医生、手术室及其他与房价挂钩的费用。",
+        "script": "“请为我父亲安排标准间，每天 {amount} 或以下。”",
+        "firstCard": "先出示父母的保单卡；其余部分由另一份保单承担。"
+      },
+      "moments": {
+        "change": "“12月1日加入一家初创公司。”Kavach 发现您父母的保障将于11月30日终止，拟好保留保障的信，并在 WhatsApp 上提醒您。",
+        "hospital": "语音和摄像头，用印地语。出示估价单，Kavach 会告诉您该给哪张保单卡、该要哪种病房。",
+        "claimStat": "发现 <amount></amount> 可申诉"
+      },
+      "whatsappBody": "发一张估价单照片或一段印地语语音。Kavach 会用语音留言和一张卡片回复。",
+      "chat": {
+        "ask": "柜台提供豪华间，每天 {quoted}。我们可以接受吗？",
+        "reply": "请要求标准间，每天 {lower}。住豪华间，保单也会削减外科医生和手术室的费用。"
+      }
+    },
+    "SG": {
+      "hospital": "Sample General Hospital",
+      "familyName": "新加坡 Tan 一家",
+      "lead": "Kavach 记住家里的每一份保单，并在生活有变化时、在医院柜台时、以及索赔金额偏低时告诉您该怎么做。支持华语、马来语或英语。每一笔新元金额都来自书面保单条款，并附有页码。",
+      "tryHospitalSub": "样本估价单，华语、马来语或英语，不到一分钟。无需登录。",
+      "momentsIntro": "Kavach 只需了解一次家庭情况，大约两分钟。之后，它会在家庭容易损失金钱的三个时刻采取行动。",
+      "closingHospital": "Ah Kow 在医院柜台",
+      "otherTitle": "试试印度场景",
+      "otherSub": "Suresh 在 City Heart Hospital 的血管成形术，用印地语。",
+      "family": {
+        "title": "Kavach 已经认识的示例家庭",
+        "caption": "五个人，MediShield Life 和一份 Shield 计划，一目了然。Kavach 只用了一次，大约两分钟，就记住了。",
+        "relations": {
+          "self": "Wei-Ming，38岁 · 缴付保费",
+          "spouse": "Hui-Ling，36岁",
+          "child": "Jia-En，6岁",
+          "father": "Ah Kow，68岁 · 患者",
+          "mother": "Siew-Hong，64岁"
+        }
+      },
+      "story": {
+        "step1Title": "全家点按“在医院”",
+        "step1Body": "用华语，在他们自己的手机上。Kavach 已经了解 Ah Kow 的 MediShield Life 和他的 Shield 计划。",
+        "step2Title": "他们把估价单给摄像头看",
+        "step2Body": "Kavach 读取病房收费：Class A 每天 {quoted}，Class B1 {lower}。",
+        "step3Title": "“要求 Class B1 病房。”",
+        "step3Body": "他的 Shield 计划是按 Class B1 购买的。住 Class A，计划只支付账单的一部分。Kavach 会告诉您先给哪张卡，以及向柜台提什么要求。"
+      },
+      "decision": {
+        "patient": "Ah Kow，68岁 · 预约的血管成形术 · 按 Class B1 购买的 Shield 计划",
+        "roomQuoted": "Class A 病房",
+        "roomLower": "Class B1 病房",
+        "roomLowerShort": "Class B1 病房",
+        "why": "Ah Kow 的 Shield 计划是按 Class B1 病房购买的。住 Class A 病房，计划只支付账单的一部分，所以同样的治疗，家人要多付很多。",
+        "script": "“请安排我父亲住 Class B1 病房。”",
+        "firstCard": "先出示 Shield 计划卡；MediShield Life 包含在其中。"
+      },
+      "moments": {
+        "change": "“下个月换工作。”Kavach 查看哪些保障会随工作终止、家人的 Shield 计划还能支付什么，并在 WhatsApp 上提醒您。",
+        "hospital": "语音和摄像头，用华语或马来语。出示估价单，Kavach 会告诉您该给哪张卡、该要哪种病房。",
+        "claimStat": "每一项扣减都已对照计划核查"
+      },
+      "whatsappBody": "发一张估价单照片，或一段华语或马来语语音。Kavach 会用语音留言和一张卡片回复。",
+      "chat": {
+        "ask": "医院提供 Class A 病房，每天 {quoted}。我们要接受吗？",
+        "reply": "请要求 Class B1 病房，每天 {lower}。住 Class A，他的 Shield 计划只支付账单的一部分。"
+      }
+    }
+  }
+}

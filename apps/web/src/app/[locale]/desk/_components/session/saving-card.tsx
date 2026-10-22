@@ -1,8 +1,8 @@
 'use client';
 
-import { formatInr } from '@kavach/engine';
 import type { BranchResult, RoomOptionResult } from '@kavach/schemas';
 import { useTranslations } from 'next-intl';
+import { useMoney } from '@/lib/country';
 import { Amount } from '@/components/kavach/amount';
 import { Icon } from '@/components/kavach/icon';
 import { RoomCompare } from '@/components/kavach/room-compare';
@@ -28,6 +28,7 @@ export function SavingCard({
   onOpt: (room: string) => void;
 }) {
   const t = useTranslations('desk.session');
+  const money = useMoney();
   const { pick, costliest } = savingPair(result);
   if (!pick || !costliest) return null;
   const none = result.saving <= 0 || pick.roomCategoryId === costliest.roomCategoryId;
@@ -75,7 +76,7 @@ export function SavingCard({
             <p className="mt-1 text-sm text-muted">
               {t('saving.sub', {
                 room: pick.label,
-                rent: formatInr(pick.rentPerDay),
+                rent: money(pick.rentPerDay),
                 costly: costliest.label,
               })}
             </p>
@@ -111,6 +112,7 @@ export function SavingCard({
 
 function RoomBox({ option, tone }: { option: RoomOptionResult; tone: 'costly' | 'pick' }) {
   const t = useTranslations('desk.session');
+  const money = useMoney();
   const pick = tone === 'pick';
   const rows: { label: string; amount: number; minus?: boolean }[] = [
     { label: t('saving.rows.bill'), amount: option.bill },
@@ -146,7 +148,7 @@ function RoomBox({ option, tone }: { option: RoomOptionResult; tone: 'costly' | 
         </span>
         <span className="text-sm font-bold leading-snug text-text">{option.label}</span>
         <span className="text-xs text-muted">
-          {t('saving.perDay', { rent: formatInr(option.rentPerDay) })}
+          {t('saving.perDay', { rent: money(option.rentPerDay) })}
         </span>
       </div>
       <dl className="flex flex-col gap-1 text-xs">

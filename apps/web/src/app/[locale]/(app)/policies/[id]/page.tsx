@@ -1,6 +1,5 @@
 'use client';
 
-import { formatInr } from '@kavach/engine';
 import { ArrowLeft, ExternalLink } from 'lucide-react';
 import { useFormatter, useTranslations } from 'next-intl';
 import { useParams } from 'next/navigation';
@@ -11,11 +10,13 @@ import { keyTerms, memberNames } from '@/components/documents/terms';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Link } from '@/i18n/navigation';
+import { useMoney } from '@/lib/country';
 import { useHousehold } from '@/lib/household';
 
 /** S15 Policy detail: the key terms, each with the clause it comes from. */
 export default function PolicyPage() {
   const t = useTranslations('documents');
+  const money = useMoney();
   const format = useFormatter();
   const { id } = useParams<{ id: string }>();
   const { data: household, error } = useHousehold();
@@ -40,8 +41,8 @@ export default function PolicyPage() {
   }
 
   const terms = isHealth(policy)
-    ? keyTerms(policy, t)
-    : keyTerms(policy, t).filter((x) => x.key === 'sumInsured');
+    ? keyTerms(policy, t, money)
+    : keyTerms(policy, t, money).filter((x) => x.key === 'sumInsured');
   const documentId = policy.documentIds?.at(-1);
   const date = format.dateTime(new Date(policy.endDate), { dateStyle: 'medium' });
 
@@ -56,12 +57,12 @@ export default function PolicyPage() {
         </p>
         <p className="amount">
           {t('policy.covers', { names: memberNames(household, policy.coveredMemberIds) })} ·{' '}
-          {t('policy.sumInsured', { amount: formatInr(policy.sumInsured) })}
+          {t('policy.sumInsured', { amount: money(policy.sumInsured) })}
         </p>
         <p className="amount text-sm text-muted">
           {t('policy.validTill', { date })}
           {policy.premiumAnnual &&
-            ` · ${t('policy.premium', { amount: formatInr(policy.premiumAnnual) })}`}
+            ` · ${t('policy.premium', { amount: money(policy.premiumAnnual) })}`}
         </p>
       </header>
 

@@ -5,9 +5,9 @@ import { Link, usePathname } from '@/i18n/navigation';
 import { routing } from '@/i18n/routing';
 import { cn } from '../ui/cn';
 
-const labels: Record<string, string> = { en: 'EN', hi: 'हिं' };
+const labels: Record<string, string> = { en: 'EN', hi: 'हिं', ta: 'த', zh: '中', ms: 'BM' };
 
-/** EN | हिं segmented control. Keeps the current page (and `query`, if given). */
+/** EN | हिं | த | 中 | BM segmented control. Keeps the current page (and `query`, if given). */
 export function LanguageSwitch({
   query,
   compact = false,

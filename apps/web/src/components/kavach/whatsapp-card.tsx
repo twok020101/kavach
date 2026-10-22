@@ -18,7 +18,7 @@ function sandboxLink() {
 }
 
 /** The WhatsApp door on the landing page: a QR code that joins the Twilio sandbox. */
-export async function WhatsAppCard() {
+export async function WhatsAppCard({ bare = false }: { bare?: boolean } = {}) {
   const t = await getTranslations('landing.whatsapp');
   const sandbox = sandboxJoin();
   const link = sandboxLink();
@@ -32,16 +32,24 @@ export async function WhatsAppCard() {
     : null;
 
   return (
-    <Card as="section" aria-labelledby="whatsapp-title" className="flex flex-col gap-4">
-      <div className="flex items-center gap-3">
-        <span className="flex size-12 items-center justify-center rounded-md bg-safe-bg text-safe">
-          <MessageCircle aria-hidden className="size-6" />
-        </span>
-        <h2 id="whatsapp-title" className="font-display text-2xl font-bold">
-          {t('title')}
-        </h2>
-      </div>
-      <p className="text-lg">{t('body')}</p>
+    <Card
+      as="section"
+      aria-labelledby={bare ? undefined : 'whatsapp-title'}
+      aria-label={bare ? t('title') : undefined}
+      className="flex flex-col gap-4"
+    >
+      {/* `bare`: the landing section already carries the title and the line under it. */}
+      {!bare && (
+        <div className="flex items-center gap-3">
+          <span className="flex size-12 items-center justify-center rounded-md bg-safe-bg text-safe">
+            <MessageCircle aria-hidden className="size-6" />
+          </span>
+          <h2 id="whatsapp-title" className="font-display text-2xl font-bold">
+            {t('title')}
+          </h2>
+        </div>
+      )}
+      {!bare && <p className="text-lg">{t('body')}</p>}
 
       <div className="flex flex-col items-start gap-4 sm:flex-row">
         {svg && link ? (

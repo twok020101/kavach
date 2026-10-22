@@ -1,0 +1,97 @@
+{
+  "loading": "Sedang memuatkan",
+  "error": "Ada masalah. Sila cuba lagi.",
+  "retry": "Cuba lagi",
+  "back": "Tuntutan",
+  "list": {
+    "title": "Tuntutan",
+    "intro": "Dapat surat penyelesaian dengan potongan? Kavach menyemak setiap potongan dengan polisi anda dan peraturan IRDAI.",
+    "drop": "Muat naik surat penyelesaian daripada syarikat insurans",
+    "choose": "Pilih PDF atau foto",
+    "photo": "Ambil foto",
+    "sample": "Guna surat contoh",
+    "empty": "Belum ada surat tuntutan.",
+    "failed": "Surat ini tidak dapat dibaca: {reason}",
+    "recoverable": "Sehingga <amount></amount> mungkin boleh dituntut semula",
+    "nothing": "Setiap potongan nampak sah",
+    "claimNo": "Tuntutan {number}",
+    "status": {
+      "reading": "Sedang dibaca",
+      "assessed": "Disemak",
+      "appeal_drafted": "Rayuan disediakan",
+      "appeal_sent": "Rayuan dihantar",
+      "resolved": "Selesai",
+      "failed": "Tidak dibaca"
+    },
+    "sampleMaternity": "Guna surat contoh bersalin"
+  },
+  "steps": {
+    "read": "Membaca surat penyelesaian",
+    "match": "Mencari pesakit dan polisi",
+    "check": "Menyemak setiap potongan dengan polisi",
+    "cite": "Mengaitkan klausa polisi"
+  },
+  "check": {
+    "billed": "Dibilkan",
+    "paid": "Dibayar",
+    "recoverable": "Sehingga <amount></amount> mungkin boleh dituntut semula",
+    "nothing": "Setiap potongan dalam surat ini nampak sah. Tiada apa yang perlu dirayu.",
+    "payout": "Jika rayuan berjaya, syarikat insurans membayar <amount></amount> kesemuanya.",
+    "fromLetter": "Daripada surat",
+    "room": "Bilik {amount} sehari",
+    "noRoom": "Sewa bilik tidak dicetak",
+    "icu": "Dirawat di ICU",
+    "noIcu": "Tidak dirawat di ICU",
+    "change": "Tukar",
+    "roomRent": "Sewa bilik sehari",
+    "icuLabel": "Sebahagian masa dirawat di ICU",
+    "save": "Semak semula",
+    "cancel": "Batal",
+    "deductions": "Potongan",
+    "verdict": {
+      "challengeable": "Boleh dicabar",
+      "possibly": "Mungkin",
+      "valid": "Sah"
+    },
+    "back": "{amount} dikembalikan selepas insurans bersama",
+    "copay": "Insurans bersama {percent}%",
+    "copayValid": "{percent}% daripada bil selepas potongan, seperti yang dinyatakan dalam polisi",
+    "copayWrong": "Sepatutnya {expected}; lihat baris tambahan di atas",
+    "why": "Mengapa keputusan ini",
+    "draft": "Sediakan surat rayuan",
+    "review": "Semak surat rayuan",
+    "seeLetter": "Lihat surat penyelesaian",
+    "notAdvice": "Kavach menyemak surat ini dengan polisi anda dan peraturan IRDAI. Syarikat insurans yang memutuskan rayuan."
+  },
+  "appeal": {
+    "title": "Surat rayuan",
+    "to": "Kepada Pegawai Penyelesaian Aduan, {insurer}",
+    "verified": "Disemak: setiap jumlah sepadan dengan enjin dan setiap petikan sepadan dengan polisi anda",
+    "failed": "Betulkan perkara ini sebelum PDF boleh dibuat",
+    "checks": "{count} semakan",
+    "kinds": {
+      "quote": "Petikan",
+      "amount": "Jumlah",
+      "rule": "Peraturan",
+      "clause": "Klausa",
+      "total": "Jumlah dituntut"
+    },
+    "edit": "Sunting",
+    "save": "Simpan dan semak semula",
+    "cancel": "Batal",
+    "edited": "Disunting oleh anda",
+    "pdf": "Muat turun PDF",
+    "copy": "Salin teks",
+    "copied": "Disalin",
+    "email": "E-mel",
+    "blocked": "PDF disekat sehingga setiap semakan lulus.",
+    "next": "Jika mereka tidak bersetuju",
+    "ladder": {
+      "one": "Pegawai Penyelesaian Aduan syarikat insurans (sekarang)",
+      "two": "Portal Bima Bharosa, jika tiada jawapan dalam tempoh yang diberikan dalam surat syarikat insurans",
+      "three": "Ombudsman Insurans, dalam masa setahun selepas jawapan syarikat insurans"
+    },
+    "neverSends": "Kavach tidak pernah menghantar surat bagi pihak anda. Anda yang menghantarnya, melalui e-mel sendiri atau pos.",
+    "notFound": "Belum ada rayuan disediakan untuk tuntutan ini."
+  }
+}

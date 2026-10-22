@@ -1,6 +1,5 @@
 'use client';
 
-import { formatInr } from '@kavach/engine';
 import type { Household, Member, Policy } from '@kavach/schemas';
 import { clsx } from 'clsx';
 import { useTranslations } from 'next-intl';
@@ -11,6 +10,7 @@ import { Icon } from '@/components/kavach/icon';
 import { MemberAvatar } from '@/components/kavach/member-avatar';
 import { cn } from '@/components/ui/cn';
 import { Link } from '@/i18n/navigation';
+import { useMoney } from '@/lib/country';
 import { daysBetween, useDate } from './format';
 import type { Pin } from './date-scrubber';
 import { ScoreRing } from './score-ring';
@@ -21,7 +21,13 @@ import { ScoreRing } from './score-ring';
  * the next dates, what Kavach will say first if someone is admitted tonight, three things to do.
  */
 
-const HEALTH: Policy['kind'][] = ['group_health', 'retail_health', 'super_top_up'];
+const HEALTH: Policy['kind'][] = [
+  'group_health',
+  'retail_health',
+  'super_top_up',
+  'medishield_life',
+  'integrated_shield',
+];
 
 /** The white card the dashboard is built from: 16 px corners, hairline, resting shadow. */
 export const homeCard = 'rounded-lg border border-border bg-surface p-5 shadow-1 sm:p-6';
@@ -210,11 +216,12 @@ export function QuickActions({
   className?: string;
 }) {
   const t = useTranslations('plan.home.quick');
+  const tc = useTranslations('common');
   // The person who most needs her own login: the parent who will be at the desk rather than in
   // the bed (the younger Hindi-speaking parent, Kamala in the sample family), else any parent.
   const parents = household.members.filter((m) => m.relation === 'parent');
   const invitee =
-    [...parents].filter((m) => m.language === 'hi').sort((a, b) => a.age - b.age)[0] ?? parents[0];
+    [...parents].filter((m) => m.language !== 'en').sort((a, b) => a.age - b.age)[0] ?? parents[0];
   const items: {
     href: '/change' | '/claims' | '/settings/access';
     icon: string;
@@ -229,7 +236,7 @@ export function QuickActions({
       href: '/settings/access',
       icon: 'person_add',
       label: t('invite', { name: invitee.name.split(' ')[0] ?? invitee.name }),
-      hint: t('inviteHint'),
+      hint: t('inviteHint', { language: tc(`languages.${invitee?.language ?? 'en'}`) }),
     });
   }
   return (
@@ -345,6 +352,7 @@ function nick(p: Policy, household: Household, t: (k: string) => string) {
  */
 export function ReadyPanel({ household, asOf }: { household: Household; asOf: string }) {
   const t = useTranslations('plan.home.ready');
+  const money = useMoney();
   const people: Member[] = [
     ...household.members.filter((m) => m.relation === 'parent' || m.relation === 'parent_in_law'),
     ...household.members.filter((m) => m.relation === 'self'),
@@ -385,7 +393,7 @@ export function ReadyPanel({ household, asOf }: { household: Household; asOf: st
                     {limit ? (
                       <span className="text-on-surface-variant">
                         {' · '}
-                        {t('limit', { limit: formatInr(limit) })}
+                        {t('limit', { limit: money(limit) })}
                       </span>
                     ) : null}
                   </>

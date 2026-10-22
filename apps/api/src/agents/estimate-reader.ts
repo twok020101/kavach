@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
-import { formatInr } from '@kavach/engine';
+import { formatMoney, type Country } from '@kavach/engine';
 import { HospitalEstimate, type EstimateLine } from '@kavach/schemas';
 import type { z } from 'zod';
 import { generateStructured, models } from '../lib/gemini';
@@ -8,23 +8,30 @@ import { appRoot } from '../paths';
 
 const prompt = readFileSync(resolve(appRoot, 'src/agents/prompts/estimate-reader.md'), 'utf8');
 
+/** The market line appended to the prompt: the reader never converts, it reads the family's currency. */
+const MARKET: Record<Country, string> = {
+  IN: '## The family\n\nThe family is in India. Amounts are Indian rupees (₹). Room categories are hospital room types (General Ward, Twin Sharing, Deluxe…); leave `wardClass` out.',
+  SG: '## The family\n\nThe family is in Singapore. Amounts are Singapore dollars (S$). Room categories are ward classes (C, B2, B1, A) or a private hospital room; set `wardClass` on each.',
+};
+
 export type EstimateImage = { data: Buffer; mimeType: string };
 
 /**
  * Reads photos of a hospital estimate into a HospitalEstimate with the Pro model, then checks
  * the arithmetic in code. Anything that doesn't add up comes back with `needsConfirmation`.
  *
- * `fixture` picks the recorded reading used with FAKE_LLM=1.
+ * `fixture` picks the recorded reading used with FAKE_LLM=1; `country` tells the reader which
+ * market's currency and room conventions to expect.
  */
 export async function readEstimate(
   images: EstimateImage[],
-  { fixture = 'estimate-city-heart' }: { fixture?: string } = {},
+  { fixture = 'estimate-city-heart', country = 'IN' }: { fixture?: string; country?: Country } = {},
 ): Promise<HospitalEstimate> {
   if (images.length === 0) throw new Error('No estimate image');
   const reading = await generateStructured({
     model: models.pro,
     schema: HospitalEstimate,
-    systemInstruction: prompt,
+    systemInstruction: `${prompt}\n${MARKET[country]}\n`,
     contents: [
       {
         role: 'user',
@@ -39,7 +46,7 @@ export async function readEstimate(
     fixture,
     repair: repairReading,
   });
-  return checkEstimate(reading);
+  return checkEstimate(reading, country);
 }
 
 /**
@@ -100,7 +107,11 @@ function roundNumbers(value: unknown): unknown {
 }
 
 /** Deterministic checks on what the model read. Fixes only what is certain; flags the rest. */
-export function checkEstimate(reading: HospitalEstimate): HospitalEstimate {
+export function checkEstimate(
+  reading: HospitalEstimate,
+  country: Country = 'IN',
+): HospitalEstimate {
+  const money = (n: number) => formatMoney(n, country);
   const notes = [...reading.notes];
   let unsure = reading.needsConfirmation;
   const flag = (note: string) => {
@@ -137,7 +148,7 @@ export function checkEstimate(reading: HospitalEstimate): HospitalEstimate {
   const rooms = reading.roomCategories.filter((r) => !tariffOnly.includes(r));
   if (tariffOnly.length > 0) {
     notes.push(
-      `Tariff lists ${tariffOnly.map((r) => `${r.label} (${formatInr(r.rentPerDay)}/day)`).join(', ')} without estimated charges; ask the desk for an estimate in that room if needed.`,
+      `Tariff lists ${tariffOnly.map((r) => `${r.label} (${money(r.rentPerDay)}/day)`).join(', ')} without estimated charges; ask the desk for an estimate in that room if needed.`,
     );
   }
 
@@ -159,7 +170,7 @@ export function checkEstimate(reading: HospitalEstimate): HospitalEstimate {
     const days = roomLine?.days ?? reading.days;
     if (charged !== undefined && charged !== room.rentPerDay * days) {
       flag(
-        `${room.label}: room charges ${formatInr(charged)} are not ${formatInr(room.rentPerDay)} × ${days} days.`,
+        `${room.label}: room charges ${money(charged)} are not ${money(room.rentPerDay)} × ${days} days.`,
       );
     }
 
@@ -180,7 +191,7 @@ export function checkEstimate(reading: HospitalEstimate): HospitalEstimate {
     const printed = totals[room.id]!;
     if (sum !== printed) {
       flag(
-        `${room.label}: the lines add up to ${formatInr(sum)} but the printed total is ${formatInr(printed)}.`,
+        `${room.label}: the lines add up to ${money(sum)} but the printed total is ${money(printed)}.`,
       );
     }
   }

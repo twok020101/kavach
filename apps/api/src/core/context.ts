@@ -1,10 +1,16 @@
 import type { HospitalContext } from '@kavach/engine';
-import type { DeskContext, Household, Member, Policy } from '@kavach/schemas';
+import type { DeskContext, Household, Locale, Member, Policy } from '@kavach/schemas';
 
-const HEALTH_KINDS: readonly Policy['kind'][] = ['group_health', 'retail_health', 'super_top_up'];
+const HEALTH_KINDS: readonly Policy['kind'][] = [
+  'group_health',
+  'retail_health',
+  'super_top_up',
+  'medishield_life',
+  'integrated_shield',
+];
 
-/** How a policy is named: on screen in English or Hindi, or spoken (Hindi in Latin script for the voice). */
-export type NameStyle = 'en' | 'hi' | 'hiSpeech';
+/** How a policy is named: on screen in the screen's language, or spoken (Hindi in Latin script for the voice). */
+export type NameStyle = Locale | 'hiSpeech';
 
 export type DeskPatient = {
   member: Member;
@@ -48,22 +54,61 @@ export function policyNickname(policy: Policy, household: Household, style: Name
   const kind =
     policy.kind === 'super_top_up'
       ? 'topUp'
-      : forParents
-        ? 'parents'
-        : policy.source === 'employer'
-          ? 'company'
-          : undefined;
+      : policy.kind === 'medishield_life'
+        ? 'medishield'
+        : policy.kind === 'integrated_shield'
+          ? 'shield'
+          : forParents
+            ? 'parents'
+            : policy.source === 'employer'
+              ? 'company'
+              : undefined;
   if (!kind) return policy.productName;
   return NICKNAMES[style][kind];
 }
 
 const NICKNAMES = {
-  en: { parents: "parents' policy", company: 'company policy', topUp: 'top-up policy' },
-  hi: { parents: 'पेरेंट्स वाली पॉलिसी', company: 'कंपनी वाली पॉलिसी', topUp: 'टॉप-अप पॉलिसी' },
+  en: {
+    parents: "parents' policy",
+    company: 'company policy',
+    topUp: 'top-up policy',
+    medishield: 'MediShield Life',
+    shield: 'Shield plan',
+  },
+  hi: {
+    parents: 'पेरेंट्स वाली पॉलिसी',
+    company: 'कंपनी वाली पॉलिसी',
+    topUp: 'टॉप-अप पॉलिसी',
+    medishield: 'MediShield Life',
+    shield: 'Shield प्लान',
+  },
   hiSpeech: {
     parents: 'parents wali policy',
     company: 'company wali policy',
     topUp: 'top-up policy',
+    medishield: 'MediShield Life',
+    shield: 'Shield plan',
+  },
+  ta: {
+    parents: 'பெற்றோர் பாலிசி',
+    company: 'கம்பெனி பாலிசி',
+    topUp: 'டாப்-அப் பாலிசி',
+    medishield: 'MediShield Life',
+    shield: 'Shield பிளான்',
+  },
+  zh: {
+    parents: '父母的保单',
+    company: '公司保单',
+    topUp: '附加保单',
+    medishield: 'MediShield Life（终身健保）',
+    shield: 'Shield 综合健保计划',
+  },
+  ms: {
+    parents: 'polisi ibu bapa',
+    company: 'polisi syarikat',
+    topUp: 'polisi tambahan',
+    medishield: 'MediShield Life',
+    shield: 'pelan Shield',
   },
 } as const;
 

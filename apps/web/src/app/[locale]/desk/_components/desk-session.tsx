@@ -15,12 +15,14 @@ import { Disclosure } from '@/components/ui/disclosure';
 import { Spinner } from '@/components/ui/spinner';
 import { useRouter } from '@/i18n/navigation';
 import { ApiError } from '@/lib/api';
+import { CountryProvider } from '@/lib/country';
 import { deskClient } from '@/lib/desk-client';
 import { useDesktop } from '@/lib/use-media';
 import { useLiveDesk, type LiveFallback, type LiveStatus } from '@/lib/live/use-live-desk';
 import { AgentStepsTicker } from './agent-steps-ticker';
 import { CameraCapture } from './camera-capture';
 import { DeskHeader } from './desk-header';
+import type { DeskScene } from './desk-start';
 import { AdviceCompare } from './session/advice-compare';
 import { ControlsCard } from './session/controls-card';
 import { EstimatePanel } from './session/estimate-panel';
@@ -45,7 +47,7 @@ export function DeskSessionScreen({
 }: {
   sid: string;
   demo: boolean;
-  scene?: 'maternity';
+  scene?: DeskScene;
 }) {
   const t = useTranslations('desk.session');
   const tc = useTranslations('common');
@@ -209,7 +211,11 @@ export function DeskSessionScreen({
       deskClient.capture(
         sid,
         photo,
-        scene === 'maternity' ? 'estimate-lotus-maternity' : undefined,
+        scene === 'maternity'
+          ? 'estimate-lotus-maternity'
+          : scene === 'singapore'
+            ? 'estimate-sample-general-sg'
+            : undefined,
       ),
     onMutate: (photo) => {
       setPhotoUrl(photo === 'sample' ? sampleThumb(scene) : URL.createObjectURL(photo));
@@ -406,7 +412,7 @@ export function DeskSessionScreen({
     .join(' · ');
 
   return (
-    <>
+    <CountryProvider country={household.data?.country}>
       <DeskHeader
         title={firstName ? t('title', { name: firstName }) : t('titleLoading')}
         chip={
@@ -653,19 +659,21 @@ export function DeskSessionScreen({
           onSample={demo ? takeSample : undefined}
         />
       )}
-    </>
+    </CountryProvider>
   );
 }
 
 /** A small JPEG of the sample estimate photo, so the bill shows what was "captured". */
-const sampleThumb = (scene?: 'maternity') =>
+const sampleThumb = (scene?: DeskScene) =>
   scene === 'maternity'
     ? '/samples/lotus-maternity-estimate-thumb.jpg'
-    : '/samples/city-heart-estimate-thumb.jpg';
+    : scene === 'singapore'
+      ? '/samples/sample-general-sg-estimate-thumb.jpg'
+      : '/samples/city-heart-estimate-thumb.jpg';
 
-/** The first sentence of an answer, in English (.!?) or Hindi (।). */
+/** The first sentence of an answer: English and Malay (.!?), Hindi (।) or Chinese (。！？). */
 const firstSentence = (text: string) => {
-  const match = /^[^.!?।]*[.!?।]/.exec(text.trim());
+  const match = /^[^.!?।。！？]*[.!?।。！？]/.exec(text.trim());
   return match ? match[0] : text;
 };
 

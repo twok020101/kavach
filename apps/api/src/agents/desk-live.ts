@@ -1,14 +1,24 @@
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { formatInr } from '@kavach/engine';
+import { LANGUAGE_NAMES } from '../core/locales';
 import type { DeskContext, Locale } from '@kavach/schemas';
 import { appRoot } from '../paths';
 
 const template = readFileSync(resolve(appRoot, 'src/agents/prompts/desk-live.md'), 'utf8');
 
-const HINDI_STYLE = `Hindi style: natural spoken Hindi with common English insurance words kept in English ("room rent", "policy", "TPA",
+// Each session gets only its own language's style notes, so it has no other language to copy.
+const LANGUAGE_STYLE: Record<Locale, string> = {
+  en: '',
+  hi: `Hindi style: natural spoken Hindi with common English insurance words kept in English ("room rent", "policy", "TPA",
 "cashless"). Example: "Pehle parents wali policy ka card TPA desk par dijiye. Sign karne se pehle TPA desk se confirm
-kar lijiye."`;
+kar lijiye."`,
+  ta: `Tamil style: plain spoken Tamil in Tamil script; keep "policy", "TPA", "claim" and amounts as given. Read amounts as
+numbers.`,
+  zh: `Mandarin style: everyday Singapore Mandarin in Simplified characters; keep plan names such as MediShield Life and
+Integrated Shield Plan in English. Read amounts as numbers.`,
+  ms: `Malay style: plain Bahasa Melayu; keep plan names in English. Read amounts as numbers.`,
+};
 
 /** The DeskAgent system instruction (docs/plan/03-gemini-and-agents.md §4.6) for one patient. */
 export function deskLiveInstruction(context: DeskContext, language: Locale): string {
@@ -23,9 +33,8 @@ export function deskLiveInstruction(context: DeskContext, language: Locale): str
       )
       .join('; ') || 'none';
   const values: Record<string, string> = {
-    language: language === 'hi' ? 'Hindi' : 'English',
-    // Only a Hindi session gets the Hindi style notes, so an English one has no Hindi to copy.
-    language_style: language === 'hi' ? HINDI_STYLE : '',
+    language: LANGUAGE_NAMES[language].english,
+    language_style: LANGUAGE_STYLE[language],
     patient_name: patient.name,
     age: String(patient.age),
     relation: patient.relation,
@@ -51,7 +60,7 @@ export const deskLiveTools = [
   {
     name: 'record_spoken_estimate',
     description:
-      'When the family tells you the room rents aloud (and maybe the quoted total and the days) because no printed estimate or photo is available yet, record them here so the rules engine can run. Call it as soon as the figures are spoken; never ask for figures you were already told.',
+      'When the family tells you the room rents aloud (and maybe the quoted total and the days) because no printed estimate or photo is available yet, record them here so the rules engine can run. Call it as soon as the figures are spoken; never ask for figures you were already told. Do not call it once an estimate has been read unless new figures are spoken; a question that only names a room or ward class goes to evaluate_options.',
     parametersJsonSchema: {
       type: 'object',
       properties: {
@@ -61,7 +70,8 @@ export const deskLiveTools = [
         days: { type: 'integer', description: 'Expected days of stay; 1 if not known.' },
         rooms: {
           type: 'array',
-          description: 'Every room category mentioned with its rent per day in rupees.',
+          description:
+            "Every room category mentioned with its rent per day in the family's currency.",
           items: {
             type: 'object',
             properties: { label: { type: 'string' }, rentPerDay: { type: 'number' } },
@@ -71,7 +81,7 @@ export const deskLiveTools = [
         quotedTotal: {
           type: 'number',
           description:
-            'The total the hospital quoted in rupees for the quoted room and the days given, if any.',
+            "The total the hospital quoted, in the family's currency, for the quoted room and the days given, if any.",
         },
         otherCharges: {
           type: 'number',
@@ -111,6 +121,12 @@ export const deskLiveTools = [
           enum: ['differential', 'flat', 'package'],
           description:
             "The desk's answer to the billing question: charges differ by room (differential), same in every room (flat), or one package price (package).",
+        },
+        panelAnswer: {
+          type: 'string',
+          enum: ['panel', 'nonPanel'],
+          description:
+            "Singapore only: the desk's answer to whether the specialist is on the insurer's panel with pre-authorisation.",
         },
       },
     },

@@ -1,19 +1,20 @@
 'use client';
 
-import { ConsentPurpose } from '@kavach/schemas';
+import { ConsentPurpose, type Locale } from '@kavach/schemas';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { type ReactNode, useState } from 'react';
 import { AuthTabs, focusTab, tabPanelProps } from '@/components/auth/auth-tabs';
 import { GoogleMark } from '@/components/auth/google-mark';
 import { DisabledField, NotOnPanel } from '@/components/auth/not-on-panel';
 import { SplitFrame } from '@/components/kavach/brand-panel';
 import { Icon } from '@/components/kavach/icon';
-import { Button } from '@/components/ui/button';
+import { Button, buttonClasses } from '@/components/ui/button';
 import { Link, useRouter } from '@/i18n/navigation';
 import { routing } from '@/i18n/routing';
 import { firebaseEnabled, signInAsGuest } from '@/lib/firebase';
 import { startDemo } from '@/lib/session';
+import { marketForLocale } from '@/lib/market';
 import { acceptInvite, useInvitePreview } from '@/lib/setup';
 
 /** The Sharma family at the `setup` checkpoint (data/personas/sharma.json): 5 people, 4 policies. */
@@ -31,7 +32,8 @@ const launch = (next: string) => `/launch?next=${encodeURIComponent(next)}`;
  * S02 Sign in (Stitch "sign in / family access"): the split frame, and on the right one white
  * card: a true status row, the headline, three sign-in methods as tabs (Quick access works; mobile
  * OTP and ABHA are designed but honestly switched off), the privacy promise, the ways in, the
- * Sharma demo, three plain facts, and help for someone already at the hospital.
+ * two sample families (the Sharmas in India, the Tans in Singapore), three plain facts, and help
+ * for someone already at the hospital.
  */
 export function SignInScreen({ invite }: { invite: string | null }) {
   const t = useTranslations('setup.signIn');
@@ -40,6 +42,11 @@ export function SignInScreen({ invite }: { invite: string | null }) {
   const queryClient = useQueryClient();
   const preview = useInvitePreview(invite);
   const [method, setMethod] = useState<Method>('quick');
+  const locale = useLocale() as Locale;
+  // Mandarin and Malay readers are in Singapore: their sample family comes first. The Singapore
+  // scene opens in the reader's language, or in Mandarin from Hindi (an India language).
+  const sgFirst = marketForLocale(locale) === 'SG';
+  const sgLocale: Locale = marketForLocale(locale) === 'IN' ? 'zh' : locale;
 
   // Signing in, then: join the inviting family, or start setting up your own. Google sign-in
   // is off in this hackathon prototype; the guest login (kept on this device) is the way in.
@@ -185,7 +192,7 @@ export function SignInScreen({ invite }: { invite: string | null }) {
               <DisabledField
                 id="otp-phone"
                 label={t('otp.phone')}
-                prefix="+91"
+                prefix={sgFirst ? '+65' : '+91'}
                 inputMode="tel"
                 describedBy="otp-off"
               />
@@ -214,39 +221,51 @@ export function SignInScreen({ invite }: { invite: string | null }) {
         </div>
       </div>
 
-      {/* The demo as a row of its own: the family's initial, what it holds, one button. */}
-      <section
-        aria-labelledby="demo-title"
-        className="flex flex-col gap-4 rounded-lg bg-surface-container-low p-4 sm:flex-row sm:items-center sm:p-5"
-      >
-        <div className="flex min-w-0 flex-1 items-center gap-4">
-          <span
-            aria-hidden
-            lang="hi"
-            className="flex size-12 shrink-0 items-center justify-center rounded-full bg-secondary-fixed font-display text-headline-sm text-secondary"
-          >
-            {t('demoCard.initial')}
-          </span>
-          <div className="flex min-w-0 flex-col gap-0.5">
-            <span className="text-label-caps uppercase text-secondary">{t('demoCard.kicker')}</span>
-            <h2 id="demo-title" className="font-display text-title-md text-on-surface">
-              {t('demoCard.title')}
-            </h2>
-            <p className="text-body-sm text-on-surface-variant">
-              {t('demoCard.meta', DEMO_COUNTS)}
-            </p>
-          </div>
-        </div>
-        <Button
-          variant="soft"
-          loading={demo.isPending}
-          onClick={() => demo.mutate()}
-          className="shrink-0 self-start bg-surface-container-highest text-primary hover:bg-primary hover:text-on-primary sm:self-center"
-        >
-          {t('demoCard.open')}
-          <Icon name="arrow_forward" className="btn-arrow text-lg" />
-        </Button>
-      </section>
+      {/* The two sample families, each a row of its own: the reader's market first. The Sharmas
+          open the app; the Tans open the Singapore desk scene. */}
+      <div className="flex flex-col gap-3">
+        {(sgFirst ? (['sg', 'in'] as const) : (['in', 'sg'] as const)).map((which) =>
+          which === 'in' ? (
+            <DemoRow
+              key="in"
+              id="demo-in"
+              initial={t('demoCard.initial')}
+              initialLang="hi"
+              kicker={t('demoCard.kicker')}
+              title={t('demoCard.title')}
+              meta={t('demoCard.meta', DEMO_COUNTS)}
+            >
+              <Button
+                variant="soft"
+                loading={demo.isPending}
+                onClick={() => demo.mutate()}
+                className={DEMO_BUTTON}
+              >
+                {t('demoCard.open')}
+                <Icon name="arrow_forward" className="btn-arrow text-lg" />
+              </Button>
+            </DemoRow>
+          ) : (
+            <DemoRow
+              key="sg"
+              id="demo-sg"
+              initial={t('demoCardSg.initial')}
+              kicker={t('demoCardSg.kicker')}
+              title={t('demoCardSg.title')}
+              meta={t('demoCardSg.body')}
+            >
+              <Link
+                href={{ pathname: '/desk', query: { demo: '1', scene: 'singapore' } }}
+                locale={sgLocale}
+                className={buttonClasses({ variant: 'soft', className: DEMO_BUTTON })}
+              >
+                {t('demoCardSg.open')}
+                <Icon name="arrow_forward" className="btn-arrow text-lg" />
+              </Link>
+            </DemoRow>
+          ),
+        )}
+      </div>
       {demo.isError && (
         <p role="alert" className="panel panel-gap -mt-2 text-gap">
           {ts('error')}
@@ -287,6 +306,53 @@ export function SignInScreen({ invite }: { invite: string | null }) {
         )}
       </nav>
     </SignInCard>
+  );
+}
+
+const DEMO_BUTTON =
+  'shrink-0 self-start bg-surface-container-highest text-primary hover:bg-primary hover:text-on-primary sm:self-center';
+
+/** One sample family as a row: its initial on a tile, what it holds, and its way in. */
+function DemoRow({
+  id,
+  initial,
+  initialLang,
+  kicker,
+  title,
+  meta,
+  children,
+}: {
+  id: string;
+  initial: string;
+  initialLang?: string;
+  kicker: string;
+  title: string;
+  meta: string;
+  children: ReactNode;
+}) {
+  return (
+    <section
+      aria-labelledby={id}
+      className="flex flex-col gap-4 rounded-lg bg-surface-container-low p-4 sm:flex-row sm:items-center sm:p-5"
+    >
+      <div className="flex min-w-0 flex-1 items-center gap-4">
+        <span
+          aria-hidden
+          lang={initialLang}
+          className="flex size-12 shrink-0 items-center justify-center rounded-full bg-secondary-fixed font-display text-headline-sm text-secondary"
+        >
+          {initial}
+        </span>
+        <div className="flex min-w-0 flex-col gap-0.5">
+          <span className="text-label-caps uppercase text-secondary">{kicker}</span>
+          <h2 id={id} className="font-display text-title-md text-on-surface">
+            {title}
+          </h2>
+          <p className="text-body-sm text-on-surface-variant">{meta}</p>
+        </div>
+      </div>
+      {children}
+    </section>
   );
 }
 

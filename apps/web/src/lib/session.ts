@@ -1,4 +1,4 @@
-import { DemoCheckpoint, StartDemoResponse } from '@kavach/schemas';
+import { DemoCheckpoint, DemoPersona, StartDemoResponse } from '@kavach/schemas';
 import { useSyncExternalStore } from 'react';
 import { api } from './api';
 import { getIdToken } from './firebase';
@@ -60,9 +60,13 @@ export function useStoredMemberId() {
   );
 }
 
-/** Starts a demo: the API clones the Sharma household for this visitor. Returns its id. */
-export async function startDemo(checkpoint: DemoCheckpoint = 'hospital') {
-  const { householdId } = await api(`/v1/public/demo?checkpoint=${checkpoint}`, StartDemoResponse, {
+/** Starts a demo: the API clones a demo family (the Sharmas by default) for this visitor. Returns its id. */
+export async function startDemo(
+  checkpoint: DemoCheckpoint = 'hospital',
+  persona: DemoPersona = 'sharma',
+) {
+  const query = `checkpoint=${checkpoint}&persona=${persona}`;
+  const { householdId } = await api(`/v1/public/demo?${query}`, StartDemoResponse, {
     method: 'POST',
     token: await getIdToken(),
   });

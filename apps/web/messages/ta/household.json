@@ -1,0 +1,54 @@
+{
+  "title": "டெமோ குடும்பம்",
+  "intro": "ஷர்மா குடும்பத்தின் உங்கள் சொந்த நகல். கதையின் எந்தத் தருணத்திற்கும் மீட்டமைக்கலாம்.",
+  "loading": "டெமோ குடும்பத்தை அமைக்கிறது…",
+  "error": "குடும்பத்தை ஏற்ற முடியவில்லை. API இயங்குகிறதா?",
+  "retry": "மீண்டும் முயற்சி",
+  "demoDate": "டெமோ தேதி: {date}",
+  "checkpointsHeading": "ஒரு தருணத்திற்குச் செல்",
+  "checkpoints": {
+    "setup": "அமைப்பு",
+    "job_change": "வேலை மாற்றம்",
+    "hospital": "மருத்துவமனை",
+    "claim": "கிளைம்",
+    "maternity": "பிரசவம்"
+  },
+  "membersHeading": "குடும்பம்",
+  "age": "{age} வயது",
+  "relations": {
+    "self": "நீங்கள்",
+    "spouse": "கணவர்/மனைவி",
+    "child": "குழந்தை",
+    "parent": "பெற்றோர்",
+    "parent_in_law": "மாமனார்/மாமியார்",
+    "other": "மற்றவர்"
+  },
+  "speaksHindi": "ஹிந்தி பேசுவார்",
+  "conditions": {
+    "diabetes_t2": "வகை 2 நீரிழிவு"
+  },
+  "policiesHeading": "பாலிசிகள்",
+  "kinds": {
+    "group_health": "குழுச் சுகாதாரக் காப்பீடு",
+    "retail_health": "சுகாதாரம்",
+    "super_top_up": "சூப்பர் டாப்-அப்",
+    "term_life": "டேர்ம் ஆயுள்",
+    "personal_accident": "தனிநபர் விபத்து",
+    "endowment": "எண்டோமென்ட்",
+    "motor": "மோட்டார்"
+  },
+  "sumInsured": "கவர் {amount}",
+  "covers": "{names}-க்கு கவர்",
+  "validTill": "{date} வரை",
+  "roomLimit": "அறை {amount}/நாள் வரை",
+  "copay": "{percent}% கோ-பே",
+  "copayFromAge": "{age} வயதிலிருந்து {percent}% கோ-பே",
+  "deductible": "{amount}-க்கு மேல் செலுத்தும்",
+  "claimsUsed": "இந்த வருடம் பயன்படுத்தியது {amount}",
+  "speaks": "{language} பேசுவார்",
+  "shell": {
+    "sample": "மாதிரி குடும்பம்",
+    "steps": "{count, plural, =0 {எதுவும் காத்திருக்கவில்லை} one {# படி காத்திருக்கிறது} other {# படிகள் காத்திருக்கின்றன}}",
+    "account": "{name}: குடும்ப அமைப்புகள்"
+  }
+}

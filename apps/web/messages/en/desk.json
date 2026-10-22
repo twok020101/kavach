@@ -14,15 +14,17 @@
       "title": "Preparing the scene",
       "hospital": "Suresh at City Heart Hospital, answers in Hindi",
       "maternity": "Priya at Lotus Women’s Hospital, answers in English",
+      "singapore": "Ah Kow at Sample General Hospital, Singapore, answers in Mandarin",
       "steps": {
         "family": "Opening the family’s policies",
         "session": "Starting the desk session",
         "open": "Opening the live desk"
       },
-      "note": "Demo data. Every rupee on the next screen comes from the policy rules.",
+      "note": "Demo data. Every amount on the next screen comes from the policy rules.",
       "failed": "The scene didn’t start. Pick who is admitted below and start it yourself.",
       "retry": "Try again"
-    }
+    },
+    "demoNoteSingapore": "Demo: the Tan family in Singapore. Ah Kow is admitted at Sample General Hospital for a planned angioplasty; his Shield plan is bought for Class B1 and the hospital offers Class A. Answers come in Mandarin; you can change both."
   },
   "session": {
     "title": "Helping with {name}",
@@ -75,8 +77,10 @@
         "nonPayable": "Not payable",
         "aboveLimit": "Above the room limit",
         "ratio": "Reduced with the room",
-        "icu": "ICU: never reduced"
-      }
+        "icu": "ICU: never reduced",
+        "covered": "Covered"
+      },
+      "sample": "Sample"
     },
     "bill": {
       "title": "Estimate read: {hospital}",
@@ -172,7 +176,8 @@
         "R-HL-014": "Package price per room",
         "R-MT-001": "Maternity limit",
         "R-MT-002": "Maternity waiting period"
-      }
+      },
+      "details": "See each rule’s working"
     },
     "footer": {
       "session": "Session",
@@ -201,12 +206,35 @@
     "scene": {
       "label": "Demo scene",
       "hospital": "Scene 1: Suresh · PTCA (City Heart)",
-      "maternity": "Scene 2: Priya · Maternity (Lotus)"
+      "maternity": "Scene 2: Priya · Maternity (Lotus)",
+      "singapore": "Ah Kow · Singapore"
     },
     "admitted": "Admitted",
     "memberChip": "{name} ({relation}, {age})",
     "controls": "Quick desk controls",
-    "sendPrompts": "Send these to family on WhatsApp"
+    "sendPrompts": "Send these to family on WhatsApp",
+    "result": {
+      "title": "Kavach’s result",
+      "save": "Save <amount></amount>",
+      "noSaving": "Every room costs the family the same",
+      "reason": "{room} costs the family the least once the policy rules are applied.",
+      "reasonSame": "Ask for {room}; the policy treats every room the same.",
+      "ask": "Ask for {room}",
+      "perDay": "a day",
+      "recommendedChip": "Kavach recommends",
+      "costsMoreChip": "Costs you more",
+      "familyPays": "Family pays"
+    },
+    "askDesk": {
+      "title": "Ask the admission desk right now",
+      "intro": "Read these out at the counter, or copy them.",
+      "ask": "Ask the desk",
+      "say": "What Kavach says"
+    },
+    "textNote": {
+      "title": "Text mode",
+      "body": "Type your question, or tap Talk to Kavach to speak."
+    }
   },
   "summary": {
     "title": "Session summary",

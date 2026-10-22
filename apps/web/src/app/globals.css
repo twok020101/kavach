@@ -255,8 +255,12 @@ html:has([data-mode='desk']) {
   --ease-out-strong: cubic-bezier(0.23, 1, 0.32, 1);
   --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
   --ease-in-out-strong: cubic-bezier(0.77, 0, 0.175, 1);
-  --font-sans: var(--font-inter), var(--font-noto-deva), system-ui, sans-serif;
-  --font-display: var(--font-jakarta), var(--font-noto-deva), sans-serif;
+  --font-sans:
+    var(--font-inter), var(--font-noto-deva), var(--font-noto-tamil), var(--font-noto-sc),
+    system-ui, sans-serif;
+  --font-display:
+    var(--font-jakarta), var(--font-noto-deva), var(--font-noto-tamil), var(--font-noto-sc),
+    sans-serif;
   --font-serif: var(--font-source-serif), serif;
   --font-mono: var(--font-jetbrains), ui-monospace, monospace;
 }
@@ -657,8 +661,14 @@ html:has([data-mode='desk']) {
   font-feature-settings: 'tnum';
 }
 
-:lang(hi) {
+:lang(hi),
+:lang(ta) {
   line-height: 1.7;
+}
+/* Chinese: a little more air between lines, and no negative tracking from the display sizes. */
+:lang(zh) {
+  line-height: 1.65;
+  letter-spacing: 0.01em;
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -113,7 +113,6 @@
     "change": {
       "when": "Before the hospital",
       "title": "When life changes",
-      "body": "“Joining a startup on 1 Dec.” Kavach sees that your parents’ cover ends on 30 Nov, drafts the letter to keep it, and reminds you on WhatsApp.",
       "feature": "Parents’ cover kept, not lost",
       "featureBody": "The request to move the group cover to a personal policy, drafted before the last working day (rule R-MG-001).",
       "link": "See the job-change plan"
@@ -121,7 +120,6 @@
     "hospital": {
       "when": "At admission",
       "title": "At the hospital desk",
-      "body": "Voice and camera, in Hindi. Show the estimate and Kavach says which policy card to give and which room to ask for.",
       "feature": "<amount></amount> less to pay",
       "featureBody": "Reads the estimate photo: which charges change with the room, and which card to give first.",
       "link": "Open the hospital desk"
@@ -252,5 +250,147 @@
     "sandboxSaving": "{saving} less to pay",
     "foot": "Built to India’s DPDP Act, 2023 · Prototype with demo data",
     "foot2": "Not an insurer, broker or agent. The insurer decides every claim."
+  },
+  "tryMaternitySub": "Priya’s delivery and the maternity limit, in English.",
+  "story": {
+    "caption": "How the hospital moment goes",
+    "saving": "Less to pay",
+    "pause": "Pause the story",
+    "play": "Play the story"
+  },
+  "closing": {
+    "title": "Never face a hospital desk unprepared.",
+    "body": "Try the two scenes on the sample family, or set up your own in a few minutes. Kavach sells nothing and contacts no insurer.",
+    "maternity": "Priya's delivery",
+    "own": "Set up my family"
+  },
+  "sampleBadge": "Sample",
+  "decision": {
+    "kicker": "The few minutes at the admission desk",
+    "title": "An admission decision at {hospital}",
+    "optionA": "Option A · the room offered",
+    "optionB": "Option B · the room Kavach suggests",
+    "perDay": "{amount} a day",
+    "familyPays": "The family pays",
+    "costsMore": "Costs more",
+    "suggested": "Kavach suggests",
+    "bannerTitle": "Ask for the {room}: {amount} less to pay",
+    "bannerLabel": "Less to pay",
+    "sayTitle": "What to say at the desk",
+    "firstCardTitle": "Which card first",
+    "rulesNote": "Each figure comes from the policy’s written terms. The desk scene shows the rule and the page behind it."
+  },
+  "chat": {
+    "name": "Kavach",
+    "voice": "Voice note",
+    "saving": "Less to pay",
+    "sample": "Sample conversation"
+  },
+  "whatsappSection": {
+    "kicker": "No app to install",
+    "f1Title": "Voice notes in your language",
+    "f1Body": "Ask out loud. Kavach answers with a voice note and a short card.",
+    "f2Title": "The family hears too",
+    "f2Body": "When a parent asks at the desk, the person who pays the premiums gets the same answer.",
+    "f3Title": "Try the test number",
+    "f3Body": "Scan the code to join Kavach’s WhatsApp test number."
+  },
+  "ex": {
+    "IN": {
+      "hospital": "City Heart Hospital",
+      "familyName": "The Sharma family",
+      "lead": "Kavach remembers every policy in the house and tells you what to do when life changes, at the hospital desk, and when a claim comes back short. In Hindi or English. Every rupee comes from written policy terms, with the page number.",
+      "tryHospitalSub": "Sample estimate, Hindi or English, under a minute. No sign-in.",
+      "momentsIntro": "Kavach learns the household once, in about two minutes. Then it acts at the three moments where Indian families lose money.",
+      "closingHospital": "Suresh at the hospital desk",
+      "otherTitle": "Try the Singapore scene",
+      "otherSub": "Ah Kow’s angioplasty: a Class B1 Shield plan offered Class A, in Mandarin.",
+      "family": {
+        "title": "The sample family Kavach already knows",
+        "caption": "Five people, four policies, one picture. Kavach learnt them once, in about two minutes.",
+        "relations": {
+          "self": "Rahul, 34 · pays the premiums",
+          "spouse": "Priya, 32",
+          "child": "Anaya, 5",
+          "father": "Suresh, 62 · the patient",
+          "mother": "Kamala, 58 · opens Kavach at the desk"
+        }
+      },
+      "story": {
+        "step1Title": "Kamala taps At the hospital",
+        "step1Body": "In Hindi, on her own phone. Kavach already knows Suresh’s two policies.",
+        "step2Title": "She shows the estimate to the camera",
+        "step2Body": "Kavach reads the room tariff: deluxe {quoted} a day, standard {lower}.",
+        "step3Title": "“Ask for the {lower} room.”",
+        "step3Body": "Only room-priced charges are cut in the pricier room. Kavach says which card to give first, and what to ask the desk."
+      },
+      "decision": {
+        "patient": "Suresh, 62 · planned angioplasty · two policies in the family",
+        "roomQuoted": "Deluxe room",
+        "roomLower": "Standard room",
+        "roomLowerShort": "standard room",
+        "why": "Suresh’s policy pays a room up to a limit. Above it, the insurer also cuts the surgeon, theatre and other room-priced charges in the same proportion.",
+        "script": "“Please book the standard room for my father, at {amount} a day or less.”",
+        "firstCard": "Give the parents’ policy card first; the other policy covers what is left."
+      },
+      "moments": {
+        "change": "“Joining a startup on 1 Dec.” Kavach sees that your parents’ cover ends on 30 Nov, drafts the letter to keep it, and reminds you on WhatsApp.",
+        "hospital": "Voice and camera, in Hindi. Show the estimate and Kavach says which policy card to give and which room to ask for.",
+        "claimStat": "<amount></amount> found to appeal"
+      },
+      "whatsappBody": "Send a photo of the estimate or a Hindi voice note. Kavach replies with a voice note and a card.",
+      "chat": {
+        "ask": "The desk is offering the deluxe room at {quoted} a day. Can we take it?",
+        "reply": "Ask for the standard room at {lower} a day. In the deluxe room the policy also cuts the surgeon and theatre charges."
+      }
+    },
+    "SG": {
+      "hospital": "Sample General Hospital",
+      "familyName": "The Tan family, Singapore",
+      "lead": "Kavach remembers every policy in the house and tells you what to do when life changes, at the hospital desk, and when a claim comes back short. In Mandarin, Malay or English. Every dollar comes from written policy terms, with the page number.",
+      "tryHospitalSub": "Sample estimate, Mandarin, Malay or English, under a minute. No sign-in.",
+      "momentsIntro": "Kavach learns the household once, in about two minutes. Then it acts at the three moments where families lose money.",
+      "closingHospital": "Ah Kow at the hospital desk",
+      "otherTitle": "Try the India scene",
+      "otherSub": "Suresh’s angioplasty at City Heart Hospital, in Hindi.",
+      "family": {
+        "title": "The sample family Kavach already knows",
+        "caption": "Five people, MediShield Life and a Shield plan, one picture. Kavach learnt them once, in about two minutes.",
+        "relations": {
+          "self": "Wei-Ming, 38 · pays the premiums",
+          "spouse": "Hui-Ling, 36",
+          "child": "Jia-En, 6",
+          "father": "Ah Kow, 68 · the patient",
+          "mother": "Siew-Hong, 64"
+        }
+      },
+      "story": {
+        "step1Title": "The family taps At the hospital",
+        "step1Body": "In Mandarin, on their own phone. Kavach already knows Ah Kow’s MediShield Life and his Shield plan.",
+        "step2Title": "They show the estimate to the camera",
+        "step2Body": "Kavach reads the ward charges: Class A {quoted} a day, Class B1 {lower}.",
+        "step3Title": "“Ask for the Class B1 ward.”",
+        "step3Body": "His Shield plan is bought for Class B1. In Class A it pays only part of the bill. Kavach says which card to give first, and what to ask the desk."
+      },
+      "decision": {
+        "patient": "Ah Kow, 68 · planned angioplasty · Shield plan bought for Class B1",
+        "roomQuoted": "Class A ward",
+        "roomLower": "Class B1 ward",
+        "roomLowerShort": "Class B1 ward",
+        "why": "Ah Kow’s Shield plan is bought for a Class B1 ward. In a Class A ward the plan pays only part of the bill, so the family pays much more for the same treatment.",
+        "script": "“Please admit my father to a Class B1 ward.”",
+        "firstCard": "Give the Shield plan card first; MediShield Life is part of it."
+      },
+      "moments": {
+        "change": "“Changing jobs next month.” Kavach checks which cover ends with the job, what the family’s Shield plans still pay, and reminds you on WhatsApp.",
+        "hospital": "Voice and camera, in Mandarin or Malay. Show the estimate and Kavach says which card to give and which ward to ask for.",
+        "claimStat": "Every deduction checked against the plan"
+      },
+      "whatsappBody": "Send a photo of the estimate or a voice note in Mandarin or Malay. Kavach replies with a voice note and a card.",
+      "chat": {
+        "ask": "The hospital is offering a Class A ward at {quoted} a day. Should we take it?",
+        "reply": "Ask for the Class B1 ward at {lower} a day. In Class A his Shield plan pays only part of the bill."
+      }
+    }
   }
 }

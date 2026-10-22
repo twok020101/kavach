@@ -43,7 +43,7 @@
     "icu": "ICU stay",
     "noIcu": "No ICU stay",
     "change": "Change",
-    "roomRent": "Room rent per day (₹)",
+    "roomRent": "Room rent per day",
     "icuLabel": "Part of the stay was in ICU",
     "save": "Check again",
     "cancel": "Cancel",

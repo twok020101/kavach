@@ -1,0 +1,8 @@
+{
+  "page": {
+    "title": "Kavach 给 {patient} 的回答",
+    "notFound": "这个卡片链接已过期或不存在。",
+    "disclaimer": "仅为指引，不是保单推荐。请向您的保险公司或 TPA 柜台确认。",
+    "openApp": "打开 Kavach"
+  }
+}

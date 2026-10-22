@@ -78,7 +78,8 @@
       "ending": "Ends {date}",
       "planned": "Planned",
       "ended": "Ended"
-    }
+    },
+    "count": "{count, plural, one {# policy} other {# policies}}"
   },
   "policy": {
     "notFound": "This policy isn't in the family any more.",

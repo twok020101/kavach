@@ -1,4 +1,4 @@
-import type { Action, Household, Notification, WhatsAppSender } from '@kavach/schemas';
+import type { Action, Household, Locale, Notification, WhatsAppSender } from '@kavach/schemas';
 import { blobs } from '../../lib/blobs';
 import { dueReminderNudges, markNudgeSent } from '../../letters/nudges';
 import { store } from '../../store';
@@ -38,7 +38,7 @@ export async function sendDueNudges(household: Household, date: string) {
 }
 
 /** "YES" after a reminder: send the approved letter as a PDF, or say it still needs approving. */
-export async function sendPendingLetter(sender: WhatsAppSender, lang: 'en' | 'hi') {
+export async function sendPendingLetter(sender: WhatsAppSender, lang: Locale) {
   const pending = sender.pendingLetter!;
   const action = await store.get<Action>(
     `households/${pending.householdId}/actions`,

@@ -87,7 +87,7 @@ export const claimRoutes: FastifyPluginAsyncZod = async (app) => {
       // on their own policy; Priya's delivery). A demo family that is not there yet is moved
       // there first, or the letter would be matched against the wrong policy.
       if (household.isDemo) {
-        household = await resetDemoHousehold(household, request.query.scene);
+        household = await resetDemoHousehold(household, request.query.scene, 'sharma');
       }
       const bytes = await readFile(resolve(repoRoot, 'data/samples', sample.file));
       const claim = await createClaim(household, {

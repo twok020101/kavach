@@ -7,6 +7,7 @@ import { LanguageSwitch } from '@/components/kavach/language-switch';
 import { LogoLockup, LogoMark } from '@/components/kavach/logo';
 import { cn } from '@/components/ui/cn';
 import { Link } from '@/i18n/navigation';
+import type { DemoScene } from '@/lib/desk-client';
 
 /** One member of the family on the admitted row; `current` is the one this session is for. */
 export type DeskMemberChip = { id: string; label: string; current: boolean };
@@ -36,8 +37,8 @@ export function DeskHeader({
   query?: Record<string, string>;
   /** The close or end control; defaults to nothing. */
   action?: ReactNode;
-  /** In the demo, which scene this is: the other one is a tap away. */
-  demoScene?: 'hospital' | 'maternity';
+  /** In the demo, which scene this is: the others are a tap away. */
+  demoScene?: DemoScene;
   /** The family, with the admitted member marked; informative only (a new session picks another). */
   members?: DeskMemberChip[];
 }) {
@@ -87,14 +88,14 @@ export function DeskHeader({
                 ref={tabs}
                 className="no-scrollbar -mx-4 flex shrink-0 gap-2 overflow-x-auto px-4 md:mx-0 md:px-0"
               >
-                {(['hospital', 'maternity'] as const).map((s) => {
+                {(['hospital', 'maternity', 'singapore'] as const).map((s) => {
                   const on = s === demoScene;
                   return (
                     <Link
                       key={s}
                       href={{
                         pathname: '/desk',
-                        query: { demo: '1', ...(s === 'maternity' ? { scene: s } : {}) },
+                        query: { demo: '1', ...(s === 'hospital' ? {} : { scene: s }) },
                       }}
                       aria-current={on ? 'page' : undefined}
                       className={cn(
