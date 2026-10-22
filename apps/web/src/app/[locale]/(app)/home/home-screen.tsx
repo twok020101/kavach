@@ -3,7 +3,9 @@
 import type { CoverCell, Household } from '@kavach/schemas';
 import { useTranslations } from 'next-intl';
 import { useEffect, useState, type CSSProperties } from 'react';
+import { ListSkeleton, QueryError } from '@/components/app/page-parts';
 import { Icon } from '@/components/kavach/icon';
+import { Skeleton } from '@/components/ui/skeleton';
 import { Spinner } from '@/components/ui/spinner';
 import { cn } from '@/components/ui/cn';
 import { CellDetail } from '@/components/plan/cell-detail';
@@ -72,10 +74,12 @@ function Home({ household }: { household: Household }) {
   }, [asOf]);
 
   const { data: todayPlan } = usePlan(household.id);
-  const { data: plan, isFetching } = usePlan(
-    household.id,
-    debounced === today ? undefined : debounced,
-  );
+  const {
+    data: plan,
+    isFetching,
+    isError: planFailed,
+    refetch: refetchPlan,
+  } = usePlan(household.id, debounced === today ? undefined : debounced);
   const { data: actions = [] } = useActions(household.id);
   const pins = usePins(household, todayPlan);
   const { reset } = useDemoControls(household.id);
@@ -100,7 +104,7 @@ function Home({ household }: { household: Household }) {
     ) ??
       selected);
 
-  const summary = plan && (
+  const summary = plan ? (
     <>
       <ScoreCard
         score={plan.coverMap.score}
@@ -111,6 +115,12 @@ function Home({ household }: { household: Household }) {
         earner={earner}
       />
       <NextCard drafts={drafts.length} steps={selectedCount} monthly={plan.monthlySpend} />
+    </>
+  ) : planFailed ? null : (
+    // The score and the next step hold their place while the plan loads.
+    <>
+      <Skeleton className="h-52 rounded-lg" />
+      <Skeleton className="h-20 rounded-lg" />
     </>
   );
 
@@ -204,7 +214,7 @@ function Home({ household }: { household: Household }) {
                 onChange={setAsOf}
               />
             </div>
-            {plan && (
+            {plan ? (
               <div
                 aria-busy={isFetching}
                 className={cn('mt-2 transition-opacity', isFetching && 'opacity-60')}
@@ -216,6 +226,20 @@ function Home({ household }: { household: Household }) {
                   onSelect={setSelected}
                 />
               </div>
+            ) : planFailed ? (
+              <QueryError
+                className="mt-3"
+                message={tp('error')}
+                retryLabel={tp('retry')}
+                onRetry={() => refetchPlan()}
+              />
+            ) : (
+              <ListSkeleton
+                rows={household.members.length}
+                rowClassName="h-14"
+                className="mt-3"
+                label={tp('loading')}
+              />
             )}
             <p className="mt-4 flex items-center justify-between gap-3 border-t border-border pt-3 font-serif text-citation-sm text-on-surface-variant">
               <span>{t('tapHint')}</span>
@@ -264,9 +288,14 @@ function Home({ household }: { household: Household }) {
               {summary}
             </div>
           )}
-          <div style={rise(3)}>
-            <ComingUp pins={pins} from={today} />
-          </div>
+          {/* The dates come from the plan: no "nothing coming up" before it has loaded. */}
+          {todayPlan ? (
+            <div style={rise(3)}>
+              <ComingUp pins={pins} from={today} />
+            </div>
+          ) : (
+            !planFailed && <Skeleton className="h-40 rounded-lg" />
+          )}
           <div style={rise(4)}>
             <ReadyPanel household={household} asOf={today} />
           </div>

@@ -99,7 +99,8 @@
         "shield": "Shield 计划",
         "medishield": "MediShield Life"
       },
-      "none": "今天没有健康保单承保 {name}。"
+      "none": "今天没有健康保单承保 {name}。",
+      "wardAsk": "要求入住{ward, select, private {私人医院} other {{ward}级}}病房"
     },
     "asOfShort": "截至 {date}"
   },
@@ -192,7 +193,12 @@
     },
     "check": "核查",
     "understood": "我理解的是这样",
-    "parseError": "没能理解。请换一种说法。"
+    "parseError": "没能理解。请换一种说法。",
+    "intro": "像跟朋友说话一样说出来。Kavach 会核查这对家人的保障有什么影响，并拟好要做的步骤。",
+    "examplesSg": {
+      "newJob": "12月1日加入新公司。公司的团体保险保障我和家人。",
+      "loan": "为新组屋申请房屋贷款。"
+    }
   },
   "confirm": {
     "leaves": "{name} 于 {date} 离开 {employer}",
@@ -235,7 +241,9 @@
   "actions": {
     "title": "您的步骤",
     "empty": "没有待办事项。告诉 Kavach 有什么变化，它会准备好步骤。",
-    "due": "截止 {date}"
+    "due": "截止 {date}",
+    "emptyTitle": "目前没有待办事项",
+    "emptyBody": "生活有变化时，Kavach 会在这里准备好信件和提醒，供您审阅。"
   },
   "review": {
     "notFound": "找不到这个步骤。",
@@ -257,5 +265,27 @@
     "neverSends": "Kavach 不会代您寄信。由您自己寄出。",
     "whatsapp": "WhatsApp 上的 Kavach",
     "error": "出了点问题。请再试一次。"
+  },
+  "policyKind": {
+    "medishield_life": "MediShield Life",
+    "integrated_shield": "Integrated Shield Plan"
+  },
+  "sgTerms": {
+    "label": {
+      "ward": "病房",
+      "dailyLimit": "每日病房限额",
+      "deductible": "自付额",
+      "coinsurance": "共同保险",
+      "rider": "附加保险",
+      "yearLimit": "保单年度限额"
+    },
+    "value": {
+      "ward": "{ward, select, private {私人医院病房} other {{ward}级及以下病房}}按实际收费赔付",
+      "perDay": "每天 {amount}",
+      "perYear": "每年 {amount}",
+      "tiers": "{from}% 递减至 {to}%",
+      "percent": "{percent}%",
+      "riderCap": "自付 {percent}%；看指定专科医生时每年上限 {cap}"
+    }
   }
 }

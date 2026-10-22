@@ -21,7 +21,7 @@ import { PlanFrame } from '@/components/plan/plan-frame';
 import { useDate, dateTag } from '@/components/plan/format';
 import { Chip } from '@/components/setup/member-sheet';
 import { cn } from '@/components/ui/cn';
-import { Skeleton } from '@/components/ui/skeleton';
+import { EmptyState, ListSkeleton, PageHeader, QueryError } from '@/components/app/page-parts';
 import { Link } from '@/i18n/navigation';
 import { useTimeline } from '@/lib/setup';
 
@@ -54,7 +54,8 @@ export function TimelineScreen() {
 function TimelineView({ household }: { household: Household }) {
   const t = useTranslations('settings.timeline');
   const locale = useLocale();
-  const { data } = useTimeline(household.id);
+  const tp = useTranslations('plan');
+  const { data, isError, refetch } = useTimeline(household.id);
   const [filter, setFilter] = useState<Filter>('all');
 
   const kinds = FILTERS[filter];
@@ -73,13 +74,10 @@ function TimelineView({ household }: { household: Household }) {
   }
 
   return (
-    <div className="mx-auto flex max-w-3xl flex-col gap-5">
-      <header className="flex flex-col gap-1">
-        <h1 className="font-display text-3xl font-bold tracking-tight">{t('title')}</h1>
-        <p className="text-muted">{t('intro')}</p>
-      </header>
+    <div className="flex max-w-3xl flex-col gap-6">
+      <PageHeader title={t('title')} intro={t('intro')} />
 
-      <div className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1" role="group">
+      <div className="-mx-4 -mb-1 flex gap-2 overflow-x-auto px-4 pb-1" role="group">
         {(Object.keys(FILTERS) as Filter[]).map((f) => (
           <Chip key={f} selected={filter === f} onClick={() => setFilter(f)} className="shrink-0">
             {t(`filters.${f}`)}
@@ -87,16 +85,13 @@ function TimelineView({ household }: { household: Household }) {
         ))}
       </div>
 
-      {!data && (
-        <div className="flex flex-col gap-3" aria-busy>
-          <Skeleton className="h-16" />
-          <Skeleton className="h-16" />
-          <Skeleton className="h-16" />
-        </div>
-      )}
-      {data && entries.length === 0 && (
-        <p className="rounded-md bg-sunken p-6 text-center text-muted">{t('empty')}</p>
-      )}
+      {!data &&
+        (isError ? (
+          <QueryError message={tp('error')} retryLabel={tp('retry')} onRetry={() => refetch()} />
+        ) : (
+          <ListSkeleton rows={4} rowClassName="h-16" label={tp('loading')} />
+        ))}
+      {data && entries.length === 0 && <EmptyState icon="timeline" title={t('empty')} />}
 
       {/* The line runs down the left; each entry's icon sits on it. */}
       <div className="relative flex flex-col gap-6 pl-2">

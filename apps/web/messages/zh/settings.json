@@ -25,7 +25,7 @@
     "edit": "编辑家庭和财务",
     "editHint": "成员、年龄、收入和开支",
     "demo": "演示控制",
-    "demoHint": "跳到 Sharma 一家故事中的某个时刻",
+    "demoHint": "跳到这个家庭故事中的某个时刻",
     "timeline": "时间线",
     "timelineHint": "发生过什么，即将发生什么",
     "claims": "索赔",
@@ -89,7 +89,8 @@
       "opted_out": "已停止",
       "not_joined": "尚未加入",
       "no_number": "没有号码"
-    }
+    },
+    "phonePlaceholder": "{market, select, SG {+65 9xxx xxxx} other {+91 98xxx xxxxx}}"
   },
   "timeline": {
     "title": "时间线",

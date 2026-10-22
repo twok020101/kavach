@@ -99,7 +99,8 @@
         "shield": "pelan Shield",
         "medishield": "MediShield Life"
       },
-      "none": "Tiada polisi kesihatan melindungi {name} hari ini."
+      "none": "Tiada polisi kesihatan melindungi {name} hari ini.",
+      "wardAsk": "minta {ward, select, private {wad hospital swasta} other {wad Kelas {ward}}}"
     },
     "asOfShort": "Setakat {date}"
   },
@@ -192,7 +193,12 @@
     },
     "check": "Semak",
     "understood": "Inilah yang saya faham",
-    "parseError": "Tidak dapat memahami itu. Cuba katakan dengan cara lain."
+    "parseError": "Tidak dapat memahami itu. Cuba katakan dengan cara lain.",
+    "intro": "Ceritakan seperti kepada kawan. Kavach menyemak kesannya pada perlindungan keluarga anda dan menyediakan langkah-langkahnya.",
+    "examplesSg": {
+      "newJob": "Mula bekerja di syarikat baharu pada 1 Dis. Insurans berkumpulan mereka melindungi saya dan keluarga.",
+      "loan": "Mengambil pinjaman perumahan untuk flat baharu."
+    }
   },
   "confirm": {
     "leaves": "{name} meninggalkan {employer} pada {date}",
@@ -235,7 +241,9 @@
   "actions": {
     "title": "Langkah anda",
     "empty": "Tiada yang menunggu. Beritahu Kavach apa yang berubah dan ia akan menyediakan langkahnya.",
-    "due": "Tarikh akhir {date}"
+    "due": "Tarikh akhir {date}",
+    "emptyTitle": "Tiada apa-apa yang menunggu anda",
+    "emptyBody": "Apabila sesuatu berubah, Kavach menyediakan surat dan peringatan di sini untuk anda semak."
   },
   "review": {
     "notFound": "Tidak dapat mencari langkah ini.",
@@ -257,5 +265,27 @@
     "neverSends": "Kavach tidak pernah menghantar surat bagi pihak anda. Anda yang menghantarnya.",
     "whatsapp": "Kavach di WhatsApp",
     "error": "Ada masalah. Sila cuba lagi."
+  },
+  "policyKind": {
+    "medishield_life": "MediShield Life",
+    "integrated_shield": "Integrated Shield Plan"
+  },
+  "sgTerms": {
+    "label": {
+      "ward": "Wad",
+      "dailyLimit": "Had wad sehari",
+      "deductible": "Deduktibel",
+      "coinsurance": "Ko-insurans",
+      "rider": "Rider",
+      "yearLimit": "Had setahun polisi"
+    },
+    "value": {
+      "ward": "Dibayar seperti dicaj hingga {ward, select, private {wad hospital swasta} other {wad Kelas {ward}}}",
+      "perDay": "{amount} sehari",
+      "perYear": "{amount} setahun",
+      "tiers": "{from}% turun ke {to}%",
+      "percent": "{percent}%",
+      "riderCap": "Bayaran bersama {percent}%, had {cap} setahun dengan pakar panel"
+    }
   }
 }

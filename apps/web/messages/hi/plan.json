@@ -99,7 +99,8 @@
         "shield": "Shield प्लान",
         "medishield": "MediShield Life"
       },
-      "none": "आज कोई हेल्थ पॉलिसी {name} को कवर नहीं करती।"
+      "none": "आज कोई हेल्थ पॉलिसी {name} को कवर नहीं करती।",
+      "wardAsk": "{ward, select, private {निजी अस्पताल का वार्ड} other {क्लास {ward} वार्ड}} माँगें"
     },
     "asOfShort": "{date} की स्थिति"
   },
@@ -192,7 +193,12 @@
     },
     "check": "जाँचें",
     "understood": "मैंने यह समझा",
-    "parseError": "समझ नहीं आया। किसी और तरह से बताइए।"
+    "parseError": "समझ नहीं आया। किसी और तरह से बताइए।",
+    "intro": "जैसे किसी दोस्त को बताते, वैसे ही लिखें। Kavach देखेगा कि परिवार के कवर पर इसका क्या असर है, और कदम तैयार करेगा।",
+    "examplesSg": {
+      "newJob": "1 दिसंबर से नई कंपनी में जा रहा हूँ। उनका ग्रुप बीमा मुझे और मेरे परिवार को कवर करता है।",
+      "loan": "नए फ़्लैट के लिए होम लोन ले रहे हैं।"
+    }
   },
   "confirm": {
     "leaves": "{name} {date} को {employer} छोड़ रहे हैं",
@@ -235,7 +241,9 @@
   "actions": {
     "title": "आपके क़दम",
     "empty": "कुछ बाक़ी नहीं। Kavach को बताइए क्या बदल रहा है, वह क़दम तैयार कर देगा।",
-    "due": "{date} तक"
+    "due": "{date} तक",
+    "emptyTitle": "अभी आपके लिए कुछ बाकी नहीं है",
+    "emptyBody": "कुछ बदलेगा तो Kavach यहाँ आपके देखने के लिए पत्र और रिमाइंडर तैयार रखेगा।"
   },
   "review": {
     "notFound": "यह क़दम नहीं मिला।",
@@ -257,5 +265,27 @@
     "neverSends": "Kavach आपकी ओर से कभी पत्र नहीं भेजता। भेजना आपको है।",
     "whatsapp": "WhatsApp पर Kavach",
     "error": "कुछ गड़बड़ हुई। फिर कोशिश करें।"
+  },
+  "policyKind": {
+    "medishield_life": "MediShield Life",
+    "integrated_shield": "Integrated Shield Plan"
+  },
+  "sgTerms": {
+    "label": {
+      "ward": "वार्ड",
+      "dailyLimit": "रोज़ की वार्ड सीमा",
+      "deductible": "डिडक्टिबल",
+      "coinsurance": "को-इंश्योरेंस",
+      "rider": "राइडर",
+      "yearLimit": "पॉलिसी वर्ष की सीमा"
+    },
+    "value": {
+      "ward": "{ward, select, private {निजी अस्पताल के वार्ड} other {क्लास {ward} वार्ड}} तक पूरा बिल",
+      "perDay": "{amount} प्रति दिन",
+      "perYear": "{amount} प्रति वर्ष",
+      "tiers": "{from}% से घटकर {to}%",
+      "percent": "{percent}%",
+      "riderCap": "{percent}% सह-भुगतान, पैनल विशेषज्ञ के साथ सालाना सीमा {cap}"
+    }
   }
 }

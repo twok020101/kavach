@@ -6,6 +6,7 @@ import { useTranslations } from 'next-intl';
 import { apiMessage } from '@/lib/api';
 import { useMoney } from '@/lib/country';
 import { useState } from 'react';
+import { ListSkeleton, pageTitle, QueryError } from '@/components/app/page-parts';
 import { ClauseChip } from '@/components/documents/ClauseSheet';
 import { Amount } from '@/components/kavach/amount';
 import { RuleId } from '@/components/kavach/verified-badge';
@@ -39,11 +40,13 @@ function Check({ household, cid }: { household: Household; cid: string }) {
   const t = useTranslations('claim');
   const date = useDate();
   const router = useRouter();
-  const { data: claim, error } = useClaim(household.id, cid);
+  const { data: claim, error, refetch } = useClaim(household.id, cid);
   const draft = useDraftAppeal(household.id, cid);
 
-  if (error) return <p className="rounded-md bg-gap-bg p-3 text-gap">{t('error')}</p>;
-  if (!claim) return <p className="text-muted">{t('loading')}</p>;
+  if (error && !claim) {
+    return <QueryError message={t('error')} retryLabel={t('retry')} onRetry={() => refetch()} />;
+  }
+  if (!claim) return <ListSkeleton rows={3} rowClassName="h-28" label={t('loading')} />;
   const { letter, assessment } = claim;
   if (!letter || !assessment) {
     return (
@@ -64,7 +67,7 @@ function Check({ household, cid }: { household: Household; cid: string }) {
       </Link>
 
       <header className="flex flex-col gap-1">
-        <h1 className="font-display text-2xl font-bold">
+        <h1 className={pageTitle}>
           {letter.patientName}
           {letter.diagnosis && ` · ${letter.diagnosis}`}
         </h1>
@@ -161,7 +164,9 @@ function Check({ household, cid }: { household: Household; cid: string }) {
         <FileText aria-hidden className="size-5" />
         {t('check.seeLetter')}
       </Button>
-      <p className="text-sm text-muted">{t('check.notAdvice')}</p>
+      <p className="text-sm text-muted">
+        {household.country === 'SG' ? t('check.notAdviceSg') : t('check.notAdvice')}
+      </p>
     </div>
   );
 }

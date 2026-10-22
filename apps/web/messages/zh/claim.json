@@ -23,7 +23,11 @@
       "resolved": "已解决",
       "failed": "未能读取"
     },
-    "sampleMaternity": "使用生育样本信件"
+    "sampleMaternity": "使用生育样本信件",
+    "introSg": "理赔结算信里有扣减？Kavach 会把每一项扣减对照您的计划，以及 MediShield Life 和 Integrated Shield Plan 的规则逐一核查。",
+    "emptyBody": "如果理赔结算信赔得比预期少，就上传到这里。Kavach 会对照保单核查每一项扣减。",
+    "sampleSgNote": "样本信件目前只有印度示范版本。",
+    "checked": "已核查的信件"
   },
   "steps": {
     "read": "正在读取理赔结算信",
@@ -61,7 +65,8 @@
     "draft": "拟写申诉信",
     "review": "审阅申诉信",
     "seeLetter": "查看理赔结算信",
-    "notAdvice": "Kavach 把这封信对照您的保单和 IRDAI 规则核查。申诉结果由保险公司决定。"
+    "notAdvice": "Kavach 把这封信对照您的保单和 IRDAI 规则核查。申诉结果由保险公司决定。",
+    "notAdviceSg": "Kavach 把这封信对照您的计划，以及 MediShield Life 和 Integrated Shield Plan 的规则核查。申诉结果由保险公司决定。"
   },
   "appeal": {
     "title": "申诉信",

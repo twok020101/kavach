@@ -6,6 +6,8 @@ import { routing } from '@/i18n/routing';
 import { useTranslations } from 'next-intl';
 import QRCode from 'qrcode';
 import { useEffect, useState } from 'react';
+import { ListSkeleton, PageHeader, QueryError } from '@/components/app/page-parts';
+import { Icon } from '@/components/kavach/icon';
 import { MemberAvatar } from '@/components/kavach/member-avatar';
 import { PlanFrame } from '@/components/plan/plan-frame';
 import { useDate } from '@/components/plan/format';
@@ -13,6 +15,7 @@ import { Chip } from '@/components/setup/member-sheet';
 import { Badge } from '@/components/ui/badge';
 import { Button, buttonClasses } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { Link } from '@/i18n/navigation';
 import { useAccess, useCreateInvite, useRemoveAccess, useSetAlertContact } from '@/lib/setup';
 
 const WA_TONES = {
@@ -28,9 +31,11 @@ export function AccessScreen() {
 
 function Access({ household }: { household: Household }) {
   const t = useTranslations('settings.access');
+  const ts = useTranslations('settings');
   const tc = useTranslations('common');
   const date = useDate();
-  const { data } = useAccess(household.id);
+  const tp = useTranslations('plan');
+  const { data, isError, refetch } = useAccess(household.id);
   const remove = useRemoveAccess(household.id);
   const setAlert = useSetAlertContact(household.id);
   const member = (id?: string) => household.members.find((m) => m.id === id);
@@ -39,14 +44,26 @@ function Access({ household }: { household: Household }) {
     data?.alertContactMemberId ?? household.members.find((m) => m.relation === 'self')?.id;
 
   return (
-    <div className="mx-auto flex max-w-3xl flex-col gap-5">
-      <header className="flex flex-col gap-1">
-        <h1 className="font-display text-2xl font-bold">{t('title')}</h1>
-        <p className="text-muted">{t('intro')}</p>
-      </header>
+    <div className="flex max-w-3xl flex-col gap-6">
+      <PageHeader
+        title={t('title')}
+        intro={t('intro')}
+        back={
+          <Link
+            href="/settings"
+            className="-ml-2 mb-1 flex min-h-12 items-center gap-1 self-start rounded-md px-2 text-body-sm font-semibold text-primary hover:bg-surface-container-low"
+          >
+            <Icon name="arrow_back" className="text-lg" />
+            {ts('title')}
+          </Link>
+        }
+      />
+      {isError && !data && (
+        <QueryError message={tp('error')} retryLabel={tp('retry')} onRetry={() => refetch()} />
+      )}
 
       <Card as="section" className="flex flex-col gap-3">
-        <h2 className="flex items-center gap-2 font-display text-lg font-semibold">
+        <h2 className="flex items-center gap-2 font-display text-headline-sm text-on-surface">
           <BellRing aria-hidden className="size-5 text-primary" />
           {t('alerts')}
         </h2>
@@ -67,10 +84,11 @@ function Access({ household }: { household: Household }) {
       </Card>
 
       <Card as="section" className="flex flex-col gap-3">
-        <h2 className="flex items-center gap-2 font-display text-lg font-semibold">
+        <h2 className="flex items-center gap-2 font-display text-headline-sm text-on-surface">
           <MessageCircle aria-hidden className="size-5 text-safe" />
           {t('whatsapp')}
         </h2>
+        {!data && !isError && <ListSkeleton rows={2} rowClassName="h-12" />}
         <ul className="flex flex-col gap-2">
           {data?.whatsapp.map((w) => {
             const m = member(w.memberId);
@@ -91,7 +109,8 @@ function Access({ household }: { household: Household }) {
       </Card>
 
       <Card as="section" className="flex flex-col gap-3">
-        <h2 className="font-display text-lg font-semibold">{t('logins')}</h2>
+        <h2 className="font-display text-headline-sm text-on-surface">{t('logins')}</h2>
+        {!data && !isError && <ListSkeleton rows={2} rowClassName="h-12" />}
         <ul className="flex flex-col gap-2">
           {data?.access.map((a) => {
             const m =
@@ -171,7 +190,7 @@ function Invite({ household }: { household: Household }) {
 
   return (
     <Card as="section" className="flex flex-col gap-4">
-      <h2 className="flex items-center gap-2 font-display text-lg font-semibold">
+      <h2 className="flex items-center gap-2 font-display text-headline-sm text-on-surface">
         <UserPlus aria-hidden className="size-5 text-primary" />
         {t('invite')}
       </h2>
@@ -200,7 +219,7 @@ function Invite({ household }: { household: Household }) {
         <>
           <fieldset className="flex flex-col gap-2">
             <legend className="mb-1 font-medium">{t('inviteLanguage')}</legend>
-            <div className="flex gap-2">
+            <div className="flex flex-wrap gap-2">
               {routing.locales.map((l) => (
                 <Chip key={l} selected={language === l} onClick={() => setLanguage(l)}>
                   {tc(`languages.${l}`)}
@@ -215,7 +234,7 @@ function Invite({ household }: { household: Household }) {
               inputMode="tel"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
-              placeholder="+91 98xxx xxxxx"
+              placeholder={t('phonePlaceholder', { market: household.country ?? 'IN' })}
               className="min-h-12 rounded-md border border-border-strong bg-surface px-3"
             />
           </label>

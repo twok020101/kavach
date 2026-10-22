@@ -23,7 +23,11 @@
       "resolved": "Selesai",
       "failed": "Tidak dibaca"
     },
-    "sampleMaternity": "Guna surat contoh bersalin"
+    "sampleMaternity": "Guna surat contoh bersalin",
+    "introSg": "Surat penyelesaian ada potongan? Kavach menyemak setiap satu berbanding pelan anda dan peraturan MediShield Life serta Integrated Shield Plan.",
+    "emptyBody": "Jika surat penyelesaian membayar kurang daripada jangkaan, muat naik di sini. Kavach menyemak setiap potongan berbanding polisi.",
+    "sampleSgNote": "Surat contoh hanya ada dalam demo India buat masa ini.",
+    "checked": "Surat yang telah disemak"
   },
   "steps": {
     "read": "Membaca surat penyelesaian",
@@ -61,7 +65,8 @@
     "draft": "Sediakan surat rayuan",
     "review": "Semak surat rayuan",
     "seeLetter": "Lihat surat penyelesaian",
-    "notAdvice": "Kavach menyemak surat ini dengan polisi anda dan peraturan IRDAI. Syarikat insurans yang memutuskan rayuan."
+    "notAdvice": "Kavach menyemak surat ini dengan polisi anda dan peraturan IRDAI. Syarikat insurans yang memutuskan rayuan.",
+    "notAdviceSg": "Kavach menyemak surat ini berbanding pelan anda dan peraturan MediShield Life serta Integrated Shield Plan. Syarikat insurans yang memutuskan rayuan."
   },
   "appeal": {
     "title": "Surat rayuan",

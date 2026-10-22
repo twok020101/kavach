@@ -3,6 +3,7 @@
 import type { Household, Recommendation } from '@kavach/schemas';
 import { useTranslations } from 'next-intl';
 import { useState, type CSSProperties } from 'react';
+import { ListSkeleton, PageHeader, pageTitle, QueryError } from '@/components/app/page-parts';
 import { Amount } from '@/components/kavach/amount';
 import { DisclaimerBar } from '@/components/kavach/disclaimer-bar';
 import { Icon } from '@/components/kavach/icon';
@@ -31,15 +32,29 @@ function PlanView({ household }: { household: Household }) {
   const t = useTranslations('plan.plan');
   const tr = useTranslations('plan.rec');
   const tq = useTranslations('plan.home.quick');
-  const { data: plan } = usePlan(household.id);
+  const tp = useTranslations('plan');
+  const { data: plan, isError, refetch } = usePlan(household.id);
   const [budgetOpen, setBudgetOpen] = useState(false);
   const [item, setItem] = useState<Recommendation>();
   if (!plan) {
     return (
-      <div className="flex flex-col gap-3" aria-busy>
-        <Skeleton className="h-10 w-1/2" />
-        <Skeleton className="h-20" />
-        <Skeleton className="h-20" />
+      <div className="flex flex-col gap-6">
+        <PageHeader title={t('title')} />
+        {isError ? (
+          <QueryError message={tp('error')} retryLabel={tp('retry')} onRetry={() => refetch()} />
+        ) : (
+          <div
+            className="grid grid-cols-1 gap-6 lg:grid-cols-12"
+            aria-busy
+            aria-label={tp('loading')}
+          >
+            <ListSkeleton rows={4} rowClassName="h-28" className="lg:col-span-8" />
+            <div className="flex flex-col gap-6 lg:col-span-4">
+              <Skeleton className="h-44 rounded-lg" />
+              <Skeleton className="h-36 rounded-lg" />
+            </div>
+          </div>
+        )}
       </div>
     );
   }
@@ -73,10 +88,8 @@ function PlanView({ household }: { household: Household }) {
               </>
             )}
           </div>
-          <h1 className="font-display text-[2rem] font-bold leading-10 tracking-tight text-on-surface sm:text-headline-xl">
-            {t('title')}
-          </h1>
-          <p className="mt-1 text-body-md text-on-surface-variant sm:text-body-lg">
+          <h1 className={pageTitle}>{t('title')}</h1>
+          <p className="mt-1 max-w-[70ch] text-body-md text-on-surface-variant sm:text-body-lg">
             {t.rich('uses', {
               spend: () => (
                 <Amount value={plan.monthlySpend} className="font-semibold text-primary" />

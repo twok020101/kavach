@@ -52,13 +52,13 @@ export function CoverGrid({
         <caption className="sr-only">{t('home.mapCaption')}</caption>
         <thead>
           <tr className="border-b border-border text-label-caps uppercase text-on-surface-variant [&:lang(hi)]:normal-case [&:lang(hi)]:tracking-normal">
-            <th scope="col" className="w-[28%] px-1 py-2.5 font-semibold sm:w-[26%] sm:px-2">
+            <th scope="col" className="w-[26%] px-1 py-2.5 font-semibold sm:px-2">
               <span className="sr-only sm:not-sr-only">{t('home.member')}</span>
             </th>
             {shown.map((risk) => (
               <th key={risk} scope="col" className="px-1 py-2.5 text-center font-semibold sm:px-2">
                 {/* Phone: the icon over the word, so ACCIDENT keeps to one line. */}
-                <span className="inline-flex min-w-0 flex-col items-center justify-center gap-0.5 leading-tight [overflow-wrap:anywhere] min-[420px]:flex-row min-[420px]:gap-1">
+                <span className="inline-flex min-w-0 flex-col items-center justify-center gap-0.5 leading-tight tracking-normal break-words min-[420px]:flex-row min-[420px]:tracking-[0.06em] min-[420px]:gap-1">
                   <Icon name={RISK_ICON[risk]} className="text-base" />
                   {t(`risk.${risk}`)}
                 </span>
@@ -79,13 +79,11 @@ export function CoverGrid({
                     className="hidden size-8 text-sm font-semibold sm:inline-flex"
                   />
                   <span className="flex min-w-0 flex-col">
-                    <span className="truncate font-display text-body-md font-semibold text-on-surface sm:text-title-md">
+                    {/* Wraps at the hyphen ("Siew-Hong") rather than cutting the name. */}
+                    <span className="break-words font-display text-body-md font-semibold leading-snug text-on-surface sm:text-title-md">
                       {member.name.split(' ')[0]}
                     </span>
-                    <span
-                      className="truncate font-serif text-citation-sm text-on-surface-variant"
-                      title={`${tc(`relation.${member.relation}`)} · ${member.age}`}
-                    >
+                    <span className="break-words font-serif text-citation-sm text-on-surface-variant">
                       {tc(`relation.${member.relation}`)} · {member.age}
                     </span>
                   </span>
@@ -122,7 +120,7 @@ export function CoverGrid({
                       aria-label={`${member.name}, ${t(`risk.${risk}`)}: ${tc(`status.${c.status}`)}`}
                       aria-pressed={onSelect ? isSelected : undefined}
                       className={cn(
-                        'press inline-flex min-h-12 w-full max-w-44 flex-col items-center justify-center gap-0.5 rounded-md border px-1.5 py-1.5 shadow-1 sm:px-3',
+                        'press inline-flex min-h-12 w-full max-w-44 flex-col items-center justify-center gap-0.5 rounded-md border px-0.5 py-1.5 shadow-1 sm:px-3',
                         look.tone,
                         onSelect &&
                           'transition-shadow hover:shadow-hover focus-visible:ring-2 focus-visible:ring-primary',
@@ -130,12 +128,16 @@ export function CoverGrid({
                         pulseGaps && c.status === 'gap' && 'animate-pulse',
                       )}
                     >
-                      <span className="flex min-w-0 items-center justify-center gap-1 text-xs font-medium leading-tight sm:text-body-sm">
+                      {/* Phone: the icon over the word, so "Covered" keeps to one line. */}
+                      <span className="flex min-w-0 max-w-full flex-col items-center justify-center gap-0.5 text-xs font-medium leading-tight sm:flex-row sm:gap-1 sm:text-body-sm">
                         <Icon name={look.icon} className="text-sm sm:text-[15px]" />
-                        <span aria-hidden className="min-w-0 [overflow-wrap:anywhere] sm:hidden">
+                        <span
+                          aria-hidden
+                          className="max-w-full break-words text-[0.6875rem] sm:hidden [&:lang(ta)]:text-[0.625rem]"
+                        >
                           {tc(`statusShort.${c.status}`)}
                         </span>
-                        <span className="hidden min-w-0 [overflow-wrap:anywhere] sm:inline">
+                        <span className="hidden min-w-0 break-words sm:inline">
                           {tc(`status.${c.status}`)}
                         </span>
                       </span>

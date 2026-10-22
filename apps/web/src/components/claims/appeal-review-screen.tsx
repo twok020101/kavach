@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
+import { ListSkeleton, pageTitle, QueryError } from '@/components/app/page-parts';
 import { Badge } from '@/components/ui/badge';
 import { Button, buttonClasses } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -30,10 +31,12 @@ export function AppealReviewScreen({ cid }: { cid: string }) {
 
 function Review({ household, cid }: { household: Household; cid: string }) {
   const t = useTranslations('claim');
-  const { data: claim, error } = useClaim(household.id, cid);
+  const { data: claim, error, refetch } = useClaim(household.id, cid);
 
-  if (error) return <p className="rounded-md bg-gap-bg p-3 text-gap">{t('error')}</p>;
-  if (!claim) return <p className="text-muted">{t('loading')}</p>;
+  if (error && !claim) {
+    return <QueryError message={t('error')} retryLabel={t('retry')} onRetry={() => refetch()} />;
+  }
+  if (!claim) return <ListSkeleton rows={3} rowClassName="h-28" label={t('loading')} />;
 
   return (
     <div className="flex flex-col gap-5">
@@ -44,7 +47,7 @@ function Review({ household, cid }: { household: Household; cid: string }) {
         <ArrowLeft aria-hidden className="size-4" /> {claim.letter?.patientName ?? t('back')}
       </Link>
       <header className="flex flex-col gap-1">
-        <h1 className="font-display text-2xl font-bold">{t('appeal.title')}</h1>
+        <h1 className={pageTitle}>{t('appeal.title')}</h1>
         {claim.letter && (
           <p className="text-muted">{t('appeal.to', { insurer: claim.letter.insurer })}</p>
         )}

@@ -25,7 +25,7 @@
     "edit": "Edit family and money",
     "editHint": "People, ages, income and spending",
     "demo": "Demo controls",
-    "demoHint": "Jump to a moment of the Sharma family's story",
+    "demoHint": "Jump to a moment in this family's story",
     "timeline": "Timeline",
     "timelineHint": "What happened and what is coming",
     "claims": "Claims",
@@ -89,7 +89,8 @@
       "opted_out": "Stopped",
       "not_joined": "Not joined yet",
       "no_number": "No number"
-    }
+    },
+    "phonePlaceholder": "{market, select, SG {+65 9xxx xxxx} other {+91 98xxx xxxxx}}"
   },
   "timeline": {
     "title": "Timeline",

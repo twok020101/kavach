@@ -4,6 +4,7 @@ import type { Action, Household } from '@kavach/schemas';
 import { ArrowRight, BellRing, FileText } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
+import { ListSkeleton, pageTitle, QueryError } from '@/components/app/page-parts';
 import { Amount } from '@/components/kavach/amount';
 import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
@@ -22,7 +23,8 @@ export function ReplanScreen({ id }: { id: string }) {
 function Replan({ household, id }: { household: Household; id: string }) {
   const t = useTranslations('plan.replan');
   const date = useDate();
-  const { data: record, error } = useLifeChange(household.id, id);
+  const tp = useTranslations('plan');
+  const { data: record, error, refetch } = useLifeChange(household.id, id);
   const { data: actions = [] } = useActions(household.id);
   // The map starts as things stand today and glides to the day the change takes effect.
   const [played, setPlayed] = useState(false);
@@ -31,8 +33,12 @@ function Replan({ household, id }: { household: Household; id: string }) {
     return () => clearTimeout(timer);
   }, []);
 
-  if (error) return <p className="rounded-md bg-gap-bg p-3 text-gap">{t('notFound')}</p>;
-  if (!record) return null;
+  if (error && !record) {
+    return (
+      <QueryError message={t('notFound')} retryLabel={tp('retry')} onRetry={() => refetch()} />
+    );
+  }
+  if (!record) return <ListSkeleton rows={3} rowClassName="h-32" label={tp('loading')} />;
 
   const { diff, before, after, changeSet } = record;
   const lost = diff.cellsChanged.filter((c) => c.after === 'gap').map((c) => c.memberId);
@@ -42,7 +48,7 @@ function Replan({ household, id }: { household: Household; id: string }) {
 
   return (
     <div className="flex flex-col gap-5">
-      <h1 className="font-display text-2xl font-bold">
+      <h1 className={pageTitle}>
         {names.length
           ? t('headline', { date: date(changeSet.effectiveDate), names: names.join(' & ') })
           : t('headlineNone', { date: date(changeSet.effectiveDate) })}

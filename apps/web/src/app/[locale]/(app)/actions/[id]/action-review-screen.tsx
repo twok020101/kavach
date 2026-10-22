@@ -4,6 +4,7 @@ import type { Action, Household } from '@kavach/schemas';
 import { BellRing, Check, Copy, FileDown } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
+import { ListSkeleton, pageTitle, QueryError } from '@/components/app/page-parts';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -21,20 +22,25 @@ function Review({ household, id }: { household: Household; id: string }) {
   const t = useTranslations('plan.review');
   const tr = useTranslations('plan.replan');
   const date = useDate();
-  const { data: action, error } = useAction(household.id, id);
+  const tp = useTranslations('plan');
+  const { data: action, error, refetch } = useAction(household.id, id);
   const decide = useDecideAction(household.id);
   const [copied, setCopied] = useState(false);
   const [pdfFailed, setPdfFailed] = useState(false);
 
-  if (error) return <p className="rounded-md bg-gap-bg p-3 text-gap">{t('notFound')}</p>;
-  if (!action) return null;
+  if (error && !action) {
+    return (
+      <QueryError message={t('notFound')} retryLabel={tp('retry')} onRetry={() => refetch()} />
+    );
+  }
+  if (!action) return <ListSkeleton rows={3} rowClassName="h-32" label={tp('loading')} />;
   const isLetter = action.kind !== 'reminder';
   const draft = action.status === 'draft';
 
   return (
     <div className="flex flex-col gap-4">
       <header className="flex flex-col gap-1">
-        <h1 className="font-display text-2xl font-bold">{action.title}</h1>
+        <h1 className={pageTitle}>{action.title}</h1>
         <div className="flex flex-wrap items-center gap-2 text-sm text-muted">
           {action.dueDate && (
             <Badge tone="partial">{t('due', { date: date(action.dueDate, true) })}</Badge>

@@ -1,11 +1,12 @@
 'use client';
 
 import type { ClaimCase, Household } from '@kavach/schemas';
-import { Camera, ChevronRight, FileUp, Sparkles } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useEffect, useRef, useState } from 'react';
+import { EmptyState, ListSkeleton, PageHeader, QueryError } from '@/components/app/page-parts';
 import { AgentSteps, type AgentStep } from '@/components/kavach/agent-steps';
 import { Amount } from '@/components/kavach/amount';
+import { Icon } from '@/components/kavach/icon';
 import { Badge, type BadgeTone } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Link, useRouter } from '@/i18n/navigation';
@@ -43,39 +44,51 @@ function Claims({ household }: { household: Household }) {
     });
   const onFiles = (files: FileList | null) => files?.[0] && start(files[0]);
   const failed = create.data?.status === 'failed' ? create.data : undefined;
+  // The sample letters belong to the Sharma story: the API moves a demo family to that story
+  // before reading one, so a Singapore family is not offered them.
+  const sg = household.country === 'SG';
 
   return (
-    <div className="flex flex-col gap-6">
-      <header className="flex flex-col gap-1">
-        <h1 className="font-display text-2xl font-bold">{t('list.title')}</h1>
-        <p className="text-muted">{t('list.intro')}</p>
-      </header>
+    <div className="flex max-w-4xl flex-col gap-6">
+      <PageHeader title={t('list.title')} intro={sg ? t('list.introSg') : t('list.intro')} />
 
       {create.isPending ? (
         <ReadingSteps />
       ) : (
-        <section className="flex flex-col items-center gap-3 rounded-lg border-2 border-dashed border-border-strong bg-surface p-6 text-center">
-          <FileUp aria-hidden className="size-8 text-muted" />
-          <p className="font-medium">{t('list.drop')}</p>
-          <div className="flex flex-wrap justify-center gap-2">
-            <Button onClick={() => fileInput.current?.click()}>{t('list.choose')}</Button>
+        <section className="flex flex-col items-center gap-4 rounded-lg border-2 border-dashed border-outline-variant bg-surface px-5 py-8 text-center sm:py-10">
+          <span className="flex size-12 items-center justify-center rounded-md bg-surface-container-high text-primary">
+            <Icon name="upload_file" className="text-2xl" />
+          </span>
+          <p className="font-display text-title-md text-on-surface">{t('list.drop')}</p>
+          <div className="flex w-full flex-col justify-center gap-2 sm:w-auto sm:flex-row">
+            <Button onClick={() => fileInput.current?.click()}>
+              <Icon name="attach_file" className="text-xl" />
+              {t('list.choose')}
+            </Button>
             <Button variant="secondary" onClick={() => cameraInput.current?.click()}>
-              <Camera aria-hidden className="size-5" />
+              <Icon name="photo_camera" className="text-xl" />
               {t('list.photo')}
             </Button>
           </div>
-          <div className="flex flex-wrap justify-center gap-2">
-            <Button variant="ghost" onClick={() => start()}>
-              <Sparkles aria-hidden className="size-5" />
-              {t('list.sample')}
-            </Button>
-            {household.isDemo && (
-              <Button variant="ghost" onClick={() => start('maternity')}>
-                <Sparkles aria-hidden className="size-5" />
-                {t('list.sampleMaternity')}
+          {sg ? (
+            <p className="flex items-center gap-1.5 font-serif text-citation-sm text-on-surface-variant">
+              <Icon name="info" className="text-sm" />
+              {t('list.sampleSgNote')}
+            </p>
+          ) : (
+            <div className="flex flex-wrap justify-center gap-x-2 border-t border-border pt-3">
+              <Button variant="ghost" size="sm" onClick={() => start()}>
+                <Icon name="auto_awesome" className="text-lg" />
+                {t('list.sample')}
               </Button>
-            )}
-          </div>
+              {household.isDemo && (
+                <Button variant="ghost" size="sm" onClick={() => start('maternity')}>
+                  <Icon name="auto_awesome" className="text-lg" />
+                  {t('list.sampleMaternity')}
+                </Button>
+              )}
+            </div>
+          )}
           <input
             ref={fileInput}
             type="file"
@@ -95,19 +108,33 @@ function Claims({ household }: { household: Household }) {
       )}
 
       {(create.isError || failed) && (
-        <p className="rounded-md bg-gap-bg p-3 text-gap">
+        <p role="alert" className="rounded-md bg-gap-bg p-3 text-body-md text-gap">
           {failed ? t('list.failed', { reason: failed.error ?? '' }) : t('error')}
         </p>
       )}
 
-      {claims.data && claims.data.length === 0 && !create.isPending && (
-        <p className="text-muted">{t('list.empty')}</p>
-      )}
-      <ul className="flex flex-col gap-3">
-        {claims.data?.map((claim) => (
-          <ClaimRow key={claim.id} claim={claim} />
-        ))}
-      </ul>
+      <section aria-labelledby="checked" className="flex flex-col gap-3">
+        <h2 id="checked" className="px-1 font-display text-headline-sm text-on-surface">
+          {t('list.checked')}
+        </h2>
+        {claims.isError && !claims.data ? (
+          <QueryError
+            message={t('error')}
+            retryLabel={t('retry')}
+            onRetry={() => claims.refetch()}
+          />
+        ) : !claims.data ? (
+          <ListSkeleton rows={2} label={t('loading')} />
+        ) : claims.data.length === 0 ? (
+          <EmptyState icon="receipt_long" title={t('list.empty')} body={t('list.emptyBody')} />
+        ) : (
+          <ul className="flex flex-col gap-3">
+            {claims.data.map((claim) => (
+              <ClaimRow key={claim.id} claim={claim} />
+            ))}
+          </ul>
+        )}
+      </section>
     </div>
   );
 }
@@ -134,36 +161,42 @@ function ClaimRow({ claim }: { claim: ClaimCase }) {
     <li>
       <Link
         href={`/claims/${claim.id}`}
-        className="flex flex-col gap-2 rounded-md border border-border bg-surface p-4 hover:border-primary"
+        className="group lift press flex items-start gap-4 rounded-lg border border-border bg-surface p-4 shadow-1 hover:border-primary/50 sm:p-5"
       >
-        <div className="flex items-start justify-between gap-2">
-          <div className="min-w-0">
-            <p className="font-semibold">
+        <span className="flex size-11 shrink-0 items-center justify-center rounded-md bg-surface-container-low text-primary">
+          <Icon name="receipt_long" className="text-[22px]" />
+        </span>
+        <span className="flex min-w-0 flex-1 flex-col gap-2">
+          <span className="flex min-w-0 flex-col">
+            <span className="font-display text-title-md text-on-surface">
               {letter ? `${letter.patientName} · ${letter.hospitalName}` : claim.id}
-            </p>
+            </span>
             {letter && (
-              <p className="text-sm text-muted">
+              <span className="text-body-sm text-on-surface-variant">
                 {letter.insurer} · {t('claimNo', { number: letter.claimNumber })}
-              </p>
-            )}
-          </div>
-          <ChevronRight aria-hidden className="size-5 shrink-0 text-muted" />
-        </div>
-        <div className="flex flex-wrap items-center gap-2">
-          <Badge tone={STATUS_TONE[claim.status]} className="text-xs">
-            {t(`status.${claim.status}`)}
-          </Badge>
-          {assessment &&
-            (assessment.recoverable > 0 ? (
-              <span className="text-sm font-semibold text-gap">
-                {t.rich('recoverable', {
-                  amount: () => <Amount value={assessment.recoverable} />,
-                })}
               </span>
-            ) : (
-              <span className="text-sm text-muted">{t('nothing')}</span>
-            ))}
-        </div>
+            )}
+          </span>
+          <span className="flex flex-wrap items-center gap-2">
+            <Badge tone={STATUS_TONE[claim.status]} className="text-xs">
+              {t(`status.${claim.status}`)}
+            </Badge>
+            {assessment &&
+              (assessment.recoverable > 0 ? (
+                <span className="text-body-sm font-semibold text-gap">
+                  {t.rich('recoverable', {
+                    amount: () => <Amount value={assessment.recoverable} />,
+                  })}
+                </span>
+              ) : (
+                <span className="text-body-sm text-on-surface-variant">{t('nothing')}</span>
+              ))}
+          </span>
+        </span>
+        <Icon
+          name="chevron_right"
+          className="nudge mt-2 shrink-0 text-2xl text-outline group-hover:text-primary"
+        />
       </Link>
     </li>
   );

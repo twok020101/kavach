@@ -1,5 +1,6 @@
 'use client';
 
+import { sgTerms } from '@kavach/engine';
 import type { Household, Member, Policy } from '@kavach/schemas';
 import { clsx } from 'clsx';
 import { useTranslations } from 'next-intl';
@@ -140,14 +141,13 @@ function Stat({
   const shown = useCountOnce(n, 700);
   return (
     <div
-      className={cn(
-        'flex flex-col items-center gap-1 rounded-md border px-1.5 py-2.5',
-        tones[tone],
-      )}
+      className={cn('flex flex-col items-center gap-1 rounded-md border px-1 py-2.5', tones[tone])}
     >
-      <dt className="flex min-w-0 flex-wrap items-center justify-center gap-1 text-center text-label-caps uppercase [overflow-wrap:anywhere] [&:lang(hi)]:normal-case [&:lang(hi)]:tracking-normal">
+      {/* The icon over the word: a long Malay label (SEBAHAGIAN) keeps the tile's full width and
+          never breaks mid-word. */}
+      <dt className="flex min-w-0 flex-col items-center justify-center gap-0.5 text-center text-label-caps uppercase tracking-[0.03em] [&:lang(hi)]:normal-case [&:lang(hi)]:tracking-normal [&:lang(ta)]:text-[0.625rem] [&:lang(ta)]:tracking-normal">
         <Icon name={icon} className="text-sm" />
-        {label}
+        <span className="max-w-full break-words">{label}</span>
       </dt>
       <dd className="text-numeral-md font-bold tabular-nums">
         <span className="sr-only">{n}</span>
@@ -244,24 +244,30 @@ export function QuickActions({
       <ul className="stagger grid gap-3 sm:grid-cols-3 sm:gap-4">
         {items.map(({ href, icon, label, hint }, i) => (
           <li key={href} style={{ '--i': i + 4 } as CSSProperties}>
+            {/* Phone: one row (tile, words, arrow). Three across: the tile and the arrow on top,
+                so the words get the card's full width instead of a narrow column. */}
             <Link
               href={href}
-              className="group lift press flex h-full min-h-20 items-start justify-between gap-3 rounded-lg border border-border bg-surface p-4 shadow-1 hover:border-primary/50"
+              className="group lift press flex h-full min-h-20 items-start gap-3 rounded-lg border border-border bg-surface p-4 shadow-1 hover:border-primary/50 sm:flex-col sm:p-5"
             >
-              <span className="flex min-w-0 items-start gap-3">
+              <span className="flex shrink-0 items-center justify-between sm:w-full">
                 <span className="flex size-10 shrink-0 items-center justify-center rounded-md bg-surface-container-high text-primary transition-colors group-hover:bg-primary group-hover:text-on-primary">
                   <Icon name={icon} className="text-xl" />
                 </span>
-                <span className="flex min-w-0 flex-col">
-                  <span className="font-display text-title-md leading-snug text-on-surface">
-                    {label}
-                  </span>
-                  <span className="mt-0.5 text-body-sm text-on-surface-variant">{hint}</span>
+                <Icon
+                  name="arrow_forward"
+                  className="nudge hidden text-xl text-on-surface-variant group-hover:text-primary sm:block"
+                />
+              </span>
+              <span className="flex min-w-0 flex-1 flex-col">
+                <span className="font-display text-title-md leading-snug text-on-surface">
+                  {label}
                 </span>
+                <span className="mt-0.5 text-body-sm text-on-surface-variant">{hint}</span>
               </span>
               <Icon
                 name="arrow_forward"
-                className="nudge mt-1 text-xl text-on-surface-variant group-hover:text-primary"
+                className="nudge mt-1 shrink-0 text-xl text-on-surface-variant group-hover:text-primary sm:hidden"
               />
             </Link>
           </li>
@@ -387,6 +393,8 @@ export function ReadyPanel({ household, asOf }: { household: Household; asOf: st
             covering.find((p) => p.source === 'employer') ??
             covering[0];
           const limit = first?.terms.roomRentLimitPerDay;
+          // Singapore: no room-rent limit, but the ward to ask for (the plan's entitlement).
+          const ward = first && sgTerms(first)?.wardEntitlement;
           const name = m.name.split(' ')[0] ?? m.name;
           return (
             <li
@@ -398,7 +406,12 @@ export function ReadyPanel({ household, asOf }: { household: Household; asOf: st
                 {first ? (
                   <>
                     {t.rich('line', { name, policy: nick(first, household, t), b })}
-                    {limit ? (
+                    {ward ? (
+                      <span className="text-on-surface-variant">
+                        {' · '}
+                        {t('wardAsk', { ward })}
+                      </span>
+                    ) : limit ? (
                       <span className="text-on-surface-variant">
                         {' · '}
                         {t('limit', { limit: money(limit) })}

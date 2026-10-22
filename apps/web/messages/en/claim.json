@@ -23,7 +23,11 @@
       "resolved": "Resolved",
       "failed": "Not read"
     },
-    "sampleMaternity": "Use the maternity sample letter"
+    "sampleMaternity": "Use the maternity sample letter",
+    "introSg": "Got a settlement letter with deductions? Kavach checks each one against your plan and the MediShield Life and Integrated Shield Plan rules.",
+    "emptyBody": "When a settlement letter pays less than you expected, upload it here. Kavach checks every deduction against the policy.",
+    "sampleSgNote": "The sample letters are only in the India demo for now.",
+    "checked": "Letters checked"
   },
   "steps": {
     "read": "Reading the settlement letter",
@@ -61,7 +65,8 @@
     "draft": "Draft the appeal letter",
     "review": "Review the appeal letter",
     "seeLetter": "See the settlement letter",
-    "notAdvice": "Kavach checks the letter against your policy and IRDAI rules. The insurer decides the appeal."
+    "notAdvice": "Kavach checks the letter against your policy and IRDAI rules. The insurer decides the appeal.",
+    "notAdviceSg": "Kavach checks the letter against your plan and the MediShield Life and Integrated Shield Plan rules. The insurer decides the appeal."
   },
   "appeal": {
     "title": "Appeal letter",

@@ -3,8 +3,8 @@
 import type { Household } from '@kavach/schemas';
 import { useTranslations } from 'next-intl';
 import type { ReactNode } from 'react';
+import { QueryError } from '@/components/app/page-parts';
 import { AppShell } from '@/components/kavach/app-shell';
-import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { CountryProvider } from '@/lib/country';
 import { useHousehold } from '@/lib/household';
@@ -20,12 +20,7 @@ export function PlanFrame({ children }: { children: (household: Household) => Re
     <CountryProvider country={household?.country}>
       <AppShell householdName={household?.name}>
         {error ? (
-          <div className="flex flex-col items-start gap-3">
-            <p className="rounded-md bg-gap-bg p-4 text-gap">{t('error')}</p>
-            <Button variant="secondary" onClick={() => refetch()}>
-              {t('retry')}
-            </Button>
-          </div>
+          <QueryError message={t('error')} retryLabel={t('retry')} onRetry={() => refetch()} />
         ) : household && !switching ? (
           children(household)
         ) : (

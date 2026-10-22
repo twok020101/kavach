@@ -25,7 +25,7 @@
     "edit": "Sunting keluarga dan kewangan",
     "editHint": "Orang, umur, pendapatan dan perbelanjaan",
     "demo": "Kawalan demo",
-    "demoHint": "Lompat ke satu saat dalam cerita keluarga Sharma",
+    "demoHint": "Lompat ke satu saat dalam cerita keluarga ini",
     "timeline": "Garis masa",
     "timelineHint": "Apa yang berlaku dan apa yang akan datang",
     "claims": "Tuntutan",
@@ -89,7 +89,8 @@
       "opted_out": "Dihentikan",
       "not_joined": "Belum menyertai",
       "no_number": "Tiada nombor"
-    }
+    },
+    "phonePlaceholder": "{market, select, SG {+65 9xxx xxxx} other {+91 98xxx xxxxx}}"
   },
   "timeline": {
     "title": "Garis masa",
