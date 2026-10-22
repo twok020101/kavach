@@ -341,6 +341,9 @@ function nick(p: Policy, household: Household, t: (k: string) => string) {
     covered.length > 0 &&
     covered.every((m) => m.relation === 'parent' || m.relation === 'parent_in_law');
   if (p.kind === 'super_top_up') return t('nick.topup');
+  // Singapore cover goes by its own name at the desk, whoever it covers.
+  if (p.kind === 'integrated_shield') return t('nick.shield');
+  if (p.kind === 'medishield_life') return t('nick.medishield');
   if (parentsOnly) return t('nick.parents');
   if (p.source === 'employer') return t('nick.company');
   return t('nick.own');
@@ -377,7 +380,12 @@ export function ReadyPanel({ household, asOf }: { household: Household; asOf: st
               p.endDate >= asOf &&
               p.kind !== 'super_top_up',
           );
-          const first = covering.find((p) => p.source === 'employer') ?? covering[0];
+          // In Singapore the Shield plan card goes first (MediShield Life is part of it), as the
+          // desk engine orders them; in India the employer's policy does.
+          const first =
+            covering.find((p) => p.kind === 'integrated_shield') ??
+            covering.find((p) => p.source === 'employer') ??
+            covering[0];
           const limit = first?.terms.roomRentLimitPerDay;
           const name = m.name.split(' ')[0] ?? m.name;
           return (

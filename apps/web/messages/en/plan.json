@@ -95,7 +95,9 @@
         "company": "company policy",
         "parents": "parents’ policy",
         "topup": "top-up policy",
-        "own": "own policy"
+        "own": "own policy",
+        "shield": "Shield plan",
+        "medishield": "MediShield Life"
       },
       "none": "No health policy covers {name} today."
     },

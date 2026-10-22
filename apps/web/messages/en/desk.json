@@ -114,7 +114,12 @@
       "R-HL-008": "Room rent above the limit",
       "R-MT-001": "Above the maternity limit",
       "R-MT-001-none": "No maternity benefit",
-      "R-MT-002": "Maternity waiting period not over"
+      "R-MT-002": "Maternity waiting period not over",
+      "R-SG-001": "Not claimable in this ward (MediShield Life pro-ration)",
+      "R-SG-003": "Deductible",
+      "R-SG-004": "Co-insurance",
+      "R-SG-005": "Not claimable above the plan’s ward",
+      "R-SG-006": "Co-payment with the rider"
     },
     "advice": {
       "eyebrow": "Kavach’s room advice",
@@ -175,7 +180,15 @@
         "R-HL-010": "Billing type not known yet",
         "R-HL-014": "Package price per room",
         "R-MT-001": "Maternity limit",
-        "R-MT-002": "Maternity waiting period"
+        "R-MT-002": "Maternity waiting period",
+        "R-SG-001": "MediShield Life pro-ration by ward",
+        "R-SG-002": "Daily ward and ICU limits",
+        "R-SG-003": "Deductible once a policy year",
+        "R-SG-004": "Co-insurance on the claimable amount",
+        "R-SG-005": "The plan pays as charged within its ward",
+        "R-SG-006": "Rider co-payment and its yearly cap",
+        "R-SG-007": "Policy-year limit",
+        "R-SG-010": "Panel specialist not known yet"
       },
       "details": "See each rule’s working"
     },
