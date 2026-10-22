@@ -336,7 +336,7 @@ export async function ElderSection({ market, chat }: { market: Country; chat: El
                 >
                   <p className="flex items-center gap-2 text-xs font-bold text-error">
                     <Icon name="warning" className="text-base" />
-                    {t('replyWarn')}
+                    {t('replyWarn', wards)}
                   </p>
                   <p className="text-body-sm">
                     {t('replyBody', { limit: inr(chat.limit ?? 0), cut: inr(chat.cut), ...wards })}

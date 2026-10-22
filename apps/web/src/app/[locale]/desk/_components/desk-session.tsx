@@ -445,14 +445,16 @@ export function DeskSessionScreen({
         demoScene={demo ? (scene ?? 'hospital') : undefined}
         members={members}
         action={
+          // On a phone the five-language switch takes the room: End is its × alone (named for
+          // screen readers), 48px square.
           <Button
             variant="ghost"
             size="sm"
-            className="text-gap hover:bg-gap-bg"
+            className="min-w-12 px-0 text-gap hover:bg-gap-bg sm:px-3"
             loading={end.isPending}
             onClick={() => end.mutate()}
           >
-            {t('end')}
+            <span className="sr-only sm:not-sr-only">{t('end')}</span>
             <Icon name="close" className="text-xl" />
           </Button>
         }

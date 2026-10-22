@@ -49,14 +49,15 @@ export async function LandingNav({ market }: { market: Country }) {
           <span className="flex size-10 items-center justify-center rounded-md bg-white p-0.5 shadow-1">
             <LogoMark className="size-9" />
           </span>
-          <span className="flex flex-col">
+          {/* Under 400px the five-language switch needs the room: the mark alone links home. */}
+          <span className="hidden flex-col min-[400px]:flex">
             <span className="flex items-center gap-2">
               <span className="font-display text-headline-sm font-bold tracking-tight text-primary">
                 Kavach
               </span>
               <span
                 lang="hi"
-                className="rounded-sm border border-surface-container-high bg-surface-container px-2 py-0.5 font-display text-xs font-bold text-primary"
+                className="hidden rounded-sm border border-surface-container-high bg-surface-container px-2 py-0.5 font-display text-xs font-bold text-primary sm:inline"
               >
                 कवच
               </span>
@@ -88,18 +89,19 @@ export async function LandingNav({ market }: { market: Country }) {
           >
             {t('nav.signIn')}
           </Link>
+          {/* On a phone the hospital way in is the icon alone (its name stays for screen readers). */}
           <Link
             href="/desk"
-            className="btn-solid btn-accent flex min-h-11 items-center gap-2 rounded-md bg-accent px-3 text-title-md font-bold text-accent-ink hover:bg-accent-hover sm:px-4"
+            className="btn-solid btn-accent flex min-h-11 min-w-11 items-center justify-center gap-2 rounded-md bg-accent px-2 text-title-md font-bold text-accent-ink hover:bg-accent-hover sm:px-4"
           >
-            <span
-              aria-hidden
-              className="live-dot"
-              style={{ '--live': 'var(--m3-secondary)' } as React.CSSProperties}
-            />
-            <Icon name="local_hospital" fill className="hidden text-lg sm:inline-block" />
-            <span className="sm:hidden">{t('nav.atHospitalShort')}</span>
-            <span className="hidden sm:inline">{t('nav.atHospital')}</span>
+            <span aria-hidden className="hidden sm:inline-flex">
+              <span
+                className="live-dot"
+                style={{ '--live': 'var(--m3-secondary)' } as React.CSSProperties}
+              />
+            </span>
+            <Icon name="local_hospital" fill className="text-xl sm:text-lg" />
+            <span className="sr-only sm:not-sr-only">{t('nav.atHospital')}</span>
           </Link>
         </div>
       </div>
