@@ -1,15 +1,18 @@
-# Firebase App Hosting config for the web app.
+# Firebase App Hosting config for the web app (backend kavach-web, asia-southeast1:
+# App Hosting has no asia-south1).
 runConfig:
   minInstances: 1
   maxInstances: 4
 env:
   - variable: NEXT_PUBLIC_API_URL
-    value: https://kavach-api-REPLACE.a.run.app
+    value: https://kavach-api-783681099394.asia-south1.run.app
   - variable: NEXT_PUBLIC_FIREBASE_API_KEY
     secret: firebase-web-api-key
   - variable: NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN
-    value: REPLACE.firebaseapp.com
+    value: kavach-bfsi.firebaseapp.com
   - variable: NEXT_PUBLIC_FIREBASE_PROJECT_ID
-    value: REPLACE
+    value: kavach-bfsi
   - variable: NEXT_PUBLIC_FIREBASE_APP_ID
-    value: REPLACE
+    value: 1:783681099394:web:3e0738151cd2999d72069b
+  - variable: NEXT_PUBLIC_TWILIO_SANDBOX_NUMBER
+    value: "+14155238886"

@@ -111,7 +111,12 @@ export async function recordSpokenEstimate(
 }
 
 /** A text turn: a question, the answer to the desk question, or a corrected estimate. */
-export async function takeTurn(household: Household, sid: string, body: DeskTurnBody) {
+export async function takeTurn(
+  household: Household,
+  sid: string,
+  body: DeskTurnBody,
+  opts: { lockLanguage?: boolean } = {},
+) {
   const session = await activeSession(household, sid);
   const estimate = body.estimate ?? session.estimate;
   const billingTypeAnswer = body.billingTypeAnswer ?? session.billingTypeAnswer;
@@ -126,6 +131,7 @@ export async function takeTurn(household: Household, sid: string, body: DeskTurn
       followUp: Boolean(session.lastQuestion && session.lastAnswer?.cards.length),
     },
     body.language ?? session.language,
+    opts,
   );
   const updated: DeskSession = {
     ...session,

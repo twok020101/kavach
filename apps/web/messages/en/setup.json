@@ -8,6 +8,7 @@
     "title": "Your family's insurance, in one place",
     "intro": "Sign in to keep your family's cover, documents and plan safe and in sync.",
     "google": "Continue with Google",
+    "googleOff": "Google sign-in is switched off in this hackathon prototype. Continue without an account to try everything.",
     "guest": "Continue without an account",
     "guestNote": "We keep your family on this device. You can add an account later.",
     "localMode": "Local mode: sign-in is switched off, so you'll go straight in.",

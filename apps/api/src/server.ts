@@ -40,7 +40,10 @@ export async function buildServer() {
   app.setSerializerCompiler(serializerCompiler);
 
   await app.register(cors, {
-    origin: [env.PUBLIC_WEB_URL],
+    origin: [
+      env.PUBLIC_WEB_URL,
+      ...(env.EXTRA_WEB_ORIGINS?.split(',').map((o) => o.trim()).filter(Boolean) ?? []),
+    ],
     credentials: true,
     methods: ['GET', 'HEAD', 'POST', 'PUT', 'PATCH', 'DELETE'],
   });

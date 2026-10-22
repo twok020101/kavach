@@ -8,7 +8,7 @@ import { SetupFrame } from '@/components/setup/setup-frame';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { useRouter } from '@/i18n/navigation';
-import { firebaseEnabled, signInAsGuest, signInWithGoogle } from '@/lib/firebase';
+import { firebaseEnabled, signInAsGuest } from '@/lib/firebase';
 import { startDemo } from '@/lib/session';
 import { acceptInvite, useInvitePreview } from '@/lib/setup';
 import { useQueryClient } from '@tanstack/react-query';
@@ -26,11 +26,11 @@ export function SignInScreen({ invite }: { invite: string | null }) {
   const queryClient = useQueryClient();
   const preview = useInvitePreview(invite);
 
-  // Signing in, then: join the inviting family, or start setting up your own.
+  // Signing in, then: join the inviting family, or start setting up your own. Google sign-in
+  // is off in this hackathon prototype; the guest login (kept on this device) is the way in.
   const signIn = useMutation({
-    mutationFn: async (how: 'google' | 'guest') => {
-      if (how === 'google') await signInWithGoogle();
-      else await signInAsGuest();
+    mutationFn: async () => {
+      await signInAsGuest();
       if (invite) {
         await acceptInvite(invite);
         queryClient.clear();
@@ -50,23 +50,8 @@ export function SignInScreen({ invite }: { invite: string | null }) {
 
   const buttons = (
     <div className="flex flex-col gap-3">
-      {firebaseEnabled && (
-        <Button
-          size="lg"
-          loading={signIn.isPending && signIn.variables === 'google'}
-          onClick={() => signIn.mutate('google')}
-        >
-          <GoogleMark />
-          {invite ? t('join') : t('google')}
-        </Button>
-      )}
-      <Button
-        size="lg"
-        variant={firebaseEnabled ? 'secondary' : 'primary'}
-        loading={signIn.isPending && signIn.variables === 'guest'}
-        onClick={() => signIn.mutate('guest')}
-      >
-        {invite && !firebaseEnabled ? t('join') : firebaseEnabled ? t('guest') : ts('continue')}
+      <Button size="lg" loading={signIn.isPending} onClick={() => signIn.mutate()}>
+        {invite ? t('join') : firebaseEnabled ? t('guest') : ts('continue')}
         <ArrowRight aria-hidden className="btn-arrow size-5" />
       </Button>
       {/* The note on how you get in: a quiet row with its icon, never a bare line. */}
@@ -74,6 +59,18 @@ export function SignInScreen({ invite }: { invite: string | null }) {
         <Info aria-hidden className="mt-0.5 size-4 shrink-0" />
         <span>{firebaseEnabled ? t('guestNote') : t('localMode')}</span>
       </p>
+      {firebaseEnabled && (
+        <div className="flex flex-col gap-1.5">
+          {/* Shown, not hidden, so it is clear the account option exists but is off for now. */}
+          <Button size="lg" variant="secondary" disabled aria-describedby="google-off">
+            <GoogleMark />
+            {t('google')}
+          </Button>
+          <p id="google-off" className="text-sm text-muted">
+            {t('googleOff')}
+          </p>
+        </div>
+      )}
       {signIn.isError && (
         <p role="alert" className="panel panel-gap text-gap">
           {ts('error')}

@@ -15,8 +15,11 @@ import { deskTools } from './tools';
 /** Judging cap per live session (red-team-response §3); after it the desk goes to text mode. */
 const MAX_SESSION_MS = 5 * 60_000;
 
-/** Per desk session, kept across browser reconnects: the resumption handle and the start time. */
-const resumable = new Map<string, { handle?: string; startedAt: number }>();
+/**
+ * Per desk session, kept across browser reconnects: the resumption handle, the language that
+ * model session was speaking, and the start time.
+ */
+const resumable = new Map<string, { handle?: string; language?: Locale; startedAt: number }>();
 
 /**
  * One browser socket ⇄ one live model session. Knows nothing about Fastify or the store:
@@ -37,6 +40,11 @@ export async function openLiveBridge(opts: {
 
   const state = resumable.get(sessionId) ?? { startedAt: Date.now() };
   resumable.set(sessionId, state);
+  // Switching language reloads the page, and the new socket would resume the old model session,
+  // which keeps answering in the language it started in. Start a fresh one instead: the estimate
+  // and the answers live in the desk session, so nothing the family did is lost.
+  if (state.language && state.language !== language) state.handle = undefined;
+  state.language = language;
 
   function fail(code: LiveErrorCode, reason?: string) {
     if (ended) return;
@@ -97,6 +105,7 @@ export async function openLiveBridge(opts: {
       case 'hello':
         if (message.language && message.language !== language) {
           language = message.language;
+          state.language = language;
           backend.setLanguage(language);
         }
         return;
@@ -112,6 +121,7 @@ export async function openLiveBridge(opts: {
         return backend.billingAnswer(message.billingType);
       case 'setLanguage':
         language = message.language;
+        state.language = language;
         return backend.setLanguage(language);
       case 'ping':
         return send({ type: 'pong' });

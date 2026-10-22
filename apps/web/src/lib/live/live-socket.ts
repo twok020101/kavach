@@ -1,4 +1,9 @@
-import { LiveServerMessage, type LiveClientMessage, type LiveErrorCode } from '@kavach/schemas';
+import {
+  LiveServerMessage,
+  type LiveClientMessage,
+  type LiveErrorCode,
+  type Locale,
+} from '@kavach/schemas';
 import { apiUrl } from '../api';
 import { getIdToken } from '../firebase';
 import { loadCurrentHousehold } from '../household';
@@ -28,7 +33,7 @@ export class LiveSocket {
 
   constructor(
     private readonly sessionId: string,
-    private readonly language: string,
+    private language: string,
     private readonly on: LiveSocketEvents,
   ) {}
 
@@ -64,6 +69,13 @@ export class LiveSocket {
       this.on.reconnecting(this.attempt);
       setTimeout(() => void this.connect().catch(() => this.giveUp('connection_lost')), wait);
     };
+  }
+
+  /** The family switched language: tell the live session, and reconnect in the new one. */
+  setLanguage(language: Locale) {
+    if (language === this.language) return;
+    this.language = language;
+    this.send({ type: 'setLanguage', language });
   }
 
   send(message: LiveClientMessage) {
