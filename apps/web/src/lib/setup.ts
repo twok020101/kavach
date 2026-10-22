@@ -15,10 +15,12 @@ import {
   Timeline,
 } from '@kavach/schemas';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useLocale } from 'next-intl';
 import { z } from 'zod';
 import { api, apiUrl } from './api';
 import { getIdToken } from './firebase';
 import { householdQueryKey } from './household';
+import { marketForLocale } from './market';
 import { rememberHouseholdId, rememberMemberId } from './session';
 
 const call = async <S extends z.ZodType>(
@@ -44,10 +46,12 @@ function useHouseholdMutation<V>(fn: (vars: V) => Promise<Household>) {
 
 /** S03: creates the family's household with their consent, and makes it this browser's household. */
 export function useCreateHousehold() {
+  // A family setting up in Mandarin or Malay is a Singapore family (S$, Shield plans).
+  const country = marketForLocale(useLocale() as Locale) ?? 'IN';
   return useHouseholdMutation(async (consents: ConsentPurpose[]) => {
     const household = await call('/v1/households', Household, {
       method: 'POST',
-      json: { consents },
+      json: { consents, country },
     });
     rememberHouseholdId(household.id);
     return household;

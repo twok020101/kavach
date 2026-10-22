@@ -48,7 +48,7 @@ export const setupRoutes: FastifyPluginAsyncZod = async (app) => {
         id: `hh_${randomUUID()}`,
         name: request.body.name ?? 'My family',
         city: '',
-        country: 'IN',
+        country: request.body.country ?? 'IN',
         members: [],
         policies: [],
         assets: [],
