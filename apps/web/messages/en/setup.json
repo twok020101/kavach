@@ -67,8 +67,8 @@
     }
   },
   "launch": {
-    "homeTitle": "Protection active",
-    "homeBody": "Your family's policies are ready.",
+    "homeTitle": "Kavach is ready",
+    "homeBody": "Your family's policies are read and ready to check.",
     "homePill": "Opening your dashboard",
     "otherPill": "Opening Kavach",
     "setupTitle": "You're signed in",

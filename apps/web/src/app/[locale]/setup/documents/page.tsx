@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 import { useRef, useState } from 'react';
 import { useAddSamples, useDocuments, useUploadDocuments } from '@/components/documents/api';
 import { DocumentCard } from '@/components/documents/DocumentCard';
+import { SetupFrame } from '@/components/setup/setup-frame';
 import { Button, buttonClasses } from '@/components/ui/button';
 import { cn } from '@/components/ui/cn';
 import { Link } from '@/i18n/navigation';
@@ -27,21 +28,25 @@ export default function DocumentsSetupPage() {
   const hasSamples = documents.data?.some((d) => d.isSample);
 
   return (
-    <main className="mx-auto flex min-h-dvh max-w-xl flex-col gap-6 px-4 py-6">
-      <header className="flex flex-col gap-2">
-        <p className="text-sm font-medium text-muted">{t('setup.step')}</p>
-        <div className="flex gap-1" aria-hidden>
-          {[1, 2, 3, 4].map((n) => (
-            <span
-              key={n}
-              className={cn('h-1.5 flex-1 rounded-full', n <= 3 ? 'bg-primary' : 'bg-border')}
-            />
-          ))}
+    <SetupFrame
+      step={3}
+      back="/setup/money"
+      title={t('setup.title')}
+      intro={t('setup.intro')}
+      footer={
+        <div className="flex w-full items-center justify-between gap-3">
+          <span className="text-sm text-muted">
+            {t('setup.none')}{' '}
+            <Link href="/setup/questions" className="font-medium text-primary underline">
+              {t('setup.skip')}
+            </Link>
+          </span>
+          <Link href="/setup/questions" className={buttonClasses()}>
+            {t('setup.continue')}
+          </Link>
         </div>
-        <h1 className="font-display text-2xl font-bold">{t('setup.title')}</h1>
-        <p className="text-muted">{t('setup.intro')}</p>
-      </header>
-
+      }
+    >
       {error && (
         <p className="rounded-md bg-gap-bg p-3 text-gap">
           {t('error')}{' '}
@@ -130,18 +135,6 @@ export default function DocumentsSetupPage() {
           ))}
         </div>
       )}
-
-      <footer className="mt-auto flex items-center justify-between gap-3 border-t border-border pt-4">
-        <span className="text-sm text-muted">
-          {t('setup.none')}{' '}
-          <Link href="/setup/questions" className="font-medium text-primary underline">
-            {t('setup.skip')}
-          </Link>
-        </span>
-        <Link href="/setup/questions" className={buttonClasses()}>
-          {t('setup.continue')}
-        </Link>
-      </footer>
-    </main>
+    </SetupFrame>
   );
 }

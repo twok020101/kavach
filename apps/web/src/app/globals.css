@@ -101,8 +101,8 @@
   --accent-ink: #12141c;
   --accent-soft: #3a2a10;
   --accent-hover: #e99b1c;
-  --base-primary: #5668b3;
-  --base-accent: #a86a08;
+  --base-primary: rgba(0, 0, 0, 0.45);
+  --base-accent: rgba(0, 0, 0, 0.45);
   --status-safe: #5bc48a;
   --status-safe-bg: #173326;
   --status-partial: #f0b44c;

@@ -492,7 +492,10 @@ export function DeskSessionScreen({
                 billRef={bill}
               />
               {estimate && evaluation.data && !capture.isPending && (
-                <AdviceCompare result={evaluation.data.primary} />
+                <AdviceCompare
+                  result={evaluation.data.primary}
+                  quotedRoomId={estimate.roomCategories[0]?.id}
+                />
               )}
               {evaluation.data && <RulesCard evaluation={evaluation.data} estimate={estimate} />}
               {readable && (

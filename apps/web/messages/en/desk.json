@@ -116,7 +116,10 @@
       "eyebrow": "Kavach’s room advice",
       "lead": "From {from} to {to}",
       "saves": "The family saves",
+      "savesVsCostliest": "Less than the costliest room",
       "without": "Without Kavach’s advice",
+      "costliest": "Costliest room",
+      "quoted": "The estimate’s own room, {room}: the family pays",
       "with": "With Kavach’s advice",
       "oop": "Out of pocket in {room}",
       "same": "{room} is already the cheapest room for the family."

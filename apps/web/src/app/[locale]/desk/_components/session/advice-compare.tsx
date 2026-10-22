@@ -11,13 +11,25 @@ import { savingPair } from './labels';
  * Kavach's room advice under the bill (Stitch Priya variant). It follows the engine's own
  * comparison, so the screen carries one saving: the room the engine measures its saving from
  * (the costliest for the family) against the room it recommends, each named, and the engine's
- * `saving`, counted up on first reveal.
+ * `saving`, counted up on first reveal. "Without Kavach's advice" is only said of the room the
+ * estimate was quoted for; when the costliest room is another one, it is named as the costliest,
+ * and the quoted room's own share is shown under the pair.
  */
-export function AdviceCompare({ result }: { result: BranchResult }) {
+export function AdviceCompare({
+  result,
+  quotedRoomId,
+}: {
+  result: BranchResult;
+  /** The room the estimate was quoted for (its first room category). */
+  quotedRoomId?: string;
+}) {
   const t = useTranslations('desk.session.advice');
   const { pick, costliest } = savingPair(result);
   if (!pick || !costliest) return null;
   const same = pick.roomCategoryId === costliest.roomCategoryId || result.saving <= 0;
+  const quotedIsCostliest = !quotedRoomId || quotedRoomId === costliest.roomCategoryId;
+  const quoted = result.options.find((o) => o.roomCategoryId === quotedRoomId);
+  const showQuoted = !quotedIsCostliest && quoted && quoted.roomCategoryId !== pick.roomCategoryId;
 
   return (
     <section
@@ -37,7 +49,9 @@ export function AdviceCompare({ result }: { result: BranchResult }) {
         </div>
         {!same && (
           <div className="shrink-0 sm:border-l sm:border-safe/20 sm:pl-5 sm:text-right">
-            <p className="text-xs font-medium text-muted">{t('saves')}</p>
+            <p className="text-xs font-medium text-muted">
+              {quotedIsCostliest ? t('saves') : t('savesVsCostliest')}
+            </p>
             <CountOnce
               value={result.saving}
               delay={250}
@@ -50,8 +64,11 @@ export function AdviceCompare({ result }: { result: BranchResult }) {
         <div className="grid gap-3 sm:grid-cols-2">
           <div className="rounded-lg border border-border bg-surface p-3.5">
             <p className="flex items-center gap-1.5 text-xs font-medium text-muted">
-              <Icon name="close" className="text-sm text-gap" />
-              {t('without')}
+              <Icon
+                name={quotedIsCostliest ? 'close' : 'trending_up'}
+                className="text-sm text-gap"
+              />
+              {quotedIsCostliest ? t('without') : t('costliest')}
             </p>
             <Amount
               value={costliest.outOfPocket}
@@ -71,6 +88,13 @@ export function AdviceCompare({ result }: { result: BranchResult }) {
             <p className="text-xs text-muted">{t('oop', { room: pick.label })}</p>
           </div>
         </div>
+      )}
+      {!same && showQuoted && (
+        <p className="flex flex-wrap items-baseline gap-x-1.5 text-xs text-muted">
+          <Icon name="receipt_long" className="self-center text-sm" />
+          {t('quoted', { room: quoted.label })}
+          <Amount value={quoted.outOfPocket} className="font-semibold text-text" />
+        </p>
       )}
     </section>
   );
