@@ -8,7 +8,21 @@
     "start": "Start",
     "pickFirst": "Pick who is admitted to start.",
     "privacy": "The camera is used only when you take a photo of the estimate. Nothing is shared without you.",
-    "demoNoteMaternity": "Demo: Priya is admitted at Lotus Women’s Hospital for a planned normal delivery. The company policy caps maternity at ₹50,000. Answers come in English; you can change both."
+    "demoNoteMaternity": "Demo: Priya is admitted at Lotus Women’s Hospital for a planned normal delivery. The company policy caps maternity at ₹50,000. Answers come in English; you can change both.",
+    "prepare": {
+      "eyebrow": "Demo scene",
+      "title": "Preparing the scene",
+      "hospital": "Suresh at City Heart Hospital, answers in Hindi",
+      "maternity": "Priya at Lotus Women’s Hospital, answers in English",
+      "steps": {
+        "family": "Opening the family’s policies",
+        "session": "Starting the desk session",
+        "open": "Opening the live desk"
+      },
+      "note": "Demo data. Every rupee on the next screen comes from the policy rules.",
+      "failed": "The scene didn’t start. Pick who is admitted below and start it yourself.",
+      "retry": "Try again"
+    }
   },
   "session": {
     "title": "Helping with {name}",
@@ -16,13 +30,23 @@
     "end": "End",
     "orb": {
       "thinking": "Kavach is checking",
-      "ready": "Ready: show the estimate or type"
+      "ready": "Ready: show the estimate or type",
+      "idleHint": "Press “Talk to Kavach” to speak, or type your question."
     },
     "textMode": "Text mode",
+    "status": {
+      "open": "Session open",
+      "ended": "Session ended",
+      "live": "Live voice",
+      "voiceOff": "Voice off",
+      "mute": "Mute mic",
+      "unmute": "Mic on"
+    },
+    "conversation": "Conversation",
     "greeting": "Namaste. Take a photo of the hospital estimate, then ask me your question.",
     "sampleSent": "Using the sample estimate",
     "photoSent": "Photo of the estimate",
-    "estimateRead": "I have read the {hospital} estimate: {days, plural, one {# day} other {# days}}, {rooms} room types. Now ask me which room to take.",
+    "estimateRead": "I have read the {hospital} estimate: {days, plural, one {# day} other {# days}}, {rooms} room types. Here is what each room will cost you.",
     "captureFailed": "I couldn’t read that photo. Please take it again with the whole page in the frame.",
     "steps": {
       "reading": "Reading the estimate",
@@ -34,8 +58,9 @@
     "capture": {
       "title": "Show the hospital estimate",
       "hint": "Keep the whole page in the frame, in good light.",
-      "photo": "Take a photo of the estimate",
-      "sample": "Use the sample estimate"
+      "photo": "Photograph the estimate",
+      "sample": "Use sample estimate",
+      "demoData": "Demo data"
     },
     "estimate": {
       "photoAlt": "Your photo of the estimate",
@@ -52,6 +77,104 @@
         "ratio": "Reduced with the room",
         "icu": "ICU: never reduced"
       }
+    },
+    "bill": {
+      "title": "Estimate read: {hospital}",
+      "quoted": "Quoted for {room} · {days, plural, one {# day} other {# days}}",
+      "charge": "Charge",
+      "amount": "Amount",
+      "total": "Total on the estimate ({room})",
+      "checking": "Checking each line against the policy…",
+      "flag": {
+        "aboveLimit": "Above room limit",
+        "ratio": "Proportionate cut",
+        "never": "Never cut",
+        "icu": "ICU: never cut",
+        "nonPayable": "Not payable"
+      },
+      "note": {
+        "aboveLimit": "Over the limit",
+        "ratio": "Cut with the room",
+        "never": "Not cut with the room",
+        "icu": "Not cut with the room",
+        "nonPayable": "Excluded"
+      },
+      "notPaid": "The policy won’t pay",
+      "policyPays": "Policy pays",
+      "youPay": "Family pays (out of pocket)"
+    },
+    "deduction": {
+      "R-HL-001": "Proportionate deduction",
+      "R-HL-002": "ICU rent above the ICU limit",
+      "R-HL-005": "Non-payable items",
+      "R-HL-008": "Room rent above the limit",
+      "R-MT-001": "Above the maternity limit",
+      "R-MT-001-none": "No maternity benefit",
+      "R-MT-002": "Maternity waiting period not over"
+    },
+    "advice": {
+      "eyebrow": "Kavach’s room advice",
+      "lead": "From {from} to {to}",
+      "saves": "The family saves",
+      "without": "Without Kavach’s advice",
+      "with": "With Kavach’s advice",
+      "oop": "Out of pocket in {room}",
+      "same": "{room} is already the cheapest room for the family."
+    },
+    "saving": {
+      "eyebrow": "Room choice",
+      "headline": "Save <amount></amount>",
+      "sub": "Ask the desk for {room} ({rent} a day) instead of {costly}.",
+      "opt": "Opt for {room}",
+      "optAsk": "We want the {room} room. What should we say at the desk?",
+      "costliest": "Costliest room",
+      "pick": "Kavach recommended",
+      "perDay": "{rent} a day",
+      "rows": {
+        "bill": "Hospital bill",
+        "copay": "Co-pay",
+        "policyPays": "Policy pays",
+        "youPay": "Family pays"
+      },
+      "allRooms": "Compare all {count} rooms",
+      "none": "No saving: every room costs the family the same."
+    },
+    "prompts": {
+      "title": "Ask the admission desk right now",
+      "intro": "Read these lines out at the counter, word for word.",
+      "empty": "Kavach writes the exact lines to say once it has read the estimate.",
+      "deskQuestion": "One question for the desk"
+    },
+    "rules": {
+      "title": "Policy rules applied",
+      "count": "{count, plural, one {# rule} other {# rules}}",
+      "verified": "Verified",
+      "toVerify": "To verify",
+      "outcome": {
+        "copay": "Co-pay",
+        "pays": "Pays",
+        "applied": "Applied",
+        "protected": "Protected",
+        "ask": "Ask the desk"
+      },
+      "names": {
+        "R-HL-001": "Proportionate deduction",
+        "R-HL-002": "ICU is never cut in proportion",
+        "R-HL-003": "Co-pay on the admissible amount",
+        "R-HL-005": "Non-payable items",
+        "R-HL-006": "Which policy to claim first",
+        "R-HL-008": "Room rent limit",
+        "R-HL-009": "Super top-up deductible",
+        "R-HL-010": "Billing type not known yet",
+        "R-HL-014": "Package price per room",
+        "R-MT-001": "Maternity limit",
+        "R-MT-002": "Maternity waiting period"
+      }
+    },
+    "footer": {
+      "session": "Session",
+      "prototype": "Prototype",
+      "demo": "Prototype · demo data"
     },
     "answers": "Answer",
     "compareRooms": "Compare rooms",
@@ -71,11 +194,11 @@
     "captureUnreadable": "That photo format can't be read here. iPhone HEIC photos need the camera set to 'Most Compatible', or send a screenshot of the photo. Then try again.",
     "captureTooBig": "That photo is too large to send. Take it again at a normal size, or send a screenshot.",
     "estimateUnclear": "I couldn’t use this as an estimate. {note}",
-    "packageRead": "I have read {hospital}’s package prices: {rooms, plural, one {# package} other {# packages}}. Now ask me which one to take.",
+    "packageRead": "I have read {hospital}’s package prices: {rooms, plural, one {# package} other {# packages}}. Here is what each one will cost you.",
     "scene": {
       "label": "Demo scene",
-      "hospital": "Suresh · angioplasty",
-      "maternity": "Priya · delivery"
+      "hospital": "Scene 1: Suresh · PTCA (City Heart)",
+      "maternity": "Scene 2: Priya · Maternity (Lotus)"
     },
     "admitted": "Admitted",
     "memberChip": "{name} ({relation}, {age})",

@@ -39,17 +39,20 @@ export function ListeningOrb({
   return (
     <div
       role="status"
-      className={cn('flex items-center gap-3', big && 'flex-col gap-5 text-center')}
+      className={cn('flex items-center gap-3', big && 'flex-col gap-14 text-center')}
     >
       <span
         className={cn(
           'orb relative inline-flex shrink-0 items-center justify-center',
           SIZES[size],
           speaking ? 'orb--speaking' : active ? 'orb--active' : 'orb--idle',
+          // The console orb (Stitch desk co-pilot): an indigo sphere in a pale rim.
+          big && 'orb--lg',
         )}
       >
-        {/* Sonar rings while listening */}
-        {listening && !reduce && (
+        {/* Sonar rings while listening. Rings, arc and wave are always rendered (the server
+            can't know the motion setting) and hidden by CSS under reduced motion. */}
+        {listening && (
           <>
             <span aria-hidden className="orb__ring" />
             <span aria-hidden className="orb__ring orb__ring--2" />
@@ -57,7 +60,7 @@ export function ListeningOrb({
           </>
         )}
         {/* A thin arc turning while Kavach checks the numbers */}
-        {thinking && !reduce && <span aria-hidden className="orb__arc" />}
+        {thinking && <span aria-hidden className="orb__arc" />}
         <motion.span
           aria-hidden
           animate={pulse}
@@ -95,8 +98,10 @@ export function ListeningOrb({
         </svg>
       </span>
       <span className={cn('flex flex-col items-center gap-2', !big && 'items-start')}>
-        <span className={cn('font-semibold', big && 'text-xl')}>{label}</span>
-        {speaking && !reduce && (
+        <span className={cn('font-semibold', big && 'font-display text-xl font-bold')}>
+          {label}
+        </span>
+        {speaking && (
           <span aria-hidden className="orb__wave">
             <i />
             <i />

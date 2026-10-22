@@ -2,9 +2,11 @@
 
 import type { Locale } from '@kavach/schemas';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { ArrowRight, Check, Info, Mic } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { AgentSteps } from '@/components/kavach/agent-steps';
+import { Icon } from '@/components/kavach/icon';
+import { ListeningOrb } from '@/components/kavach/listening-orb';
 import { MemberAvatar } from '@/components/kavach/member-avatar';
 import { Button, buttonClasses } from '@/components/ui/button';
 import { cn } from '@/components/ui/cn';
@@ -21,7 +23,11 @@ const SCENES: Record<DeskScene | 'hospital', { patient: string; language: Locale
   maternity: { patient: 'mem_priya', language: 'en' },
 };
 
-/** S21 Hospital start: who is admitted, which language, one big Start. Fewest elements of any screen. */
+/**
+ * S21 Hospital start: who is admitted, which language, one big Start. In the demo the scene
+ * starts by itself (the family moved to the scene's checkpoint, the session opened in the
+ * scene's language) behind a "Preparing the scene" card; if that fails, the picker is the way in.
+ */
 export function DeskStart({ demo, scene }: { demo: boolean; scene?: DeskScene }) {
   const t = useTranslations('desk.start');
   const tc = useTranslations('common');
@@ -30,22 +36,94 @@ export function DeskStart({ demo, scene }: { demo: boolean; scene?: DeskScene })
   const preset = SCENES[scene ?? 'hospital'];
   const [patientId, setPatientId] = useState<string | null>(demo ? preset.patient : null);
   const [language, setLanguage] = useState<Locale>(demo ? preset.language : locale);
+  /** The demo starts by itself; the picker shows for a real family, or if the demo start failed. */
+  const [manual, setManual] = useState(!demo);
+  const [phase, setPhase] = useState(0);
+  const autoStarted = useRef(false);
   const query = demo ? { demo: '1', ...(scene ? { scene } : {}) } : undefined;
 
   const queryClient = useQueryClient();
-  const household = useQuery({ queryKey: ['desk', 'household'], queryFn: deskClient.getHousehold });
+  // Held back while the demo starts by itself: both would otherwise create a demo family.
+  const household = useQuery({
+    queryKey: ['desk', 'household'],
+    queryFn: deskClient.getHousehold,
+    enabled: manual,
+  });
   const start = useMutation({
-    mutationFn: async () => {
+    mutationFn: async (input: { patientMemberId: string; language: Locale }) => {
+      setPhase(0);
       if (demo) {
         await deskClient.prepareScene(scene ?? 'hospital');
         // The family's claims, documents and plan belong to the new checkpoint now.
         await queryClient.invalidateQueries();
       }
-      return deskClient.startSession({ patientMemberId: patientId!, language });
+      setPhase(1);
+      const started = await deskClient.startSession(input);
+      setPhase(2);
+      return { ...started, language: input.language };
     },
-    onSuccess: ({ sessionId }) =>
-      router.push({ pathname: `/desk/${sessionId}`, query: query ?? {} }, { locale: language }),
+    onSuccess: ({ sessionId, language: lang }) =>
+      router.push({ pathname: `/desk/${sessionId}`, query: query ?? {} }, { locale: lang }),
+    onError: () => setManual(true),
   });
+
+  useEffect(() => {
+    if (!demo || autoStarted.current) return;
+    autoStarted.current = true;
+    start.mutate({ patientMemberId: preset.patient, language: preset.language });
+  }, [demo, preset, start]);
+
+  const header = (
+    <DeskHeader
+      title={t('title')}
+      query={query}
+      action={
+        <Link
+          href="/"
+          aria-label={tc('close')}
+          className={buttonClasses({ variant: 'ghost', size: 'sm', className: 'min-w-12 px-0' })}
+        >
+          <CloseIcon />
+        </Link>
+      }
+    />
+  );
+
+  if (!manual) {
+    const steps = [t('prepare.steps.family'), t('prepare.steps.session'), t('prepare.steps.open')];
+    return (
+      <>
+        {header}
+        <main className="mx-auto flex min-h-[calc(100dvh-4.5rem)] w-full max-w-xl flex-col justify-center px-4 py-10">
+          <section
+            aria-labelledby="prepare-title"
+            aria-busy="true"
+            className="rise-in flex flex-col items-center gap-6 rounded-xl border border-border bg-surface px-6 pb-8 pt-14 text-center shadow-2"
+          >
+            <ListeningOrb size="lg" state="thinking" label={t('prepare.title')} />
+            <div className="-mt-3 flex flex-col items-center gap-1">
+              <span className="label text-primary-hover">{t('prepare.eyebrow')}</span>
+              <p id="prepare-title" className="text-base text-muted">
+                {scene === 'maternity' ? t('prepare.maternity') : t('prepare.hospital')}
+              </p>
+            </div>
+            <div className="desk-prepare-bar w-full max-w-xs" aria-hidden />
+            <AgentSteps
+              className="w-full max-w-xs text-left text-base"
+              steps={steps.map((label, i) => ({
+                label,
+                state: i < phase ? 'done' : i === phase ? 'active' : 'pending',
+              }))}
+            />
+            <p className="flex items-center gap-1.5 text-xs text-muted">
+              <Icon name="science" className="text-sm" />
+              {t('prepare.note')}
+            </p>
+          </section>
+        </main>
+      </>
+    );
+  }
 
   const tile =
     'press relative flex cursor-pointer items-center gap-3 rounded-md border-2 bg-surface p-3 has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-primary';
@@ -54,24 +132,18 @@ export function DeskStart({ demo, scene }: { demo: boolean; scene?: DeskScene })
 
   return (
     <>
-      <DeskHeader
-        title={t('title')}
-        query={query}
-        action={
-          <Link
-            href="/"
-            aria-label={tc('close')}
-            className={buttonClasses({ variant: 'ghost', size: 'sm', className: 'min-w-12 px-0' })}
-          >
-            <CloseIcon />
-          </Link>
-        }
-      />
+      {header}
       <div className="mx-auto w-full max-w-6xl lg:grid lg:grid-cols-[minmax(0,1fr)_380px] lg:items-start lg:gap-10 lg:px-6">
         <main className="mx-auto flex max-w-2xl flex-col gap-7 px-4 pb-40 pt-5 lg:mx-0 lg:max-w-none lg:px-0 lg:pb-12 lg:pt-6">
+          {demo && start.isError && (
+            <p role="alert" className="panel panel-partial flex gap-2 text-base">
+              <Icon name="warning" className="mt-0.5 text-xl text-partial" />
+              {t('prepare.failed')}
+            </p>
+          )}
           {demo && (
             <p className="panel flex gap-2 text-base">
-              <Info aria-hidden className="mt-1 size-5 shrink-0" />
+              <Icon name="info" className="mt-0.5 text-xl" />
               {scene === 'maternity' ? t('demoNoteMaternity') : t('demoNote')}
             </p>
           )}
@@ -108,13 +180,7 @@ export function DeskStart({ demo, scene }: { demo: boolean; scene?: DeskScene })
                           {tc(`relation.${m.relation}`)}, {m.age}
                         </span>
                       </span>
-                      {on && (
-                        <Check
-                          aria-hidden
-                          className="size-5 shrink-0 text-primary"
-                          strokeWidth={3}
-                        />
-                      )}
+                      {on && <Icon name="check" weight={600} className="text-xl text-primary" />}
                     </label>
                   );
                 })}
@@ -145,7 +211,7 @@ export function DeskStart({ demo, scene }: { demo: boolean; scene?: DeskScene })
                       onChange={() => setLanguage(l)}
                       className="sr-only"
                     />
-                    {on && <Check aria-hidden className="size-5 text-primary" strokeWidth={3} />}
+                    {on && <Icon name="check" weight={600} className="text-xl text-primary" />}
                     {tc(`languages.${l}`)}
                   </label>
                 );
@@ -163,14 +229,14 @@ export function DeskStart({ demo, scene }: { demo: boolean; scene?: DeskScene })
               size="desk"
               disabled={!patientId}
               loading={start.isPending}
-              onClick={() => start.mutate()}
+              onClick={() => start.mutate({ patientMemberId: patientId!, language })}
             >
-              <Mic aria-hidden className="size-6" />
-              {t('start')}
-              <ArrowRight aria-hidden className="size-6" />
+              <Icon name="mic" fill className="text-2xl" />
+              {demo && start.isError ? t('prepare.retry') : t('start')}
+              <Icon name="arrow_forward" className="text-2xl" />
             </Button>
             {!patientId && <p className="text-center text-base text-muted">{t('pickFirst')}</p>}
-            {start.isError && (
+            {start.isError && !demo && (
               <p role="alert" className="text-center text-gap">
                 {tc('error')}
               </p>
