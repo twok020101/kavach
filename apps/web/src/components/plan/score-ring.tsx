@@ -1,53 +1,62 @@
 'use client';
 
-import { useCountUp } from '@/lib/use-count-up';
+import { useCountOnce } from '@/components/app/use-count-once';
+import { cn } from '@/components/ui/cn';
 
-/** R-SC-001 safety score as a ring, 0–100. The number counts up when it first appears. */
-export function ScoreRing({ score, size = 96 }: { score: number; size?: number }) {
-  const r = 42;
-  const circumference = 2 * Math.PI * r;
-  const tone = score >= 70 ? 'text-safe' : score >= 40 ? 'text-partial' : 'text-gap';
-  const shown = useCountUp(score);
+const R = 15.9155; // circumference 100: the dash array reads in percent
+
+/**
+ * R-SC-001 safety score as a ring, 0–100 (Stitch gauge): a pale track, an arc in the score's
+ * tone (green when well covered, marigold getting there, red when it needs attention), the
+ * number in the middle. The number counts up the first time only; later changes move the arc.
+ */
+export function ScoreRing({ score, size = 80 }: { score: number; size?: number }) {
+  const tone = score >= 70 ? 'text-safe' : score >= 40 ? 'text-accent' : 'text-gap';
+  const shown = useCountOnce(score);
   return (
-    <svg
-      viewBox="0 0 100 100"
-      width={size}
-      height={size}
+    <div
       role="img"
       aria-label={`${score} / 100`}
-      className="shrink-0"
+      className="relative flex shrink-0 items-center justify-center"
+      style={{ width: size, height: size }}
     >
-      <circle cx="50" cy="50" r={r} fill="none" strokeWidth="9" className="stroke-sunken" />
-      <circle
-        cx="50"
-        cy="50"
-        r={r}
-        fill="none"
-        strokeWidth="9"
-        strokeLinecap="round"
-        stroke="currentColor"
-        className={`${tone} transition-[stroke-dasharray] duration-600 ease-[var(--ease-out-strong)]`}
-        strokeDasharray={`${(shown / 100) * circumference} ${circumference}`}
-        transform="rotate(-90 50 50)"
-      />
-      <text
-        x="50"
-        y="50"
-        dy="0.12em"
-        dominantBaseline="middle"
-        textAnchor="middle"
-        className="fill-current font-display text-[32px] font-bold tabular-nums"
-      >
-        {shown}
-      </text>
-      <text
-        x="50"
-        y="72"
-        textAnchor="middle"
-        className="fill-current font-sans text-[10px] font-semibold uppercase tracking-wide text-muted"
-      >
-        / 100
-      </text>
-    </svg>
+      <svg viewBox="0 0 36 36" className="size-full -rotate-90" aria-hidden>
+        <circle
+          cx="18"
+          cy="18"
+          r={R}
+          fill="none"
+          strokeWidth="3.5"
+          className="stroke-surface-container-high"
+        />
+        <circle
+          cx="18"
+          cy="18"
+          r={R}
+          fill="none"
+          strokeWidth="3.5"
+          strokeLinecap="round"
+          stroke="currentColor"
+          className={cn(
+            tone,
+            'transition-[stroke-dasharray] duration-700 ease-[var(--ease-out-strong)]',
+          )}
+          strokeDasharray={`${Math.max(0, Math.min(100, shown))} 100`}
+        />
+      </svg>
+      <span aria-hidden className="absolute inset-0 flex flex-col items-center justify-center">
+        <span
+          className="font-display font-bold leading-none tracking-tight text-on-surface tabular-nums"
+          style={{ fontSize: Math.round(size * 0.36) }}
+        >
+          {shown}
+        </span>
+        {size >= 72 && (
+          <span className="mt-0.5 font-serif text-[10px] leading-none text-on-surface-variant">
+            / 100
+          </span>
+        )}
+      </span>
+    </div>
   );
 }

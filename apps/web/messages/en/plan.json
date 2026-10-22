@@ -19,11 +19,19 @@
     "savings_plan_not_term": "This is mainly a savings plan; its life cover is small for what you pay.",
     "below_minimum": "Below the minimum we suggest."
   },
+  "shell": {
+    "deskReady": "Hospital desk ready",
+    "demoDate": "Demo date: <b>{date}</b>",
+    "comingUp": "Coming up",
+    "family": "{name}: family settings",
+    "footer": "Prototype · demo data"
+  },
   "home": {
-    "demoDate": "Demo date: {date}",
+    "demoDate": "Demo date: <b>{date}</b>",
     "startStory": "Start the story",
     "score": "Safety score",
-    "summary": "{gaps, plural, =0 {No gaps} one {# gap} other {# gaps}} · {onJob, plural, =0 {nothing depends on a job} one {# depends on {name}'s job} other {# depend on {name}'s job}}",
+    "summaryGaps": "{gaps, plural, =0 {No gaps} one {# gap} other {# gaps}}",
+    "summaryJob": "{onJob, plural, =0 {nothing depends on a job} one {# depends on {name}'s job} other {# depend on {name}'s job}}",
     "mapCaption": "Who is covered for what, on the chosen date",
     "member": "Member",
     "cellTitle": "{name} · {risk}",
@@ -56,7 +64,7 @@
       "evening": "Good evening, {name}",
       "night": "Hello, {name}"
     },
-    "watch": "Kavach is keeping an eye on {policies, plural, one {# policy} other {# policies}} for {people} people.",
+    "watch": "Kavach is keeping an eye on <b>{policies, plural, one {# policy} other {# policies}}</b> for <b>{people} people</b>.",
     "needsYou": "{count, plural, =0 {Nothing needs you today.} one {# thing needs you.} other {# things need you.}}",
     "scoreWord": {
       "low": "Needs attention",
@@ -81,7 +89,8 @@
     "ready": {
       "title": "Ready for an emergency",
       "intro": "If someone is admitted tonight, this is what Kavach will say first.",
-      "line": "{name}: give the {policy} card first{limit, select, none {} other { · room limit {limit}/day}}",
+      "line": "<b>{name}:</b> give the {policy} card first",
+      "limit": "room limit {limit}/day",
       "nick": {
         "company": "company policy",
         "parents": "parents’ policy",
@@ -145,9 +154,15 @@
     "disclaimer": "Premiums are illustrative, not a quote. Kavach doesn't sell insurance; talk to a licensed adviser before you buy.",
     "allocated": "In the plan",
     "leftOver": "Left over",
-    "prioritised": "In order of priority",
+    "prioritised": "Prioritised cover",
     "ofTotal": "{count} of {total} in the plan",
-    "openPolicy": "Open the policy"
+    "openPolicy": "Open the policy",
+    "eyebrow": "Smart recommendations",
+    "traced": "Traced to {count, plural, one {# rule} other {# rules}}",
+    "budget": "Budget",
+    "used": "{pct}% of the free budget used",
+    "helpTitle": "Life changing?",
+    "helpAction": "Tell Kavach"
   },
   "change": {
     "title": "What's changing?",
