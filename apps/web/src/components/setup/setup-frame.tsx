@@ -1,6 +1,6 @@
 'use client';
 
-import { ArrowLeft, FileWarning, GitBranch, Hospital } from 'lucide-react';
+import { ArrowLeft, FileWarning, GitBranch, Hospital, ShieldCheck } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import type { ReactNode } from 'react';
 import { Link } from '@/i18n/navigation';
@@ -62,6 +62,7 @@ export function SetupFrame({
   title,
   intro,
   footer,
+  stickyFooter = false,
   children,
 }: {
   step?: number;
@@ -69,6 +70,8 @@ export function SetupFrame({
   title: ReactNode;
   intro?: ReactNode;
   footer?: ReactNode;
+  /** Keep the footer pinned on a laptop too (long lists such as consent), with its hairline. */
+  stickyFooter?: boolean;
   children: ReactNode;
 }) {
   const t = useTranslations('setup');
@@ -87,11 +90,15 @@ export function SetupFrame({
                 <ArrowLeft aria-hidden className="size-5" />
               </Link>
             ) : null}
-            <span className="lg:hidden">
-              <Logo />
-            </span>
-            <ThemeToggle className="ml-auto" />
-            <LanguageSwitch compact />
+            {/* Below sm the mark alone, so a five-language switch still fits beside it */}
+            <Link href="/" className="lg:hidden" aria-label="Kavach">
+              <LogoMark className="size-7 sm:hidden" />
+              <span className="hidden sm:block">
+                <Logo />
+              </span>
+            </Link>
+            <ThemeToggle className="ml-auto shrink-0" />
+            <LanguageSwitch compact className="shrink-0" />
           </header>
           <main id="main" className="flex flex-1 flex-col gap-6 px-4 py-6 lg:px-8">
             {step !== undefined && <StepProgress step={step} />}
@@ -104,7 +111,12 @@ export function SetupFrame({
             {children}
           </main>
           {footer && (
-            <footer className="sticky bottom-0 flex items-center justify-end gap-3 border-t border-border bg-bg px-4 py-3 lg:static lg:border-0 lg:bg-transparent lg:px-8 lg:py-5">
+            <footer
+              className={cn(
+                'sticky bottom-0 flex items-center justify-end gap-3 border-t border-border bg-bg px-4 py-3 lg:px-8',
+                stickyFooter ? 'lg:py-4' : 'lg:static lg:border-0 lg:bg-transparent lg:py-5',
+              )}
+            >
               {footer}
             </footer>
           )}
@@ -133,31 +145,42 @@ function BrandPanel() {
         <span className="font-display text-2xl font-bold">Kavach</span>
       </Link>
       <div className="relative flex flex-col gap-8">
-        <Reveal as="div">
+        <Reveal as="div" className="flex max-w-md flex-col gap-4">
           <p className="font-display text-4xl font-bold leading-tight tracking-tight">
             {t('tagline')}
           </p>
+          <p className="text-lg leading-relaxed opacity-85">{t('lead')}</p>
         </Reveal>
-        <ul className="flex flex-col gap-4">
+        {/* The three moments as tiles on the panel (from the Stitch sign-in): a round icon, the
+            moment, one line on what Kavach does there. The hospital keeps the marigold. */}
+        <ul className="flex max-w-md flex-col gap-3">
           {moments.map(({ icon: Icon, key }, i) => (
-            <Reveal as="li" key={key} delay={0.08 + i * 0.06} className="flex items-start gap-3">
+            <Reveal
+              as="li"
+              key={key}
+              delay={0.08 + i * 0.06}
+              className="flex items-start gap-4 rounded-md bg-white/10 p-4"
+            >
               <span
                 className={cn(
-                  'flex size-10 shrink-0 items-center justify-center rounded-md',
-                  key === 'hospital' ? 'bg-accent text-accent-ink' : 'bg-white/15 text-on-primary',
+                  'flex size-10 shrink-0 items-center justify-center rounded-full',
+                  key === 'hospital' ? 'bg-accent text-accent-ink' : 'bg-white/20 text-on-primary',
                 )}
               >
                 <Icon aria-hidden className="size-5" />
               </span>
-              <span>
+              <span className="min-w-0">
                 <span className="block font-semibold">{t(`${key}.title`)}</span>
-                <span className="block text-sm opacity-80">{t(`${key}.body`)}</span>
+                <span className="mt-0.5 block text-sm opacity-80">{t(`${key}.body`)}</span>
               </span>
             </Reveal>
           ))}
         </ul>
       </div>
-      <p className="relative text-sm opacity-70">{t('promise')}</p>
+      <p className="relative flex items-start gap-2 border-t border-white/20 pt-6 text-sm opacity-80">
+        <ShieldCheck aria-hidden className="mt-0.5 size-4 shrink-0" />
+        <span>{t('promise')}</span>
+      </p>
     </aside>
   );
 }

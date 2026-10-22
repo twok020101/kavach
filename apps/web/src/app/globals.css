@@ -633,6 +633,11 @@ html.booting .landing {
   .boot__lines {
     display: flex;
     min-height: 7.5rem;
+    /* Hindi, Tamil and Malay wrap each line to two: reserve the height so the rail does not
+       drop as the lines land. */
+    &:is(:lang(hi), :lang(ta), :lang(ms)) {
+      min-height: 12.5rem;
+    }
     flex-direction: column;
     gap: 12px;
     margin: 0;

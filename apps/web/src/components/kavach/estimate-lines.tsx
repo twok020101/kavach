@@ -22,7 +22,7 @@ type Mark = { tone: BadgeTone; key: 'nonPayable' | 'aboveLimit' | 'ratio' | 'icu
  * The estimate's own lines for the room it was quoted for, each marked with what the policy
  * does to it once the engine has run: not payable, above the room limit, reduced with the
  * room, or never reduced (ICU). The figures are the hospital's; the marks and the totals
- * below them are the engine's.
+ * block under them are the engine's (Stitch 10/11 line-item table).
  */
 export function EstimateLines({
   estimate,
@@ -56,6 +56,8 @@ export function EstimateLines({
     estimate.printedTotals?.[quoted.id] ??
     lines.reduce((sum, l) => sum + (l.amounts[quoted.id] ?? 0), 0);
 
+  const row = 'flex items-baseline justify-between gap-3';
+
   return (
     <div className="flex flex-col gap-3">
       <p className="text-sm text-muted">{t('quotedFor', { room: quoted.label })}</p>
@@ -65,7 +67,7 @@ export function EstimateLines({
           return (
             <li
               key={line.head + line.label}
-              className="flex items-start justify-between gap-3 py-2"
+              className="flex items-start justify-between gap-3 py-3"
             >
               <span className="flex min-w-0 flex-col gap-1">
                 <span className={cn(m?.tone === 'gap' && 'text-muted line-through')}>
@@ -82,15 +84,16 @@ export function EstimateLines({
           );
         })}
       </ul>
-      <dl className="flex flex-col gap-1 border-t border-border pt-2">
-        <div className="flex items-baseline justify-between gap-3">
-          <dt className="font-semibold">{t('total')}</dt>
+      {/* The totals row: the hospital's total, then what the engine makes of it. */}
+      <dl className="flex flex-col gap-1.5 rounded-sm bg-sunken px-3 py-3">
+        <div className={row}>
+          <dt className="font-display font-bold">{t('total')}</dt>
           <dd>
-            <Amount value={total} className="font-display text-lg font-bold" />
+            <Amount value={total} className="font-display text-xl font-bold" />
           </dd>
         </div>
         {option?.deductions.map((d) => (
-          <div key={d.ruleId + d.label} className="flex items-baseline justify-between gap-3">
+          <div key={d.ruleId + d.label} className={row}>
             <dt className="text-sm text-muted">{tc('notPaid', { label: d.label })}</dt>
             <dd>
               <Amount value={d.amount} className="text-sm text-partial" />
@@ -99,16 +102,16 @@ export function EstimateLines({
         ))}
         {option && (
           <>
-            <div className="flex items-baseline justify-between gap-3">
+            <div className={row}>
               <dt className="text-sm text-muted">{tc('policyPays')}</dt>
               <dd>
                 <Amount value={option.policyPays} className="text-sm font-semibold" />
               </dd>
             </div>
-            <div className="flex items-baseline justify-between gap-3">
-              <dt className="font-semibold">{tc('youPay')}</dt>
+            <div className={cn(row, 'mt-1 border-t border-border pt-2')}>
+              <dt className="font-display font-bold">{tc('youPay')}</dt>
               <dd>
-                <Amount value={option.outOfPocket} className="font-display text-lg font-bold" />
+                <Amount value={option.outOfPocket} className="font-display text-xl font-bold" />
               </dd>
             </div>
           </>

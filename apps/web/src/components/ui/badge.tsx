@@ -34,7 +34,8 @@ export function Badge({
       )}
     >
       {Icon && <Icon aria-hidden className="size-4 shrink-0" strokeWidth={2} />}
-      {children}
+      {/* A single long word (Tamil, Malay) breaks inside the pill instead of running out of it. */}
+      <span className="min-w-0 [overflow-wrap:anywhere]">{children}</span>
     </span>
   );
 }

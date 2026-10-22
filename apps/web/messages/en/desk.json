@@ -76,7 +76,11 @@
       "label": "Demo scene",
       "hospital": "Suresh · angioplasty",
       "maternity": "Priya · delivery"
-    }
+    },
+    "admitted": "Admitted",
+    "memberChip": "{name} ({relation}, {age})",
+    "controls": "Quick desk controls",
+    "sendPrompts": "Send these to family on WhatsApp"
   },
   "summary": {
     "title": "Session summary",
