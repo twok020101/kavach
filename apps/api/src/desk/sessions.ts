@@ -1,5 +1,5 @@
 import { randomUUID } from 'node:crypto';
-import { formatInr } from '@kavach/engine';
+import { formatMoney } from '@kavach/engine';
 import type {
   HospitalEstimate,
   CreateDeskSessionBody,
@@ -12,7 +12,7 @@ import type {
   RoomCategory,
 } from '@kavach/schemas';
 import { readEstimate, type EstimateImage } from '../agents/estimate-reader';
-import { answer, evaluateDesk } from '../core/answer';
+import { answer, evaluateDesk, panelOf } from '../core/answer';
 import { deskContext, deskPatient, policyNickname } from '../core/context';
 import { alertHouseholdOwner } from '../channels/whatsapp/notify';
 import { blobs } from '../lib/blobs';
@@ -71,7 +71,7 @@ export async function captureEstimate(
     await blobs.put(path, img.data, img.mimeType);
     capturePaths.push(path);
   }
-  const estimate = await readEstimate(images, opts);
+  const estimate = await readEstimate(images, { ...opts, country: household.country });
   const reply = answer(household, session.patientMemberId, { estimate }, session.language);
   const updated: DeskSession = {
     ...session,
@@ -115,6 +115,7 @@ export async function takeTurn(household: Household, sid: string, body: DeskTurn
   const session = await activeSession(household, sid);
   const estimate = body.estimate ?? session.estimate;
   const billingTypeAnswer = body.billingTypeAnswer ?? session.billingTypeAnswer;
+  const panelAnswer = body.panelAnswer ?? session.panelAnswer;
   const reply: DeskAnswer = answer(
     household,
     session.patientMemberId,
@@ -122,6 +123,7 @@ export async function takeTurn(household: Household, sid: string, body: DeskTurn
       estimate,
       utteranceText: body.text,
       billingTypeAnswer,
+      panelAnswer,
       // The first question gets the opening answer; later ones get the per-room follow-up.
       followUp: Boolean(session.lastQuestion && session.lastAnswer?.cards.length),
     },
@@ -131,6 +133,7 @@ export async function takeTurn(household: Household, sid: string, body: DeskTurn
     ...session,
     estimate,
     billingTypeAnswer,
+    panelAnswer,
     lastQuestion: body.text?.trim() || session.lastQuestion,
     lastAnswer: reply,
     language: reply.locale ?? session.language,
@@ -155,7 +158,11 @@ export async function evaluateSession(
     throw Object.assign(new Error('No estimate yet: capture one first'), { statusCode: 409 });
   }
   const patient = deskPatient(household, session.patientMemberId);
-  const opts = { billingTypeAnswer: session.billingTypeAnswer, roomOptions };
+  const opts = {
+    billingTypeAnswer: session.billingTypeAnswer,
+    panel: panelOf(session.panelAnswer),
+    roomOptions,
+  };
   const evaluation = evaluateDesk(patient, session.estimate, opts);
   if (evaluation.primary.billingType !== 'differential' || evaluation.alternate) return evaluation;
   const flat = evaluateDesk(patient, session.estimate, { ...opts, billingTypeAnswer: 'flat' });
@@ -180,25 +187,35 @@ function summarise(household: Household, session: DeskSession): Record<Locale, s
   const hospital = session.hospitalName ?? session.estimate?.hospitalName ?? '';
   const answered = session.estimate && !session.estimate.needsConfirmation;
   if (!answered || patient.policies.length === 0) {
+    const where = hospital ? ` (${hospital})` : '';
     return {
       en: `Desk session for ${name}${hospital ? ` at ${hospital}` : ''} ended before Kavach could give an amount.`,
-      hi: `${name} का डेस्क सेशन${hospital ? ` (${hospital})` : ''} कोई रक़म बताने से पहले ख़त्म हुआ।`,
+      hi: `${name} का डेस्क सेशन${where} कोई रक़म बताने से पहले ख़त्म हुआ।`,
+      ta: `${name}-க்கான டெஸ்க் அமர்வு${where} Kavach ஒரு தொகை சொல்லும் முன் முடிந்தது.`,
+      zh: `${name}的柜台会话${where}在 Kavach 给出金额之前结束了。`,
+      ms: `Sesi kaunter untuk ${name}${where} tamat sebelum Kavach dapat memberi jumlah.`,
     };
   }
 
   const ev = evaluateDesk(patient, session.estimate!, {
     billingTypeAnswer: session.billingTypeAnswer,
+    panel: panelOf(session.panelAnswer),
   });
   const rec = ev.primary.options.find(
     (o) => o.roomCategoryId === ev.primary.recommendedRoomCategoryId,
   )!;
   const first = patient.policies.find((p) => p.id === ev.policyOrder[0])!;
-  const room = `${rec.label} (${formatInr(rec.rentPerDay)}/day)`;
-  const pays = formatInr(rec.outOfPocket);
-  const saving = ev.primary.saving > 0 ? formatInr(ev.primary.saving) : undefined;
+  const money = (n: number) => formatMoney(n, household.country);
+  const rent = money(rec.rentPerDay);
+  const pays = money(rec.outOfPocket);
+  const saving = ev.primary.saving > 0 ? money(ev.primary.saving) : undefined;
+  const card = (style: Locale) => policyNickname(first, household, style);
   return {
-    en: `At ${hospital} for ${name}, Kavach advised the ${room} room, with about ${pays} for the family to pay${saving ? ` (${saving} less than the priciest room)` : ''}, and giving the ${policyNickname(first, household, 'en')} card at the TPA desk first.`,
-    hi: `${hospital} में ${name} के लिए कवच ने ${rec.label} (${formatInr(rec.rentPerDay)}/दिन) कमरे की सलाह दी, परिवार को लगभग ${pays} देने होंगे${saving ? ` (सबसे महँगे कमरे से ${saving} कम)` : ''}, और TPA डेस्क पर पहले ${policyNickname(first, household, 'hi')} का कार्ड देने को कहा।`,
+    en: `At ${hospital} for ${name}, Kavach advised the ${rec.label} (${rent}/day) room, with about ${pays} for the family to pay${saving ? ` (${saving} less than the priciest room)` : ''}, and giving the ${card('en')} card at the TPA desk first.`,
+    hi: `${hospital} में ${name} के लिए कवच ने ${rec.label} (${rent}/दिन) कमरे की सलाह दी, परिवार को लगभग ${pays} देने होंगे${saving ? ` (सबसे महँगे कमरे से ${saving} कम)` : ''}, और TPA डेस्क पर पहले ${card('hi')} का कार्ड देने को कहा।`,
+    ta: `${hospital}-இல் ${name}-க்கு Kavach ${rec.label} (${rent}/நாள்) அறையைப் பரிந்துரைத்தது; குடும்பம் சுமார் ${pays} செலுத்தும்${saving ? ` (மிக விலையுயர்ந்த அறையை விட ${saving} குறைவு)` : ''}; முதலில் ${card('ta')} கார்டை TPA டெஸ்க்கில் கொடுக்கச் சொன்னது.`,
+    zh: `在${hospital}，Kavach 建议${name}选择${rec.label}（${rent}/天）病房，家庭大约自付${pays}${saving ? `（比最贵的病房少${saving}）` : ''}，并先把${card('zh')}的卡交给 TPA 柜台。`,
+    ms: `Di ${hospital} untuk ${name}, Kavach menasihatkan bilik ${rec.label} (${rent}/hari), dengan kira-kira ${pays} perlu dibayar keluarga${saving ? ` (${saving} kurang daripada bilik termahal)` : ''}, dan menyerahkan kad ${card('ms')} di kaunter TPA dahulu.`,
   };
 }
 

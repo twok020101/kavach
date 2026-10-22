@@ -17,11 +17,21 @@
     "invitedAs": "You'll join as {name}. You'll see your cover and the hospital button.",
     "join": "Join the family",
     "inviteGone": "This invite has expired or was already used. Ask for a new link.",
+    "promiseTitle": "Our promise to your family",
     "demoCard": {
       "badge": "No setup",
+      "kicker": "Sample family, already set up",
+      "initial": "S",
       "title": "Explore the Sharma family demo",
       "body": "Five people, four policies and a hospital admission already set up, so you can see every screen with real numbers.",
       "open": "Open the demo"
+    },
+    "demoCardSg": {
+      "kicker": "Sample family in Singapore",
+      "initial": "T",
+      "title": "See the Tan family at the hospital desk",
+      "body": "Ah Kow’s admission at Sample General Hospital: MediShield Life, a Shield plan and the ward choice, in Mandarin.",
+      "open": "Open the Singapore scene"
     }
   },
   "consent": {
@@ -50,6 +60,7 @@
       }
     },
     "required": "Kavach needs at least the first one to work.",
+    "promiseTitle": "Our promise",
     "promise": "We never sell your data. We never contact insurers for you. You can download or delete everything at any time from Settings.",
     "agree": "Agree and continue",
     "essential": "Essential",
@@ -184,6 +195,7 @@
   },
   "brand": {
     "tagline": "Standing beside your family at every insurance moment.",
+    "lead": "Kavach reads every policy in the house once, then tells you what to do at the three moments where families lose money. In your language, with the page number.",
     "promise": "We never sell your data and never contact insurers for you.",
     "change": {
       "title": "When life changes",
@@ -191,7 +203,7 @@
     },
     "hospital": {
       "title": "At the hospital desk",
-      "body": "Hindi or English, by voice. Which card to give, which room to ask for."
+      "body": "In your language, by voice. Which card to give, which room to ask for."
     },
     "claim": {
       "title": "When a claim goes wrong",

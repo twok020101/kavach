@@ -35,10 +35,10 @@ function Settings({ household }: { household: Household }) {
   const t = useTranslations('settings');
   const router = useRouter();
   const { theme, setTheme, textScale, setTextScale } = useAppearance();
-  // The demo lets anyone see the member home: a Hindi-speaking parent first (Kamala), else any adult.
+  // The demo lets anyone see the member home: a parent who does not speak English first (Kamala), else any adult.
   const adults = household.members.filter((m) => m.relation !== 'self' && m.age >= 18);
   const memberToPreview = household.isDemo
-    ? (adults.find((m) => m.relation === 'parent' && m.language === 'hi' && m.age < 60) ??
+    ? (adults.find((m) => m.relation === 'parent' && m.language !== 'en' && m.age < 60) ??
       adults.find((m) => m.relation === 'parent') ??
       adults[0])
     : undefined;

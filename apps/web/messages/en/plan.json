@@ -70,7 +70,7 @@
       "claim": "Check a claim letter",
       "claimHint": "Every deduction, against the policy",
       "invite": "Give {name} the hospital button",
-      "inviteHint": "Her own login, in Hindi"
+      "inviteHint": "Their own login, in {language}"
     },
     "comingUp": {
       "title": "Coming up",
@@ -89,7 +89,8 @@
         "own": "own policy"
       },
       "none": "No health policy covers {name} today."
-    }
+    },
+    "asOfShort": "As of {date}"
   },
   "scrubber": {
     "asOf": "As of {date}",
@@ -144,7 +145,11 @@
     },
     "disclaimer": "Premiums are illustrative, not a quote. Kavach doesn't sell insurance; talk to a licensed adviser before you buy.",
     "allocated": "In the plan",
-    "leftOver": "Left over"
+    "leftOver": "Left over",
+    "ofTotal": "{count} of {total} in the plan",
+    "openPolicy": "Open the policy",
+    "utilised": "{percent}% of the money free for protection is in the plan",
+    "dotPrioritised": "Prioritised coverages"
   },
   "change": {
     "title": "What's changing?",

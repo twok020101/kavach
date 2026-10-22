@@ -4,15 +4,17 @@ import type { DeskAnswer, HospitalEstimate, Locale } from '@kavach/schemas';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import {
   Camera,
+  ChevronRight,
   FileText,
   Keyboard,
+  MessageSquareText,
   Mic,
   MicOff,
   RadioTower,
   Send,
   Share2,
-  Scale,
   TriangleAlert,
+  X,
 } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 import { useCallback, useEffect, useRef, useState, type FormEvent } from 'react';
@@ -23,7 +25,6 @@ import { Captions, type CaptionLine } from '@/components/kavach/captions';
 import { DisclaimerBar } from '@/components/kavach/disclaimer-bar';
 import { EstimateLines } from '@/components/kavach/estimate-lines';
 import { ListeningOrb } from '@/components/kavach/listening-orb';
-import { RoomCompare } from '@/components/kavach/room-compare';
 import { WhyPanel } from '@/components/kavach/why-panel';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -33,12 +34,17 @@ import { Disclosure } from '@/components/ui/disclosure';
 import { Spinner } from '@/components/ui/spinner';
 import { useRouter } from '@/i18n/navigation';
 import { ApiError } from '@/lib/api';
+import { CountryProvider } from '@/lib/country';
 import { deskClient } from '@/lib/desk-client';
 import { useDesktop } from '@/lib/use-media';
 import { useLiveDesk, type LiveFallback, type LiveStatus } from '@/lib/live/use-live-desk';
 import { AgentStepsTicker } from './agent-steps-ticker';
+import { AskDeskPanel } from './ask-desk-panel';
 import { CameraCapture } from './camera-capture';
 import { DeskHeader } from './desk-header';
+import { DeskResult } from './desk-result';
+import type { DeskScene } from './desk-start';
+import { RulesApplied } from './rules-applied';
 
 /**
  * S22 + S23: the desk. Text mode (photo of the estimate, typed questions) or live voice mode
@@ -51,7 +57,7 @@ export function DeskSessionScreen({
 }: {
   sid: string;
   demo: boolean;
-  scene?: 'maternity';
+  scene?: DeskScene;
 }) {
   const t = useTranslations('desk.session');
   const tc = useTranslations('common');
@@ -69,6 +75,7 @@ export function DeskSessionScreen({
   ]);
   const [captured, setCaptured] = useState<HospitalEstimate>();
   const [photoUrl, setPhotoUrl] = useState<string>();
+  const [usedSample, setUsedSample] = useState(false);
   const [localAnswer, setAnswer] = useState<DeskAnswer>();
   const [question, setQuestion] = useState('');
   const [operation, setOperation] = useState<{ id: number; labels: string[] }>();
@@ -199,10 +206,15 @@ export function DeskSessionScreen({
       deskClient.capture(
         sid,
         photo,
-        scene === 'maternity' ? 'estimate-lotus-maternity' : undefined,
+        scene === 'maternity'
+          ? 'estimate-lotus-maternity'
+          : scene === 'singapore'
+            ? 'estimate-sample-general-sg'
+            : undefined,
       ),
     onMutate: (photo) => {
       setPhotoUrl(photo === 'sample' ? sampleThumb(scene) : URL.createObjectURL(photo));
+      setUsedSample(photo === 'sample');
       say('user', photo === 'sample' ? t('sampleSent') : t('photoSent'));
       setCameraOpen(false);
       if (!live) begin([t('steps.reading'), t('steps.tariff'), t('steps.policies')]);
@@ -321,47 +333,105 @@ export function DeskSessionScreen({
   const query = demo ? { demo: '1', ...(scene ? { scene } : {}) } : undefined;
   const firstName = patient?.name.split(' ')[0];
   const desktop = useDesktop();
+  // The admitted row: everyone in the family, the patient marked (Stitch 10/11).
+  // The "ask the desk" lines, ready to hand to the family on WhatsApp (no number: they pick the chat).
+  const waLink = (text: string) => `https://wa.me/?text=${encodeURIComponent(text)}`;
+  // Live: only the cards the agent has shown so far; text mode: all of them.
+  const cards = (answer?.cards ?? []).filter(
+    (card) => shownCards === 'all' || shownCards.has(card.id),
+  );
+  const otherCards = cards.filter((c) => c.kind !== 'ask_desk' && c.kind !== 'room_compare');
+  // The result card stands in for the room comparison once that card is due.
+  const showResult =
+    !answer?.cards.some((c) => c.kind === 'room_compare') ||
+    cards.some((c) => c.kind === 'room_compare');
+  // For the desk: the engine's question first, then the answer's own "ask the desk" lines.
+  const deskQuestions = [
+    ...new Set(
+      [
+        evaluation.data?.questionForDesk ?? answer?.questionForDesk,
+        ...cards.filter((c) => c.kind === 'ask_desk').flatMap((c) => c.body.split('\n')),
+      ]
+        .map((q) => q?.trim())
+        .filter((q): q is string => Boolean(q)),
+    ),
+  ];
 
   return (
-    <>
+    <CountryProvider country={household.data?.country}>
       <DeskHeader
         title={firstName ? t('title', { name: firstName }) : t('titleLoading')}
         subtitle={session.data?.hospitalName}
+        status={
+          live ? (
+            <Badge icon={RadioTower} tone="primary" className="shrink-0">
+              {tl('badge')}
+            </Badge>
+          ) : (
+            <Badge icon={MessageSquareText} tone="neutral" className="shrink-0">
+              {t('textMode')}
+            </Badge>
+          )
+        }
         query={query}
         demoScene={demo ? (scene ?? 'hospital') : undefined}
+        members={household.data?.members}
+        patientId={session.data?.patientMemberId}
         action={
           <Button
             variant="ghost"
             size="sm"
-
+            className="max-sm:min-w-12 max-sm:px-2"
             loading={end.isPending}
             onClick={() => end.mutate()}
           >
-            {t('end')}
+            {/* A phone keeps only the ✕ (the word stays for screen readers) so the bar fits. */}
+            <span className="max-sm:sr-only">{t('end')}</span>
+            <X aria-hidden className="size-5" />
           </Button>
         }
       />
 
-      <div className="mx-auto w-full max-w-6xl lg:grid lg:grid-cols-[minmax(0,1fr)_440px] lg:grid-rows-[auto_1fr] lg:items-start lg:gap-x-10 lg:gap-y-6 lg:px-6">
-        <main
-          className={cn(
-            'mx-auto flex max-w-2xl flex-col gap-4 px-4 pt-3 lg:col-start-1 lg:row-span-2 lg:row-start-1 lg:mx-0 lg:max-w-none lg:px-0 lg:pb-12 lg:pt-6',
-            // The answer section below carries the room for the fixed bar once there is one.
-            answer ? 'pb-4' : 'pb-48',
-          )}
-        >
+      {/*
+        Stitch desk: two columns on a laptop (the conversation and the estimate on the left; the
+        controls, the result, the lines for the desk and the rules on the right). On a phone both
+        columns flatten into one list, the answer first, the controls in a bar at the bottom.
+      */}
+      <main className="mx-auto flex w-full max-w-2xl flex-col gap-4 px-4 pb-52 pt-3 lg:grid lg:max-w-7xl lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] lg:items-start lg:gap-8 lg:px-6 lg:pb-12 lg:pt-6">
+        <div className="contents lg:flex lg:min-w-0 lg:flex-col lg:gap-6">
           {live ? (
-            <div className="relative flex flex-col items-center gap-3 py-4">
-              <Badge icon={RadioTower} tone="primary" className="absolute right-0 top-0">
-                {tl('badge')}
-              </Badge>
+            // The listening card: the orb, its state in words, and what to do (Stitch 10/11).
+            <Card
+              as="section"
+              aria-label={tl('badge')}
+              // Room above and below for the orb's slow sonar rings, which reach past the sphere.
+              className="flex flex-col items-center gap-4 py-16 text-center sm:py-16"
+            >
               <ListeningOrb
                 size={voice.status === 'off' ? 'md' : 'lg'}
                 state={voice.muted ? 'idle' : orbState(voice.status)}
                 label={voice.muted ? tl('orb.muted') : tl(`orb.${liveLabel(voice.status)}`)}
               />
-            </div>
-          ) : null}
+              <p className="max-w-md text-base text-muted">{tl('talkHint')}</p>
+            </Card>
+          ) : (
+            // Text mode: the orb's place holds a quiet note on how to talk to Kavach (laptop
+            // only; on a phone the header badge already says "Text mode").
+            <Card as="section" aria-labelledby="text-note-title" className="hidden gap-4 lg:flex">
+              <span
+                aria-hidden
+                className="flex size-12 shrink-0 items-center justify-center rounded-full bg-primary-soft text-primary"
+              >
+                <Keyboard className="size-6" />
+              </span>
+              <div className="min-w-0">
+                <h2 id="text-note-title" className="font-display text-lg font-bold">
+                  {t('textNote.title')}
+                </h2>
+                <p className="text-muted">{t('textNote.body')}</p>
+              </div>
+            </Card>
+          )}
 
           <Captions lines={captions} />
 
@@ -371,93 +441,120 @@ export function DeskSessionScreen({
             <AgentStepsTicker key={operation.id} labels={operation.labels} running={busy} />
           )}
 
-          {!estimate && !capture.isPending && (
-            <Card as="section" aria-labelledby="capture-title" className="flex flex-col gap-3">
-              <h2 id="capture-title" className="font-display text-xl font-bold">
-                {t('capture.title')}
-              </h2>
-              <p className="text-muted">{t('capture.hint')}</p>
-              <Button size="desk" onClick={showEstimate}>
-                <Camera aria-hidden className="size-6" />
-                {t('capture.photo')}
-              </Button>
-              {demo && (
-                <Button variant="secondary" size="desk" onClick={() => capture.mutate('sample')}>
-                  <FileText aria-hidden className="size-6" />
-                  {t('capture.sample')}
-                </Button>
+          {!capture.isPending && (
+            <Card as="section" aria-labelledby="capture-title" className="flex flex-col gap-4">
+              <div className="flex flex-wrap items-start justify-between gap-2">
+                <div className="min-w-0">
+                  <h2 id="capture-title" className="font-display text-xl font-bold">
+                    {t('capture.title')}
+                  </h2>
+                  {!estimate && <p className="text-muted">{t('capture.hint')}</p>}
+                </div>
+                {estimate && (
+                  <Button variant="ghost" size="sm" disabled={busy} onClick={showEstimate}>
+                    <Camera aria-hidden className="size-5" />
+                    {t('estimate.retake')}
+                  </Button>
+                )}
+              </div>
+
+              {!estimate && (
+                // The two big buttons side by side on a laptop, stacked on a phone (Stitch 10/11).
+                <div className={cn('grid gap-3', demo && 'sm:grid-cols-2')}>
+                  <Button size="desk" className="px-4 text-center" onClick={showEstimate}>
+                    <Camera aria-hidden className="size-6 shrink-0" />
+                    {t('capture.photo')}
+                  </Button>
+                  {demo && (
+                    <Button
+                      variant="secondary"
+                      size="desk"
+                      className="px-4 text-center"
+                      onClick={() => capture.mutate('sample')}
+                    >
+                      <FileText aria-hidden className="size-6 shrink-0" />
+                      {t('capture.sample')}
+                    </Button>
+                  )}
+                </div>
+              )}
+
+              {estimate && (
+                <>
+                  <div className="flex items-start gap-3">
+                    {photoUrl ? (
+                      // A local preview of the photo just taken; next/image adds nothing for blob URLs.
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={photoUrl}
+                        alt={t('estimate.photoAlt')}
+                        className="size-16 shrink-0 rounded-sm border border-border object-cover"
+                      />
+                    ) : (
+                      <span className="flex size-16 shrink-0 items-center justify-center rounded-sm bg-sunken text-muted">
+                        <FileText aria-hidden className="size-8" />
+                      </span>
+                    )}
+                    <div className="min-w-0">
+                      <p className="font-display text-lg font-bold">{estimate.hospitalName}</p>
+                      <p className="text-muted">
+                        {estimate.procedure} · {t('estimate.days', { days: estimate.days })}
+                      </p>
+                    </div>
+                  </div>
+                  {!answer &&
+                    (estimate.needsConfirmation && estimate.lines.length === 0 ? (
+                      <ul className="flex flex-col gap-1 text-partial">
+                        {estimate.notes.map((note) => (
+                          <li key={note}>{note}</li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <div className="flex flex-col gap-2">
+                        <p className="text-muted">{t('estimate.check')}</p>
+                        <ul className="flex flex-wrap gap-2" aria-label={t('estimate.rooms')}>
+                          {estimate.roomCategories.map((room) => {
+                            // A package list prices the whole stay per room; a tariff prices the room per day.
+                            const figure = estimate.packagePrices?.[room.id] ?? room.rentPerDay;
+                            return (
+                              <li key={room.id} className="rounded-sm bg-sunken px-2 py-1">
+                                {figure > 0 && <Amount value={figure} className="font-semibold" />}{' '}
+                                {room.label}
+                              </li>
+                            );
+                          })}
+                        </ul>
+                      </div>
+                    ))}
+                  {estimate.lines.length > 0 &&
+                    (desktop ? (
+                      <EstimateLines
+                        estimate={estimate}
+                        result={evaluation.data?.primary}
+                        sample={usedSample}
+                      />
+                    ) : (
+                      <Disclosure label={t('estimate.lines')} className="-mb-1">
+                        <EstimateLines
+                          estimate={estimate}
+                          result={evaluation.data?.primary}
+                          sample={usedSample}
+                        />
+                      </Disclosure>
+                    ))}
+                </>
               )}
             </Card>
           )}
 
-          {estimate && (
-            <Card as="section" aria-labelledby="estimate-title" className="flex flex-col gap-3">
-              <div className="flex items-start gap-3">
-                {photoUrl ? (
-                  // A local preview of the photo just taken; next/image adds nothing for blob URLs.
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={photoUrl}
-                    alt={t('estimate.photoAlt')}
-                    className="size-16 shrink-0 rounded-sm border border-border object-cover"
-                  />
-                ) : (
-                  <span className="flex size-16 shrink-0 items-center justify-center rounded-sm bg-sunken text-muted">
-                    <FileText aria-hidden className="size-8" />
-                  </span>
-                )}
-                <div className="min-w-0">
-                  <h2 id="estimate-title" className="font-display text-lg font-bold">
-                    {estimate.hospitalName}
-                  </h2>
-                  <p className="text-muted">
-                    {estimate.procedure} · {t('estimate.days', { days: estimate.days })}
-                  </p>
-                </div>
-              </div>
-              {!answer && (
-                <>
-                  {estimate.needsConfirmation && estimate.lines.length === 0 ? (
-                    <ul className="flex flex-col gap-1 text-partial">
-                      {estimate.notes.map((note) => (
-                        <li key={note}>{note}</li>
-                      ))}
-                    </ul>
-                  ) : (
-                    <ul className="flex flex-wrap gap-2" aria-label={t('estimate.rooms')}>
-                      {estimate.roomCategories.map((room) => {
-                        // A package list prices the whole stay per room; a tariff prices the room per day.
-                        const figure = estimate.packagePrices?.[room.id] ?? room.rentPerDay;
-                        return (
-                          <li key={room.id} className="rounded-sm bg-sunken px-2 py-1">
-                            {figure > 0 && <Amount value={figure} className="font-semibold" />}{' '}
-                            {room.label}
-                          </li>
-                        );
-                      })}
-                    </ul>
-                  )}
-                  <div className="flex flex-wrap items-center justify-between gap-2">
-                    <p className="text-muted">{t('estimate.check')}</p>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-
-                      disabled={busy}
-                      onClick={showEstimate}
-                    >
-                      <Camera aria-hidden className="size-5" />
-                      {t('estimate.retake')}
-                    </Button>
-                  </div>
-                </>
-              )}
-              {estimate.lines.length > 0 && (
-                <Disclosure label={t('estimate.lines')} className="-mb-1">
-                  <EstimateLines estimate={estimate} result={evaluation.data?.primary} />
-                </Disclosure>
-              )}
-            </Card>
+          {otherCards.length > 0 && (
+            // The rest of the answer (which card first, limits, top-ups): under the estimate on
+            // a laptop; on a phone right after the result, before the conversation.
+            <section aria-label={t('answers')} className="flex flex-col gap-4 max-lg:-order-1">
+              {otherCards.map((card, i) => (
+                <AnswerCard key={card.id} card={card} index={i} />
+              ))}
+            </section>
           )}
 
           {estimate && !answer && !live && (
@@ -482,74 +579,213 @@ export function DeskSessionScreen({
               ))}
             </section>
           )}
-        </main>
+        </div>
 
-        {answer && (
-          <section
-            ref={answers}
-            aria-label={t('answers')}
-            className="mx-auto flex w-full max-w-2xl scroll-mt-28 flex-col gap-4 px-4 pb-48 lg:col-start-2 lg:row-start-2 lg:mx-0 lg:max-w-none lg:px-0 lg:pb-12"
-          >
-            {answer.questionForDesk && answer.cards.some((c) => c.kind === 'billing_branch') && (
-              <Card className="flex flex-col gap-3 border-2 border-primary">
-                <p className="font-semibold">{tl('billing.question')}</p>
-                <div className="grid grid-cols-1 gap-2 min-[400px]:grid-cols-2">
-                  <Button
-                    variant="secondary"
-                    disabled={busy}
-                    onClick={() => answerBilling('differ')}
-                  >
-                    {tl('billing.differ')}
-                  </Button>
-                  <Button variant="secondary" disabled={busy} onClick={() => answerBilling('same')}>
-                    {tl('billing.same')}
-                  </Button>
-                </div>
-              </Card>
+        <div className="contents lg:flex lg:min-w-0 lg:flex-col lg:gap-6">
+          <aside
+            aria-label={t('controls')}
+            className={cn(
+              'fixed inset-x-0 bottom-0 z-20 border-t border-border bg-bg pb-[env(safe-area-inset-bottom)] lg:border-0 lg:bg-transparent lg:pb-0',
+              // Sticky while the dock is only controls; once the answer sits beneath them it scrolls with it.
+              answer ? 'lg:static' : 'lg:sticky lg:top-24',
             )}
-            {answer.cards
-              .filter((card) => shownCards === 'all' || shownCards.has(card.id))
-              .map((card, i) => (
-                <AnswerCard key={card.id} card={card} index={i}>
-                  {card.kind === 'room_compare' && evaluation.data && (
-                    <Disclosure
-                      label={t('compareRooms')}
-                      icon={<Scale aria-hidden className="size-5" />}
+          >
+            {/* On a laptop the dock is its own card, "Quick desk controls" (Stitch 10/11). */}
+            <div className="lg:rounded-md lg:border lg:border-border lg:bg-surface lg:p-5">
+              <h2 className="label mb-3 hidden lg:block">{t('controls')}</h2>
+              {live ? (
+                // The one action on top, full width; mute and "type instead" below it.
+                <div className="mx-auto flex max-w-2xl flex-col gap-2 px-4 py-3 lg:px-0 lg:py-0">
+                  <Button
+                    variant="accent"
+                    size="desk"
+                    className="px-4 text-center"
+                    disabled={busy}
+                    onClick={showEstimate}
+                  >
+                    <Camera aria-hidden className="size-6 shrink-0" />
+                    {tl('showEstimate')}
+                  </Button>
+                  <div className="grid grid-cols-2 gap-2">
+                    <Button
+                      variant={voice.muted ? 'secondary' : 'primary'}
+                      className="min-h-14"
+                      aria-pressed={voice.muted}
+                      disabled={voice.status === 'connecting'}
+                      onClick={voice.toggleMute}
                     >
-                      <RoomCompare result={evaluation.data.primary} />
-                    </Disclosure>
+                      {voice.muted ? (
+                        <MicOff aria-hidden className="size-6" />
+                      ) : (
+                        <Mic aria-hidden className="size-6" />
+                      )}
+                      <span className="truncate">
+                        {voice.muted ? tl('unmute') : tl('muteShort')}
+                      </span>
+                    </Button>
+                    <Button variant="secondary" className="min-h-14" onClick={stopLive}>
+                      <Keyboard aria-hidden className="size-6" />
+                      <span className="truncate">{tl('typeInstead')}</span>
+                    </Button>
+                  </div>
+                </div>
+              ) : (
+                <div className="mx-auto flex max-w-2xl flex-col gap-3 px-4 py-3 lg:px-0 lg:py-0">
+                  {fallback && (
+                    <div
+                      role="alert"
+                      className="flex flex-col gap-2 rounded-md border-2 border-partial bg-partial-bg p-3 text-base text-text"
+                    >
+                      <p className="flex items-center gap-2 font-semibold text-partial">
+                        <TriangleAlert aria-hidden className="size-5 shrink-0" />
+                        {tl('fallback.title')}
+                      </p>
+                      <p>{tl(`fallback.${fallbackMessage(fallback)}`)}</p>
+                      <div className="flex flex-wrap gap-2">
+                        {fallback !== 'time_limit' && (
+                          <Button variant="secondary" size="sm" onClick={startLive}>
+                            <Mic aria-hidden className="size-5" />
+                            {tl('fallback.retry')}
+                          </Button>
+                        )}
+                        <Button variant="ghost" size="sm" onClick={() => setFallback(undefined)}>
+                          {tl('fallback.dismiss')}
+                        </Button>
+                      </div>
+                    </div>
                   )}
-                </AnswerCard>
-              ))}
-
-            <Card className="p-2 sm:p-3">
-              <Disclosure label={t('why')} defaultOpen={desktop}>
-                {evaluation.data ? (
-                  <WhyPanel evaluation={evaluation.data} estimate={estimate} />
-                ) : (
-                  <Spinner label={tc('loading')} />
-                )}
-              </Disclosure>
-            </Card>
-
-            <DisclaimerBar kind="hospital" className="text-base" />
-
-            <div className="flex flex-col gap-3">
-              <Button variant="secondary" size="desk" onClick={share}>
-                <Share2 aria-hidden className="size-6" />
-                {shared ? t('copied') : t('share')}
-              </Button>
-              <Button
-                variant="ghost"
-                size="desk"
-                loading={end.isPending}
-                onClick={() => end.mutate()}
-              >
-                {t('endAndSummary')}
-              </Button>
+                  {!fallback && (
+                    <Button
+                      variant="accent"
+                      size="desk"
+                      className="justify-between px-5"
+                      onClick={startLive}
+                    >
+                      <span className="flex items-center gap-3">
+                        <Mic aria-hidden className="size-6" />
+                        {tl('talk')}
+                      </span>
+                      <ChevronRight aria-hidden className="size-5 opacity-70" />
+                    </Button>
+                  )}
+                  <form onSubmit={submit} className="flex items-stretch gap-2">
+                    <label htmlFor="desk-question" className="sr-only">
+                      {t('questionLabel')}
+                    </label>
+                    {/* Grows with the question (up to five lines) so every word stays in view; Enter sends, Shift+Enter breaks a line. */}
+                    <textarea
+                      id="desk-question"
+                      ref={questionBox}
+                      rows={1}
+                      value={question}
+                      onChange={(e) => setQuestion(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' && !e.shiftKey && !e.nativeEvent.isComposing) {
+                          e.preventDefault();
+                          e.currentTarget.form?.requestSubmit();
+                        }
+                      }}
+                      placeholder={t('questionPlaceholder')}
+                      autoComplete="off"
+                      className="max-h-44 min-h-14 min-w-0 flex-1 resize-none rounded-md border border-border-strong bg-surface px-3 py-3.5 text-lg leading-snug placeholder:text-muted focus-visible:border-primary"
+                    />
+                    <Button
+                      type="submit"
+                      className="min-h-14 min-w-14 shrink-0 px-0"
+                      aria-label={t('send')}
+                      disabled={busy || !question.trim()}
+                    >
+                      <Send aria-hidden className="size-6" />
+                    </Button>
+                  </form>
+                </div>
+              )}
             </div>
-          </section>
-        )}
+          </aside>
+
+          {answer && (
+            <section
+              ref={answers}
+              aria-label={t('answers')}
+              // On a phone the answer comes first, above the conversation and the estimate.
+              className="flex scroll-mt-28 flex-col gap-4 max-lg:-order-2 lg:gap-6"
+            >
+              {answer.questionForDesk && cards.some((c) => c.kind === 'billing_branch') && (
+                <Card className="flex flex-col gap-3 border-2 border-primary">
+                  <p className="font-semibold">{tl('billing.question')}</p>
+                  <div className="grid grid-cols-1 gap-2 min-[400px]:grid-cols-2">
+                    <Button
+                      variant="secondary"
+                      disabled={busy}
+                      onClick={() => answerBilling('differ')}
+                    >
+                      {tl('billing.differ')}
+                    </Button>
+                    <Button
+                      variant="secondary"
+                      disabled={busy}
+                      onClick={() => answerBilling('same')}
+                    >
+                      {tl('billing.same')}
+                    </Button>
+                  </div>
+                </Card>
+              )}
+
+              {showResult && evaluation.data && (
+                <DeskResult
+                  evaluation={evaluation.data}
+                  quotedRoomId={estimate?.roomCategories[0]?.id}
+                />
+              )}
+
+              {/* Until the engine's numbers arrive, the answer's own room card stands in. */}
+              {!evaluation.data &&
+                cards
+                  .filter((card) => card.kind === 'room_compare')
+                  .map((card, i) => <AnswerCard key={card.id} card={card} index={i} />)}
+
+              {(deskQuestions.length > 0 || answer.say) && (
+                <AskDeskPanel
+                  questions={deskQuestions}
+                  say={answer.say}
+                  shareHref={waLink([...deskQuestions, answer.say].filter(Boolean).join('\n'))}
+                />
+              )}
+            </section>
+          )}
+
+          {answer && (
+            <section aria-label={t('why')} className="flex flex-col gap-4 max-lg:order-1 lg:gap-6">
+              {evaluation.data ? (
+                <RulesApplied trace={evaluation.data.trace}>
+                  <Disclosure label={t('rules.details')}>
+                    <WhyPanel evaluation={evaluation.data} estimate={estimate} />
+                  </Disclosure>
+                </RulesApplied>
+              ) : (
+                <Spinner label={tc('loading')} />
+              )}
+
+              <DisclaimerBar kind="hospital" className="text-base" />
+
+              <div className="flex flex-col gap-3">
+                <Button variant="secondary" size="desk" onClick={share}>
+                  <Share2 aria-hidden className="size-6" />
+                  {shared ? t('copied') : t('share')}
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="desk"
+                  loading={end.isPending}
+                  onClick={() => end.mutate()}
+                >
+                  {t('endAndSummary')}
+                </Button>
+              </div>
+            </section>
+          )}
+        </div>
 
         <input
           ref={fileInput}
@@ -572,122 +808,18 @@ export function DeskSessionScreen({
             onSample={demo ? () => capture.mutate('sample') : undefined}
           />
         )}
-
-        <aside
-          className={cn(
-            'fixed inset-x-0 bottom-0 z-20 border-t border-border bg-bg pb-[env(safe-area-inset-bottom)] lg:col-start-2 lg:row-start-1 lg:border-0 lg:bg-transparent lg:pb-0 lg:pt-6',
-            // Sticky while the dock is only controls; once the answer sits beneath them it scrolls with it.
-            answer ? 'lg:static' : 'lg:sticky lg:top-24',
-          )}
-        >
-          {live ? (
-            // The one action on top, full width; mute and "type instead" below it.
-            <div className="mx-auto flex max-w-2xl flex-col gap-2 px-4 py-3 lg:px-0 lg:py-0">
-              <Button
-                variant="accent"
-                size="desk"
-                className="px-4 text-center"
-                disabled={busy}
-                onClick={showEstimate}
-              >
-                <Camera aria-hidden className="size-6 shrink-0" />
-                {tl('showEstimate')}
-              </Button>
-              <div className="grid grid-cols-2 gap-2">
-                <Button
-                  variant={voice.muted ? 'secondary' : 'primary'}
-                  className="min-h-14"
-                  aria-pressed={voice.muted}
-                  disabled={voice.status === 'connecting'}
-                  onClick={voice.toggleMute}
-                >
-                  {voice.muted ? (
-                    <MicOff aria-hidden className="size-6" />
-                  ) : (
-                    <Mic aria-hidden className="size-6" />
-                  )}
-                  <span className="truncate">{voice.muted ? tl('unmute') : tl('muteShort')}</span>
-                </Button>
-                <Button variant="secondary" className="min-h-14" onClick={stopLive}>
-                  <Keyboard aria-hidden className="size-6" />
-                  <span className="truncate">{tl('typeInstead')}</span>
-                </Button>
-              </div>
-            </div>
-          ) : (
-            <div className="mx-auto flex max-w-2xl flex-col gap-2 px-4 py-3 lg:px-0 lg:py-0">
-              {fallback && (
-                <div
-                  role="alert"
-                  className="flex flex-col gap-2 rounded-md border-2 border-partial bg-partial-bg p-3 text-base text-text"
-                >
-                  <p className="flex items-center gap-2 font-semibold text-partial">
-                    <TriangleAlert aria-hidden className="size-5 shrink-0" />
-                    {tl('fallback.title')}
-                  </p>
-                  <p>{tl(`fallback.${fallbackMessage(fallback)}`)}</p>
-                  <div className="flex flex-wrap gap-2">
-                    {fallback !== 'time_limit' && (
-                      <Button variant="secondary" size="sm" onClick={startLive}>
-                        <Mic aria-hidden className="size-5" />
-                        {tl('fallback.retry')}
-                      </Button>
-                    )}
-                    <Button variant="ghost" size="sm" onClick={() => setFallback(undefined)}>
-                      {tl('fallback.dismiss')}
-                    </Button>
-                  </div>
-                </div>
-              )}
-              {!fallback && (
-                <Button variant="accent" size="desk" onClick={startLive}>
-                  <Mic aria-hidden className="size-6" />
-                  {tl('talk')}
-                </Button>
-              )}
-              <form onSubmit={submit} className="flex items-stretch gap-2">
-                <label htmlFor="desk-question" className="sr-only">
-                  {t('questionLabel')}
-                </label>
-                {/* Grows with the question (up to five lines) so every word stays in view; Enter sends, Shift+Enter breaks a line. */}
-                <textarea
-                  id="desk-question"
-                  ref={questionBox}
-                  rows={1}
-                  value={question}
-                  onChange={(e) => setQuestion(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' && !e.shiftKey && !e.nativeEvent.isComposing) {
-                      e.preventDefault();
-                      e.currentTarget.form?.requestSubmit();
-                    }
-                  }}
-                  placeholder={t('questionPlaceholder')}
-                  autoComplete="off"
-                  className="max-h-44 min-h-16 min-w-0 flex-1 resize-none rounded-md border-2 border-border-strong bg-surface px-3 py-4 text-lg leading-snug placeholder:text-muted focus-visible:border-primary"
-                />
-                <Button
-                  type="submit"
-                  className="min-h-16 min-w-16 shrink-0 px-0"
-                  aria-label={t('send')}
-                  disabled={busy || !question.trim()}
-                >
-                  <Send aria-hidden className="size-7" />
-                </Button>
-              </form>
-            </div>
-          )}
-        </aside>
-      </div>
-    </>
+      </main>
+    </CountryProvider>
   );
 }
 
 /** A small JPEG of the sample estimate photo, so the card shows what was "captured". */
-const sampleThumb = (scene?: 'maternity') =>
+const sampleThumb = (scene?: DeskScene) =>
   scene === 'maternity'
     ? '/samples/lotus-maternity-estimate-thumb.jpg'
-    : '/samples/city-heart-estimate-thumb.jpg';
+    : scene === 'singapore'
+      ? '/samples/sample-general-sg-estimate-thumb.jpg'
+      : '/samples/city-heart-estimate-thumb.jpg';
 
 /** The first sentence of an answer, in English (.!?) or Hindi (।). */
 const firstSentence = (text: string) => {

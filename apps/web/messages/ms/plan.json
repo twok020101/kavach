@@ -1,0 +1,243 @@
+{
+  "loading": "Memuatkan perlindungan keluarga anda…",
+  "error": "Tidak dapat memuatkan ini. Adakah API sedang berjalan?",
+  "retry": "Cuba lagi",
+  "close": "Tutup",
+  "why": "Bagaimana kami mengiranya",
+  "risk": {
+    "health": "Kesihatan",
+    "life": "Hayat",
+    "accident": "Kemalangan"
+  },
+  "layer": {
+    "employer": "Daripada majikan",
+    "personal": "Milik sendiri",
+    "statutory": "Skim kerajaan"
+  },
+  "issue": {
+    "topup_without_base": "Super top-up hanya membayar melebihi deduktibelnya, dan tiada polisi asas lagi yang melindungi bahagian itu. Tanpa polisi asas ia tidak membayar apa-apa.",
+    "savings_plan_not_term": "Ini terutamanya pelan simpanan; perlindungan hayatnya kecil berbanding apa yang anda bayar.",
+    "below_minimum": "Di bawah minimum yang kami cadangkan."
+  },
+  "home": {
+    "demoDate": "Tarikh demo: {date}",
+    "startStory": "Mulakan cerita",
+    "score": "Skor keselamatan",
+    "summary": "{gaps, plural, =0 {Tiada jurang} one {# jurang} other {# jurang}} · {onJob, plural, =0 {tiada yang bergantung pada kerja} one {# bergantung pada kerja {name}} other {# bergantung pada kerja {name}}}",
+    "mapCaption": "Siapa dilindungi untuk apa, pada tarikh yang dipilih",
+    "member": "Ahli",
+    "cellTitle": "{name} · {risk}",
+    "next": "Seterusnya: {count, plural, one {# langkah} other {# langkah}} untuk <amount></amount>/bulan",
+    "nextHint": "Dalam bajet anda · lihat pelan anda",
+    "drafts": "{count, plural, one {# langkah} other {# langkah}} menunggu anda",
+    "whatsChanging": "Apa yang berubah?",
+    "hello": "Helo, {name}",
+    "asOf": "Perlindungan keluarga anda setakat {date}",
+    "mapTitle": "Siapa dilindungi untuk apa",
+    "onJob": "{count} bergantung pada kerja {name}",
+    "tapHint": "Ketik mana-mana petak untuk melihat apa yang dilindungi, apa yang kurang dan mengapa.",
+    "stats": {
+      "covered": "Dilindungi",
+      "partial": "Sebahagian",
+      "gaps": "Jurang"
+    },
+    "draftsHint": "Surat dan peringatan yang Kavach sediakan. Semak dan luluskan.",
+    "short": "Kurang <amount></amount>",
+    "helloMember": "Salam, {name}",
+    "hospitalSub": "Ketik ini di kaunter hospital. Kavach akan membimbing anda.",
+    "yourCover": "Perlindungan anda",
+    "noCover": "Belum ada polisi yang melindungi anda.",
+    "call": "Hubungi {name}",
+    "whatsappLine": "Jika aplikasi tidak dapat dibuka, hantar mesej kepada Kavach di WhatsApp",
+    "fullView": "Tunjukkan semua",
+    "greeting": {
+      "morning": "Selamat pagi, {name}",
+      "afternoon": "Selamat tengah hari, {name}",
+      "evening": "Selamat petang, {name}",
+      "night": "Helo, {name}"
+    },
+    "watch": "Kavach sedang memantau {policies, plural, one {# polisi} other {# polisi}} untuk {people} orang.",
+    "needsYou": "{count, plural, =0 {Tiada apa yang memerlukan anda hari ini.} one {# perkara memerlukan anda.} other {# perkara memerlukan anda.}}",
+    "scoreWord": {
+      "low": "Perlu perhatian",
+      "mid": "Hampir sampai",
+      "high": "Dilindungi dengan baik"
+    },
+    "quick": {
+      "title": "Buat sesuatu",
+      "change": "Beritahu Kavach apa yang berubah",
+      "changeHint": "Kerja baru, bayi, berpindah",
+      "claim": "Semak surat tuntutan",
+      "claimHint": "Setiap potongan, dengan polisi",
+      "invite": "Beri {name} butang hospital",
+      "inviteHint": "Log masuk sendiri, dalam bahasa {language}"
+    },
+    "comingUp": {
+      "title": "Akan datang",
+      "inDays": "{days, plural, =0 {hari ini} one {dalam # hari} other {dalam # hari}}",
+      "all": "Garis masa penuh",
+      "none": "Tiada tarikh untuk dipantau dalam enam bulan akan datang."
+    },
+    "ready": {
+      "title": "Sedia untuk kecemasan",
+      "intro": "Jika seseorang dimasukkan ke hospital malam ini, inilah yang Kavach akan katakan dahulu.",
+      "line": "{name}: beri kad {policy} dahulu{limit, select, none {} other { · had bilik {limit}/hari}}",
+      "nick": {
+        "company": "polisi syarikat",
+        "parents": "polisi ibu bapa",
+        "topup": "polisi top-up",
+        "own": "polisi sendiri"
+      },
+      "none": "Tiada polisi kesihatan melindungi {name} hari ini."
+    },
+    "asOfShort": "Setakat {date}"
+  },
+  "scrubber": {
+    "asOf": "Setakat {date}",
+    "today": "Kembali ke hari ini",
+    "pins": "Tarikh perlindungan anda berubah",
+    "cover_ends": "Perlindungan {name} tamat",
+    "cover_starts": "Perlindungan {name} bermula"
+  },
+  "cell": {
+    "needs": "Perlu",
+    "has": "Ada",
+    "endsWithJob": "Tamat dengan kerja {name} · berkuat kuasa sehingga {date}",
+    "topUpAbove": "Hanya membayar melebihi <amount></amount> setahun",
+    "nothing": "Tiada apa yang melindungi ini pada tarikh ini.",
+    "seeFix": "Lihat penyelesaian dalam pelan anda"
+  },
+  "rec": {
+    "title": {
+      "term_life": "Hayat bertempoh untuk {names}",
+      "family_health": "Kesihatan keluarga ({names})",
+      "parents_health": "Kesihatan ibu bapa sendiri ({names})",
+      "personal_accident": "Perlindungan kemalangan untuk {names}",
+      "device": "Perlindungan telefon ({asset})"
+    },
+    "perMonth": "~<amount></amount>/bulan",
+    "viaMigration": "dengan berpindah daripada polisi {employer}",
+    "illustrative": "Ilustrasi",
+    "defer": {
+      "employer_cover": "Dilindungi oleh polisi berkumpulan {employer} buat masa ini. Mendesak jika kerja berubah.",
+      "budget": "Kemudian: tidak muat dalam bajet bulan ini."
+    },
+    "purpose": {
+      "term_life": "Pendapatan untuk keluarga jika pencari nafkah meninggal dunia",
+      "personal_accident": "Pendapatan jika kemalangan menghentikan kerja",
+      "device": "Kehilangan, kecurian dan kerosakan",
+      "family_health": "Bil hospital, tanpa terikat pada kerja",
+      "parents_health": "Bil hospital atas nama mereka sendiri"
+    }
+  },
+  "plan": {
+    "title": "Pelan anda",
+    "uses": "Menggunakan <spend></spend>/bulan daripada <budget></budget>/bulan yang tersedia untuk perlindungan",
+    "howBudget": "Bagaimana kami menetapkan bajet anda",
+    "budgetExplain": "Anda ada baki <left></left> setiap bulan selepas ansuran pinjaman dan perbelanjaan. Kami cadangkan menggunakan sehingga 20% (<total></total>) untuk perlindungan. Anda sudah membayar <existing></existing>, jadi <free></free> masih tersedia.",
+    "thinFund": "Dana kecemasan anda kurang daripada 3 bulan kos tetap, jadi kami lebih suka pilihan deduktibel rendah.",
+    "later": "Kemudian",
+    "review": "Perkara untuk disemak",
+    "reviewIssue": {
+      "savings_plan_not_term": "Terutamanya pelan simpanan; perlindungan hayatnya kecil berbanding premium.",
+      "topup_without_base": "Tidak membayar apa-apa tanpa polisi asas di bawahnya.",
+      "below_minimum": "Di bawah minimum yang kami cadangkan."
+    },
+    "disclaimer": "Premium hanya ilustrasi, bukan sebut harga. Kavach tidak menjual insurans; berbincang dengan penasihat berlesen sebelum anda membeli.",
+    "allocated": "Dalam pelan",
+    "leftOver": "Baki",
+    "ofTotal": "{count} daripada {total} dalam pelan",
+    "openPolicy": "Buka polisi",
+    "utilised": "{percent}% daripada wang bebas untuk perlindungan ada dalam pelan",
+    "dotPrioritised": "Perlindungan mengikut keutamaan"
+  },
+  "change": {
+    "title": "Apa yang berubah?",
+    "label": "Terangkan perubahan",
+    "placeholder": "Contohnya: Menyertai syarikat permulaan pada 1 Dis",
+    "common": "Perubahan biasa",
+    "chips": {
+      "newJob": "Kerja baru",
+      "baby": "Bakal dapat bayi",
+      "parents": "Ibu bapa berpindah masuk",
+      "car": "Kereta baru",
+      "trip": "Perjalanan ke luar negara",
+      "loan": "Pinjaman rumah baru"
+    },
+    "examples": {
+      "newJob": "Menyertai Orbit Labs, sebuah syarikat permulaan, pada 1 Dis. Mereka melindungi saya, Priya dan Anaya untuk ₹3 lakh.",
+      "baby": "Kami menanti kelahiran bayi pada bulan Mei.",
+      "parents": "Ibu bapa saya akan berpindah tinggal bersama kami bulan depan.",
+      "car": "Membeli kereta baru bulan depan.",
+      "trip": "Pergi ke Eropah selama dua minggu pada bulan Mac.",
+      "loan": "Mengambil pinjaman rumah sebanyak ₹60 lakh."
+    },
+    "check": "Semak",
+    "understood": "Inilah yang saya faham",
+    "parseError": "Tidak dapat memahami itu. Cuba katakan dengan cara lain."
+  },
+  "confirm": {
+    "leaves": "{name} meninggalkan {employer} pada {date}",
+    "coverEnds": "Perlindungan kesihatan {employer} tamat {date} untuk {count, plural, one {# orang} other {kesemua # orang}}",
+    "joins": "Menyertai {employer} pada {date}",
+    "newCover": "Perlindungan kesihatan {employer} <amount></amount> untuk {names}",
+    "noCover": "{employer} tidak memberi perlindungan kesihatan",
+    "offerQuestion": "Adakah {employer} memberi perlindungan kesihatan?",
+    "offerYes": "Ya",
+    "offerNo": "Tidak / tidak pasti",
+    "unrecognised": "Tidak digunakan: {text}",
+    "checkDates": "Sebahagian tarikh diteka. Semak sebelum anda teruskan.",
+    "saveError": "Tidak dapat menyimpan perubahan. Sila cuba lagi.",
+    "edit": "Sunting",
+    "looksRight": "Nampak betul"
+  },
+  "replan": {
+    "notFound": "Tidak dapat mencari perubahan ini.",
+    "headline": "Pada {date}, {names} hilang perlindungan",
+    "headlineNone": "Dari {date}, inilah pelan baru anda",
+    "score": "Skor keselamatan {before} → {after} tanpa tindakan",
+    "newPlan": "Pelan baru anda",
+    "spend": "<before></before> → <after></after>/bulan",
+    "fits": "Muat dalam bajet anda",
+    "steps": "Langkah, dengan tarikh",
+    "checkHr": "Tarikh akhir datang daripada ringkasan manfaat majikan. Semak dengan HR.",
+    "by": "Sebelum",
+    "kind": {
+      "migration_letter": "Surat untuk disemak",
+      "grievance_letter": "Surat untuk disemak",
+      "reminder": "Peringatan WhatsApp"
+    },
+    "status": {
+      "draft": "Menunggu anda",
+      "approved": "Diluluskan",
+      "done": "Selesai",
+      "dismissed": "Diabaikan"
+    }
+  },
+  "actions": {
+    "title": "Langkah anda",
+    "empty": "Tiada yang menunggu. Beritahu Kavach apa yang berubah dan ia akan menyediakan langkahnya.",
+    "due": "Tarikh akhir {date}"
+  },
+  "review": {
+    "notFound": "Tidak dapat mencari langkah ini.",
+    "due": "Tarikh akhir {date}",
+    "to": "Kepada: {to}",
+    "blanks": "Diisi daripada butiran keluarga anda. Ruang yang ditonjolkan untuk anda isi.",
+    "fill": "sila isi",
+    "why": "Mengapa langkah ini",
+    "whyLetter": "Apabila kerja tamat, polisi kesihatan berkumpulan tamat untuk semua orang di dalamnya. Ibu bapa biasanya boleh berpindah ke polisi individu dan mengekalkan kredit tempoh menunggu, jika permohonan sampai kepada syarikat insurans tepat pada masanya.",
+    "whyReminder": "Kavach akan mengingatkan anda di WhatsApp pada tarikh ini, dengan surat yang sedia untuk dihantar.",
+    "approve": "Luluskan",
+    "approveReminder": "Hidupkan peringatan",
+    "dismiss": "Bukan sekarang",
+    "approvedLetter": "Diluluskan. Surat anda sudah sedia.",
+    "approvedReminder": "Peringatan dihidupkan. Kavach akan menghantar mesej kepada anda di WhatsApp.",
+    "copy": "Salin",
+    "copied": "Disalin",
+    "pdf": "PDF",
+    "neverSends": "Kavach tidak pernah menghantar surat bagi pihak anda. Anda yang menghantarnya.",
+    "whatsapp": "Kavach di WhatsApp",
+    "error": "Ada masalah. Sila cuba lagi."
+  }
+}

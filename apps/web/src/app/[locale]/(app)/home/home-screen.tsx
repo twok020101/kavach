@@ -4,7 +4,9 @@ import type { CoverCell, Household } from '@kavach/schemas';
 import {
   ArrowRight,
   Briefcase,
+  CalendarDays,
   PenLine,
+  Pointer,
   RotateCcw,
   ShieldAlert,
   ShieldCheck,
@@ -18,6 +20,7 @@ import { Reveal } from '@/components/kavach/reveal';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { cn } from '@/components/ui/cn';
+import { StatusBadge } from '@/components/ui/status-badge';
 import { CellDetail } from '@/components/plan/cell-detail';
 import { CoverGrid } from '@/components/plan/cover-grid';
 import { DateScrubber } from '@/components/plan/date-scrubber';
@@ -101,7 +104,9 @@ function Home({ household }: { household: Household }) {
       <header className="flex flex-wrap items-end justify-between gap-3">
         <Greeting household={household} needs={drafts.length} asOf={today} />
         {household.isDemo && (
-          <div className="flex items-center gap-1 rounded-md border border-border py-1 pl-3 pr-1 text-sm font-medium text-accent-ink dark:text-text">
+          // The demo clock as a quiet soft-indigo card (Stitch 06), not a bordered pill.
+          <div className="flex min-h-12 flex-wrap items-center gap-x-2 gap-y-1 rounded-md bg-primary-soft py-1.5 pl-3 pr-1.5 text-sm font-medium">
+            <CalendarDays aria-hidden className="size-4 shrink-0 text-primary-hover" />
             <span>{t('demoDate', { date: date(today, true) })}</span>
             <Button
               variant="ghost"
@@ -120,135 +125,159 @@ function Home({ household }: { household: Household }) {
         )}
       </header>
 
-      {/* Phone: one column. Desktop: the map on the left, score and next steps on the right. */}
-      <div className="flex flex-col gap-4 lg:grid lg:grid-cols-[minmax(0,1fr)_360px] lg:items-start">
-        {plan && (
-          <Reveal className="lg:col-start-2 lg:row-start-1">
-            <Card className="flex flex-col gap-4">
-              <div className="flex items-center gap-4">
-                <ScoreRing score={plan.coverMap.score} />
-                <div className="flex min-w-0 flex-col">
-                  <span className="label">{t('score')}</span>
-                  <span className="font-display text-xl font-bold leading-snug">
-                    {t(`scoreWord.${scoreWord}`)}
+      {/* Phone: one column, score first (the `order-*` classes). Laptop: two columns (Stitch
+          home): the map, the chosen cell and the three things to do on the left; score, next
+          step, dates and the emergency card on the right. The wrappers are `contents` on a
+          phone so their children join one column. */}
+      <div className="flex flex-col gap-4 lg:grid lg:grid-cols-[minmax(0,1fr)_340px] lg:items-start lg:gap-6 xl:grid-cols-[minmax(0,1fr)_360px]">
+        <div className="contents lg:flex lg:min-w-0 lg:flex-col lg:gap-6">
+          <Reveal className="order-3 lg:order-none">
+            <Card className="flex flex-col gap-4 shadow-1 sm:p-6">
+              <div className="flex flex-wrap items-start justify-between gap-x-3 gap-y-2">
+                <h2 className="font-display text-xl font-semibold">{t('mapTitle')}</h2>
+                {onJob > 0 && (
+                  <span className="inline-flex items-center gap-1.5 rounded-full border border-partial/30 bg-partial-bg px-3 py-1 text-sm font-semibold text-partial">
+                    <Briefcase aria-hidden className="size-4 shrink-0" />
+                    {t('onJob', { count: onJob, name: earner })}
                   </span>
-                  <span className="text-sm text-muted">
-                    {t('summary', { gaps, onJob, name: earner })}
-                  </span>
-                </div>
+                )}
               </div>
-              <dl className="grid grid-cols-3 gap-2 text-center">
-                <Stat icon={ShieldCheck} tone="safe" n={covered} label={t('stats.covered')} />
-                <Stat icon={ShieldHalf} tone="partial" n={partial} label={t('stats.partial')} />
-                <Stat icon={ShieldAlert} tone="gap" n={gaps} label={t('stats.gaps')} />
-              </dl>
-            </Card>
-          </Reveal>
-        )}
-
-        {plan && (drafts.length > 0 || selectedCount > 0) && (
-          <Reveal delay={0.05} className="lg:col-start-2">
-            {drafts.length > 0 ? (
-              <Link href="/actions" className="block">
-                <Card interactive className="panel panel-partial flex items-center gap-3 border-0">
-                  <span className="flex size-11 shrink-0 items-center justify-center rounded-md bg-partial-bg text-partial">
-                    <PenLine aria-hidden className="size-5" />
-                  </span>
-                  <span className="flex flex-1 flex-col">
-                    <span className="font-semibold">{t('drafts', { count: drafts.length })}</span>
-                    <span className="text-sm text-muted">{t('draftsHint')}</span>
-                  </span>
-                  <ArrowRight aria-hidden className="size-5 text-primary" />
-                </Card>
-              </Link>
-            ) : (
-              <Link href="/plan" className="block">
-                <Card interactive className="panel flex items-center gap-3 border-0">
-                  <span className="flex size-11 shrink-0 items-center justify-center rounded-md bg-primary-soft text-primary">
-                    <ArrowRight aria-hidden className="size-5" />
-                  </span>
-                  <span className="flex flex-1 flex-col">
-                    <span className="font-semibold">
-                      {t.rich('next', {
-                        count: selectedCount,
-                        amount: () => <Amount value={plan.monthlySpend} />,
-                      })}
-                    </span>
-                    <span className="text-sm text-muted">{t('nextHint')}</span>
-                  </span>
-                </Card>
-              </Link>
-            )}
-          </Reveal>
-        )}
-
-        <Reveal className="lg:col-start-1 lg:row-span-5 lg:row-start-1">
-          <Card className="flex flex-col gap-4">
-            <div className="flex items-center justify-between gap-3">
-              <h2 className="font-display text-xl font-bold">{t('mapTitle')}</h2>
-              {onJob > 0 && (
-                <span className="inline-flex items-center gap-1 rounded-sm bg-partial-bg px-2.5 py-1 text-xs font-semibold text-partial">
-                  <Briefcase aria-hidden className="size-3.5" />
-                  {t('onJob', { count: onJob, name: earner })}
-                </span>
-              )}
-            </div>
-            <DateScrubber
-              from={today}
-              days={SCRUB_DAYS}
-              value={asOf}
-              pins={pins}
-              onChange={setAsOf}
-            />
-            {plan && (
-              <div
-                aria-busy={isFetching}
-                className={cn('transition-opacity', isFetching && 'opacity-60')}
-              >
-                <CoverGrid household={household} map={plan.coverMap} onSelect={setSelected} />
-              </div>
-            )}
-            <p className="text-xs text-muted">{t('tapHint')}</p>
-          </Card>
-        </Reveal>
-
-        {selected && desktop && (
-          // Shown at once (no scroll reveal): the person just tapped the cell and is looking here.
-          <div key={selected.memberId + selected.risk} className="lg:col-start-1">
-            <Card as="section" aria-labelledby="cell-title" className="flex flex-col gap-4">
-              <div className="flex items-start justify-between gap-3">
-                <h2 id="cell-title" className="font-display text-xl font-bold">
-                  {t('cellTitle', {
-                    name: member(selected.memberId),
-                    risk: tp(`risk.${selected.risk}`),
-                  })}
-                </h2>
-                <button
-                  type="button"
-                  onClick={() => setSelected(undefined)}
-                  aria-label={tc('close')}
-                  className="press -mr-2 -mt-2 flex size-11 shrink-0 items-center justify-center rounded-md text-muted hover:bg-sunken"
+              <DateScrubber
+                from={today}
+                days={SCRUB_DAYS}
+                value={asOf}
+                pins={pins}
+                onChange={setAsOf}
+              />
+              {plan && (
+                <div
+                  aria-busy={isFetching}
+                  className={cn('transition-opacity', isFetching && 'opacity-60')}
                 >
-                  <X aria-hidden className="size-5" />
-                </button>
-              </div>
-              <CellDetail household={household} cell={selected} />
+                  <CoverGrid household={household} map={plan.coverMap} onSelect={setSelected} />
+                </div>
+              )}
+              <p className="flex items-center justify-between gap-3 border-t border-border pt-3 text-sm text-muted">
+                <span className="serif">{t('tapHint')}</span>
+                <Pointer aria-hidden className="size-4 shrink-0" />
+              </p>
             </Card>
-          </div>
-        )}
+          </Reveal>
 
-        <Reveal delay={0.1} className="lg:col-start-2">
-          <ComingUp pins={pins} from={today} />
-        </Reveal>
+          {selected && desktop && (
+            // Shown at once (no scroll reveal): the person just tapped the cell and is looking here.
+            <div key={selected.memberId + selected.risk}>
+              <Card
+                as="section"
+                aria-labelledby="cell-title"
+                className="flex flex-col gap-4 shadow-2 sm:p-6"
+              >
+                <div className="flex items-start justify-between gap-3">
+                  {/* Title and status on one line (Stitch inspector header). */}
+                  <div className="flex min-w-0 flex-wrap items-center gap-x-3 gap-y-1">
+                    <h2 id="cell-title" className="font-display text-xl font-semibold">
+                      {t('cellTitle', {
+                        name: member(selected.memberId),
+                        risk: tp(`risk.${selected.risk}`),
+                      })}
+                    </h2>
+                    <StatusBadge
+                      status={selected.status}
+                      className="rounded-full border border-current/25 px-2.5 text-xs font-semibold"
+                    />
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setSelected(undefined)}
+                    aria-label={tc('close')}
+                    className="press -mr-2 -mt-2 flex size-11 shrink-0 items-center justify-center rounded-md text-muted hover:bg-sunken"
+                  >
+                    <X aria-hidden className="size-5" />
+                  </button>
+                </div>
+                <CellDetail household={household} cell={selected} showStatus={false} />
+              </Card>
+            </div>
+          )}
 
-        <Reveal delay={0.15} className="lg:col-start-2">
-          <ReadyPanel household={household} asOf={today} />
-        </Reveal>
+          <Reveal delay={0.1} className="order-6 lg:order-none">
+            <QuickActions household={household} />
+          </Reveal>
+        </div>
+
+        <div className="contents lg:flex lg:flex-col lg:gap-6">
+          {plan && (
+            <Reveal className="order-1 lg:order-none">
+              <Card className="flex flex-col gap-4 shadow-1 sm:p-6">
+                <div className="flex items-center gap-4">
+                  <ScoreRing score={plan.coverMap.score} />
+                  <div className="flex min-w-0 flex-col gap-0.5">
+                    <span className="label-caps">{t('score')}</span>
+                    <span className="font-display text-xl font-semibold leading-snug">
+                      {t(`scoreWord.${scoreWord}`)}
+                    </span>
+                    <span className="serif text-sm text-muted">
+                      {t('summary', { gaps, onJob, name: earner })}
+                    </span>
+                  </div>
+                </div>
+                <dl className="grid grid-cols-3 gap-2 text-center">
+                  <Stat icon={ShieldCheck} tone="safe" n={covered} label={t('stats.covered')} />
+                  <Stat icon={ShieldHalf} tone="partial" n={partial} label={t('stats.partial')} />
+                  <Stat icon={ShieldAlert} tone="gap" n={gaps} label={t('stats.gaps')} />
+                </dl>
+              </Card>
+            </Reveal>
+          )}
+
+          {plan && (drafts.length > 0 || selectedCount > 0) && (
+            <Reveal delay={0.05} className="order-2 lg:order-none">
+              {drafts.length > 0 ? (
+                <Link href="/actions" className="block">
+                  <Card
+                    interactive
+                    className="panel panel-partial flex items-center gap-3 border-0 shadow-1"
+                  >
+                    <span className="flex size-11 shrink-0 items-center justify-center rounded-md bg-partial-bg text-partial">
+                      <PenLine aria-hidden className="size-5" />
+                    </span>
+                    <span className="flex flex-1 flex-col">
+                      <span className="font-semibold">{t('drafts', { count: drafts.length })}</span>
+                      <span className="text-sm text-muted">{t('draftsHint')}</span>
+                    </span>
+                    <ArrowRight aria-hidden className="size-5 text-primary" />
+                  </Card>
+                </Link>
+              ) : (
+                <Link href="/plan" className="block">
+                  <Card interactive className="flex items-center gap-3 shadow-1 sm:p-6">
+                    <span className="flex size-11 shrink-0 items-center justify-center rounded-md bg-primary-soft text-primary">
+                      <ArrowRight aria-hidden className="size-5" />
+                    </span>
+                    <span className="flex flex-1 flex-col">
+                      <span className="font-display text-lg font-semibold leading-snug">
+                        {t.rich('next', {
+                          count: selectedCount,
+                          amount: () => <Amount value={plan.monthlySpend} />,
+                        })}
+                      </span>
+                      <span className="text-sm text-muted">{t('nextHint')}</span>
+                    </span>
+                  </Card>
+                </Link>
+              )}
+            </Reveal>
+          )}
+
+          <Reveal delay={0.1} className="order-4 lg:order-none">
+            <ComingUp pins={pins} from={today} />
+          </Reveal>
+
+          <Reveal delay={0.15} className="order-5 lg:order-none">
+            <ReadyPanel household={household} asOf={today} />
+          </Reveal>
+        </div>
       </div>
-
-      <Reveal delay={0.1}>
-        <QuickActions household={household} />
-      </Reveal>
 
       <Sheet
         open={!!selected && !desktop}
@@ -284,8 +313,8 @@ function Stat({
   const shown = useCountUp(n, 600);
   return (
     <div className={cn('flex flex-col items-center gap-0.5 rounded-md px-2 py-2', tones[tone])}>
-      <dt className="flex items-center gap-1 text-xs font-semibold">
-        <Icon aria-hidden className="size-4" />
+      <dt className="flex min-w-0 flex-wrap items-center justify-center gap-1 text-center text-xs font-semibold [overflow-wrap:anywhere]">
+        <Icon aria-hidden className="size-4 shrink-0" />
         {label}
       </dt>
       <dd className="font-display text-2xl font-bold tabular-nums">

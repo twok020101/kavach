@@ -11,6 +11,7 @@ import type {
   RuleFiring,
   Treatment,
 } from '@kavach/schemas';
+import { evaluateHospitalSg, isSgPolicy } from './hospital-sg';
 import { formatInr, roundRupees } from './money';
 import { fire } from './rules';
 
@@ -21,6 +22,8 @@ export type HospitalContext = {
   policies: Policy[];
   /** ISO date of the admission. When set, policies not in force on this date are ignored. */
   asOf?: string;
+  /** Singapore: the specialist is on the insurer's panel with pre-authorisation; undefined = ask. */
+  panel?: boolean;
 };
 
 const HEALTH_KINDS: readonly Policy['kind'][] = ['group_health', 'retail_health', 'super_top_up'];
@@ -52,6 +55,8 @@ export function evaluateHospital(
   estimate: HospitalEstimate,
   roomOptions: RoomCategory[] = [],
 ): DeskEvaluation {
+  // A Singapore household (MediShield Life, Integrated Shield Plan) runs the Singapore rules.
+  if (ctx.policies.some(isSgPolicy)) return evaluateHospitalSg(ctx, estimate, roomOptions);
   const policies = coveringPolicies(ctx);
   if (policies.length === 0) throw new Error('No policy covers this patient');
 

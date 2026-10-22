@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { Citation, Locale, Rupees } from './common';
+import { Citation, Country, Locale, Rupees } from './common';
 import { AccessEntry, ConsentRecord } from './consent';
 
 export const Relation = z.enum(['self', 'spouse', 'child', 'parent', 'parent_in_law', 'other']);
@@ -27,7 +27,53 @@ export const PolicyKind = z.enum([
   'personal_accident',
   'endowment',
   'motor',
+  // Singapore (country 'SG'): the national scheme and a private plan built on it.
+  'medishield_life',
+  'integrated_shield',
 ]);
+
+/** Singapore ward classes, lowest to highest: subsidised C and B2, then B1, A and private hospitals. */
+export const WardClass = z.enum(['C', 'B2', 'B1', 'A', 'private']);
+export type WardClass = z.infer<typeof WardClass>;
+
+/**
+ * Singapore terms (R-SG-*). MediShield Life carries the national figures; an Integrated Shield
+ * Plan carries its own entitlement, pro-ration, deductible, co-insurance and rider.
+ */
+export const SgTerms = z.object({
+  /** The highest ward class paid as charged (MediShield Life: B2). */
+  wardEntitlement: WardClass,
+  /** Share of the bill counted as claimable in each ward class above the entitlement. */
+  prorationByWard: z.partialRecord(WardClass, z.number().min(0).max(1)).default({}),
+  /** MediShield Life pro-rates surgical charges (surgeon, OT) by a separate, lower factor. */
+  surgicalProrationByWard: z.partialRecord(WardClass, z.number().min(0).max(1)).optional(),
+  /** MediShield Life per-day limits; absent on a plan that pays as charged. */
+  dailyWardLimit: Rupees.optional(),
+  icuDailyLimit: Rupees.optional(),
+  firstDaysExtra: z.object({ days: z.number().int().positive(), perDay: Rupees }).optional(),
+  /** Deductible per policy year by ward class, for ages 80 and below and from 81. */
+  deductibleByWard: z.partialRecord(WardClass, Rupees).default({}),
+  deductibleByWardFrom81: z.partialRecord(WardClass, Rupees).optional(),
+  /**
+   * Co-insurance tiers, measured on the claimable amount of the policy year including the
+   * deductible (MediShield Life: 10% to $5,000, 5% to $10,000, 3% beyond); the last tier has no `upTo`.
+   */
+  coinsurance: z
+    .array(z.object({ upTo: Rupees.optional(), percent: z.number().min(0).max(100) }))
+    .default([{ percent: 10 }]),
+  policyYearLimit: Rupees.optional(),
+  /** A rider: pays the deductible and the co-insurance above the insured's own share. */
+  rider: z
+    .object({
+      copayPercent: z.number().min(0).max(100).default(5),
+      annualCap: Rupees.optional(),
+      /** The cap applies only with a panel specialist and pre-authorisation (MOH). */
+      capNeedsPanel: z.boolean().default(true),
+      coversDeductible: z.boolean().default(true),
+    })
+    .optional(),
+});
+export type SgTerms = z.infer<typeof SgTerms>;
 
 /**
  * Maternity benefit (MX-1). Group policies usually cap delivery expenses at a defined limit;
@@ -57,6 +103,8 @@ export const PolicyTerms = z.object({
   proportionateDeduction: z.boolean().default(true),
   /** Maternity benefit; absent means the policy pays nothing for a delivery. */
   maternity: MaternityTerms.optional(),
+  /** Singapore terms; MediShield Life policies may leave it out and take the national figures. */
+  sg: SgTerms.optional(),
   /** Read from full wordings (evals); schedules usually don't print them. */
   waitingPeriods: z
     .object({
@@ -121,7 +169,7 @@ export const Household = z.object({
   id: z.string(),
   name: z.string(),
   city: z.string(),
-  country: z.literal('IN').default('IN'),
+  country: Country.default('IN'),
   members: z.array(Member),
   policies: z.array(Policy),
   assets: z.array(Asset).default([]),

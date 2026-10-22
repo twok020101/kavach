@@ -1,6 +1,8 @@
 'use client';
 
 import {
+  Bell,
+  CalendarDays,
   ChevronsUpDown,
   Clock,
   Ellipsis,
@@ -15,11 +17,16 @@ import {
 import { motion, useReducedMotion } from 'motion/react';
 import { useTranslations } from 'next-intl';
 import type { ReactNode } from 'react';
+import { useDate } from '@/components/plan/format';
+import { useActions } from '@/components/plan/queries';
 import { Link, usePathname } from '@/i18n/navigation';
+import { useHousehold } from '@/lib/household';
+import { useStoredMemberId } from '@/lib/session';
 import { buttonClasses } from '../ui/button';
 import { cn } from '../ui/cn';
 import { LanguageSwitch } from './language-switch';
 import { Logo, LogoMark } from './logo';
+import { MemberAvatar } from './member-avatar';
 import { ThemeToggle } from './theme-toggle';
 
 type Tab = {
@@ -89,14 +96,17 @@ export function AppShell({
 
       {/* Phone top bar */}
       <header className="sticky top-0 z-30 flex items-center gap-3 border-b border-border bg-bg px-4 py-2 lg:hidden">
-        <Link href="/home" className="flex items-center gap-2" aria-label="Kavach">
-          <LogoMark className="size-7" />
+        {/* The family name gives way first; the switch may hold five languages. */}
+        <Link href="/home" className="flex min-w-0 flex-1 items-center gap-2" aria-label="Kavach">
+          <LogoMark className="size-7 shrink-0" />
           {householdName && (
-            <span className="truncate font-display text-base font-bold">{householdName}</span>
+            <span className="min-w-0 truncate font-display text-base font-bold">
+              {householdName}
+            </span>
           )}
         </Link>
-        <ThemeToggle className="ml-auto" />
-        <LanguageSwitch compact />
+        <ThemeToggle className="shrink-0" />
+        <LanguageSwitch compact className="shrink-0" />
       </header>
 
       {/* Desktop left nav */}
@@ -106,15 +116,18 @@ export function AppShell({
             <Logo />
           </Link>
           {householdName && (
-            // The family block (from the Stitch sidebar): who this is for, and the way to Settings.
+            // The family block (from the Stitch sidebar): a soft indigo tile naming who this is
+            // for, and the way to Settings. 48 px tall; the border shows on hover and focus.
             <Link
               href="/settings"
-              className="press flex items-center gap-2 rounded-md bg-sunken px-3 py-2 hover:bg-primary-soft"
+              className="press flex min-h-12 items-center gap-2.5 rounded-md border border-transparent bg-primary-soft px-3 py-2 hover:border-primary focus-visible:border-primary"
             >
-              <Users aria-hidden className="size-5 shrink-0 text-primary" />
+              <Users aria-hidden className="size-5 shrink-0 text-primary-hover" />
               <span className="flex min-w-0 flex-1 flex-col">
-                <span className="label">{t('activeFamily')}</span>
-                <span className="truncate font-semibold leading-tight">{householdName}</span>
+                <span className="label text-primary-hover">{t('activeFamily')}</span>
+                <span className="truncate font-display font-semibold leading-tight">
+                  {householdName}
+                </span>
               </span>
               <ChevronsUpDown aria-hidden className="size-4 shrink-0 text-muted" />
             </Link>
@@ -122,9 +135,15 @@ export function AppShell({
         </div>
         <Link
           href="/desk"
-          className={buttonClasses({ variant: 'accent', size: 'lg', className: 'w-full' })}
+          className={buttonClasses({
+            variant: 'accent',
+            size: 'lg',
+            // Tamil and Malay labels are long: wrap inside the column rather than overrun it.
+            className:
+              'w-full min-w-0 whitespace-normal text-center leading-tight [overflow-wrap:anywhere]',
+          })}
         >
-          <Hospital aria-hidden className="size-6" />
+          <Hospital aria-hidden className="size-6 shrink-0" />
           {t('atHospital')}
         </Link>
         <nav aria-label={t('mainNav')}>
@@ -153,11 +172,14 @@ export function AppShell({
             ))}
           </ul>
         </nav>
-        <div className="mt-auto flex items-center gap-2 px-2">
-          <LanguageSwitch />
+        {/* Language and theme at the foot of the column, over a hairline (Stitch sidebar). */}
+        <div className="-mx-4 mt-auto flex flex-wrap items-center justify-between gap-2 border-t border-border px-5 pt-4">
+          <LanguageSwitch compact />
           <ThemeToggle />
         </div>
       </aside>
+
+      <TopBar />
 
       <main
         id="main"
@@ -183,7 +205,7 @@ export function AppShell({
           <li className="flex items-stretch justify-center p-1.5">
             <Link
               href="/desk"
-              className="btn btn-solid btn-accent flex min-h-14 w-full flex-col items-center justify-center gap-0.5 rounded-md bg-accent text-xs font-bold text-accent-ink"
+              className="btn btn-solid btn-accent flex min-h-14 w-full min-w-0 flex-col items-center justify-center gap-0.5 rounded-md bg-accent px-1 text-center text-xs font-bold leading-tight text-accent-ink [overflow-wrap:anywhere]"
             >
               <Hospital aria-hidden className="size-6" strokeWidth={2} />
               {t('nav.hospital')}
@@ -203,6 +225,80 @@ export function AppShell({
   );
 }
 
+/**
+ * Laptop top bar inside the content column (Stitch): on the left a quiet chip with the demo
+ * clock (or the family's name outside the demo); on the right the steps Kavach has waiting
+ * as a pill, a bell that opens them, and whose app this is. Every item is real data.
+ */
+function TopBar() {
+  const t = useTranslations('household');
+  const date = useDate();
+  const { data: household } = useHousehold();
+  const { data: actions = [] } = useActions(household?.id);
+  const memberId = useStoredMemberId();
+  if (!household)
+    return <div aria-hidden className="hidden h-16 border-b border-border lg:block" />;
+  const waiting = actions.filter((a) => a.status === 'draft').length;
+  const me =
+    household.members.find((m) => m.id === memberId) ??
+    household.members.find((m) => m.relation === 'self');
+  return (
+    <div className="sticky top-0 z-20 hidden h-16 items-center justify-between gap-4 border-b border-border bg-bg px-8 lg:flex">
+      <span className="inline-flex min-w-0 items-center gap-2 text-sm text-muted">
+        <CalendarDays aria-hidden className="size-4 shrink-0" />
+        <span className="truncate">
+          {household.isDemo && household.asOf
+            ? t('demoDate', { date: date(household.asOf, true) })
+            : household.name}
+        </span>
+        {household.isDemo && (
+          <span className="rounded-sm bg-sunken px-2 py-0.5 text-xs font-semibold">
+            {t('shell.sample')}
+          </span>
+        )}
+      </span>
+      <span className="flex items-center gap-2">
+        <Link
+          href="/actions"
+          className={cn(
+            'press inline-flex min-h-10 items-center rounded-md px-3 text-sm font-semibold',
+            waiting > 0
+              ? 'bg-partial-bg text-partial hover:bg-partial-bg/80'
+              : 'bg-sunken text-primary hover:bg-inset',
+          )}
+        >
+          {t('shell.steps', { count: waiting })}
+        </Link>
+        <Link
+          href="/actions"
+          aria-label={t('shell.steps', { count: waiting })}
+          className="press relative flex size-11 items-center justify-center rounded-md text-muted hover:bg-sunken hover:text-text"
+        >
+          <Bell aria-hidden className="size-5" />
+          {waiting > 0 && (
+            <span
+              aria-hidden
+              className="absolute right-2 top-2 flex min-w-4 items-center justify-center rounded-full bg-partial px-1 text-[10px] font-bold leading-4 text-surface"
+            >
+              {waiting}
+            </span>
+          )}
+        </Link>
+        {me && (
+          <Link
+            href="/settings"
+            aria-label={t('shell.account', { name: me.name })}
+            title={me.name}
+            className="press flex size-11 items-center justify-center rounded-full hover:bg-sunken"
+          >
+            <MemberAvatar member={me} className="size-9 text-sm ring-1 ring-border" />
+          </Link>
+        )}
+      </span>
+    </div>
+  );
+}
+
 function PhoneTab({ tab, active, label }: { tab: Tab; active: boolean; label: string }) {
   const Icon = tab.icon;
   return (
@@ -211,7 +307,7 @@ function PhoneTab({ tab, active, label }: { tab: Tab; active: boolean; label: st
         href={tab.href}
         aria-current={active ? 'page' : undefined}
         className={cn(
-          'press flex min-h-16 flex-col items-center justify-center gap-0.5 text-xs font-medium',
+          'press flex min-h-16 min-w-0 flex-col items-center justify-center gap-0.5 px-1 text-center text-xs font-medium leading-tight [overflow-wrap:anywhere]',
           active ? 'text-primary' : 'text-muted hover:text-text',
         )}
       >

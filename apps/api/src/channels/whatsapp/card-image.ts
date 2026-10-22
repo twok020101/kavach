@@ -36,6 +36,26 @@ const LABELS = {
     verified: 'हर रक़म Kavach के नियम-इंजन से',
     confirm: 'साइन करने से पहले TPA डेस्क से पक्का करें।',
   },
+  // The card font set covers Latin and Devanagari only; Tamil, Chinese and Malay cards keep
+  // their labels in English until Noto Sans Tamil and Noto Sans SC ship with the API.
+  ta: {
+    for: (p: string) => `For ${p}`,
+    sample: 'SAMPLE',
+    verified: 'Every amount from Kavach’s rules engine',
+    confirm: 'Confirm with the TPA desk before you sign.',
+  },
+  zh: {
+    for: (p: string) => `For ${p}`,
+    sample: 'SAMPLE',
+    verified: 'Every amount from Kavach’s rules engine',
+    confirm: 'Confirm with the TPA desk before you sign.',
+  },
+  ms: {
+    for: (p: string) => `Untuk ${p}`,
+    sample: 'SAMPEL',
+    verified: 'Setiap jumlah daripada enjin peraturan Kavach',
+    confirm: 'Sahkan dengan kaunter TPA sebelum menandatangani.',
+  },
 };
 
 // Noto Sans Devanagari, Latin and Devanagari subsets (Devanagari has ₹), one family per weight.

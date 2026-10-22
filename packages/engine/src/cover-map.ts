@@ -10,7 +10,12 @@ import type {
 } from '@kavach/schemas';
 import { needs, weight } from './needs';
 
-const HEALTH_BASE: readonly Policy['kind'][] = ['group_health', 'retail_health'];
+const HEALTH_BASE: readonly Policy['kind'][] = [
+  'group_health',
+  'retail_health',
+  'medishield_life',
+  'integrated_shield',
+];
 const LIFE_KINDS: readonly Policy['kind'][] = ['term_life', 'endowment'];
 
 /** ISO date arithmetic in UTC: addDays('2026-11-30', 1) → '2026-12-01'. */

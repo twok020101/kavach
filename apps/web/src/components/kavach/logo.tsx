@@ -1,28 +1,19 @@
 import { cn } from '../ui/cn';
 
-/** Kavach mark: two overlapping shield arcs (indigo and marigold), two people side by side. */
+/**
+ * The Kavach mark: a shield holding a family, with an open hand (logo/Kavach Family Shield Logo.png,
+ * cut out at apps/web/public/logo/kavach-mark.png). Square; size it with a `size-*` class.
+ */
 export function LogoMark({ className }: { className?: string }) {
   return (
-    <svg viewBox="0 0 32 32" aria-hidden className={cn('size-8', className)}>
-      <path
-        d="M15 4 5 7.5V15c0 6.6 4.2 11 10 13"
-        fill="none"
-        stroke="var(--primary)"
-        strokeWidth="3.2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M17 4l10 3.5V15c0 6.6-4.2 11-10 13"
-        fill="none"
-        stroke="var(--accent)"
-        strokeWidth="3.2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <circle cx="12" cy="13" r="2.2" fill="var(--primary)" />
-      <circle cx="20" cy="13" r="2.2" fill="var(--accent)" />
-    </svg>
+    // eslint-disable-next-line @next/next/no-img-element -- a static asset, no optimisation needed
+    <img
+      src="/logo/kavach-mark.png"
+      alt=""
+      aria-hidden
+      draggable={false}
+      className={cn('size-8 select-none object-contain', className)}
+    />
   );
 }
 

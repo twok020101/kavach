@@ -20,7 +20,8 @@ export function DeskSummaryScreen({ sid }: { sid: string }) {
   const t = useTranslations('desk.summary');
   const tc = useTranslations('common');
   const locale = useLocale() as Locale;
-  const other: Locale = locale === 'hi' ? 'en' : 'hi';
+  // The summary is kept in the screen's language and English (or Hindi when the screen is English).
+  const other: Locale = locale === 'en' ? 'hi' : 'en';
   const [copied, setCopied] = useState(false);
 
   // Ending is idempotent, so the summary can be fetched again after a reload.

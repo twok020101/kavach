@@ -6,6 +6,11 @@ import type { BillingType, Locale, RoomCategory } from '@kavach/schemas';
  */
 
 const DEVANAGARI = /[\u0900-\u097F]/;
+const TAMIL = /[\u0B80-\u0BFF]/;
+const HAN = /[\u4E00-\u9FFF\u3400-\u4DBF]/;
+// Malay is Latin-script; a few function words that English does not share tell it apart.
+const MALAY =
+  /\b(bilik|boleh|berapa|yang|mana|saya|kami|hospital|bayar|patut|tidak|adakah|untuk|dengan|ini|itu|wad|tuntutan)\b/i;
 const HINGLISH =
   /\b(kya|kaun|kaunsa|kitna|kitne|kitni|hai|hain|lein|lena|kamra|kamre|paise|batao|bataiye|chahiye|nahi|nahin|haan|mein|wala|wali|wale|abhi|kaise|kyun|karna|kare|karein)\b/i;
 const ENGLISH =
@@ -15,7 +20,10 @@ const ENGLISH =
 export function detectLocale(text: string | undefined, fallback: Locale): Locale {
   if (!text?.trim()) return fallback;
   if (DEVANAGARI.test(text) || HINGLISH.test(text)) return 'hi';
+  if (TAMIL.test(text)) return 'ta';
+  if (HAN.test(text)) return 'zh';
   if (ENGLISH.test(text)) return 'en';
+  if (MALAY.test(text)) return 'ms';
   return fallback;
 }
 
@@ -62,6 +70,23 @@ export function detectRoomMention(
 }
 
 /** The family's answer to "are the charges the same in every room?", if the text gives one. */
+/**
+ * Singapore: a typed or spoken answer to the panel question. "He is on the panel and
+ * pre-authorised" → panel; "not on the panel" → nonPanel; anything else leaves it open.
+ */
+export function detectPanelAnswer(text: string | undefined): 'panel' | 'nonPanel' | undefined {
+  if (!text) return undefined;
+  const s = text.toLowerCase();
+  if (/\b(not|isn'?t|non)[ -]?(on|in)?\s?(the )?panel\b|\bno pre-?auth/i.test(s)) return 'nonPanel';
+  if (
+    /\b(on|in) (the |our |their )?panel\b|\bpanel (doctor|specialist)\b|pre-?auth\w* (is |was |has been )?(done|obtained|approved|given)/i.test(
+      s,
+    )
+  )
+    return 'panel';
+  return undefined;
+}
+
 export function detectBillingAnswer(text: string | undefined): BillingType | undefined {
   if (!text) return undefined;
   const has = (patterns: RegExp[]) => patterns.some((p) => p.test(text));

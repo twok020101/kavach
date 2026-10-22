@@ -10,15 +10,20 @@ import { Button, buttonClasses } from '@/components/ui/button';
 import { cn } from '@/components/ui/cn';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Link, useRouter } from '@/i18n/navigation';
-import { deskClient } from '@/lib/desk-client';
+import { routing } from '@/i18n/routing';
+import { deskClient, type DemoScene } from '@/lib/desk-client';
 import { CloseIcon, DeskHeader } from './desk-header';
 
-export type DeskScene = 'maternity';
+export type DeskScene = Exclude<DemoScene, 'hospital'>;
 
-/** The demo scenes: Suresh's angioplasty in Hindi (HX-1), or Priya's delivery in English (MX-1). */
-const SCENES: Record<DeskScene | 'hospital', { patient: string; language: Locale }> = {
+/**
+ * The demo scenes: Suresh's angioplasty in Hindi (HX-1), Priya's delivery in English (MX-1),
+ * or Ah Kow's angioplasty in Singapore, in Mandarin (SX-1).
+ */
+const SCENES: Record<DemoScene, { patient: string; language: Locale }> = {
   hospital: { patient: 'mem_suresh', language: 'hi' },
   maternity: { patient: 'mem_priya', language: 'en' },
+  singapore: { patient: 'mem_ahkow', language: 'zh' },
 };
 
 /** S21 Hospital start: who is admitted, which language, one big Start. Fewest elements of any screen. */
@@ -29,11 +34,24 @@ export function DeskStart({ demo, scene }: { demo: boolean; scene?: DeskScene })
   const router = useRouter();
   const preset = SCENES[scene ?? 'hospital'];
   const [patientId, setPatientId] = useState<string | null>(demo ? preset.patient : null);
-  const [language, setLanguage] = useState<Locale>(demo ? preset.language : locale);
+  // The Singapore scene answers in Malay when the page is in Malay, else Mandarin.
+  const presetLanguage = scene === 'singapore' && locale === 'ms' ? 'ms' : preset.language;
+  const [language, setLanguage] = useState<Locale>(demo ? presetLanguage : locale);
   const query = demo ? { demo: '1', ...(scene ? { scene } : {}) } : undefined;
 
   const queryClient = useQueryClient();
-  const household = useQuery({ queryKey: ['desk', 'household'], queryFn: deskClient.getHousehold });
+  // In the demo the scene's family is set up first, so the list shows who the scene is about
+  // (the Tans for the Singapore scene) and the preset patient is one of them.
+  const household = useQuery({
+    queryKey: ['desk', 'household', demo ? (scene ?? 'hospital') : 'own'],
+    queryFn: async () => {
+      if (demo) {
+        await deskClient.prepareScene(scene ?? 'hospital');
+        await queryClient.invalidateQueries({ predicate: (q) => q.queryKey[0] !== 'desk' });
+      }
+      return deskClient.getHousehold();
+    },
+  });
   const start = useMutation({
     mutationFn: async () => {
       if (demo) {
@@ -72,7 +90,11 @@ export function DeskStart({ demo, scene }: { demo: boolean; scene?: DeskScene })
           {demo && (
             <p className="panel flex gap-2 text-base">
               <Info aria-hidden className="mt-1 size-5 shrink-0" />
-              {scene === 'maternity' ? t('demoNoteMaternity') : t('demoNote')}
+              {scene === 'maternity'
+                ? t('demoNoteMaternity')
+                : scene === 'singapore'
+                  ? t('demoNoteSingapore')
+                  : t('demoNote')}
             </p>
           )}
 
@@ -124,8 +146,8 @@ export function DeskStart({ demo, scene }: { demo: boolean; scene?: DeskScene })
 
           <fieldset>
             <legend className="mb-3 font-display text-2xl font-bold">{t('language')}</legend>
-            <div className="grid grid-cols-2 gap-3">
-              {(['hi', 'en'] as const).map((l) => {
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+              {routing.locales.map((l) => {
                 const on = language === l;
                 return (
                   <label

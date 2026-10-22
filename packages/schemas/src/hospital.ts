@@ -38,6 +38,8 @@ export const RoomCategory = z.object({
   id: z.string(),
   label: z.string(),
   rentPerDay: Rupees,
+  /** Singapore: the ward class this room is, for pro-ration and the deductible. */
+  wardClass: z.enum(['C', 'B2', 'B1', 'A', 'private']).optional(),
 });
 export type RoomCategory = z.infer<typeof RoomCategory>;
 

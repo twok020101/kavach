@@ -5,6 +5,9 @@ import type { BackendOptions, LiveBackend } from './backend';
 const HEARD: Record<Locale, string> = {
   hi: 'पापा के लिए कौन सा कमरा लें?',
   en: 'Which room should we take for Papa?',
+  ta: 'அப்பாவுக்கு எந்த அறை எடுக்கலாம்?',
+  zh: '爸爸应该住哪种病房？',
+  ms: 'Bilik mana yang patut kami ambil untuk Ayah?',
 };
 
 const OUT_RATE = 24_000;

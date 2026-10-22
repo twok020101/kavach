@@ -1,6 +1,12 @@
 import type { Household, Policy } from '@kavach/schemas';
 
-const HEALTH = new Set<Policy['kind']>(['group_health', 'retail_health', 'super_top_up']);
+const HEALTH = new Set<Policy['kind']>([
+  'group_health',
+  'retail_health',
+  'super_top_up',
+  'medishield_life',
+  'integrated_shield',
+]);
 
 export const isHealth = (policy: Pick<Policy, 'kind'>) => HEALTH.has(policy.kind);
 

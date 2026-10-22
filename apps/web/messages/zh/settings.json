@@ -1,0 +1,167 @@
+{
+  "title": "设置",
+  "error": "没有成功。请再试一次。",
+  "appearance": {
+    "title": "语言与显示",
+    "language": "语言",
+    "theme": "主题",
+    "themes": {
+      "system": "跟随手机",
+      "light": "浅色",
+      "dark": "深色"
+    },
+    "textSize": "文字大小",
+    "textSizes": {
+      "normal": "标准",
+      "large": "大",
+      "xlarge": "特大"
+    },
+    "toggle": "切换浅色或深色主题"
+  },
+  "family": {
+    "title": "家庭",
+    "access": "家庭访问权限",
+    "accessHint": "谁可以为您的家庭打开 Kavach",
+    "edit": "编辑家庭和财务",
+    "editHint": "成员、年龄、收入和开支",
+    "demo": "演示控制",
+    "demoHint": "跳到 Sharma 一家故事中的某个时刻",
+    "timeline": "时间线",
+    "timelineHint": "发生过什么，即将发生什么",
+    "claims": "索赔",
+    "claimsHint": "已核查的理赔结算信，已拟好的申诉信",
+    "actions": "您的步骤",
+    "actionsHint": "等您处理的信件和提醒",
+    "viewAs": "以 {name} 的身份查看应用",
+    "viewAsHint": "家庭成员看到的简洁首页：一个按钮、他们的保障、该打给谁"
+  },
+  "consent": {
+    "title": "Kavach 可以使用什么",
+    "save": "保存选择",
+    "saved": "已保存",
+    "demoNote": "演示家庭是虚构的，所以拥有全部权限。"
+  },
+  "data": {
+    "title": "您的数据",
+    "download": "下载我的数据",
+    "downloadHint": "Kavach 保存的关于您家庭的一切，以文件形式。",
+    "delete": "删除我们家庭的数据",
+    "deleteHint": "删除家庭及其文件、计划和信件。此操作无法撤销。",
+    "deleteConfirm": "输入“{phrase}”以确认",
+    "deletePhrase": "DELETE",
+    "deleteButton": "删除全部",
+    "deleted": "已删除。"
+  },
+  "about": {
+    "title": "关于",
+    "body": "Kavach 为您解释保险并帮助您采取行动。它不销售保险，也绝不会代您联系保险公司。金额由固定规则根据您的保单文件计算得出；做决定前请务必向您的保险公司确认。",
+    "proof": "Kavach 有多准确？"
+  },
+  "signOut": "退出登录",
+  "access": {
+    "title": "家庭访问权限",
+    "intro": "可以为您的家庭打开 Kavach 的人，以及有人在医院时会收到通知的人。",
+    "logins": "登录账号",
+    "owner": "拥有者 · 可查看全部",
+    "member": "可查看自己的保障和医院按钮",
+    "youLabel": "本设备",
+    "remove": "移除",
+    "alerts": "有人在医院时，通知",
+    "alertsHint": "在 WhatsApp 上收到提醒，并在时间线中看到这次医院就诊。",
+    "alertsNone": "请选择一个人",
+    "invite": "邀请家庭成员",
+    "inviteWho": "您要邀请谁？",
+    "inviteLanguage": "他们的语言",
+    "invitePhone": "他们的 WhatsApp 号码（可选）",
+    "createLink": "生成邀请链接",
+    "linkReady": "把这个链接分享给 {name}。有效期 14 天。",
+    "copy": "复制链接",
+    "copied": "已复制",
+    "sendWhatsApp": "通过 WhatsApp 发送",
+    "shareText": "{inviter} 已把您加入 Kavach 上的 {household}。请打开这个链接：{url}",
+    "pending": "邀请已发送",
+    "inviteSent": "{date} 已邀请",
+    "joined": "已加入",
+    "whatsapp": "WhatsApp",
+    "whatsappHint": "只有在对方回复 YES 给 Kavach 的第一条消息后，Kavach 才会在 WhatsApp 上给他们发消息。发送 STOP 即可关闭。",
+    "waState": {
+      "joined": "已同意",
+      "opted_out": "已停止",
+      "not_joined": "尚未加入",
+      "no_number": "没有号码"
+    }
+  },
+  "timeline": {
+    "title": "时间线",
+    "intro": "您全家的保障发生过什么，以及即将发生什么。",
+    "today": "今天",
+    "ahead": "即将到来",
+    "empty": "这里还没有内容。添加一份文件，或告诉我们有什么变化。",
+    "filters": {
+      "all": "全部",
+      "changes": "变化",
+      "documents": "文件",
+      "hospital": "医院",
+      "claims": "索赔"
+    },
+    "by": {
+      "you": "您说的",
+      "document": "来自文件",
+      "kavach": "Kavach"
+    },
+    "entry": {
+      "setup": "家庭已设置 · {count} 人",
+      "consent": "权限已更新",
+      "document_added": "已读取 {filename}",
+      "life_change": "生活变化",
+      "action": "已为您拟好",
+      "desk_session": "{name} 在医院",
+      "desk_session_at": "{name} 在 {hospital}",
+      "claim_case": "理赔信已核查",
+      "cover_starts": "{name} 的保障开始",
+      "cover_ends": "{name} 的保障终止",
+      "notification": "发给 {name} 的提醒"
+    },
+    "actionStatus": {
+      "draft": "等您处理",
+      "approved": "已批准",
+      "done": "已完成",
+      "dismissed": "已忽略"
+    },
+    "effective": "自 {date} 起",
+    "channel": {
+      "whatsapp_template": "通过 WhatsApp",
+      "whatsapp_text": "通过 WhatsApp",
+      "in_app": "在应用内"
+    }
+  },
+  "plan": {
+    "budgetTitle": "您的保障预算",
+    "budgetLeft": "扣除贷款分期和开支后，您每月还剩 <amount></amount>。",
+    "budgetTotal": "我们建议每月最多拿 <amount></amount> 购买保障：取剩余金额的 20% 和实得薪资的 10% 中较小者。",
+    "budgetExisting": "您已经每月为自己的保单支付 <existing></existing>，所以还有 <free></free> 可用于新保障。",
+    "budgetThin": "您的应急储蓄不足三个月的贷款分期和开支。请同时把储蓄补起来。",
+    "budgetChange": "更改您的财务数字",
+    "itemWhat": "它承保什么",
+    "itemCover": "保额 <amount></amount>",
+    "itemWho": "为 {names}",
+    "itemPremium": "每月约 <amount></amount>",
+    "itemIllustrative": "来自示例价目表的参考保费，不是报价。",
+    "itemWhy": "为什么是这个保额",
+    "partner": "咨询持牌合作伙伴",
+    "partnerTitle": "咨询持牌合作伙伴",
+    "partnerIntro": "Kavach 不销售保险。持牌合作伙伴可以为您提供以下项目的真实报价：{item}。",
+    "partnerShare": "与合作伙伴分享",
+    "partnerFields": {
+      "cover": "您需要的保障",
+      "people": "姓名和年龄",
+      "city": "您所在的城市",
+      "health": "健康状况"
+    },
+    "partnerContinue": "前往合作伙伴",
+    "partnerDemo": "演示 — 不会真正购买。在正式产品中，这会打开合作伙伴的页面，并只带上您勾选的内容。",
+    "partnerBack": "返回",
+    "itemPremiumLabel": "保费",
+    "perMonthShort": "每月"
+  }
+}

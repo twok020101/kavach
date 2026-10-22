@@ -21,7 +21,12 @@ const documents = [
   'supertopup-schedule',
   'lotus-maternity-estimate',
   'lotus-maternity-settlement-letter',
+  'sample-general-sg-estimate',
 ];
+
+/** `pnpm samples <name>` renders one document (and its photo) instead of all of them. */
+const only = process.argv[2];
+const wanted = (name: string) => !only || name === only;
 
 /** Chromium from CHROMIUM_PATH, else the newest one under PLAYWRIGHT_BROWSERS_PATH or /opt/pw-browsers. */
 function findChromium(): string | undefined {
@@ -83,13 +88,14 @@ async function main(): Promise<void> {
   const browser = await chromium.launch({ executablePath: findChromium() });
   try {
     console.log(`Rendering samples to ${outDir}`);
-    for (const name of documents) await renderDocument(browser, name);
-    await renderPhoto(browser, 'city-heart-estimate.png', 'city-heart-estimate-photo.png');
-    await renderPhoto(
-      browser,
-      'lotus-maternity-estimate.png',
-      'lotus-maternity-estimate-photo.png',
-    );
+    for (const name of documents.filter(wanted)) await renderDocument(browser, name);
+    for (const name of [
+      'city-heart-estimate',
+      'lotus-maternity-estimate',
+      'sample-general-sg-estimate',
+    ]) {
+      if (wanted(name)) await renderPhoto(browser, `${name}.png`, `${name}-photo.png`);
+    }
   } finally {
     await browser.close();
   }

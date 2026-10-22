@@ -8,7 +8,10 @@
   "language": "Language",
   "languages": {
     "en": "English",
-    "hi": "हिंदी"
+    "hi": "हिंदी",
+    "ta": "Tamil",
+    "zh": "Mandarin",
+    "ms": "Malay"
   },
   "skipToContent": "Skip to content",
   "mainNav": "Main",

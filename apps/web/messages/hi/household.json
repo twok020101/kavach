@@ -44,5 +44,11 @@
   "copay": "{percent}% को-पे",
   "copayFromAge": "{age} साल से {percent}% को-पे",
   "deductible": "{amount} से ऊपर देती है",
-  "claimsUsed": "इस साल इस्तेमाल {amount}"
+  "claimsUsed": "इस साल इस्तेमाल {amount}",
+  "speaks": "{language} बोलते हैं",
+  "shell": {
+    "sample": "नमूना परिवार",
+    "steps": "{count, plural, =0 {कुछ बाकी नहीं} one {# कदम बाकी} other {# कदम बाकी}}",
+    "account": "{name}: परिवार की सेटिंग"
+  }
 }

@@ -1,6 +1,6 @@
 'use client';
 
-import { formatInr } from '@kavach/engine';
+import { useMoney } from '@/lib/country';
 import { useInView, useReducedMotion } from 'motion/react';
 import { useEffect, useRef, useState } from 'react';
 import { cn } from '../ui/cn';
@@ -41,10 +41,11 @@ export function AnimatedAmount({
   }, [seen, reduce, value, delay]);
 
   const current = reduce ? value : shown;
+  const money = useMoney();
   return (
     <span ref={ref} className={cn('amount whitespace-nowrap tabular-nums', className)}>
-      <span className="sr-only">{formatInr(value)}</span>
-      <span aria-hidden>{formatInr(current)}</span>
+      <span className="sr-only">{money(value)}</span>
+      <span aria-hidden>{money(current)}</span>
     </span>
   );
 }

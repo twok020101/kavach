@@ -5,6 +5,7 @@ import {
   Bandage,
   ChevronRight,
   HeartPulse,
+  Info,
   type LucideIcon,
   Smartphone,
   Users,
@@ -32,7 +33,12 @@ export function useRecommendationTitle(household: Household) {
     t(`title.${r.category}`, { names: names(r.memberIds), asset: r.assetLabel ?? '' });
 }
 
-/** One plan item: what, for whom, size and indicative premium; why it waits, if it does. */
+/**
+ * One plan item, laid out like the Stitch plan card: a numbered icon tile, the title with the
+ * monthly premium and the Illustrative chip under it, the cover as the big figure on the right
+ * with what it is for under it, and a chevron when it opens. On a phone the figure drops under
+ * the title so neither has to squeeze. Why it waits, if it does.
+ */
 export function RecommendationRow({
   household,
   rec,
@@ -52,62 +58,82 @@ export function RecommendationRow({
   const Icon = ICONS[rec.category];
   const deferred = rec.status === 'deferred';
   const className = cn(
-    'flex items-center gap-3 rounded-md border border-border bg-surface p-3 sm:p-4',
-    sign === '+' && 'border-l-4 border-l-safe',
-    sign === '−' && 'border-l-4 border-l-border-strong opacity-80',
-    deferred && 'bg-sunken shadow-none',
+    'grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-x-3 gap-y-1 rounded-md border border-border bg-surface p-4 shadow-1 sm:grid-cols-[auto_minmax(0,1fr)_auto_auto] sm:gap-x-5 sm:p-6',
+    // Added and removed items (S19): the sign badge on the tile says which; the border only echoes it.
+    sign === '+' && 'border-safe',
+    sign === '−' && 'border-border-strong opacity-80',
+    deferred && 'items-start',
     onSelect && 'press w-full text-left hover:border-primary',
   );
   const content = (
     <>
       <span
         className={cn(
-          'relative flex size-11 shrink-0 items-center justify-center rounded-full',
-          deferred ? 'bg-surface text-muted' : 'bg-primary-soft text-primary',
+          'relative row-span-2 flex size-12 shrink-0 items-center justify-center self-start rounded-md sm:row-span-1',
+          deferred ? 'bg-sunken text-muted' : 'bg-primary-soft text-primary sm:self-center',
         )}
       >
-        <Icon aria-hidden className="size-5" />
+        <Icon aria-hidden className="size-6" strokeWidth={1.75} />
         {index !== undefined && (
-          <span className="absolute -left-1 -top-1 flex size-5 items-center justify-center rounded-full bg-primary font-display text-[11px] font-bold text-on-primary">
+          <span className="absolute -left-1.5 -top-1.5 flex size-5 items-center justify-center rounded-full bg-primary font-display text-[11px] font-bold text-on-primary">
             {index}
           </span>
         )}
         {sign && (
           <span
             aria-hidden
-            className="absolute -left-1 -top-1 flex size-5 items-center justify-center rounded-full bg-text text-xs font-bold text-bg"
+            className="absolute -left-1.5 -top-1.5 flex size-5 items-center justify-center rounded-full bg-text text-xs font-bold text-bg"
           >
             {sign}
           </span>
         )}
       </span>
-      <div className="flex min-w-0 flex-1 flex-col gap-0.5">
-        <span className="font-semibold leading-snug">{title(rec)}</span>
+      <div className="col-start-2 flex min-w-0 flex-col gap-0.5">
+        <span className="font-display font-semibold leading-snug">{title(rec)}</span>
         <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-muted">
           <span>{t.rich('perMonth', { amount: () => <Amount value={rec.premiumMonthly} /> })}</span>
           {rec.via === 'migration' && (
-            <span>· {t('viaMigration', { employer: rec.employer ?? '' })}</span>
+            <span className="basis-full">
+              {t('viaMigration', { employer: rec.employer ?? '' })}
+            </span>
           )}
           <Badge tone="neutral" className="text-xs">
             {t('illustrative')}
           </Badge>
         </div>
         {deferred && rec.deferReason && (
-          <p className="text-sm text-partial">
+          <p className="panel panel-partial mt-1.5 flex items-start gap-1.5 text-sm text-partial">
+            <Info aria-hidden className="mt-0.5 size-4 shrink-0" />
             {t(`defer.${rec.deferReason}`, { employer: rec.employer ?? '' })}
           </p>
         )}
       </div>
-      <div className="flex shrink-0 items-center gap-1">
-        <span className="flex flex-col items-end">
-          <Amount value={rec.cover} className="font-display text-base font-bold sm:text-lg" />
-          {/* What the cover is for, under the figure (from the Stitch plan rows). */}
-          <span className="hidden max-w-44 text-right text-xs leading-tight text-muted sm:block">
-            {t(`purpose.${rec.category}`)}
-          </span>
+      <span
+        className={cn(
+          'col-start-2 row-start-2 flex flex-col items-start sm:col-start-3 sm:row-start-1 sm:items-end',
+          deferred && 'sm:self-center',
+        )}
+      >
+        <Amount
+          value={rec.cover}
+          className="font-display text-xl font-bold tracking-tight sm:text-2xl"
+        />
+        {/* What the cover is for, under the figure (from the Stitch plan rows). */}
+        <span
+          className={cn(
+            'max-w-56 text-xs leading-tight sm:text-right',
+            deferred ? 'text-muted' : 'font-medium text-safe',
+          )}
+        >
+          {t(`purpose.${rec.category}`)}
         </span>
-        {onSelect && <ChevronRight aria-hidden className="size-5 text-muted" />}
-      </div>
+      </span>
+      {onSelect && (
+        <ChevronRight
+          aria-hidden
+          className="col-start-3 row-span-2 size-5 self-center text-muted sm:col-start-4 sm:row-span-1"
+        />
+      )}
     </>
   );
   return onSelect ? (

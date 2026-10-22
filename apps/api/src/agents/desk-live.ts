@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { formatInr } from '@kavach/engine';
+import { LANGUAGE_NAMES } from '../core/locales';
 import type { DeskContext, Locale } from '@kavach/schemas';
 import { appRoot } from '../paths';
 
@@ -19,7 +20,7 @@ export function deskLiveInstruction(context: DeskContext, language: Locale): str
       )
       .join('; ') || 'none';
   const values: Record<string, string> = {
-    language: language === 'hi' ? 'Hindi' : 'English',
+    language: LANGUAGE_NAMES[language].english,
     patient_name: patient.name,
     age: String(patient.age),
     relation: patient.relation,
@@ -45,7 +46,7 @@ export const deskLiveTools = [
   {
     name: 'record_spoken_estimate',
     description:
-      'When the family tells you the room rents aloud (and maybe the quoted total and the days) because no printed estimate or photo is available yet, record them here so the rules engine can run. Call it as soon as the figures are spoken; never ask for figures you were already told.',
+      'When the family tells you the room rents aloud (and maybe the quoted total and the days) because no printed estimate or photo is available yet, record them here so the rules engine can run. Call it as soon as the figures are spoken; never ask for figures you were already told. Do not call it once an estimate has been read unless new figures are spoken; a question that only names a room or ward class goes to evaluate_options.',
     parametersJsonSchema: {
       type: 'object',
       properties: {
@@ -55,7 +56,8 @@ export const deskLiveTools = [
         days: { type: 'integer', description: 'Expected days of stay; 1 if not known.' },
         rooms: {
           type: 'array',
-          description: 'Every room category mentioned with its rent per day in rupees.',
+          description:
+            "Every room category mentioned with its rent per day in the family's currency.",
           items: {
             type: 'object',
             properties: { label: { type: 'string' }, rentPerDay: { type: 'number' } },
@@ -65,7 +67,7 @@ export const deskLiveTools = [
         quotedTotal: {
           type: 'number',
           description:
-            'The total the hospital quoted in rupees for the quoted room and the days given, if any.',
+            "The total the hospital quoted, in the family's currency, for the quoted room and the days given, if any.",
         },
         otherCharges: {
           type: 'number',
@@ -105,6 +107,12 @@ export const deskLiveTools = [
           enum: ['differential', 'flat', 'package'],
           description:
             "The desk's answer to the billing question: charges differ by room (differential), same in every room (flat), or one package price (package).",
+        },
+        panelAnswer: {
+          type: 'string',
+          enum: ['panel', 'nonPanel'],
+          description:
+            "Singapore only: the desk's answer to whether the specialist is on the insurer's panel with pre-authorisation.",
         },
       },
     },

@@ -336,3 +336,99 @@ export const MX1_BILL: ClaimBill = {
   billingType: 'differential',
   icuStay: false,
 };
+
+// ---------------------------------------------------------------------------------------------
+// SX-1: Singapore. Ah Kow (68), a Class B1 Integrated Shield Plan with a 2022 rider, admitted
+// for an angioplasty at a restructured hospital that offers Class A and Class B1. Amounts are
+// whole Singapore dollars (SAMPLE; the plan mirrors a mid-market B1 plan, figures rounded).
+
+export const AH_KOW = { memberId: 'mem_ahkow', name: 'Ah Kow', age: 68 };
+
+export const MEDISHIELD_AHKOW: Policy = {
+  id: 'pol_mshl_ahkow',
+  kind: 'medishield_life',
+  insurer: 'CPF Board (MediShield Life)',
+  productName: 'MediShield Life',
+  source: 'personal',
+  holderMemberId: 'mem_ahkow',
+  coveredMemberIds: ['mem_ahkow'],
+  sumInsured: 200_000,
+  claimsUsedThisYear: 0,
+  startDate: '2027-01-01',
+  endDate: '2027-12-31',
+  terms: { copayPercent: 0, deductible: 0, proportionateDeduction: false, citations: {} },
+};
+
+export const SHIELD_PLAN_B1: Policy = {
+  id: 'pol_ip_ahkow',
+  kind: 'integrated_shield',
+  insurer: 'Sample Insurer SG',
+  productName: 'Sample Shield Plan B1 with rider (SAMPLE)',
+  source: 'personal',
+  holderMemberId: 'mem_weiming',
+  coveredMemberIds: ['mem_ahkow'],
+  sumInsured: 500_000,
+  claimsUsedThisYear: 0,
+  startDate: '2027-05-01',
+  endDate: '2028-04-30',
+  terms: {
+    copayPercent: 0,
+    deductible: 0,
+    proportionateDeduction: false,
+    citations: {},
+    sg: {
+      wardEntitlement: 'B1',
+      prorationByWard: { A: 0.5, private: 0.25 },
+      // MOH minimum IP deductibles for a Class B1 plan: the lower of the target class and the ward used.
+      deductibleByWard: { C: 1_500, B2: 2_000, B1: 2_500, A: 2_500, private: 2_500 },
+      coinsurance: [{ percent: 10 }],
+      policyYearLimit: 500_000,
+      rider: { copayPercent: 5, annualCap: 3_000, capNeedsPanel: true, coversDeductible: true },
+    },
+  },
+};
+
+export const SX1_CONTEXT: HospitalContext = {
+  patient: { age: AH_KOW.age, memberId: AH_KOW.memberId },
+  policies: [MEDISHIELD_AHKOW, SHIELD_PLAN_B1],
+  asOf: '2027-06-10',
+};
+
+export const SX1_ROOMS = {
+  a: { id: 'a', label: 'Class A (single)', rentPerDay: 650, wardClass: 'A' as const },
+  b1: { id: 'b1', label: 'Class B1 (4-bedded)', rentPerDay: 280, wardClass: 'B1' as const },
+};
+
+type Two = [a: number, b1: number];
+const sline = (head: EstimateLine['head'], label: string, amounts: Two): EstimateLine => ({
+  head,
+  label,
+  pricedByRoom: amounts[0] !== amounts[1],
+  amounts: { a: amounts[0], b1: amounts[1] },
+});
+
+/** Sample General Hospital, angioplasty with one stent, 3 days, priced for Class A and Class B1. */
+export const SX1_ESTIMATE: HospitalEstimate = {
+  hospitalName: 'Sample General Hospital',
+  patientName: AH_KOW.name,
+  procedure: 'Coronary angioplasty with one drug-eluting stent',
+  treatment: 'general',
+  admissionType: 'planned',
+  days: 3,
+  billingType: 'differential',
+  roomCategories: [SX1_ROOMS.a, SX1_ROOMS.b1],
+  lines: [
+    sline('room', 'Ward charges × 3 days', [1_950, 840]),
+    sline('doctor_visits', 'Daily attendance fees × 3', [900, 600]),
+    sline('surgeon', "Angioplasty: cardiologist's fee", [9_500, 7_000]),
+    sline('ot', 'Cardiac catheterisation laboratory', [6_500, 4_800]),
+    sline('implant', 'Drug-eluting stent', [4_200, 4_200]),
+    sline('pharmacy', 'Medication', [1_100, 1_100]),
+    sline('diagnostics', 'Investigations (ECG, echo, bloods)', [1_600, 1_600]),
+    sline('consumables', 'Consumables', [900, 900]),
+    sline('non_payable', 'Admission fee and television (non-claimable)', [120, 60]),
+  ],
+  printedTotals: { a: 26_770, b1: 21_100 },
+  needsConfirmation: false,
+  notes: ['SAMPLE estimate for the Kavach demo (Singapore)'],
+};
