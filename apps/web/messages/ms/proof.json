@@ -56,6 +56,10 @@
   "ruleVerified": "Disahkan",
   "ruleToVerify": "Untuk disahkan",
   "rulesCount": "{verified} daripada {total} peraturan disahkan",
+  "rulesIndia": "India: peraturan IRDAI dan terma polisi",
+  "rulesSingapore": "Singapura: peraturan MediShield Life, pelan Shield dan rider",
+  "groupCount": "{verified} daripada {total} disahkan",
+  "retry": "Cuba lagi",
   "methodTitle": "Cara kami mengukur",
   "method": {
     "dataset": "Set data: {count} perkataan polisi awam daripada {insurers} syarikat insurans, termasuk berkumpulan, warga emas, super top-up dan produk standard IRDAI. PDF tidak disimpan dalam repositori kami; satu skrip mengambilnya melalui URL dan menyemak cap jarinya.",
@@ -66,6 +70,6 @@
   },
   "codeLink": "Buka evals di GitHub",
   "honestTitle": "Apa yang belum ditunjukkan di sini",
-  "honest": "Lapan perkataan polisi adalah set yang kecil; kami katakan begitu dan tidak membesar-besarkannya. Ketepatan petikan dan kadar tangkapan penyemak belum diukur di halaman ini.",
+  "honest": "{count} perkataan polisi ialah set yang kecil; kami katakan begitu dan tidak membesar-besarkannya. Ketepatan petikan dan kadar tangkapan penyemak belum diukur di halaman ini.",
   "error": "Keputusan tidak dapat dimuatkan. Sila cuba lagi sebentar lagi."
 }

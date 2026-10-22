@@ -59,7 +59,7 @@ export async function Hero({
       <div className="mx-auto flex max-w-7xl flex-col items-center gap-10 lg:flex-row lg:items-start lg:gap-12">
         <div className="flex min-w-0 flex-1 flex-col gap-6">
           <p
-            className="rise inline-flex w-fit items-center gap-2 rounded-full bg-surface px-3 py-1.5 shadow-1"
+            className="rise inline-flex w-fit items-center gap-2 rounded-xl bg-surface px-3 py-1.5 shadow-1 sm:rounded-full"
             style={rise(0)}
           >
             <Icon name="verified_user" className="text-base text-safe" />
@@ -70,31 +70,40 @@ export async function Hero({
             emphasis={t('titleEm')}
             emphasisClassName="text-secondary"
             emphasisBlock
-            className="font-display text-[2rem] font-bold leading-[1.15] tracking-[-0.02em] text-primary sm:text-headline-xl lg:text-[3rem] lg:leading-[1.12]"
+            className="font-display text-[2rem] font-bold leading-[1.15] tracking-[-0.02em] text-primary sm:text-headline-xl lg:text-[3rem] lg:leading-[1.12] lg:[&:lang(zh)]:text-[2.75rem]"
           />
           <p className="rise max-w-2xl text-body-lg text-on-surface-variant" style={rise(3)}>
             {t('lead')}
           </p>
 
-          <div className="rise flex flex-wrap items-center gap-3 pt-1" style={rise(4)}>
+          {/* On a phone both ways in take the full width; a long label lets its chip drop under it
+              instead of squeezing both into a narrow column (Malay, Tamil). */}
+          <div
+            className="rise flex flex-col gap-3 pt-1 sm:flex-row sm:flex-wrap sm:items-center"
+            style={rise(4)}
+          >
             <Link
               href={scene}
-              className="btn-solid flex min-h-14 items-center gap-2.5 rounded-md bg-primary px-5 text-title-md font-bold text-on-primary shadow-2 hover:bg-primary-hover"
+              className="btn-solid flex min-h-14 items-center gap-2.5 rounded-md bg-primary px-5 py-2.5 text-title-md font-bold text-on-primary shadow-2 hover:bg-primary-hover"
             >
               <Icon name="bolt" className="text-xl" />
-              {t('tryHospital')}
-              <span className="rounded-sm bg-surface-container-high px-2 py-0.5 text-label-caps uppercase text-primary">
-                {t('tryHospitalChip')}
+              <span className="flex flex-wrap items-center gap-x-2.5 gap-y-1">
+                {t('tryHospital')}
+                <span className="whitespace-nowrap rounded-sm bg-surface-container-high px-2 py-0.5 text-label-caps uppercase text-primary">
+                  {t('tryHospitalChip')}
+                </span>
               </span>
             </Link>
             <Link
               href="/demo"
-              className="lift flex min-h-14 items-center gap-2 rounded-md bg-surface px-5 text-title-md text-primary shadow-1 hover:bg-surface-container"
+              className="lift flex min-h-14 items-center gap-2 rounded-md bg-surface px-5 py-2.5 text-title-md text-primary shadow-1 hover:bg-surface-container"
             >
               <Icon name="family_restroom" className="text-xl text-secondary" />
-              {t('explore')}
-              <span className="rounded-sm bg-accent-soft px-2 py-0.5 text-label-caps font-bold uppercase text-partial">
-                {t('exploreChip')}
+              <span className="flex flex-wrap items-center gap-x-2 gap-y-1">
+                {t('explore')}
+                <span className="whitespace-nowrap rounded-sm bg-accent-soft px-2 py-0.5 text-label-caps font-bold uppercase text-partial">
+                  {t('exploreChip')}
+                </span>
               </span>
             </Link>
           </div>
@@ -104,15 +113,20 @@ export async function Hero({
             style={rise(5)}
           >
             <Icon name={other.icon} className="text-lg" />
-            {t('maternity')}
-            <Icon name="arrow_forward" className="text-base" />
+            <span>
+              {t('maternity')}
+              <Icon name="arrow_forward" className="ml-1.5 align-[-0.2em] text-base" />
+            </span>
           </Link>
 
+          {/* Singapore has three figures: on a phone the third takes the full row, not half of it. */}
           <ul
             aria-label={t('statsLabel')}
             className={cn(
               'rise grid grid-cols-2 gap-3 pt-2 sm:gap-4',
-              sg ? 'sm:grid-cols-3' : 'sm:grid-cols-4',
+              sg
+                ? 'sm:grid-cols-3 max-sm:[&>li:last-child:nth-child(odd)]:col-span-2'
+                : 'sm:grid-cols-4',
             )}
             style={rise(6)}
           >
@@ -205,8 +219,9 @@ async function LiveAudit({ market, admission: a }: { market: Country; admission:
       </div>
 
       <div className="flex flex-col gap-4 rounded-lg bg-surface-container-low p-4">
-        <div className="flex items-start justify-between gap-3">
-          <div className="min-w-0">
+        {/* The status chip moves under the name when the line gets long (Tamil, Malay). */}
+        <div className="flex flex-wrap items-start justify-between gap-x-3 gap-y-2">
+          <div className="min-w-0 flex-1 basis-44">
             <h2 id="audit-title" className="font-display text-title-md font-bold">
               {t('household')}
             </h2>

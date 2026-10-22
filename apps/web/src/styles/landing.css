@@ -163,6 +163,43 @@ html.booting .landing .stagger > *,
   animation-play-state: paused;
 }
 
+/* Script-specific type on the landing and the proof page. The global `:lang()` line heights are
+   unlayered, so they beat every `leading-*` utility and reach each element directly: headings in
+   Mandarin opened up to 1.65 and Hindi/Tamil to 1.7, and the icon font picked up the Mandarin
+   letter-spacing, which switches off its ligatures (icons drew as stray glyphs). These rules are
+   more specific and put the headings and icons back. */
+.landing :is(h1, h2, h3):lang(zh),
+.lp-page :is(h1, h2, h3):lang(zh) {
+  line-height: 1.3;
+}
+.landing :is(h1, h2, h3):is(:lang(hi), :lang(ta)),
+.lp-page :is(h1, h2, h3):is(:lang(hi), :lang(ta)) {
+  line-height: 1.4;
+}
+.landing :is(h1, h2, h3) *,
+.lp-page :is(h1, h2, h3) * {
+  line-height: inherit;
+}
+.landing .msym,
+.lp-page .msym {
+  letter-spacing: normal;
+  line-height: 1;
+}
+/* The citation serif has no Chinese, Devanagari or Tamil: Chinese reads in the sans (a Latin serif
+   beside Chinese sans looks patched), and Chinese never takes a synthetic italic. */
+.landing .font-serif:lang(zh),
+.lp-page .font-serif:lang(zh) {
+  font-family: var(--font-sans);
+}
+.landing .italic:lang(zh),
+.lp-page .italic:lang(zh) {
+  font-style: normal;
+}
+.landing .font-serif:is(:lang(hi), :lang(ta)),
+.lp-page .font-serif:is(:lang(hi), :lang(ta)) {
+  font-family: var(--font-source-serif), var(--font-noto-deva), var(--font-noto-tamil), serif;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   /* A slightly longer, softer reveal than the app's (landing exception). */
   .landing .rv {

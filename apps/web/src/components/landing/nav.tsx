@@ -55,25 +55,27 @@ export async function LandingNav({ market }: { market: Country }) {
               <span className="font-display text-headline-sm font-bold tracking-tight text-primary">
                 Kavach
               </span>
+              {/* From 1280 to 1536 the five links share the row: the Hindi name and the tagline
+                  step aside so the longest language (Malay) still fits with the hospital button. */}
               <span
                 lang="hi"
-                className="hidden rounded-sm border border-surface-container-high bg-surface-container px-2 py-0.5 font-display text-xs font-bold text-primary sm:inline"
+                className="hidden rounded-sm border border-surface-container-high bg-surface-container px-2 py-0.5 font-display text-xs font-bold text-primary sm:inline xl:hidden 2xl:inline"
               >
                 कवच
               </span>
             </span>
-            <span className="hidden text-label-caps uppercase text-on-surface-variant sm:block">
+            <span className="hidden text-label-caps uppercase text-on-surface-variant sm:block xl:hidden 2xl:block">
               {t('nav.eyebrow')}
             </span>
           </span>
         </Link>
 
-        <nav aria-label={t('nav.label')} className="hidden items-center gap-1 xl:flex">
+        <nav aria-label={t('nav.label')} className="hidden min-w-0 items-center xl:flex">
           {links.map((l) => (
             <Link
               key={l.label}
               href={l.href}
-              className="flex min-h-11 items-center whitespace-nowrap rounded-sm px-3 text-title-md text-on-surface-variant transition-colors hover:bg-surface-container hover:text-on-surface"
+              className="flex min-h-11 items-center whitespace-nowrap rounded-sm px-2.5 text-title-md text-on-surface-variant transition-colors hover:bg-surface-container hover:text-on-surface"
             >
               {l.label}
             </Link>

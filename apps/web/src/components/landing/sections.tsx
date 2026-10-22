@@ -440,7 +440,7 @@ export async function Policies({
             >
               {t('title', { count })}
             </h2>
-            <p className="mt-1 max-w-2xl text-body-md text-on-surface-variant">{t('intro')}</p>
+            <p className="mt-2 max-w-2xl text-body-md text-on-surface-variant">{t('intro')}</p>
             {fixtures && (
               <p className="mt-2 flex max-w-2xl items-start gap-1.5 text-sm font-semibold text-partial">
                 <Icon name="science" className="mt-0.5 text-base" />
@@ -509,16 +509,18 @@ export async function Policies({
           </p>
           <p className="flex shrink-0 flex-wrap items-center gap-x-3 font-semibold text-primary">
             {masterUrl && (
-              <a
-                href={masterUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex min-h-11 items-center hover:underline"
-              >
-                {t('masterPdf')}
-              </a>
+              <>
+                <a
+                  href={masterUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex min-h-11 items-center hover:underline"
+                >
+                  {t('masterPdf')}
+                </a>
+                <span aria-hidden>•</span>
+              </>
             )}
-            <span aria-hidden>•</span>
             <Link href="/proof" className="inline-flex min-h-11 items-center hover:underline">
               {t('proofLink')}
             </Link>
@@ -541,6 +543,7 @@ const sourceBody = (title: string) => title.split(/[,:]/)[0]!.trim();
 export async function SgRules() {
   const t = await getTranslations('landing.sgRules');
   const ts = await getTranslations('landing.admissionSg');
+  const tl = await getTranslations('landing.policies');
   const rules = Object.values(RULES).filter((r) => r.id.startsWith('R-SG'));
   const checked = rules.filter((r) => r.status === 'verified').length;
 
@@ -562,7 +565,7 @@ export async function SgRules() {
             >
               {t('title', { count: rules.length })}
             </h2>
-            <p className="mt-1 max-w-2xl text-body-md text-on-surface-variant">{t('intro')}</p>
+            <p className="mt-2 max-w-2xl text-body-md text-on-surface-variant">{t('intro')}</p>
           </div>
           <Link
             href="/proof"
@@ -614,9 +617,18 @@ export async function SgRules() {
           </ul>
         </Reveal>
 
-        <Reveal className="flex items-start gap-3 rounded-xl bg-surface p-4 text-xs text-on-surface-variant">
-          <Icon name="account_balance" className="text-xl text-primary" />
-          <span>{t('notice')}</span>
+        {/* The same notice bar as India's, with the way to the proof page. */}
+        <Reveal className="flex flex-col items-start justify-between gap-4 rounded-xl bg-surface p-4 text-xs text-on-surface-variant sm:flex-row sm:items-center">
+          <p className="flex items-start gap-3">
+            <Icon name="account_balance" className="text-xl text-primary" />
+            <span>{t('notice')}</span>
+          </p>
+          <Link
+            href="/proof"
+            className="inline-flex min-h-11 shrink-0 items-center font-semibold text-primary hover:underline"
+          >
+            {tl('proofLink')}
+          </Link>
         </Reveal>
       </div>
     </section>
@@ -747,7 +759,7 @@ export async function LandingFooter({
     { href: '/claims', label: t('claim') },
   ];
   const linkClass =
-    'inline-flex min-h-10 items-center text-body-sm text-on-surface-variant transition-colors hover:text-primary';
+    'inline-flex min-h-12 items-center text-body-sm text-on-surface-variant transition-colors hover:text-primary';
 
   return (
     <footer className="border-t border-surface-container-high bg-surface-container-low px-4 pb-8 pt-12 sm:px-6 lg:px-8">

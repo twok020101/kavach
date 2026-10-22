@@ -56,6 +56,10 @@
   "ruleVerified": "已核实",
   "ruleToVerify": "待核实",
   "rulesCount": "{total} 条规则中已核实 {verified} 条",
+  "rulesIndia": "印度：IRDAI 规则与保单条款",
+  "rulesSingapore": "新加坡：MediShield Life、Shield 计划和附加保险的规则",
+  "groupCount": "{total} 条中已核实 {verified} 条",
+  "retry": "重试",
   "methodTitle": "我们如何测量",
   "method": {
     "dataset": "数据集：来自 {insurers} 家保险公司的 {count} 份公开保单条款，包括团体、乐龄人士、Super top-up 和 IRDAI 标准产品。PDF 不存放在我们的代码库中；由脚本按网址获取并核对其指纹。",
@@ -66,6 +70,6 @@
   },
   "codeLink": "在 GitHub 上打开评估",
   "honestTitle": "这里还没有显示的内容",
-  "honest": "八份条款是一个很小的集合；我们如实说明，而不是夸大。引用准确率和核查器的捕获率尚未在本页测量。",
+  "honest": "{count} 份条款是一个很小的集合；我们如实说明，而不是夸大。引用准确率和核查器的捕获率尚未在本页测量。",
   "error": "无法加载结果。请稍后再试。"
 }
