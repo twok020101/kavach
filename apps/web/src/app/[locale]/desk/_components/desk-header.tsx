@@ -1,7 +1,7 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { useEffect, useRef, type ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import { Icon } from '@/components/kavach/icon';
 import { LanguageSwitch } from '@/components/kavach/language-switch';
 import { LogoLockup, LogoMark } from '@/components/kavach/logo';
@@ -45,15 +45,10 @@ export function DeskHeader({
   const t = useTranslations('desk');
   const ts = useTranslations('desk.session');
   const secondRow = Boolean(demoScene || (members && members.length > 0));
-  // On a phone the scene tabs scroll sideways: open with the current scene in view (once per scene).
-  const tabs = useRef<HTMLElement>(null);
-  useEffect(() => {
-    const nav = tabs.current;
-    const on = nav?.querySelector<HTMLElement>('[aria-current="page"]');
-    if (nav && on) nav.scrollLeft = on.offsetLeft - nav.offsetLeft - 16;
-  }, [demoScene]);
   return (
-    <header className="sticky top-0 z-30 border-b border-border bg-surface/95 shadow-1 backdrop-blur-md">
+    // Sticky from a tablet up; on a phone the controls dock already holds the bottom of the
+    // screen, so the header (title, scene tabs) scrolls away and leaves the bill the room.
+    <header className="relative z-30 border-b md:sticky md:top-0 border-border bg-surface/95 shadow-1 backdrop-blur-md">
       <div className="mx-auto flex max-w-[1400px] items-center gap-3 px-4 py-2.5 lg:gap-4 lg:px-6">
         <LogoMark className="size-10 shrink-0 lg:hidden" />
         <LogoLockup className="hidden h-11 shrink-0 lg:block" />
@@ -76,17 +71,17 @@ export function DeskHeader({
       {/* Phone: the title gets its own line under the bar, so it is never cut. */}
       <div className="flex flex-col gap-0.5 px-4 pb-2.5 sm:hidden">
         <h1 className="font-display text-lg font-bold leading-tight text-text">{title}</h1>
-        {subtitle && <p className="truncate text-xs font-medium text-muted">{subtitle}</p>}
+        {subtitle && <p className="line-clamp-2 text-xs font-medium text-muted">{subtitle}</p>}
       </div>
 
       {secondRow && (
         <div className="border-t border-border bg-surface">
           <div className="mx-auto flex max-w-[1400px] flex-col gap-2 px-4 py-2 md:flex-row md:flex-wrap md:items-center md:justify-between md:gap-x-6 lg:px-6">
             {demoScene && (
+              // Phone: three equal tabs, the patient over the place, so none is cut at the edge.
               <nav
                 aria-label={ts('scene.label')}
-                ref={tabs}
-                className="no-scrollbar -mx-4 flex shrink-0 gap-2 overflow-x-auto px-4 md:mx-0 md:px-0"
+                className="grid shrink-0 grid-cols-3 gap-1.5 md:flex md:flex-wrap md:gap-2"
               >
                 {(['hospital', 'maternity', 'singapore'] as const).map((s) => {
                   const on = s === demoScene;
@@ -99,17 +94,21 @@ export function DeskHeader({
                       }}
                       aria-current={on ? 'page' : undefined}
                       className={cn(
-                        'press inline-flex min-h-12 shrink-0 items-center gap-1.5 whitespace-nowrap rounded-md px-3.5 text-sm',
+                        'press flex min-h-14 min-w-0 flex-col items-center justify-center rounded-md px-1.5 py-1 text-center text-xs leading-tight md:inline-flex md:min-h-12 md:shrink-0 md:flex-row md:gap-1.5 md:whitespace-nowrap md:px-3.5 md:py-0 md:text-sm',
                         on
                           ? 'bg-primary-container font-bold text-white shadow-1'
-                          : 'font-medium text-muted hover:bg-sunken hover:text-text',
+                          : 'border border-border font-medium text-muted hover:bg-sunken hover:text-text md:border-transparent',
                       )}
                     >
                       <Icon
                         name={on ? 'radio_button_checked' : 'radio_button_unchecked'}
-                        className="text-base"
+                        className="hidden text-base md:inline"
                       />
-                      {ts(`scene.${s}`)}
+                      <span className="hidden md:inline">{ts(`scene.${s}`)}</span>
+                      <span className="font-bold md:hidden">{ts(`scene.name.${s}`)}</span>
+                      <span className={cn('md:hidden', on ? 'text-white/85' : 'text-muted')}>
+                        {ts(`scene.place.${s}`)}
+                      </span>
                     </Link>
                   );
                 })}

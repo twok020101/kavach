@@ -27,7 +27,8 @@
       "offline": "Kavach can’t reach its server right now, so the scene didn’t start. Check the connection and try again.",
       "retry": "Try again"
     },
-    "demoNoteSingapore": "Demo: the Tan family in Singapore. Ah Kow is admitted at Sample General Hospital for a planned angioplasty; his Shield plan is bought for Class B1 and the hospital offers Class A. Answers come in Mandarin; you can change both."
+    "demoNoteSingapore": "Demo: the Tan family in Singapore. Ah Kow is admitted at Sample General Hospital for a planned angioplasty; his Shield plan is bought for Class B1 and the hospital offers Class A. Answers come in Mandarin; you can change both.",
+    "memberMeta": "{relation}, {age}"
   },
   "session": {
     "title": "Helping with {name}",
@@ -170,7 +171,12 @@
         "pays": "Pays",
         "applied": "Applied",
         "protected": "Protected",
-        "ask": "Ask the desk"
+        "ask": "Ask the desk",
+        "counts": "Counts {percent}",
+        "riderCovers": "Rider pays",
+        "deductible": "Deductible",
+        "coinsurance": "Co-insurance",
+        "asCharged": "As charged"
       },
       "names": {
         "R-HL-001": "Proportionate deduction",
@@ -223,7 +229,17 @@
       "label": "Demo scene",
       "hospital": "Scene 1: Suresh · PTCA (City Heart)",
       "maternity": "Scene 2: Priya · Maternity (Lotus)",
-      "singapore": "Ah Kow · Singapore"
+      "singapore": "Ah Kow · Singapore",
+      "name": {
+        "hospital": "Suresh",
+        "maternity": "Priya",
+        "singapore": "Ah Kow"
+      },
+      "place": {
+        "hospital": "City Heart",
+        "maternity": "Lotus",
+        "singapore": "Singapore"
+      }
     },
     "admitted": "Admitted",
     "memberChip": "{name} ({relation}, {age})",
@@ -250,6 +266,25 @@
     "textNote": {
       "title": "Text mode",
       "body": "Type your question, or tap Talk to Kavach to speak."
+    },
+    "ward": {
+      "eyebrow": "Ward class",
+      "title": "Who pays in each ward",
+      "entitlement": "The Integrated Shield Plan covers wards up to {ward}.",
+      "above": "{room} is above it: only {percent} of the bill counts as claimable, so {amount} stays with the family.",
+      "within": "{room} is within it: the plan pays as charged.",
+      "mshl": "In {room}, MediShield Life counts {wardShare} of ward charges and {surgicalShare} of surgical charges.",
+      "wardName": "{ward, select, private {a private hospital ward} other {Class {ward}}}",
+      "payer": "Who pays",
+      "quoted": "Quoted",
+      "pick": "Recommended",
+      "rows": {
+        "mshl": "MediShield Life",
+        "plan": "Integrated Shield Plan",
+        "rider": "Rider",
+        "family": "Family pays"
+      },
+      "medisave": "MediSave can pay the family’s share; it does not make it smaller."
     }
   },
   "summary": {
@@ -264,6 +299,8 @@
     "share": "Send summary to family",
     "copied": "Copied. Paste it in WhatsApp.",
     "newSession": "Start again",
-    "home": "Back to home"
+    "home": "Back to home",
+    "loadFailed": "Kavach couldn’t load this summary. Check the connection and try again.",
+    "retry": "Try again"
   }
 }

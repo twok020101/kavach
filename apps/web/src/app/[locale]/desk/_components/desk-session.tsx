@@ -32,6 +32,7 @@ import { RulesCard } from './session/rules-card';
 import { SavingCard } from './session/saving-card';
 import { SessionFooter } from './session/session-footer';
 import { TranscriptCard } from './session/transcript-card';
+import { WardCard } from './session/ward-card';
 
 /**
  * S22 + S23: the desk, as the Stitch live co-pilot console. Text mode (photo of the estimate,
@@ -315,14 +316,20 @@ export function DeskSessionScreen({
   const busy = capture.isPending || ask.isPending;
   const desktop = useDesktop();
 
+  // Each scroll below happens once per new answer or bill: a resize that crosses the laptop
+  // breakpoint (a rotated tablet, a full-page screenshot) must not move the page again.
+  const scrolledFor = useRef<{ answer?: DeskAnswer; bill?: HospitalEstimate }>({});
   // A typed or spoken answer: on a phone, bring its cards into view.
   useEffect(() => {
-    if (localAnswer && !desktop)
-      answers.current?.scrollIntoView({ block: 'start', behavior: 'smooth' });
+    if (!localAnswer || scrolledFor.current.answer === localAnswer) return;
+    scrolledFor.current.answer = localAnswer;
+    if (!desktop) answers.current?.scrollIntoView({ block: 'start', behavior: 'smooth' });
   }, [localAnswer, desktop]);
   // A photo the family just took: on a phone, show the bill it became (not for the demo's own read).
   useEffect(() => {
-    if (captured && !live && !desktop && !quiet.current)
+    if (!captured || scrolledFor.current.bill === captured) return;
+    scrolledFor.current.bill = captured;
+    if (!live && !desktop && !quiet.current)
       bill.current?.scrollIntoView({ block: 'start', behavior: 'smooth' });
   }, [captured, live, desktop]);
 
@@ -594,6 +601,11 @@ export function DeskSessionScreen({
               />
             )}
 
+            {/* Singapore: the ward class and who pays in each ward (renders nothing in India). */}
+            {evaluation.data && !capture.isPending && (
+              <WardCard evaluation={evaluation.data} estimate={estimate} />
+            )}
+
             {(estimate || answer) && (
               <PromptsCard
                 card={askCard}
@@ -607,7 +619,7 @@ export function DeskSessionScreen({
                 ref={answers}
                 aria-label={t('answers')}
                 role="region"
-                className="flex scroll-mt-40 flex-col gap-4 xl:hidden"
+                className="flex scroll-mt-4 flex-col gap-4 md:scroll-mt-40 xl:hidden"
               >
                 {otherCards.map((card, i) => (
                   <AnswerCard key={card.id} card={card} index={i} />

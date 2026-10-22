@@ -27,7 +27,8 @@
       "offline": "Kavach 目前无法连接服务器，所以演示场景没有开始。请检查网络后再试。",
       "retry": "再试一次"
     },
-    "demoNoteSingapore": "演示：新加坡的 Tan 一家。Ah Kow 因计划中的血管成形术入住 Sample General Hospital；他的 Shield 综合健保计划按 B1 级病房投保，医院提供的是 A 级病房。回答以华语给出；两者都可以更改。"
+    "demoNoteSingapore": "演示：新加坡的 Tan 一家。Ah Kow 因计划中的血管成形术入住 Sample General Hospital；他的 Shield 综合健保计划按 B1 级病房投保，医院提供的是 A 级病房。回答以华语给出；两者都可以更改。",
+    "memberMeta": "{relation}，{age} 岁"
   },
   "session": {
     "title": "正在协助 {name}",
@@ -183,7 +184,17 @@
       "label": "演示场景",
       "hospital": "场景 1：Suresh · PTCA（City Heart）",
       "maternity": "场景 2：Priya · 分娩（Lotus）",
-      "singapore": "Ah Kow · 新加坡"
+      "singapore": "Ah Kow · 新加坡",
+      "name": {
+        "hospital": "Suresh",
+        "maternity": "Priya",
+        "singapore": "Ah Kow"
+      },
+      "place": {
+        "hospital": "City Heart",
+        "maternity": "Lotus",
+        "singapore": "新加坡"
+      }
     },
     "admitted": "住院人",
     "controls": "柜台快捷操作",
@@ -217,7 +228,12 @@
         "pays": "支付",
         "applied": "已应用",
         "protected": "受保护",
-        "ask": "问柜台"
+        "ask": "问柜台",
+        "counts": "计入 {percent}",
+        "riderCovers": "附加保险支付",
+        "deductible": "自付额",
+        "coinsurance": "共保额",
+        "asCharged": "按实际收费"
       },
       "names": {
         "R-HL-001": "按比例扣减",
@@ -250,6 +266,25 @@
     "textNote": {
       "title": "文字模式",
       "body": "输入您的问题，或点“和 Kavach 说话”直接说。"
+    },
+    "ward": {
+      "eyebrow": "病房级别",
+      "title": "各级病房由谁支付",
+      "entitlement": "Integrated Shield Plan 保障至 {ward}。",
+      "above": "{room} 高于此级别：账单只有 {percent} 可以索赔，不可索赔的 {amount} 由家人支付。",
+      "within": "{room} 在此级别之内：计划按实际收费赔付。",
+      "mshl": "在 {room}，MediShield Life 只计入病房费用的 {wardShare} 和手术费用的 {surgicalShare}。",
+      "wardName": "{ward, select, private {私立医院病房} other {{ward} 级病房}}",
+      "payer": "由谁支付",
+      "quoted": "估价单病房",
+      "pick": "推荐",
+      "rows": {
+        "mshl": "MediShield Life",
+        "plan": "Integrated Shield Plan",
+        "rider": "附加保险",
+        "family": "家人自付"
+      },
+      "medisave": "MediSave 可以支付家人自付的部分，但不会减少这笔金额。"
     }
   },
   "summary": {
@@ -264,6 +299,8 @@
     "share": "把摘要发给家人",
     "copied": "已复制。请粘贴到 WhatsApp。",
     "newSession": "重新开始",
-    "home": "返回首页"
+    "home": "返回首页",
+    "loadFailed": "Kavach 无法载入这份摘要。请检查网络连接后再试一次。",
+    "retry": "再试一次"
   }
 }

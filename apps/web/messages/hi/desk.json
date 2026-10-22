@@ -27,7 +27,8 @@
       "offline": "कवच अभी अपने सर्वर तक नहीं पहुँच पा रहा, इसलिए सीन शुरू नहीं हुआ। कनेक्शन देखकर फिर कोशिश कीजिए।",
       "retry": "फिर से कोशिश करें"
     },
-    "demoNoteSingapore": "डेमो: सिंगापुर का टैन परिवार। आह काओ को Sample General Hospital में प्लान्ड एंजियोप्लास्टी के लिए भर्ती किया गया है; उनका Shield प्लान Class B1 के लिए है और अस्पताल Class A दे रहा है। जवाब मंदारिन में आते हैं; आप दोनों बदल सकते हैं।"
+    "demoNoteSingapore": "डेमो: सिंगापुर का टैन परिवार। आह काओ को Sample General Hospital में प्लान्ड एंजियोप्लास्टी के लिए भर्ती किया गया है; उनका Shield प्लान Class B1 के लिए है और अस्पताल Class A दे रहा है। जवाब मंदारिन में आते हैं; आप दोनों बदल सकते हैं।",
+    "memberMeta": "{relation}, {age} साल"
   },
   "session": {
     "title": "{name} जी के लिए मदद",
@@ -170,7 +171,12 @@
         "pays": "देगी",
         "applied": "लागू",
         "protected": "सुरक्षित",
-        "ask": "डेस्क से पूछिए"
+        "ask": "डेस्क से पूछिए",
+        "counts": "{percent} गिना गया",
+        "riderCovers": "राइडर देगा",
+        "deductible": "डिडक्टिबल",
+        "coinsurance": "को-इंश्योरेंस",
+        "asCharged": "पूरा बिल"
       },
       "names": {
         "R-HL-001": "अनुपात वाली कटौती",
@@ -223,7 +229,17 @@
       "label": "डेमो सीन",
       "hospital": "सीन 1: सुरेश · एंजियोप्लास्टी (सिटी हार्ट)",
       "maternity": "सीन 2: प्रिया · डिलीवरी (लोटस)",
-      "singapore": "आह काओ · सिंगापुर"
+      "singapore": "आह काओ · सिंगापुर",
+      "name": {
+        "hospital": "Suresh",
+        "maternity": "Priya",
+        "singapore": "Ah Kow"
+      },
+      "place": {
+        "hospital": "City Heart",
+        "maternity": "Lotus",
+        "singapore": "सिंगापुर"
+      }
     },
     "admitted": "भर्ती",
     "memberChip": "{name} ({relation}, {age})",
@@ -250,6 +266,25 @@
     "textNote": {
       "title": "टेक्स्ट मोड",
       "body": "अपना सवाल लिखें, या बोलने के लिए Kavach से बात करें दबाएँ।"
+    },
+    "ward": {
+      "eyebrow": "वार्ड क्लास",
+      "title": "हर वार्ड में कौन कितना देगा",
+      "entitlement": "Integrated Shield Plan {ward} तक के वार्ड कवर करता है।",
+      "above": "{room} उससे ऊपर है: बिल का सिर्फ़ {percent} क्लेम होगा, इसलिए {amount} परिवार को देना होगा।",
+      "within": "{room} उसी के अंदर है: प्लान पूरा बिल देता है।",
+      "mshl": "{room} में MediShield Life वार्ड चार्ज का सिर्फ़ {wardShare} और सर्जरी चार्ज का {surgicalShare} गिनता है।",
+      "wardName": "{ward, select, private {प्राइवेट अस्पताल का वार्ड} other {Class {ward}}}",
+      "payer": "कौन देगा",
+      "quoted": "एस्टिमेट वाला",
+      "pick": "सुझाया गया",
+      "rows": {
+        "mshl": "MediShield Life",
+        "plan": "Integrated Shield Plan",
+        "rider": "राइडर",
+        "family": "परिवार देगा"
+      },
+      "medisave": "MediSave परिवार का हिस्सा चुका सकता है, पर उसे कम नहीं करता।"
     }
   },
   "summary": {
@@ -264,6 +299,8 @@
     "share": "सारांश परिवार को भेजें",
     "copied": "कॉपी हो गया। WhatsApp में पेस्ट कीजिए।",
     "newSession": "फिर से शुरू करें",
-    "home": "होम पर जाएँ"
+    "home": "होम पर जाएँ",
+    "loadFailed": "Kavach यह सारांश नहीं खोल पाया। इंटरनेट देखकर फिर से कोशिश कीजिए।",
+    "retry": "फिर से कोशिश करें"
   }
 }

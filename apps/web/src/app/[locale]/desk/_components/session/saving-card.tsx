@@ -85,12 +85,13 @@ export function SavingCard({
             type="button"
             disabled={busy}
             onClick={() => onOpt(pick.label)}
-            className="btn press inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-lg bg-safe px-4 text-base font-bold text-white shadow-1 hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-50"
+            className="btn press inline-flex min-h-16 w-full items-center justify-center gap-2 rounded-lg bg-safe px-4 text-base font-bold text-white shadow-1 hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-50"
           >
             <Icon name="check" weight={600} className="text-xl" />
             {t('saving.opt', { room: pick.label })}
           </button>
-          <div className="grid gap-3 @[22rem]:grid-cols-2">
+          {/* Side by side only where each box has room for a long deduction name (zh, ms). */}
+          <div className="grid gap-3 @[30rem]:grid-cols-2">
             <RoomBox option={costliest} tone="costly" />
             <RoomBox option={pick} tone="pick" />
           </div>

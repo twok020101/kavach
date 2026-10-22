@@ -27,7 +27,8 @@
       "offline": "Kavach tidak dapat menghubungi pelayannya sekarang, jadi babak demo tidak bermula. Semak sambungan dan cuba lagi.",
       "retry": "Cuba lagi"
     },
-    "demoNoteSingapore": "Demo: keluarga Tan di Singapura. Ah Kow dimasukkan ke Sample General Hospital untuk angioplasti yang dirancang; pelan Shield beliau dibeli untuk Kelas B1 dan hospital menawarkan Kelas A. Jawapan dalam bahasa Mandarin; anda boleh menukar kedua-duanya."
+    "demoNoteSingapore": "Demo: keluarga Tan di Singapura. Ah Kow dimasukkan ke Sample General Hospital untuk angioplasti yang dirancang; pelan Shield beliau dibeli untuk Kelas B1 dan hospital menawarkan Kelas A. Jawapan dalam bahasa Mandarin; anda boleh menukar kedua-duanya.",
+    "memberMeta": "{relation}, {age} tahun"
   },
   "session": {
     "title": "Membantu {name}",
@@ -170,7 +171,12 @@
         "pays": "Bayar",
         "applied": "Digunakan",
         "protected": "Dilindungi",
-        "ask": "Tanya kaunter"
+        "ask": "Tanya kaunter",
+        "counts": "Dikira {percent}",
+        "riderCovers": "Rider bayar",
+        "deductible": "Deduktibel",
+        "coinsurance": "Ko-insurans",
+        "asCharged": "Mengikut caj sebenar"
       },
       "names": {
         "R-HL-001": "Potongan berkadar",
@@ -223,7 +229,17 @@
       "label": "Babak demo",
       "hospital": "Babak 1: Suresh · PTCA (City Heart)",
       "maternity": "Babak 2: Priya · Bersalin (Lotus)",
-      "singapore": "Ah Kow · Singapura"
+      "singapore": "Ah Kow · Singapura",
+      "name": {
+        "hospital": "Suresh",
+        "maternity": "Priya",
+        "singapore": "Ah Kow"
+      },
+      "place": {
+        "hospital": "City Heart",
+        "maternity": "Lotus",
+        "singapore": "Singapura"
+      }
     },
     "admitted": "Dimasukkan",
     "memberChip": "{name} ({relation}, {age})",
@@ -250,6 +266,25 @@
     "textNote": {
       "title": "Mod teks",
       "body": "Taip soalan anda, atau ketik Bercakap dengan Kavach untuk bercakap."
+    },
+    "ward": {
+      "eyebrow": "Kelas wad",
+      "title": "Siapa bayar di setiap wad",
+      "entitlement": "Integrated Shield Plan melindungi wad sehingga {ward}.",
+      "above": "{room} melebihinya: hanya {percent} daripada bil boleh dituntut, jadi {amount} ditanggung keluarga.",
+      "within": "{room} dalam had itu: pelan membayar mengikut caj sebenar.",
+      "mshl": "Di {room}, MediShield Life hanya mengira {wardShare} caj wad dan {surgicalShare} caj pembedahan.",
+      "wardName": "{ward, select, private {wad hospital swasta} other {Kelas {ward}}}",
+      "payer": "Siapa bayar",
+      "quoted": "Dalam anggaran",
+      "pick": "Disyorkan",
+      "rows": {
+        "mshl": "MediShield Life",
+        "plan": "Integrated Shield Plan",
+        "rider": "Rider",
+        "family": "Keluarga bayar"
+      },
+      "medisave": "MediSave boleh membayar bahagian keluarga; ia tidak mengurangkannya."
     }
   },
   "summary": {
@@ -264,6 +299,8 @@
     "share": "Hantar ringkasan kepada keluarga",
     "copied": "Disalin. Tampal dalam WhatsApp.",
     "newSession": "Mula semula",
-    "home": "Kembali ke laman utama"
+    "home": "Kembali ke laman utama",
+    "loadFailed": "Kavach tidak dapat memuatkan ringkasan ini. Semak sambungan dan cuba lagi.",
+    "retry": "Cuba lagi"
   }
 }

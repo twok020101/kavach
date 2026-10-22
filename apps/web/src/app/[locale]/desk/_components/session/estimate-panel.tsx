@@ -100,7 +100,11 @@ export function EstimatePanel({
       )}
 
       {estimate && !capturing && (
-        <div ref={billRef} data-desk-bill className="flex scroll-mt-40 flex-col gap-3">
+        <div
+          ref={billRef}
+          data-desk-bill
+          className="flex scroll-mt-4 flex-col gap-3 md:scroll-mt-40"
+        >
           <div className="flex items-start gap-3">
             {photoUrl ? (
               // A local preview of the photo just taken; next/image adds nothing for blob URLs.

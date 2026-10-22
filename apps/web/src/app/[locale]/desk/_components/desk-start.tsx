@@ -228,7 +228,7 @@ export function DeskStart({ demo, scene }: { demo: boolean; scene?: DeskScene })
                       <span className="flex min-w-0 flex-1 flex-wrap items-baseline gap-x-2">
                         <span className="font-semibold">{m.name.split(' ')[0]}</span>
                         <span className="text-sm text-muted">
-                          {tc(`relation.${m.relation}`)}, {m.age}
+                          {t('memberMeta', { relation: tc(`relation.${m.relation}`), age: m.age })}
                         </span>
                       </span>
                       {on && <Icon name="check" weight={600} className="text-xl text-primary" />}
