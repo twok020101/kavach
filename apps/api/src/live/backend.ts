@@ -1,4 +1,5 @@
 import type { BillingType, Locale } from '@kavach/schemas';
+import { LANGUAGE_NAMES } from '../core/locales';
 import type { Emit, RunTool } from './tools';
 
 /** One live model session behind the browser socket: Gemini Live, or the fake for FAKE_LLM=1. */
@@ -34,5 +35,5 @@ export const notes = {
   billing: (b: BillingType) =>
     `[billing answer] The desk says the billing type is "${b}". Call evaluate_options with billingTypeAnswer "${b}" and tell the family the result.`,
   language: (l: Locale) =>
-    `[language] The family switched the screen to ${l === 'hi' ? 'Hindi' : 'English'}. Speak only ${l === 'hi' ? 'Hindi' : 'English'} from now on.`,
+    `[language] The family switched the screen to ${LANGUAGE_NAMES[l].english}. Speak only ${LANGUAGE_NAMES[l].english} from now on.`,
 };

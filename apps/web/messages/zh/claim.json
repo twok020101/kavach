@@ -1,0 +1,102 @@
+{
+  "loading": "加载中",
+  "error": "出了点问题。请再试一次。",
+  "retry": "再试一次",
+  "back": "索赔",
+  "list": {
+    "title": "索赔",
+    "intro": "理赔结算信里有扣减？Kavach 会把每一项扣减对照您的保单和 IRDAI 规则逐一核查。",
+    "drop": "上传保险公司的理赔结算信",
+    "choose": "选择 PDF 或照片",
+    "photo": "拍照",
+    "sample": "使用样本信件",
+    "empty": "还没有理赔信件。",
+    "failed": "无法读取这封信：{reason}",
+    "recoverable": "最多可追回 <amount></amount>",
+    "nothing": "每一项扣减看来都合理",
+    "claimNo": "索赔 {number}",
+    "status": {
+      "reading": "读取中",
+      "assessed": "已核查",
+      "appeal_drafted": "申诉信已拟好",
+      "appeal_sent": "申诉已寄出",
+      "resolved": "已解决",
+      "failed": "未能读取"
+    },
+    "sampleMaternity": "使用生育样本信件",
+    "introSg": "理赔结算信里有扣减？Kavach 会把每一项扣减对照您的计划，以及 MediShield Life 和 Integrated Shield Plan 的规则逐一核查。",
+    "emptyBody": "如果理赔结算信赔得比预期少，就上传到这里。Kavach 会对照保单核查每一项扣减。",
+    "sampleSgNote": "样本信件目前只有印度示范版本。",
+    "checked": "已核查的信件"
+  },
+  "steps": {
+    "read": "正在读取理赔结算信",
+    "match": "正在找出病人和保单",
+    "check": "正在逐项对照保单核查扣减",
+    "cite": "正在关联保单条款"
+  },
+  "check": {
+    "billed": "账单金额",
+    "paid": "已赔付",
+    "recoverable": "最多可追回 <amount></amount>",
+    "nothing": "这封信上的每一项扣减看来都合理。没有需要申诉的地方。",
+    "payout": "如果申诉成功，保险公司总共会赔付 <amount></amount>。",
+    "fromLetter": "信中所列",
+    "room": "病房每天 {amount}",
+    "noRoom": "信中没有印出房费",
+    "icu": "曾入住 ICU",
+    "noIcu": "未入住 ICU",
+    "change": "更改",
+    "roomRent": "每天房费",
+    "icuLabel": "住院期间有一段时间在 ICU",
+    "save": "重新核查",
+    "cancel": "取消",
+    "deductions": "扣减项目",
+    "verdict": {
+      "challengeable": "可以申诉",
+      "possibly": "可能",
+      "valid": "合理"
+    },
+    "back": "扣除共同承担后可追回 {amount}",
+    "copay": "共同承担 {percent}%",
+    "copayValid": "按保单规定，为扣减后账单的 {percent}%",
+    "copayWrong": "应为 {expected}；见上方额外一行",
+    "why": "为什么是这些结论",
+    "draft": "拟写申诉信",
+    "review": "审阅申诉信",
+    "seeLetter": "查看理赔结算信",
+    "notAdvice": "Kavach 把这封信对照您的保单和 IRDAI 规则核查。申诉结果由保险公司决定。",
+    "notAdviceSg": "Kavach 把这封信对照您的计划，以及 MediShield Life 和 Integrated Shield Plan 的规则核查。申诉结果由保险公司决定。"
+  },
+  "appeal": {
+    "title": "申诉信",
+    "to": "致 {insurer} 投诉处理专员",
+    "verified": "已核对：每个金额都与计算引擎一致，每段引文都与您的保单一致",
+    "failed": "请先修正这些问题，才能生成 PDF",
+    "checks": "{count} 项核对",
+    "kinds": {
+      "quote": "引文",
+      "amount": "金额",
+      "rule": "规则",
+      "clause": "条款",
+      "total": "申诉总额"
+    },
+    "edit": "编辑",
+    "save": "保存并重新核对",
+    "cancel": "取消",
+    "edited": "您已修改",
+    "pdf": "下载 PDF",
+    "copy": "复制文字",
+    "copied": "已复制",
+    "email": "电邮",
+    "blocked": "所有核对通过前，无法生成 PDF。",
+    "next": "如果他们不同意",
+    "ladder": {
+      "one": "保险公司的投诉处理专员（现在）",
+      "two": "Bima Bharosa 平台，如果在保险公司信中给出的期限内没有回复",
+      "three": "保险申诉专员（Insurance Ombudsman），在保险公司回复后一年内"
+    },
+    "neverSends": "Kavach 不会代您寄信。请您用自己的电邮或邮寄方式寄出。",
+    "notFound": "这项索赔还没有拟好申诉信。"
+  }
+}

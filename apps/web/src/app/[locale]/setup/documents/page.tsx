@@ -5,6 +5,8 @@ import { useTranslations } from 'next-intl';
 import { useRef, useState } from 'react';
 import { useAddSamples, useDocuments, useUploadDocuments } from '@/components/documents/api';
 import { DocumentCard } from '@/components/documents/DocumentCard';
+import { Icon } from '@/components/kavach/icon';
+import { SetupFrame } from '@/components/setup/setup-frame';
 import { Button, buttonClasses } from '@/components/ui/button';
 import { cn } from '@/components/ui/cn';
 import { Link } from '@/i18n/navigation';
@@ -15,7 +17,7 @@ const ACCEPT = 'application/pdf,image/png,image/jpeg,image/webp,image/heic';
 /** S07 Documents: upload policies and summaries, watch them being read, confirm what was found. */
 export default function DocumentsSetupPage() {
   const t = useTranslations('documents');
-  const { data: household, error, refetch } = useHousehold();
+  const { data: household, error, refetch, isFetching } = useHousehold();
   const documents = useDocuments(household?.id);
   const { uploads, upload } = useUploadDocuments(household?.id);
   const samples = useAddSamples(household?.id);
@@ -25,30 +27,49 @@ export default function DocumentsSetupPage() {
 
   const onFiles = (files: FileList | null) => files?.length && upload([...files]);
   const hasSamples = documents.data?.some((d) => d.isSample);
+  const hasDocuments = Boolean(documents.data?.length);
 
   return (
-    <main className="mx-auto flex min-h-dvh max-w-xl flex-col gap-6 px-4 py-6">
-      <header className="flex flex-col gap-2">
-        <p className="text-sm font-medium text-muted">{t('setup.step')}</p>
-        <div className="flex gap-1" aria-hidden>
-          {[1, 2, 3, 4].map((n) => (
-            <span
-              key={n}
-              className={cn('h-1.5 flex-1 rounded-full', n <= 3 ? 'bg-primary' : 'bg-border')}
-            />
-          ))}
+    <SetupFrame
+      step={3}
+      back="/setup/money"
+      title={t('setup.title')}
+      intro={t('setup.intro')}
+      footer={
+        <div className="flex w-full flex-wrap items-center justify-between gap-x-4 gap-y-2">
+          <span className="text-body-md text-on-surface-variant">
+            {t('setup.none')}{' '}
+            <Link
+              href="/setup/questions"
+              className="inline-flex min-h-12 items-center font-medium text-primary underline underline-offset-4"
+            >
+              {t('setup.skip')}
+            </Link>
+          </span>
+          {/* One primary per view: choosing files leads until there is something to continue with. */}
+          <Link
+            href="/setup/questions"
+            className={buttonClasses({ size: 'lg', variant: hasDocuments ? 'primary' : 'soft' })}
+          >
+            {t('setup.continue')}
+          </Link>
         </div>
-        <h1 className="font-display text-2xl font-bold">{t('setup.title')}</h1>
-        <p className="text-muted">{t('setup.intro')}</p>
-      </header>
-
+      }
+    >
       {error && (
-        <p className="rounded-md bg-gap-bg p-3 text-gap">
-          {t('error')}{' '}
-          <button className="underline" onClick={() => refetch()}>
+        <div
+          role="alert"
+          className="flex flex-col items-start gap-3 rounded-lg bg-gap-bg p-4 text-gap sm:p-5"
+        >
+          <p className="flex items-start gap-2 text-body-md">
+            <Icon name="error" className="mt-0.5 text-lg" />
+            {t('error')}
+          </p>
+          <Button variant="secondary" loading={isFetching} onClick={() => refetch()}>
+            <Icon name="refresh" className="text-xl" />
             {t('retry')}
-          </button>
-        </p>
+          </Button>
+        </div>
       )}
 
       <section
@@ -63,12 +84,14 @@ export default function DocumentsSetupPage() {
           onFiles(e.dataTransfer.files);
         }}
         className={cn(
-          'flex flex-col items-center gap-3 rounded-lg border-2 border-dashed p-6 text-center',
-          dragging ? 'border-primary bg-primary-soft' : 'border-border-strong bg-surface',
+          'flex flex-col items-center gap-4 rounded-lg border-2 border-dashed p-6 text-center transition-colors sm:p-8',
+          dragging ? 'border-primary bg-primary-soft' : 'border-outline-variant bg-surface',
         )}
       >
-        <FileUp aria-hidden className="size-8 text-muted" />
-        <p className="font-medium">{t('setup.drop')}</p>
+        <span className="flex size-12 items-center justify-center rounded-full bg-primary-soft text-primary">
+          <FileUp aria-hidden className="size-6" />
+        </span>
+        <p className="font-display text-title-md text-on-surface">{t('setup.drop')}</p>
         <div className="flex flex-wrap justify-center gap-2">
           <Button disabled={!household} onClick={() => fileInput.current?.click()}>
             {t('setup.choose')}
@@ -100,7 +123,8 @@ export default function DocumentsSetupPage() {
         />
       </section>
 
-      {household?.isDemo && !hasSamples && (
+      {/* The sample documents are the Sharmas' Indian policies: offered to India's demo only. */}
+      {household?.isDemo && household.country === 'IN' && !hasSamples && (
         <Button
           variant="ghost"
           loading={samples.isPending}
@@ -115,13 +139,44 @@ export default function DocumentsSetupPage() {
       {uploads.map((u) => (
         <p
           key={u.name}
-          className={cn('rounded-md p-3 text-sm', u.failed ? 'bg-gap-bg text-gap' : 'bg-sunken')}
+          role={u.failed ? 'alert' : 'status'}
+          className={cn(
+            'flex items-start gap-2 rounded-lg p-3 text-body-md',
+            u.failed ? 'bg-gap-bg text-gap' : 'bg-surface-container-low text-on-surface',
+          )}
         >
+          <Icon name={u.failed ? 'error' : 'upload'} className="mt-0.5 text-lg" />
           {u.failed
             ? t('setup.uploadFailed', { name: u.name })
             : t('setup.uploading', { name: u.name, percent: Math.round(u.percent) })}
         </p>
       ))}
+
+      {samples.isError && (
+        <p role="alert" className="flex items-start gap-2 rounded-lg bg-gap-bg p-4 text-gap">
+          <Icon name="error" className="mt-0.5 text-lg" />
+          {t('error')}
+        </p>
+      )}
+
+      {documents.isError && (
+        <div
+          role="alert"
+          className="flex flex-wrap items-center justify-between gap-3 rounded-lg bg-gap-bg p-4 text-gap"
+        >
+          <p className="flex items-start gap-2 text-body-md">
+            <Icon name="error" className="mt-0.5 text-lg" />
+            {t('error')}
+          </p>
+          <Button
+            variant="secondary"
+            loading={documents.isFetching}
+            onClick={() => documents.refetch()}
+          >
+            {t('retry')}
+          </Button>
+        </div>
+      )}
 
       {household && (
         <div className="flex flex-col gap-3">
@@ -130,18 +185,6 @@ export default function DocumentsSetupPage() {
           ))}
         </div>
       )}
-
-      <footer className="mt-auto flex items-center justify-between gap-3 border-t border-border pt-4">
-        <span className="text-sm text-muted">
-          {t('setup.none')}{' '}
-          <Link href="/setup/questions" className="font-medium text-primary underline">
-            {t('setup.skip')}
-          </Link>
-        </span>
-        <Link href="/setup/questions" className={buttonClasses()}>
-          {t('setup.continue')}
-        </Link>
-      </footer>
-    </main>
+    </SetupFrame>
   );
 }

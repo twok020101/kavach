@@ -1,38 +1,34 @@
 'use client';
 
 import type { CoverCell, Household } from '@kavach/schemas';
-import {
-  ArrowRight,
-  Briefcase,
-  PenLine,
-  RotateCcw,
-  ShieldAlert,
-  ShieldCheck,
-  ShieldHalf,
-  X,
-} from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import { useEffect, useState } from 'react';
-import { Amount } from '@/components/kavach/amount';
-import { Reveal } from '@/components/kavach/reveal';
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
+import { useEffect, useState, type CSSProperties } from 'react';
+import { ListSkeleton, QueryError } from '@/components/app/page-parts';
+import { Icon } from '@/components/kavach/icon';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Spinner } from '@/components/ui/spinner';
 import { cn } from '@/components/ui/cn';
 import { CellDetail } from '@/components/plan/cell-detail';
 import { CoverGrid } from '@/components/plan/cover-grid';
 import { DateScrubber } from '@/components/plan/date-scrubber';
-import { ComingUp, Greeting, QuickActions, ReadyPanel } from '@/components/plan/home-extras';
+import {
+  ComingUp,
+  Greeting,
+  homeCard,
+  NextCard,
+  QuickActions,
+  ReadyPanel,
+  ScoreCard,
+} from '@/components/plan/home-extras';
 import { MemberHome } from '@/components/plan/member-home';
 import { PlanFrame } from '@/components/plan/plan-frame';
 import { useActions, usePlan } from '@/components/plan/queries';
 import { usePins } from '@/components/plan/recommendation';
-import { ScoreRing } from '@/components/plan/score-ring';
 import { Sheet } from '@/components/plan/sheet';
+import { StatusPill } from '@/components/plan/status-pill';
 import { useDate } from '@/components/plan/format';
-import { Link } from '@/i18n/navigation';
 import { useDemoControls } from '@/lib/household';
 import { useStoredMemberId } from '@/lib/session';
-import { useCountUp } from '@/lib/use-count-up';
 import { useDesktop } from '@/lib/use-media';
 
 const SCRUB_DAYS = 180;
@@ -52,15 +48,19 @@ function HomeOrMember({ household }: { household: Household }) {
   return <Home household={household} />;
 }
 
+const rise = (i: number) => ({ '--i': i }) as CSSProperties;
+
 /**
- * S09 Home for the owner: a greeting that knows the hour, what needs them, the safety score, the
- * cover map over time, the next dates, three plain things to do, and what Kavach will say first
- * if someone is admitted tonight. Phone: one column. Desktop: the map left, the rest right.
+ * S09 Home for the owner, after the Stitch dashboard: the greeting and the demo clock; on the
+ * left the cover map over time with the chosen cell's inspector under it and three things to do;
+ * on the right the safety score, the next step, the next dates and what Kavach will say first if
+ * someone is admitted tonight. Phone: one column, score first, the cell opens in a sheet.
  */
 function Home({ household }: { household: Household }) {
   const t = useTranslations('plan.home');
   const tp = useTranslations('plan');
   const tc = useTranslations('common');
+  const ts = useTranslations('plan.scrubber');
   const date = useDate();
   const today = household.asOf ?? new Date().toISOString().slice(0, 10);
   const [asOf, setAsOf] = useState(today);
@@ -74,15 +74,18 @@ function Home({ household }: { household: Household }) {
   }, [asOf]);
 
   const { data: todayPlan } = usePlan(household.id);
-  const { data: plan, isFetching } = usePlan(
-    household.id,
-    debounced === today ? undefined : debounced,
-  );
+  const {
+    data: plan,
+    isFetching,
+    isError: planFailed,
+    refetch: refetchPlan,
+  } = usePlan(household.id, debounced === today ? undefined : debounced);
   const { data: actions = [] } = useActions(household.id);
   const pins = usePins(household, todayPlan);
   const { reset } = useDemoControls(household.id);
   const drafts = actions.filter((a) => a.status === 'draft');
-  const member = (id: string) => household.members.find((m) => m.id === id)?.name ?? id;
+  const member = (id: string) =>
+    household.members.find((m) => m.id === id)?.name.split(' ')[0] ?? id;
 
   const cells = (plan?.coverMap.cells ?? []).filter((c) => c.status !== 'na');
   const count = (s: CoverCell['status']) => cells.filter((c) => c.status === s).length;
@@ -91,207 +94,230 @@ function Home({ household }: { household: Household }) {
   const covered = count('covered');
   const partial = count('partial') + onJob;
   const owner = household.members.find((m) => m.relation === 'self');
-  const earner = owner?.name ?? '';
+  const earner = owner?.name.split(' ')[0] ?? '';
   const selectedCount = plan?.recommendations.filter((r) => r.status === 'selected').length ?? 0;
-  const score = plan?.coverMap.score ?? 0;
-  const scoreWord = score >= 70 ? 'high' : score >= 40 ? 'mid' : 'low';
+  // The inspector follows the scrubbed map: the same cell, as of the chosen date.
+  const shownCell =
+    selected &&
+    (plan?.coverMap.cells.find(
+      (c) => c.memberId === selected.memberId && c.risk === selected.risk,
+    ) ??
+      selected);
+
+  const summary = plan ? (
+    <>
+      <ScoreCard
+        score={plan.coverMap.score}
+        covered={covered}
+        partial={partial}
+        gaps={gaps}
+        onJob={onJob}
+        earner={earner}
+      />
+      <NextCard drafts={drafts.length} steps={selectedCount} monthly={plan.monthlySpend} />
+    </>
+  ) : planFailed ? null : (
+    // The score and the next step hold their place while the plan loads.
+    <>
+      <Skeleton className="h-52 rounded-lg" />
+      <Skeleton className="h-20 rounded-lg" />
+    </>
+  );
 
   return (
-    <div className="flex flex-col gap-5">
-      <header className="flex flex-wrap items-end justify-between gap-3">
+    <div className="flex flex-col gap-6">
+      <header className="rise-in flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <Greeting household={household} needs={drafts.length} asOf={today} />
         {household.isDemo && (
-          <div className="flex items-center gap-1 rounded-md border border-border py-1 pl-3 pr-1 text-sm font-medium text-accent-ink dark:text-text">
-            <span>{t('demoDate', { date: date(today, true) })}</span>
-            <Button
-              variant="ghost"
-              size="sm"
-              className="min-h-9 px-2.5 text-sm"
-              loading={reset.isPending}
+          // The demo clock (Stitch): a tinted card with the date and the way back to the start.
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1 self-start rounded-lg border border-outline-variant/30 bg-surface-container-low py-1 pl-4 pr-1 shadow-1 md:self-auto">
+            <span className="flex items-center gap-2 text-body-sm text-on-surface">
+              <Icon name="calendar_today" className="text-lg text-primary" />
+              <span>
+                {t.rich('demoDate', {
+                  date: date(today, true),
+                  b: (chunks) => <strong className="font-semibold">{chunks}</strong>,
+                })}
+              </span>
+            </span>
+            <button
+              type="button"
+              disabled={reset.isPending}
               onClick={() => {
                 setAsOf(today);
+                setSelected(undefined);
                 reset.mutate('setup', { onSuccess: (h) => setAsOf(h.asOf ?? today) });
               }}
+              className="press flex min-h-12 items-center gap-1.5 rounded-md px-3 font-display text-body-sm font-semibold text-primary transition-colors hover:bg-surface-container disabled:opacity-60"
             >
-              <RotateCcw aria-hidden className="size-4" />
+              {reset.isPending ? (
+                <Spinner className="size-4" />
+              ) : (
+                <Icon name="restart_alt" className="text-base" />
+              )}
               {t('startStory')}
-            </Button>
+            </button>
           </div>
         )}
       </header>
 
-      {/* Phone: one column. Desktop: the map on the left, score and next steps on the right. */}
-      <div className="flex flex-col gap-4 lg:grid lg:grid-cols-[minmax(0,1fr)_360px] lg:items-start">
-        {plan && (
-          <Reveal className="lg:col-start-2 lg:row-start-1">
-            <Card className="flex flex-col gap-4">
-              <div className="flex items-center gap-4">
-                <ScoreRing score={plan.coverMap.score} />
-                <div className="flex min-w-0 flex-col">
-                  <span className="label">{t('score')}</span>
-                  <span className="font-display text-xl font-bold leading-snug">
-                    {t(`scoreWord.${scoreWord}`)}
-                  </span>
-                  <span className="text-sm text-muted">
-                    {t('summary', { gaps, onJob, name: earner })}
-                  </span>
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
+        {/* Left: the map, the inspector, three things to do. */}
+        <div className="stagger flex min-w-0 flex-col gap-6 lg:col-span-8">
+          {/* Phone: the score and the next step come first. */}
+          {summary && (
+            <div className="flex flex-col gap-4 lg:hidden" style={rise(0)}>
+              {summary}
+            </div>
+          )}
+
+          <section aria-labelledby="map-title" className={cn(homeCard, 'relative')} style={rise(1)}>
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+              <div className="flex min-w-0 flex-col gap-1">
+                <h2 id="map-title" className="font-display text-headline-sm text-on-surface">
+                  {t('mapTitle')}
+                </h2>
+                <div className="flex flex-wrap items-center gap-x-2">
+                  <label
+                    htmlFor="as-of"
+                    className="flex items-center gap-1.5 text-body-sm text-on-surface-variant"
+                  >
+                    <Icon name="event_note" className="text-lg text-primary" />
+                    {ts('asOf', { date: date(asOf, true) })}
+                  </label>
+                  {isFetching && <Spinner className="size-3.5 text-primary" />}
+                  {asOf !== today && (
+                    <button
+                      type="button"
+                      onClick={() => setAsOf(today)}
+                      className="press -my-2 flex min-h-12 items-center gap-1 rounded-md px-2 text-body-sm font-semibold text-primary hover:bg-surface-container-low"
+                    >
+                      <Icon name="undo" className="text-base" />
+                      {ts('today')}
+                    </button>
+                  )}
                 </div>
               </div>
-              <dl className="grid grid-cols-3 gap-2 text-center">
-                <Stat icon={ShieldCheck} tone="safe" n={covered} label={t('stats.covered')} />
-                <Stat icon={ShieldHalf} tone="partial" n={partial} label={t('stats.partial')} />
-                <Stat icon={ShieldAlert} tone="gap" n={gaps} label={t('stats.gaps')} />
-              </dl>
-            </Card>
-          </Reveal>
-        )}
-
-        {plan && (drafts.length > 0 || selectedCount > 0) && (
-          <Reveal delay={0.05} className="lg:col-start-2">
-            {drafts.length > 0 ? (
-              <Link href="/actions" className="block">
-                <Card interactive className="panel panel-partial flex items-center gap-3 border-0">
-                  <span className="flex size-11 shrink-0 items-center justify-center rounded-md bg-partial-bg text-partial">
-                    <PenLine aria-hidden className="size-5" />
-                  </span>
-                  <span className="flex flex-1 flex-col">
-                    <span className="font-semibold">{t('drafts', { count: drafts.length })}</span>
-                    <span className="text-sm text-muted">{t('draftsHint')}</span>
-                  </span>
-                  <ArrowRight aria-hidden className="size-5 text-primary" />
-                </Card>
-              </Link>
-            ) : (
-              <Link href="/plan" className="block">
-                <Card interactive className="panel flex items-center gap-3 border-0">
-                  <span className="flex size-11 shrink-0 items-center justify-center rounded-md bg-primary-soft text-primary">
-                    <ArrowRight aria-hidden className="size-5" />
-                  </span>
-                  <span className="flex flex-1 flex-col">
-                    <span className="font-semibold">
-                      {t.rich('next', {
-                        count: selectedCount,
-                        amount: () => <Amount value={plan.monthlySpend} />,
-                      })}
-                    </span>
-                    <span className="text-sm text-muted">{t('nextHint')}</span>
-                  </span>
-                </Card>
-              </Link>
-            )}
-          </Reveal>
-        )}
-
-        <Reveal className="lg:col-start-1 lg:row-span-5 lg:row-start-1">
-          <Card className="flex flex-col gap-4">
-            <div className="flex items-center justify-between gap-3">
-              <h2 className="font-display text-xl font-bold">{t('mapTitle')}</h2>
               {onJob > 0 && (
-                <span className="inline-flex items-center gap-1 rounded-sm bg-partial-bg px-2.5 py-1 text-xs font-semibold text-partial">
-                  <Briefcase aria-hidden className="size-3.5" />
+                <span className="inline-flex items-center gap-1.5 self-start rounded-full border border-secondary-container/50 bg-partial-bg px-3 py-1 text-body-sm font-semibold text-partial">
+                  <Icon name="business_center" className="text-base" />
                   {t('onJob', { count: onJob, name: earner })}
                 </span>
               )}
             </div>
-            <DateScrubber
-              from={today}
-              days={SCRUB_DAYS}
-              value={asOf}
-              pins={pins}
-              onChange={setAsOf}
-            />
-            {plan && (
+            <div className="mt-3">
+              <DateScrubber
+                from={today}
+                days={SCRUB_DAYS}
+                value={asOf}
+                pins={pins}
+                onChange={setAsOf}
+              />
+            </div>
+            {plan ? (
               <div
                 aria-busy={isFetching}
-                className={cn('transition-opacity', isFetching && 'opacity-60')}
+                className={cn('mt-2 transition-opacity', isFetching && 'opacity-60')}
               >
-                <CoverGrid household={household} map={plan.coverMap} onSelect={setSelected} />
+                <CoverGrid
+                  household={household}
+                  map={plan.coverMap}
+                  selected={selected}
+                  onSelect={setSelected}
+                />
               </div>
+            ) : planFailed ? (
+              <QueryError
+                className="mt-3"
+                message={tp('error')}
+                retryLabel={tp('retry')}
+                onRetry={() => refetchPlan()}
+              />
+            ) : (
+              <ListSkeleton
+                rows={household.members.length}
+                rowClassName="h-14"
+                className="mt-3"
+                label={tp('loading')}
+              />
             )}
-            <p className="text-xs text-muted">{t('tapHint')}</p>
-          </Card>
-        </Reveal>
+            <p className="mt-4 flex items-center justify-between gap-3 border-t border-border pt-3 font-serif text-citation-sm text-on-surface-variant">
+              <span>{t('tapHint')}</span>
+              <Icon name="touch_app" className="text-base" />
+            </p>
+          </section>
 
-        {selected && desktop && (
-          // Shown at once (no scroll reveal): the person just tapped the cell and is looking here.
-          <div key={selected.memberId + selected.risk} className="lg:col-start-1">
-            <Card as="section" aria-labelledby="cell-title" className="flex flex-col gap-4">
+          {shownCell && desktop && (
+            // Shown at once (no scroll reveal): the person just tapped the cell and is looking here.
+            <section
+              key={shownCell.memberId + shownCell.risk}
+              aria-labelledby="cell-title"
+              className="inspector-in flex flex-col gap-4 rounded-lg border border-border bg-surface p-6 shadow-2"
+            >
               <div className="flex items-start justify-between gap-3">
-                <h2 id="cell-title" className="font-display text-xl font-bold">
-                  {t('cellTitle', {
-                    name: member(selected.memberId),
-                    risk: tp(`risk.${selected.risk}`),
-                  })}
-                </h2>
+                {/* Title and status on one line (Stitch inspector header). */}
+                <div className="flex min-w-0 flex-wrap items-center gap-x-3 gap-y-1">
+                  <h2 id="cell-title" className="font-display text-headline-sm text-on-surface">
+                    {t('cellTitle', {
+                      name: member(shownCell.memberId),
+                      risk: tp(`risk.${shownCell.risk}`),
+                    })}
+                  </h2>
+                  <StatusPill status={shownCell.status} size="sm" />
+                </div>
                 <button
                   type="button"
                   onClick={() => setSelected(undefined)}
                   aria-label={tc('close')}
-                  className="press -mr-2 -mt-2 flex size-11 shrink-0 items-center justify-center rounded-md text-muted hover:bg-sunken"
+                  className="press -mr-3 -mt-3 flex size-12 shrink-0 items-center justify-center rounded-md text-on-surface-variant hover:bg-surface-container-low"
                 >
-                  <X aria-hidden className="size-5" />
+                  <Icon name="close" className="text-xl" />
                 </button>
               </div>
-              <CellDetail household={household} cell={selected} />
-            </Card>
+              <CellDetail household={household} cell={shownCell} showStatus={false} />
+            </section>
+          )}
+
+          <QuickActions household={household} className="hidden lg:block" />
+        </div>
+
+        {/* Right rail. */}
+        <div className="stagger flex min-w-0 flex-col gap-6 lg:col-span-4">
+          {summary && (
+            <div className="hidden flex-col gap-6 lg:flex" style={rise(2)}>
+              {summary}
+            </div>
+          )}
+          {/* The dates come from the plan: no "nothing coming up" before it has loaded. */}
+          {todayPlan ? (
+            <div style={rise(3)}>
+              <ComingUp pins={pins} from={today} />
+            </div>
+          ) : (
+            !planFailed && <Skeleton className="h-40 rounded-lg" />
+          )}
+          <div style={rise(4)}>
+            <ReadyPanel household={household} asOf={today} />
           </div>
-        )}
-
-        <Reveal delay={0.1} className="lg:col-start-2">
-          <ComingUp pins={pins} from={today} />
-        </Reveal>
-
-        <Reveal delay={0.15} className="lg:col-start-2">
-          <ReadyPanel household={household} asOf={today} />
-        </Reveal>
+        </div>
       </div>
 
-      <Reveal delay={0.1}>
-        <QuickActions household={household} />
-      </Reveal>
+      <QuickActions household={household} className="lg:hidden" />
 
       <Sheet
-        open={!!selected && !desktop}
+        open={!!shownCell && !desktop}
         onClose={() => setSelected(undefined)}
         title={
-          selected
-            ? t('cellTitle', { name: member(selected.memberId), risk: tp(`risk.${selected.risk}`) })
+          shownCell
+            ? t('cellTitle', {
+                name: member(shownCell.memberId),
+                risk: tp(`risk.${shownCell.risk}`),
+              })
             : ''
         }
       >
-        {selected && <CellDetail household={household} cell={selected} />}
+        {shownCell && <CellDetail household={household} cell={shownCell} />}
       </Sheet>
-    </div>
-  );
-}
-
-function Stat({
-  icon: Icon,
-  tone,
-  n,
-  label,
-}: {
-  icon: typeof ShieldCheck;
-  tone: 'safe' | 'partial' | 'gap';
-  n: number;
-  label: string;
-}) {
-  const tones = {
-    safe: 'bg-safe-bg text-safe',
-    partial: 'bg-partial-bg text-partial',
-    gap: 'bg-gap-bg text-gap',
-  };
-  const shown = useCountUp(n, 600);
-  return (
-    <div className={cn('flex flex-col items-center gap-0.5 rounded-md px-2 py-2', tones[tone])}>
-      <dt className="flex items-center gap-1 text-xs font-semibold">
-        <Icon aria-hidden className="size-4" />
-        {label}
-      </dt>
-      <dd className="font-display text-2xl font-bold tabular-nums">
-        <span className="sr-only">{n}</span>
-        <span aria-hidden>{shown}</span>
-      </dd>
     </div>
   );
 }

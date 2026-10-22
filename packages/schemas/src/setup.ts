@@ -1,11 +1,13 @@
 import { z } from 'zod';
-import { Locale, Rupees } from './common';
+import { Country, Locale, Rupees } from './common';
 import { AccessEntry, ConsentPurpose } from './consent';
 import { Finances, Member, Relation } from './household';
 
 export const CreateHouseholdBody = z.object({
   consents: z.array(ConsentPurpose).min(1),
   name: z.string().max(80).optional(),
+  /** The family's market; India when left out. */
+  country: Country.optional(),
 });
 
 export const SetConsentsBody = z.object({ consents: z.array(ConsentPurpose) });

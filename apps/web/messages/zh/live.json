@@ -1,0 +1,42 @@
+{
+  "talk": "和 Kavach 说话",
+  "talkHint": "用印地语或英语说。Kavach 会用语音回答。",
+  "badge": "实时语音",
+  "orb": {
+    "connecting": "连接中…",
+    "listening": "Kavach 正在听",
+    "thinking": "Kavach 正在核查",
+    "speaking": "Kavach 正在说话",
+    "reconnecting": "重新连接中…",
+    "muted": "麦克风已关：点麦克风开始说话"
+  },
+  "greeting": "您好。告诉我发生了什么，并用摄像头给我看医院的估价单。",
+  "mute": "关闭麦克风（Kavach 回答）",
+  "unmute": "打开麦克风",
+  "showEstimate": "出示估价单",
+  "typeInstead": "改为输入",
+  "billing": {
+    "question": "柜台怎么说？",
+    "differ": "费用因病房而异",
+    "same": "每种病房都一样",
+    "differText": "柜台说每种病房的费用不同",
+    "sameText": "柜台说每种病房的费用都一样"
+  },
+  "camera": {
+    "title": "摄像头",
+    "hint": "整页放入画面",
+    "capture": "拍照",
+    "back": "返回",
+    "sample": "使用样本估价单"
+  },
+  "fallback": {
+    "title": "已切换到文字模式",
+    "connection_lost": "实时语音连接中断。Kavach 已切换到文字模式：答案是一样的。",
+    "mic_denied": "无法使用麦克风。Kavach 已切换到文字模式：答案是一样的。",
+    "time_limit": "实时会话已达到 5 分钟上限。请继续用文字模式：答案是一样的。",
+    "other": "实时语音目前无法使用。Kavach 已切换到文字模式：答案是一样的。",
+    "retry": "再试语音",
+    "dismiss": "关闭"
+  },
+  "muteShort": "静音"
+}

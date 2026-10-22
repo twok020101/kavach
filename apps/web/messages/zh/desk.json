@@ -1,0 +1,306 @@
+{
+  "modeNote": "医院模式：大字体、高对比度。",
+  "start": {
+    "title": "医院协助",
+    "demoNote": "演示：Sharma 一家在 City Heart Hospital。Suresh 因预约的血管成形术入院，回答用印地语。两者都可以更改。",
+    "who": "谁住院？",
+    "language": "回答语言",
+    "start": "开始",
+    "pickFirst": "请先选择住院的人。",
+    "loadFailed": "未能载入家人资料。",
+    "loadOffline": "Kavach 目前无法连接服务器，所以未能载入家人资料。请检查网络后再试。",
+    "privacy": "摄像头只在您拍摄估价单时使用。未经您同意，不会分享任何内容。",
+    "demoNoteMaternity": "演示：Priya 在 Lotus Women’s Hospital 入院，预约顺产。公司保单的生育限额为 ₹50,000。回答用英语；两者都可以更改。",
+    "prepare": {
+      "eyebrow": "演示场景",
+      "title": "正在准备场景",
+      "hospital": "Suresh 在 City Heart Hospital，回答用印地语",
+      "maternity": "Priya 在 Lotus Women’s Hospital，回答用英语",
+      "singapore": "Ah Kow 在新加坡的 Sample General Hospital，回答用华语",
+      "steps": {
+        "family": "正在打开这家人的保单",
+        "session": "正在开始柜台协助",
+        "open": "正在打开实时柜台"
+      },
+      "note": "演示数据。下一个画面上的每个金额都来自保单规则。",
+      "failed": "场景没有启动。请在下面选择住院的人，自己开始。",
+      "offline": "Kavach 目前无法连接服务器，所以演示场景没有开始。请检查网络后再试。",
+      "retry": "再试一次"
+    },
+    "demoNoteSingapore": "演示：新加坡的 Tan 一家。Ah Kow 因计划中的血管成形术入住 Sample General Hospital；他的 Shield 综合健保计划按 B1 级病房投保，医院提供的是 A 级病房。回答以华语给出；两者都可以更改。",
+    "memberMeta": "{relation}，{age} 岁"
+  },
+  "session": {
+    "title": "正在协助 {name}",
+    "titleLoading": "医院协助",
+    "end": "结束",
+    "orb": {
+      "thinking": "Kavach 正在核查",
+      "ready": "就绪：出示估价单或输入文字",
+      "idleHint": "按“和 Kavach 说话”开口说，或输入您的问题。"
+    },
+    "textMode": "文字模式",
+    "status": {
+      "open": "协助进行中",
+      "ended": "协助已结束",
+      "live": "实时语音",
+      "voiceOff": "语音已关闭",
+      "mute": "关闭麦克风",
+      "unmute": "麦克风已开"
+    },
+    "conversation": "对话",
+    "greeting": "您好。请先拍一张医院估价单的照片，然后向我提问。",
+    "sampleSent": "正在使用样本估价单",
+    "photoSent": "估价单照片",
+    "estimateRead": "我已读取 {hospital} 的估价单：{days, plural, one {# 天} other {# 天}}，{rooms} 种病房。下面是每种病房您要付多少。",
+    "captureFailed": "我无法读取那张照片。请把整页放入画面再拍一次。",
+    "steps": {
+      "reading": "正在读取估价单",
+      "tariff": "正在找出病房收费",
+      "policies": "正在核查家庭的保单",
+      "rooms": "正在比较病房",
+      "verify": "正在核对每一个数字"
+    },
+    "capture": {
+      "title": "出示医院估价单",
+      "hint": "整页放入画面，光线要充足。",
+      "photo": "给估价单拍照",
+      "sample": "使用样本估价单",
+      "demoData": "演示数据"
+    },
+    "estimate": {
+      "photoAlt": "您拍的估价单照片",
+      "days": "{days, plural, one {# 天} other {# 天}}",
+      "rooms": "估价单上的病房类型",
+      "check": "这样对吗？",
+      "retake": "重拍",
+      "lines": "估价单上的项目",
+      "quotedFor": "按 {room} 报价",
+      "total": "估价总额",
+      "mark": {
+        "nonPayable": "不予支付",
+        "aboveLimit": "超出病房限额",
+        "ratio": "随病房按比例扣减",
+        "icu": "ICU：从不扣减",
+        "covered": "可报销"
+      },
+      "sample": "样本"
+    },
+    "bill": {
+      "title": "已读取估价单：{hospital}",
+      "quoted": "按 {room} 报价 · {days, plural, one {# 天} other {# 天}}",
+      "charge": "费用",
+      "amount": "金额",
+      "total": "估价单总额（{room}）",
+      "checking": "正在对照保单逐项核查…",
+      "flag": {
+        "aboveLimit": "超出病房限额",
+        "ratio": "按比例扣减",
+        "never": "不会扣减",
+        "icu": "ICU：不会扣减",
+        "nonPayable": "不予支付"
+      },
+      "note": {
+        "aboveLimit": "超出限额",
+        "ratio": "随病房扣减",
+        "never": "不随病房扣减",
+        "icu": "不随病房扣减",
+        "nonPayable": "不在承保范围"
+      },
+      "notPaid": "保单不支付的部分",
+      "policyPays": "保单支付",
+      "youPay": "家人自付"
+    },
+    "deduction": {
+      "R-HL-001": "按比例扣减",
+      "R-HL-002": "ICU 房费超出 ICU 限额",
+      "R-HL-005": "不予支付项目",
+      "R-HL-008": "房费超出限额",
+      "R-MT-001": "超出生育限额",
+      "R-MT-001-none": "没有生育保障",
+      "R-MT-002": "生育等待期未满",
+      "R-SG-001": "此病房不可索赔部分（MediShield Life 按比例赔付）",
+      "R-SG-003": "自付额",
+      "R-SG-004": "共保额",
+      "R-SG-005": "超出计划病房级别、不可索赔的部分",
+      "R-SG-006": "附加保险下的共付额"
+    },
+    "advice": {
+      "eyebrow": "Kavach 的病房建议",
+      "lead": "从 {from} 改为 {to}",
+      "saves": "家人省下",
+      "savesVsCostliest": "比最贵的病房少付",
+      "without": "没有 Kavach 的建议",
+      "costliest": "最贵的病房",
+      "quoted": "估价单上的病房 {room}：家人要付",
+      "with": "按 Kavach 的建议",
+      "oop": "住 {room} 的自付金额",
+      "same": "{room} 已经是家人花费最少的病房。"
+    },
+    "saving": {
+      "eyebrow": "病房选择",
+      "headline": "省下 <amount></amount>",
+      "sub": "请向柜台要 {room}（每天 {rent}），不要 {costly}。",
+      "opt": "选择 {room}",
+      "optAsk": "我们想要 {room} 病房。在柜台该怎么说？",
+      "costliest": "最贵的病房",
+      "pick": "Kavach 推荐",
+      "perDay": "每天 {rent}",
+      "rows": {
+        "bill": "医院账单",
+        "copay": "共同承担",
+        "policyPays": "保单支付",
+        "youPay": "家人自付"
+      },
+      "allRooms": "比较全部 {count} 种病房",
+      "none": "没有节省：每种病房家人要付的都一样。"
+    },
+    "prompts": {
+      "title": "现在就问入院柜台",
+      "intro": "在柜台把这几句话照着读出来，一字不差。",
+      "empty": "Kavach 读完估价单后，会写出要说的原话。",
+      "deskQuestion": "要问柜台的一个问题"
+    },
+    "answers": "回答",
+    "compareRooms": "比较病房",
+    "why": "为什么是这些数字？",
+    "share": "发给家人",
+    "copied": "已复制。请粘贴到 WhatsApp。",
+    "endAndSummary": "结束并查看摘要",
+    "suggestions": "建议的问题",
+    "suggest": {
+      "room": "我们该选哪种病房？",
+      "card": "我应该先出示哪张保单卡？"
+    },
+    "questionLabel": "您的问题",
+    "questionPlaceholder": "输入您的问题",
+    "send": "发送",
+    "askTitle": "常见问题",
+    "captureUnreadable": "这种照片格式在这里无法读取。iPhone 的 HEIC 照片需要把相机设为“兼容性最佳”，或者发送照片的截图。然后再试一次。",
+    "captureTooBig": "这张照片太大，无法发送。请用正常大小重拍，或发送截图。",
+    "estimateUnclear": "我无法把这个当作估价单使用。{note}",
+    "packageRead": "我已读取 {hospital} 的配套价格：{rooms, plural, one {# 个配套} other {# 个配套}}。下面是每个配套您要付多少。",
+    "scene": {
+      "label": "演示场景",
+      "hospital": "场景 1：Suresh · PTCA（City Heart）",
+      "maternity": "场景 2：Priya · 分娩（Lotus）",
+      "singapore": "Ah Kow · 新加坡",
+      "name": {
+        "hospital": "Suresh",
+        "maternity": "Priya",
+        "singapore": "Ah Kow"
+      },
+      "place": {
+        "hospital": "City Heart",
+        "maternity": "Lotus",
+        "singapore": "新加坡"
+      }
+    },
+    "admitted": "住院人",
+    "controls": "柜台快捷操作",
+    "memberChip": "{name}（{relation}，{age}）",
+    "sendPrompts": "把这些发给家人的 WhatsApp",
+    "result": {
+      "title": "Kavach 的结果",
+      "save": "节省 <amount></amount>",
+      "noSaving": "每种病房家人自付都一样",
+      "reason": "按保单规则计算后，{room} 家人自付最少。",
+      "reasonSame": "请要 {room}；保单对每种病房一视同仁。",
+      "ask": "请要 {room}",
+      "perDay": "每天",
+      "recommendedChip": "Kavach 建议",
+      "costsMoreChip": "自付更多",
+      "familyPays": "家人自付"
+    },
+    "askDesk": {
+      "title": "现在就问入院柜台",
+      "intro": "在柜台照着读出来，或复制下来。",
+      "ask": "问柜台",
+      "say": "Kavach 怎么说"
+    },
+    "rules": {
+      "title": "已应用的保单规则",
+      "count": "{count, plural, other {# 条规则}}",
+      "verified": "已核实",
+      "toVerify": "待核实",
+      "outcome": {
+        "copay": "共同承担",
+        "pays": "支付",
+        "applied": "已应用",
+        "protected": "受保护",
+        "ask": "问柜台",
+        "counts": "计入 {percent}",
+        "riderCovers": "附加保险支付",
+        "deductible": "自付额",
+        "coinsurance": "共保额",
+        "asCharged": "按实际收费"
+      },
+      "names": {
+        "R-HL-001": "按比例扣减",
+        "R-HL-002": "ICU 从不按比例扣减",
+        "R-HL-003": "可赔金额的共同承担",
+        "R-HL-005": "不予支付项目",
+        "R-HL-006": "先向哪份保单索赔",
+        "R-HL-008": "房费限额",
+        "R-HL-009": "Super top-up 自付额",
+        "R-HL-010": "尚不清楚收费方式",
+        "R-HL-014": "按病房计的配套价格",
+        "R-MT-001": "生育限额",
+        "R-MT-002": "生育等待期",
+        "R-SG-001": "MediShield Life 按病房级别比例赔付",
+        "R-SG-002": "病房及加护病房每日上限",
+        "R-SG-003": "每个保单年度扣一次自付额",
+        "R-SG-004": "可索赔金额的共保额",
+        "R-SG-005": "在所保病房级别内，计划按实际收费赔付",
+        "R-SG-006": "附加保险共付额及全年上限",
+        "R-SG-007": "保单年度上限",
+        "R-SG-010": "尚不确定是否为合作专科医生"
+      },
+      "details": "查看每条规则的计算"
+    },
+    "footer": {
+      "session": "协助",
+      "prototype": "原型",
+      "demo": "原型 · 演示数据"
+    },
+    "textNote": {
+      "title": "文字模式",
+      "body": "输入您的问题，或点“和 Kavach 说话”直接说。"
+    },
+    "ward": {
+      "eyebrow": "病房级别",
+      "title": "各级病房由谁支付",
+      "entitlement": "Integrated Shield Plan 保障至 {ward}。",
+      "above": "{room} 高于此级别：账单只有 {percent} 可以索赔，不可索赔的 {amount} 由家人支付。",
+      "within": "{room} 在此级别之内：计划按实际收费赔付。",
+      "mshl": "在 {room}，MediShield Life 只计入病房费用的 {wardShare} 和手术费用的 {surgicalShare}。",
+      "wardName": "{ward, select, private {私立医院病房} other {{ward} 级病房}}",
+      "payer": "由谁支付",
+      "quoted": "估价单病房",
+      "pick": "推荐",
+      "rows": {
+        "mshl": "MediShield Life",
+        "plan": "Integrated Shield Plan",
+        "rider": "附加保险",
+        "family": "家人自付"
+      },
+      "medisave": "MediSave 可以支付家人自付的部分，但不会减少这笔金额。"
+    }
+  },
+  "summary": {
+    "title": "本次摘要",
+    "heading": "Kavach 为 {name} 给出的建议",
+    "otherLanguage": "用另一种语言阅读",
+    "empty": "本次没有给出任何回答。",
+    "saved": "已保存到家庭时间线",
+    "cards": "回答卡片",
+    "claimHint": "如果之后索赔被扣减，",
+    "claimLink": "请在这里上传理赔结算信。",
+    "share": "把摘要发给家人",
+    "copied": "已复制。请粘贴到 WhatsApp。",
+    "newSession": "重新开始",
+    "home": "返回首页",
+    "loadFailed": "Kavach 无法载入这份摘要。请检查网络连接后再试一次。",
+    "retry": "再试一次"
+  }
+}

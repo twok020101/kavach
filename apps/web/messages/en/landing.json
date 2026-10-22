@@ -1,27 +1,209 @@
 {
-  "headline": "The AI that stands beside your family at every insurance moment.",
-  "subhead": "Kavach remembers your family's cover and acts when it matters: when life changes, at the hospital desk, and when a claim goes wrong.",
-  "tryHospital": "Try the hospital scene",
-  "tryHospitalSub": "Sample estimate, Hindi or English, under a minute. No sign-in.",
-  "previewLabel": "Example answer",
-  "previewCaption": "What Kavach tells the family at the hospital desk",
-  "momentsTitle": "Three moments that matter",
+  "announce": {
+    "cited": "Every rupee cited to a clause",
+    "noCommission": "No commission, no product push",
+    "prototype": "Prototype with demo data",
+    "badge": "Prototype"
+  },
+  "nav": {
+    "label": "Kavach",
+    "eyebrow": "Family insurance, explained",
+    "demo": "Sharma demo",
+    "desk": "Hospital desk",
+    "cover": "Cover map",
+    "claim": "Claim check",
+    "proof": "Proof",
+    "signIn": "Sign in",
+    "atHospital": "At the hospital",
+    "atHospitalShort": "Hospital"
+  },
+  "hero": {
+    "chip": "Every rupee cited to a clause · No commission",
+    "title": "Every Indian family has insurance.",
+    "titleEm": "Few know what it actually pays.",
+    "lead": "Kavach remembers every policy in the house and tells you what to do when life changes, at the hospital desk, and when a claim comes back short. In Hindi or English. Every rupee comes from written policy terms, with the page number.",
+    "tryHospital": "Try the hospital scene",
+    "tryHospitalChip": "Under a minute",
+    "explore": "Explore the Sharma family",
+    "exploreChip": "Sample data",
+    "maternity": "Or try the maternity scene: Priya’s delivery",
+    "statsLabel": "What Kavach found in the sample family",
+    "stats": {
+      "desk": "less to pay, by asking for the right room",
+      "claim": "found to appeal in one settlement letter",
+      "wordings": "public policy wordings in the test set",
+      "rules": "written rules behind every rupee"
+    }
+  },
+  "audit": {
+    "chip": "Engine check",
+    "city": "Bengaluru · sample",
+    "household": "Sharma household",
+    "people": "{count} people · Suresh, {age}, is covered by {policies} policies",
+    "status": "2 things to act on",
+    "compareTitle": "Suresh at {hospital}: what the family pays",
+    "quoted": "{room} room (quoted)",
+    "within": "{room} room (within the limit)",
+    "warnTitle": "Parents’ cover depends on Rahul’s job",
+    "warnBody": "The employer’s group cover ends with the job. Kavach drafts the request to move Suresh and Kamala to a personal policy in time.",
+    "footer": "Rules from IRDAI circulars and the policy wording"
+  },
+  "admission": {
+    "chip": "At the admission desk",
+    "title": "Live admission decision: {hospital}",
+    "sub": "Patient: Suresh Sharma ({age}) · coronary angioplasty · sum insured {si} · room-rent limit {limit} a day. A room {diff} a day dearer costs the family {saving}.",
+    "sample": "Sample estimate · demo data",
+    "impactTitle": "Decision impact: {saving} less to pay",
+    "impactChip": "Same doctor, same treatment",
+    "impactBody": "Taking the {rent} room removes the proportionate cut on {base} of room-priced charges: surgeon, cath lab, nursing and doctor visits.",
+    "impactLabel": "Less to pay",
+    "optionA": "Option A: {room} room",
+    "optionB": "Option B: {room} room",
+    "chipCut": "Proportionate deduction applies",
+    "chipPick": "Ask for this room",
+    "tariffOver": "{rent} a day · {excess} above the {limit} limit",
+    "tariffWithin": "{rent} a day · within the {limit} limit",
+    "bill": "Hospital bill",
+    "rows": {
+      "R-HL-008": "Room rent above the limit",
+      "R-HL-001": "Proportionate cut on room-priced charges",
+      "R-HL-005": "Non-payable items",
+      "copay": "Co-pay ({percent}% from age {age})",
+      "other": "Other amounts not paid"
+    },
+    "none": "None",
+    "youPay": "You pay",
+    "policyPays": "Policies pay {amount}",
+    "noteCut": "Surgeon, cath lab, nursing and doctor visits cost more in this room, and the insurer pays them only in the ratio {limit} ÷ {rent}.",
+    "notePick": "Same surgeon, same stent, same care. Only the room changes.",
+    "whyTitle": "Why these numbers",
+    "whyChip": "Rule {id}",
+    "circular2020": "IRDAI circular, 2020",
+    "circular2020Body": "Proportionate deductions only on charges priced by room; never on medicines, implants or diagnostics.",
+    "ruleApplied": "Rule applied",
+    "master2024": "IRDAI master circular",
+    "master2024Body": "Health insurance business, 29 May 2024.",
+    "openPdf": "Open the PDF",
+    "verified": "Verified",
+    "toVerify": "Being checked against the source",
+    "fired": "Rules that ran",
+    "allRules": "See every rule",
+    "deskLabel": "Say this at the desk (Hindi)",
+    "deskHint": "To the TPA counter",
+    "deskLine": "कृपया {rent} प्रतिदिन वाला कमरा दीजिए। हमारी पॉलिसी में कमरे की सीमा {limit} प्रतिदिन है, उससे महँगे कमरे में डॉक्टर और ऑपरेशन के खर्च भी कटेंगे।",
+    "deskGloss": "“Please give us the {rent}-a-day room. Our policy’s room limit is {limit} a day; in a dearer room the doctor and operation charges are cut too.”",
+    "listen": "Listen",
+    "stop": "Stop",
+    "copy": "Copy Hindi line",
+    "copied": "Copied",
+    "rulesNames": {
+      "R-HL-001": "Proportionate deduction only on room-priced heads",
+      "R-HL-003": "Co-pay on the admissible amount",
+      "R-HL-005": "Non-payable items excluded",
+      "R-HL-006": "Choice of policy order",
+      "R-HL-008": "Room rent capped at the limit",
+      "R-HL-009": "Super top-up pays only above its deductible"
+    }
+  },
   "moments": {
+    "eyebrow": "Where Kavach steps in",
+    "title": "The three moments where Indian families lose lakhs",
+    "intro": "Kavach learns the household once, in about two minutes. Then it acts before you need the hospital, at admission, and when the settlement letter arrives.",
+    "kicker": "Moment {n} · {when}",
     "change": {
+      "when": "Before the hospital",
       "title": "When life changes",
-      "body": "“Joining a startup on 1 Dec.” Kavach sees that your parents’ cover ends on 30 Nov, drafts the letter to keep it, and reminds you on WhatsApp.",
-      "stat": "Parents’ cover kept, not lost"
+      "feature": "Parents’ cover kept, not lost",
+      "featureBody": "The request to move the group cover to a personal policy, drafted before the last working day (rule R-MG-001).",
+      "link": "See the job-change plan",
+      "body": "“Joining a startup on 1 Dec.” Kavach sees that your parents’ cover ends on 30 Nov, drafts the letter to keep it, and reminds you on WhatsApp."
     },
     "hospital": {
+      "when": "At admission",
       "title": "At the hospital desk",
-      "body": "Voice and camera, in Hindi. Show the estimate and Kavach says which policy card to give and which room to ask for.",
-      "stat": "<amount></amount> less to pay"
+      "feature": "<amount></amount> less to pay",
+      "featureBody": "Reads the estimate photo: which charges change with the room, and which card to give first.",
+      "link": "Open the hospital desk",
+      "body": "Voice and camera, in Hindi. Show the estimate and Kavach says which policy card to give and which room to ask for."
     },
     "claim": {
+      "when": "After discharge",
       "title": "When a claim goes wrong",
-      "body": "Send the settlement letter. Kavach checks every deduction against your policy and drafts the appeal.",
-      "stat": "<amount></amount> found to appeal"
+      "body": "The bill was <bill></bill>; the insurer approved <approved></approved> and cut <cut></cut> as a proportionate deduction, though the room was within the limit.",
+      "feature": "<amount></amount> found to appeal",
+      "featureBody": "Each deduction checked against the policy wording; the appeal drafted for you to send yourself.",
+      "link": "Check a settlement letter"
     }
+  },
+  "elder": {
+    "chip": "No app to install",
+    "title": "Elder-friendly WhatsApp and voice",
+    "body": "At the desk, Kamala doesn’t open a website. She sends a Hindi voice note or a photo of the estimate on WhatsApp, and Kavach replies with a voice note and a card.",
+    "f1Title": "Hindi or English voice notes",
+    "f1Body": "Speak or type in either language; the answer comes back the same way.",
+    "f2Title": "The family is told",
+    "f2Body": "When Kamala gets an answer at the desk, Rahul gets a family alert on his phone.",
+    "f3Title": "Try it on the test number",
+    "f3Body": "Scan the code or open WhatsApp, then send RAHUL to join the demo family.",
+    "sandbox": "WhatsApp test number",
+    "joinCode": "Join message: {join}",
+    "open": "Open WhatsApp",
+    "chatName": "Kavach (कवच)",
+    "chatStatus": "Demo family · sample data",
+    "caption": "Meanwhile, on Rahul’s phone",
+    "voiceLength": "0:14 · Hindi voice note",
+    "voiceText": "अस्पताल वाले {rent} वाला डीलक्स कमरा लेने को कह रहे हैं। क्या लें?",
+    "replyWarn": "रुकिए, डीलक्स कमरा मत लीजिए।",
+    "replyBody": "सुरेश जी की पॉलिसी में कमरे की सीमा {limit} प्रतिदिन है। डीलक्स कमरे में डॉक्टर और ऑपरेशन के खर्च से {cut} कट जाएँगे।",
+    "replyCardTitle": "यह कमरा माँगिए",
+    "replyCardSaving": "बचत {saving}",
+    "replyCardBody": "{rent} प्रतिदिन वाला कमरा। आपको लगभग {pay} देने होंगे।",
+    "replyCardRule": "नियम R-HL-001 · साइन करने से पहले TPA डेस्क से पक्का कर लीजिए।",
+    "replyAlert": "राहुल को परिवार अलर्ट भेजा गया",
+    "alertPill": "Kavach: “Suresh is at {hospital}. Kavach told the family to ask for the {rent} room.”",
+    "inputHint": "Message or hold the mic to speak"
+  },
+  "policies": {
+    "eyebrow": "Real documents, not samples",
+    "title": "{count} public policy wordings in the test set",
+    "intro": "The test set is real Indian health insurance wordings, filed with IRDAI or published by the insurer and identified by their UIN. Kavach’s reader is scored against labels a person checks against each PDF.",
+    "fixtures": "The latest run used recorded test answers, not the live model: it proves the pipeline works; it is not an accuracy score.",
+    "checked": "{checked} of {count} labels checked by a person",
+    "publicWording": "Public wording",
+    "cardStatus": "{status} · {label}",
+    "notice": "Kavach is not an insurer, broker or agent. It earns no commission and sells no policy. Insurer names belong to their owners.",
+    "masterPdf": "IRDAI master circular 2024 (PDF)",
+    "proofLink": "How we measure"
+  },
+  "promise": {
+    "eyebrow": "Our promise",
+    "title": "Every number shows its working",
+    "body": "Rupee amounts come from tested rules, never from a guess. Tap “Why these numbers?” to see the rule and the clause behind each one.",
+    "proofLink": "See how accurately Kavach reads real policies"
+  },
+  "cta": {
+    "chip": "Every rupee cited to a policy clause",
+    "title": "Never face a hospital desk unprepared.",
+    "body": "Try the two scenes on the sample family, or set up your own in a few minutes. Kavach sells nothing and contacts no insurer.",
+    "hospital": "Suresh at the hospital desk",
+    "maternity": "Priya’s delivery",
+    "own": "Set up my family"
+  },
+  "footer": {
+    "about": "Standing beside your family at every insurance moment: the hospital desk, the small print and the claim letter, in Hindi or English.",
+    "dpdp": "Built to the DPDP Act, 2023",
+    "tryTitle": "Try it",
+    "evidenceTitle": "Evidence",
+    "desk": "Hospital desk scene",
+    "maternity": "Maternity scene",
+    "demo": "The Sharma family",
+    "cover": "Cover map",
+    "claim": "Claim check",
+    "proof": "Proof and accuracy",
+    "master": "IRDAI master circular 2024",
+    "signIn": "Sign in",
+    "built": "Built for the Google Cloud AI Builder Cup 2026 · Demo data is marked SAMPLE · No payments, ever.",
+    "prototype": "Prototype"
   },
   "whatsapp": {
     "title": "No app? Same answer on WhatsApp",
@@ -35,37 +217,6 @@
     "note": "This uses a WhatsApp test number. Membership lasts 3 days; scan again after that.",
     "joinText": "Or send “{join}” to {number} on WhatsApp."
   },
-  "trust": {
-    "title": "Every number shows its working",
-    "body": "Rupee amounts come from tested rules, never from a guess. Tap “Why these numbers?” to see the rule and the clause behind each one."
-  },
-  "footer": {
-    "disclaimer": "Guidance, not a policy recommendation. Confirm with your insurer or the TPA desk.",
-    "sample": "Everything in this demo is made-up sample data.",
-    "built": "Built on Gemini and Google Cloud."
-  },
-  "headlineMark": "every insurance moment",
-  "eyebrow": "Hindi and English · voice first · built for the whole family",
-  "tryFamily": "Try with the Sharma family",
-  "statsLabel": "What Kavach has found in the sample family",
-  "stats": {
-    "desk": "less to pay, by asking for the right room at the hospital desk",
-    "claim": "found to appeal in one settlement letter",
-    "cited": "of rupee amounts come from tested rules, each with its clause"
-  },
-  "momentsIntro": "Kavach learns the household once, in about two minutes. Then it acts at the three moments where Indian families lose money.",
-  "titlePlain": "Your family's insurance,",
-  "titleEm": "explained at the moment it matters.",
-  "lead": "Kavach remembers every policy in the house and tells you what to do when life changes, at the hospital desk, and when a claim comes back short. In Hindi or English. Every rupee comes from written policy terms, with the page number.",
-  "howItWorks": "How it works",
-  "moment": {
-    "title": "The <saving></saving> moment",
-    "body": "Suresh is being admitted. The deluxe room costs the family about <deluxe></deluxe> out of pocket; the cheaper room about <standard></standard>. Kavach says which one, and why, before anyone signs."
-  },
-  "trustLine": "Built for the Google Cloud AI Builder Cup 2026 · Demo data is marked SAMPLE · Nothing is stored without consent · No payments, ever.",
-  "tryMaternity": "Try the maternity scene",
-  "tryMaternitySub": "Priya’s delivery: the ₹50,000 maternity limit, in English.",
-  "kicker": "Take a breath. The policies are already read.",
   "boot": {
     "policies": "Your family’s policies: read, with page numbers",
     "rules": "Hospital and maternity rules: understood",
@@ -73,40 +224,187 @@
     "tagline": "Standing beside your family at every insurance moment.",
     "skip": "Tap anywhere to continue"
   },
-  "family": {
-    "title": "The sample family Kavach already knows",
-    "caption": "Five people, four policies, one picture. Kavach learnt them once, in about two minutes.",
-    "relations": {
-      "self": "Rahul, 34 · pays the premiums",
-      "spouse": "Priya, 32",
-      "child": "Anaya, 5",
-      "father": "Suresh, 62 · the patient",
-      "mother": "Kamala, 58 · opens Kavach at the desk"
+  "gateway": {
+    "label": "Welcome to Kavach",
+    "engine": "Rules engine ready",
+    "rules": "{count} written rules",
+    "demo": "Runs on demo data",
+    "eyebrow": "Family insurance shield · Prototype",
+    "title": "Take a deep breath.",
+    "titleA": "Kavach is",
+    "titleEm": "with you.",
+    "lead": "Standing beside your family at every insurance moment: the hospital desk, the small print and the claim letter, in Hindi or English.",
+    "policiesSub": "Room-rent limits, co-pay and waiting periods, shown before admission.",
+    "rulesSub": "Which room to ask for and which card to give first.",
+    "besideSub": "No commission, nothing sold. Built to the DPDP Act, 2023.",
+    "progress": "Opening Kavach",
+    "tickPolicies": "Policies",
+    "tickRules": "Rules",
+    "tickBeside": "Hindi · English",
+    "enter": "Enter Kavach",
+    "demoBtn": "Sharma demo",
+    "promise": "Our promise",
+    "hint": "Tap anywhere or press Space to continue",
+    "sandbox": "Kavach engine sandbox",
+    "sandboxChip": "Demo data",
+    "sandboxAlt": "The first Kavach prototype’s opening screen",
+    "sandboxCaption": "City Heart Hospital · sample estimate",
+    "sandboxSaving": "{saving} less to pay",
+    "foot": "Built to India’s DPDP Act, 2023 · Prototype with demo data",
+    "foot2": "Not an insurer, broker or agent. The insurer decides every claim."
+  },
+  "sg": {
+    "announce": {
+      "cited": "Every dollar cited to a clause"
+    },
+    "nav": {
+      "demo": "Tan demo"
+    },
+    "hero": {
+      "chip": "Every dollar cited to a clause · No commission",
+      "title": "Every Singapore family has MediShield Life.",
+      "titleEm": "Few know what their Shield plan pays.",
+      "lead": "Kavach remembers every policy in the house and tells you what to do when life changes, at the hospital desk, and when a claim comes back short. In Mandarin, Malay or English. Every dollar comes from a written rule, with its source.",
+      "explore": "Explore the Tan family",
+      "maternity": "Or try the India scene: Suresh, in Hindi",
+      "stats": {
+        "desk": "less to pay, by asking for the ward the plan is bought for",
+        "pick": "what the family pays in the plan’s own ward",
+        "rules": "written Singapore rules behind every dollar"
+      }
+    },
+    "audit": {
+      "city": "Singapore · sample",
+      "household": "Tan household",
+      "people": "{count} people · Ah Kow, {age}, has MediShield Life and a Shield plan",
+      "status": "Ward choice matters",
+      "compareTitle": "Ah Kow at {hospital}: what the family pays",
+      "quoted": "{room}, offered",
+      "within": "{room}, the plan’s ward",
+      "warnTitle": "The rider’s yearly cap needs a panel specialist",
+      "warnBody": "The rider caps the family’s co-payment for the year only with a panel specialist or pre-authorisation. Kavach tells the family to ask before signing.",
+      "footer": "Rules from MOH, the CPF Board and the plan’s own wording"
+    },
+    "moments": {
+      "title": "The three moments where families lose thousands",
+      "change": {
+        "body": "“Changing jobs next month.” Kavach checks which cover ends with the job, what the family’s Shield plans still pay, and reminds you on WhatsApp.",
+        "feature": "Cover checked before the last day",
+        "featureBody": "What ends with the job, what MediShield Life and the Shield plans keep paying, and what to do before the last working day."
+      },
+      "hospital": {
+        "body": "Voice and camera, in Mandarin or Malay. Show the estimate and Kavach says which card to give and which ward to ask for.",
+        "featureBody": "Reads the estimate photo: what each ward class costs under the plan, and which card to give first."
+      },
+      "claim": {
+        "body": "When a claim letter comes back short, Kavach checks each deduction against the plan. A pro-ration inside the ward the plan covers, or a second deductible in the same year, can be challenged.",
+        "feature": "Every deduction checked against the plan",
+        "featureBody": "The insurer first, then FIDReC: the letter drafted for you to send yourself."
+      }
+    },
+    "elder": {
+      "body": "At the desk, Siew-Hong doesn’t open a website. She sends a Mandarin voice note or a photo of the estimate on WhatsApp, and Kavach replies with a voice note and a card.",
+      "f1Title": "Mandarin, Malay or English voice notes",
+      "f1Body": "Speak or type in any of them; the answer comes back the same way.",
+      "f2Body": "When Siew-Hong gets an answer at the desk, Wei-Ming gets a family alert too.",
+      "chatName": "Kavach",
+      "caption": "Meanwhile, on Wei-Ming’s phone",
+      "voiceLength": "0:12 · Mandarin voice note",
+      "voiceText": "医院说{quotedWard}级病房每天{rent}，我们要住吗？",
+      "replyWarn": "先别选{quotedWard}级病房。",
+      "replyBody": "Ah Kow 的 Shield 计划是按{ward}级病房买的。住{quotedWard}级病房，计划只赔一部分，其中{cut}要家里自己付。",
+      "replyCardTitle": "请要求这个病房",
+      "replyCardSaving": "少付 {saving}",
+      "replyCardBody": "{ward}级病房，每天{rent}。您大约需要付{pay}。",
+      "replyCardRule": "规则 R-SG-005 · 签字前请先向医院的保险柜台确认。",
+      "replyAlert": "已通知 Wei-Ming",
+      "alertPill": "Kavach: “Ah Kow is at {hospital}. Kavach told the family to ask for the Class {ward} ward.”"
+    },
+    "promise": {
+      "body": "Dollar amounts come from tested rules, never from a guess. Tap “Why these numbers?” to see the rule and the clause behind each one."
+    },
+    "cta": {
+      "chip": "Every dollar cited to a policy clause",
+      "body": "Try the Singapore scene on the sample family, or set up your own in a few minutes. Kavach sells nothing and contacts no insurer.",
+      "hospital": "Ah Kow at the hospital desk",
+      "maternity": "Suresh in India, in Hindi"
+    },
+    "footer": {
+      "about": "Standing beside your family at every insurance moment: the hospital desk, the small print and the claim letter, in Mandarin, Malay or English.",
+      "dpdp": "Nothing read without your consent",
+      "desk": "Singapore desk scene",
+      "maternity": "India desk scene",
+      "demo": "The Tan family",
+      "master": "CPF Board: MediShield Life pro-ration",
+      "sources": "MOH, the CPF Board and MAS pages, dated, and each plan’s own wording"
+    },
+    "gateway": {
+      "lead": "Standing beside your family at every insurance moment: the hospital desk, the small print and the claim letter, in Mandarin, Malay or English.",
+      "policiesSub": "Ward entitlement, deductible and co-payment, shown before admission.",
+      "rulesSub": "Which ward to ask for and which card to give first.",
+      "besideSub": "No commission, nothing sold. Nothing read without your consent.",
+      "tickBeside": "Mandarin · Malay",
+      "demoBtn": "Tan demo",
+      "sandboxCaption": "Sample General Hospital · sample estimate",
+      "foot": "Prototype with demo data · Nothing read without your consent"
+    },
+    "boot": {
+      "rules": "MediShield Life and Shield plan rules: understood",
+      "beside": "Standing beside you, in Mandarin, Malay or English"
     }
   },
-  "story": {
-    "caption": "How the hospital moment goes",
-    "step1": {
-      "title": "Kamala taps At the hospital",
-      "body": "In Hindi, on her own phone. Kavach already knows Suresh’s two policies."
+  "admissionSg": {
+    "sub": "Patient: Ah Kow ({age}) · coronary angioplasty · MediShield Life and a Shield plan bought for a Class {ward} ward. A Class {quotedWard} ward costs the family {saving} more.",
+    "impactBody": "In a Class {ward} ward the plan pays as charged. In Class {quotedWard} it counts only {share}% of the bill as claimable, so {above} of it falls to the family.",
+    "optionA": "Option A: {room}",
+    "optionB": "Option B: {room}",
+    "chipCut": "Above the plan’s ward: pro-rated",
+    "chipPick": "Ask for this ward",
+    "tariffOver": "{rent} a day · above the Class {ward} ward the plan is bought for",
+    "tariffWithin": "{rent} a day · the ward the plan is bought for",
+    "rows": {
+      "R-SG-005": "Not claimable above the plan’s ward",
+      "R-HL-005": "Non-claimable items",
+      "R-SG-006": "Co-payment with the rider ({percent}%)",
+      "other": "Other amounts not paid"
     },
-    "step2": {
-      "title": "She shows the estimate to the camera",
-      "body": "Kavach reads the room tariff: deluxe ₹9,000 a day, standard ₹5,000."
-    },
-    "step3": {
-      "title": "“Ask for the ₹5,000 room.”",
-      "body": "Only room-priced charges are cut in the pricier room. Kavach says which card to give first, and what to ask the desk."
-    },
-    "saving": "Less to pay",
-    "pause": "Pause the story",
-    "play": "Play the story"
+    "policyPays": "Shield plan pays {plan} · MediShield Life {medishield}",
+    "noteCut": "Above Class {ward} the plan counts only {share}% of the bill: the same treatment leaves a far larger share with the family.",
+    "notePick": "Same cardiologist, same stent, same care. Only the ward changes.",
+    "prorationLabel": "MediShield Life pro-ration",
+    "prorationBody": "In Class {quotedWard}, MediShield Life counts {wardShare}% of ward charges and {surgicalShare}% of surgical charges (CPF Board, from 1 April 2025). A Shield plan sets its own share.",
+    "riderLabel": "MOH rider requirements",
+    "riderBody": "At least {percent}% co-payment stays with the family. The plan’s yearly cap of {cap} applies only with a panel specialist or pre-authorisation.",
+    "openSource": "Open the source",
+    "deskLabel": "Say this at the desk (Mandarin)",
+    "deskHint": "To the admissions counter",
+    "deskLine": "请给我父亲安排{ward}级病房。他的 Shield 计划是按{ward}级病房买的，住{quotedWard}级病房的话，计划只赔一部分账单。",
+    "deskGloss": "“Please admit my father to a Class {ward} ward. His Shield plan is bought for Class {ward}; in Class {quotedWard} the plan pays only part of the bill.”",
+    "copy": "Copy Mandarin line",
+    "rulesNames": {
+      "R-HL-005": "Non-claimable items excluded",
+      "R-SG-001": "MediShield Life pro-ration by ward class",
+      "R-SG-002": "Daily ward and ICU limits",
+      "R-SG-003": "Deductible once per policy year",
+      "R-SG-004": "Co-insurance on the claimable amount",
+      "R-SG-005": "The plan pays as charged within its ward",
+      "R-SG-006": "Rider co-payment and its yearly cap",
+      "R-SG-007": "Policy-year limit",
+      "R-SG-010": "Panel specialist unknown: both answers",
+      "R-SGCLM-001": "Pro-ration inside the plan’s ward is challengeable",
+      "R-SGCLM-002": "Co-payment above the rider’s cap is challengeable",
+      "R-SGCLM-003": "A second deductible in one year is challengeable",
+      "R-SGCLM-006": "The insurer first, then FIDReC"
+    }
   },
-  "closing": {
-    "title": "Never face a hospital desk unprepared.",
-    "body": "Try the two scenes on the sample family, or set up your own in a few minutes. Kavach sells nothing and contacts no insurer.",
-    "hospital": "Suresh at the hospital desk",
-    "maternity": "Priya's delivery",
-    "own": "Set up my family"
+  "sgRules": {
+    "eyebrow": "Sources, not guesses",
+    "title": "{count} written Singapore rules behind every dollar",
+    "intro": "Singapore has no single master circular: the figures come from MOH, the CPF Board and MAS pages, dated, and from each plan’s own wording. A person marks a rule as checked only after opening the primary page.",
+    "checked": "{checked} of {count} rules checked by a person",
+    "planWording": "The plan’s own wording",
+    "verified": "Checked against the source",
+    "toVerify": "Being checked against the source",
+    "notice": "Kavach is not an insurer, broker or agent. It earns no commission and sells no plan. Plan names belong to their owners."
   }
 }

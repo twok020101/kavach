@@ -1,0 +1,58 @@
+{
+  "title": "Isi rumah demo",
+  "intro": "Salinan keluarga Sharma anda sendiri. Tetapkan semula ke mana-mana saat dalam cerita.",
+  "introSg": "Salinan keluarga Tan di Singapura anda sendiri. Tetapkan semula ke mana-mana saat dalam cerita.",
+  "loading": "Menyediakan isi rumah demo…",
+  "error": "Tidak dapat memuatkan isi rumah. Adakah API sedang berjalan?",
+  "retry": "Cuba lagi",
+  "demoDate": "Tarikh demo: {date}",
+  "checkpointsHeading": "Lompat ke satu saat",
+  "checkpoints": {
+    "setup": "Persediaan",
+    "job_change": "Tukar kerja",
+    "hospital": "Hospital",
+    "claim": "Tuntutan",
+    "maternity": "Bersalin"
+  },
+  "membersHeading": "Keluarga",
+  "age": "{age} thn",
+  "relations": {
+    "self": "Diri sendiri",
+    "spouse": "Pasangan",
+    "child": "Anak",
+    "parent": "Ibu bapa",
+    "parent_in_law": "Ibu bapa mertua",
+    "other": "Lain-lain"
+  },
+  "speaksHindi": "Bercakap bahasa Hindi",
+  "conditions": {
+    "diabetes_t2": "Diabetes jenis 2",
+    "hypertension": "Darah tinggi"
+  },
+  "policiesHeading": "Polisi",
+  "kinds": {
+    "group_health": "Kesihatan berkumpulan",
+    "retail_health": "Kesihatan",
+    "super_top_up": "Super top-up",
+    "term_life": "Hayat bertempoh",
+    "personal_accident": "Kemalangan diri",
+    "endowment": "Endowmen",
+    "motor": "Motor",
+    "medishield_life": "MediShield Life",
+    "integrated_shield": "Integrated Shield Plan"
+  },
+  "sumInsured": "Perlindungan {amount}",
+  "covers": "Melindungi {names}",
+  "validTill": "Sehingga {date}",
+  "roomLimit": "Bilik sehingga {amount}/hari",
+  "copay": "Insurans bersama {percent}%",
+  "copayFromAge": "Insurans bersama {percent}% dari umur {age}",
+  "deductible": "Bayar melebihi {amount}",
+  "claimsUsed": "Digunakan tahun ini {amount}",
+  "speaks": "Bercakap {language}",
+  "shell": {
+    "sample": "Keluarga contoh",
+    "steps": "{count, plural, =0 {Tiada yang menunggu} other {# langkah menunggu}}",
+    "account": "{name}: tetapan keluarga"
+  }
+}

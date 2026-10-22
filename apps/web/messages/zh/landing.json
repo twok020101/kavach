@@ -1,0 +1,410 @@
+{
+  "announce": {
+    "cited": "每一卢比都注明出处条款",
+    "noCommission": "不收佣金，不推销产品",
+    "prototype": "使用演示数据的原型",
+    "badge": "原型"
+  },
+  "nav": {
+    "label": "Kavach",
+    "eyebrow": "家庭保险，讲清楚",
+    "demo": "Sharma 演示",
+    "desk": "医院柜台",
+    "cover": "保障地图",
+    "claim": "理赔核查",
+    "proof": "证据",
+    "signIn": "登录",
+    "atHospital": "在医院",
+    "atHospitalShort": "医院"
+  },
+  "hero": {
+    "chip": "每一卢比都注明出处条款 · 不收佣金",
+    "title": "每个印度家庭都有保险。",
+    "titleEm": "却很少有人知道它到底赔多少。",
+    "lead": "Kavach 记得家里的每一份保单，在生活有变化时、在医院柜台、在理赔金额被削减时，告诉您该怎么做。用印地语或英语。每一卢比都来自书面保单条款，并附页码。",
+    "tryHospital": "试试医院场景",
+    "tryHospitalChip": "不到一分钟",
+    "explore": "看看 Sharma 一家",
+    "exploreChip": "示例数据",
+    "maternity": "或试试生育场景：Priya 分娩",
+    "statsLabel": "Kavach 在示例家庭中的发现",
+    "stats": {
+      "desk": "只要选对病房，就能少付",
+      "claim": "在一封理赔结算信中找到的可申诉金额",
+      "wordings": "测试集中的公开保单条款",
+      "rules": "每一卢比背后的书面规则"
+    }
+  },
+  "audit": {
+    "chip": "引擎核查",
+    "city": "Bengaluru · 示例",
+    "household": "Sharma 一家",
+    "people": "{count} 人 · Suresh（{age} 岁）有 {policies} 份保单承保",
+    "status": "2 件事需要处理",
+    "compareTitle": "Suresh 在 {hospital}：家人要付多少",
+    "quoted": "{room} 病房（报价）",
+    "within": "{room} 病房（在限额内）",
+    "warnTitle": "父母的保障取决于 Rahul 的工作",
+    "warnBody": "雇主的团体保障会随工作一起结束。Kavach 会及时拟好申请，把 Suresh 和 Kamala 转到个人保单。",
+    "footer": "规则来自 IRDAI 通函和保单条款"
+  },
+  "admission": {
+    "chip": "在入院柜台",
+    "title": "实时入院决定：{hospital}",
+    "sub": "病人：Suresh Sharma（{age} 岁）· 冠状动脉血管成形术 · 保额 {si} · 房费限额每天 {limit}。每天贵 {diff} 的病房，会让家人多付 {saving}。",
+    "sample": "示例估价单 · 演示数据",
+    "impactTitle": "这个决定的影响：少付 {saving}",
+    "impactChip": "同一位医生，同样的治疗",
+    "impactBody": "选择 {rent} 的病房，{base} 按病房定价的费用就不会被按比例扣减：外科医生、导管室、护理和医生查房。",
+    "impactLabel": "少付",
+    "optionA": "方案 A：{room} 病房",
+    "optionB": "方案 B：{room} 病房",
+    "chipCut": "会被按比例扣减",
+    "chipPick": "要这间病房",
+    "tariffOver": "每天 {rent} · 比 {limit} 的限额高出 {excess}",
+    "tariffWithin": "每天 {rent} · 在 {limit} 的限额内",
+    "bill": "医院账单",
+    "rows": {
+      "R-HL-008": "超出限额的房费",
+      "R-HL-001": "按病房定价费用的按比例扣减",
+      "R-HL-005": "不予支付项目",
+      "copay": "共同承担（{age} 岁起 {percent}%）",
+      "other": "其他不支付的金额"
+    },
+    "none": "无",
+    "youPay": "您支付",
+    "policyPays": "保单支付 {amount}",
+    "noteCut": "在这间病房，外科医生、导管室、护理和医生查房都更贵，而保险公司只按 {limit} ÷ {rent} 的比例支付。",
+    "notePick": "同一位外科医生，同样的支架，同样的护理。只是换了病房。",
+    "whyTitle": "为什么是这些数字",
+    "whyChip": "规则 {id}",
+    "circular2020": "IRDAI 通函，2020年",
+    "circular2020Body": "按比例扣减只适用于按病房定价的费用；药物、植入物和检查化验一律不扣。",
+    "ruleApplied": "已应用的规则",
+    "master2024": "IRDAI 总通函",
+    "master2024Body": "健康保险业务，2024年5月29日。",
+    "openPdf": "打开 PDF",
+    "verified": "已核实",
+    "toVerify": "正在对照原文核查",
+    "fired": "已运行的规则",
+    "allRules": "查看所有规则",
+    "deskLabel": "在柜台这样说（印地语）",
+    "deskHint": "对 TPA 柜台说",
+    "deskLine": "कृपया {rent} प्रतिदिन वाला कमरा दीजिए। हमारी पॉलिसी में कमरे की सीमा {limit} प्रतिदिन है, उससे महँगे कमरे में डॉक्टर और ऑपरेशन के खर्च भी कटेंगे।",
+    "deskGloss": "“请给我们每天 {rent} 的病房。我们保单的病房限额是每天 {limit}；住更贵的病房，医生和手术费用也会被扣减。”",
+    "listen": "播放",
+    "stop": "停止",
+    "copy": "复制印地语句子",
+    "copied": "已复制",
+    "rulesNames": {
+      "R-HL-001": "按比例扣减只适用于按病房定价的项目",
+      "R-HL-003": "可赔金额的共同承担",
+      "R-HL-005": "排除不予支付项目",
+      "R-HL-006": "保单使用顺序的选择",
+      "R-HL-008": "房费以限额为上限",
+      "R-HL-009": "Super top-up 只赔付超出自付额的部分"
+    }
+  },
+  "moments": {
+    "eyebrow": "Kavach 在哪些时候帮上忙",
+    "title": "印度家庭损失数十万卢比的三个时刻",
+    "intro": "Kavach 只需了解您的家庭一次，大约两分钟。之后，它会在您需要去医院之前、在入院时、在理赔结算信寄到时，主动帮您。",
+    "kicker": "时刻 {n} · {when}",
+    "change": {
+      "title": "生活有变化时",
+      "feature": "父母的保障保住了，没有失去",
+      "featureBody": "在最后一个工作日之前，拟好把团体保障转为个人保单的申请（规则 R-MG-001）。",
+      "link": "查看换工作计划",
+      "body": "“12月1日加入一家初创公司。”Kavach 发现您父母的保障会在11月30日终止，拟好保住保障的信，并在 WhatsApp 上提醒您。",
+      "when": "入院之前"
+    },
+    "hospital": {
+      "title": "在医院柜台",
+      "feature": "少付 <amount></amount>",
+      "featureBody": "读取估价单照片：哪些费用随病房变动，该先出示哪张卡。",
+      "link": "打开医院柜台",
+      "body": "语音加相机，用印地语。出示估价单，Kavach 就告诉您该给哪张保单卡、该要哪种病房。",
+      "when": "办理入院时"
+    },
+    "claim": {
+      "title": "索赔出问题时",
+      "body": "账单是 <bill></bill>；保险公司批准了 <approved></approved>，却以按比例扣减为由扣掉 <cut></cut>，而病房其实在限额之内。",
+      "feature": "找到 <amount></amount> 可以申诉",
+      "featureBody": "每一项扣减都对照保单条款核查；申诉信已拟好，由您自己寄出。",
+      "link": "核查理赔结算信",
+      "when": "出院之后"
+    }
+  },
+  "elder": {
+    "chip": "无需安装应用",
+    "title": "长辈也会用的 WhatsApp 和语音",
+    "body": "在柜台，Kamala 不用打开网站。她在 WhatsApp 上发一段印地语语音或估价单照片，Kavach 就用语音和一张卡片回复。",
+    "f1Title": "印地语或英语语音",
+    "f1Body": "用任一种语言说话或打字；回答也会用同样的方式回来。",
+    "f2Title": "家人会收到通知",
+    "f2Body": "Kamala 在柜台得到回答时，Rahul 的手机也会收到家庭提醒。",
+    "f3Title": "用测试号码试试",
+    "f3Body": "扫描二维码或打开 WhatsApp，然后发送 RAHUL，加入演示家庭。",
+    "sandbox": "WhatsApp 测试号码",
+    "joinCode": "加入消息：{join}",
+    "open": "打开 WhatsApp",
+    "chatName": "Kavach (कवच)",
+    "chatStatus": "演示家庭 · 示例数据",
+    "caption": "与此同时，在 Rahul 的手机上",
+    "voiceLength": "0:14 · 印地语语音",
+    "voiceText": "अस्पताल वाले {rent} वाला डीलक्स कमरा लेने को कह रहे हैं। क्या लें?",
+    "replyWarn": "रुकिए, डीलक्स कमरा मत लीजिए।",
+    "replyBody": "सुरेश जी की पॉलिसी में कमरे की सीमा {limit} प्रतिदिन है। डीलक्स कमरे में डॉक्टर और ऑपरेशन के खर्च से {cut} कट जाएँगे।",
+    "replyCardTitle": "यह कमरा माँगिए",
+    "replyCardSaving": "बचत {saving}",
+    "replyCardBody": "{rent} प्रतिदिन वाला कमरा। आपको लगभग {pay} देने होंगे।",
+    "replyCardRule": "नियम R-HL-001 · साइन करने से पहले TPA डेस्क से पक्का कर लीजिए।",
+    "replyAlert": "राहुल को परिवार अलर्ट भेजा गया",
+    "alertPill": "Kavach：“Suresh 在 {hospital}。Kavach 已提醒家人要每天 {rent} 的病房。”",
+    "inputHint": "输入消息，或按住麦克风说话"
+  },
+  "policies": {
+    "eyebrow": "真实文件，不是样本",
+    "title": "测试集中的 {count} 份公开保单条款",
+    "intro": "测试集是真实的印度健康保险条款，均已向 IRDAI 备案或由保险公司公开发布，并以 UIN 标识。Kavach 的读取结果，会和人工对照每份 PDF 核查过的标注比对评分。",
+    "fixtures": "最近一次运行用的是预先录好的测试答案，不是实时模型：它证明整个流程能跑通，但不是准确率分数。",
+    "checked": "{count} 个标注中有 {checked} 个已由人工核查",
+    "publicWording": "公开条款",
+    "cardStatus": "{status} · {label}",
+    "notice": "Kavach 不是保险公司、经纪或代理。它不收佣金，也不销售任何保单。保险公司名称归其所有者。",
+    "masterPdf": "IRDAI 2024 总通函（PDF）",
+    "proofLink": "我们如何衡量"
+  },
+  "promise": {
+    "eyebrow": "我们的承诺",
+    "title": "每个数字都附上计算过程",
+    "body": "卢比金额来自经过测试的规则，绝不靠猜。点“为什么是这些数字？”，就能看到每个金额背后的规则和条款。",
+    "proofLink": "看看 Kavach 读取真实保单有多准确"
+  },
+  "cta": {
+    "chip": "每一卢比都注明出处保单条款",
+    "title": "别再毫无准备地面对医院柜台。",
+    "body": "用示例家庭试试这两个场景，或花几分钟设置您自己的家庭。Kavach 不卖任何东西，也不联系任何保险公司。",
+    "hospital": "Suresh 在医院柜台",
+    "maternity": "Priya 分娩",
+    "own": "设置我的家庭"
+  },
+  "whatsapp": {
+    "title": "没有应用？在 WhatsApp 上也能得到同样的答案",
+    "body": "发一张估价单照片或一段印地语语音。Kavach 会用语音和一张卡片回复。",
+    "qrAlt": "二维码：打开 WhatsApp 并带上加入 Kavach 测试号码的消息",
+    "openOnPhone": "在这部手机上？打开 WhatsApp",
+    "notConfigured": "WhatsApp 测试号码尚未设置。",
+    "step1": "用手机相机扫描二维码。WhatsApp 会打开并带上一条加入消息。",
+    "step2": "发送那条消息，加入 Kavach 的测试号码。",
+    "step3": "发送 RAHUL 即可在手机上收到家庭提醒，然后发一张估价单照片或一段语音。",
+    "note": "这使用的是 WhatsApp 测试号码。加入有效期为 3 天；之后请重新扫描。",
+    "joinText": "或者在 WhatsApp 上把“{join}”发送到 {number}。"
+  },
+  "footer": {
+    "about": "在每一个保险时刻陪在您家人身边：医院柜台、条款细则和理赔信，用印地语或英语。",
+    "dpdp": "遵循《2023年 DPDP 法》",
+    "tryTitle": "试一试",
+    "evidenceTitle": "证据",
+    "desk": "医院柜台场景",
+    "maternity": "生育场景",
+    "demo": "Sharma 一家",
+    "cover": "保障地图",
+    "claim": "理赔核查",
+    "proof": "证据与准确率",
+    "master": "IRDAI 2024 总通函",
+    "signIn": "登录",
+    "built": "为 2026 年 Google Cloud AI Builder Cup 而打造 · 演示数据标有 SAMPLE · 绝不收取任何款项。",
+    "prototype": "原型"
+  },
+  "boot": {
+    "policies": "您家的保单：已读取，附页码",
+    "rules": "医院和生育规则：已理解",
+    "beside": "陪在您身边，用印地语或英语",
+    "tagline": "在每一个保险时刻，陪在您家人身边。",
+    "skip": "点击任意处继续"
+  },
+  "gateway": {
+    "label": "欢迎使用 Kavach",
+    "engine": "规则引擎已就绪",
+    "rules": "{count} 条书面规则",
+    "demo": "使用演示数据运行",
+    "eyebrow": "家庭保险护盾 · 原型",
+    "title": "先深呼吸。",
+    "titleA": "Kavach",
+    "titleEm": "就在您身边。",
+    "lead": "在每一个保险时刻陪在您家人身边：医院柜台、条款细则和理赔信，用印地语或英语。",
+    "policiesSub": "入院前就让您看清房费限额、共同承担和等待期。",
+    "rulesSub": "该要哪种病房，先出示哪张卡。",
+    "besideSub": "不收佣金，不卖任何东西。遵循《2023年 DPDP 法》。",
+    "progress": "正在打开 Kavach",
+    "tickPolicies": "保单",
+    "tickRules": "规则",
+    "tickBeside": "印地语 · 英语",
+    "enter": "进入 Kavach",
+    "demoBtn": "Sharma 演示",
+    "promise": "我们的承诺",
+    "hint": "点击任意处或按空格键继续",
+    "sandbox": "Kavach 引擎沙盒",
+    "sandboxChip": "演示数据",
+    "sandboxAlt": "第一版 Kavach 原型的开场画面",
+    "sandboxCaption": "City Heart Hospital · 示例估价单",
+    "sandboxSaving": "少付 {saving}",
+    "foot": "遵循印度《2023年 DPDP 法》· 使用演示数据的原型",
+    "foot2": "不是保险公司、经纪或代理。每一项索赔都由保险公司决定。"
+  },
+  "sg": {
+    "announce": {
+      "cited": "每一元都注明出处条款"
+    },
+    "nav": {
+      "demo": "Tan 演示"
+    },
+    "hero": {
+      "chip": "每一元都注明出处条款 · 不收佣金",
+      "title": "每个新加坡家庭都有 MediShield Life。",
+      "titleEm": "却很少有人知道自己的 Shield 计划赔多少。",
+      "lead": "Kavach 记得家里的每一份保单，在生活有变化时、在医院柜台、在理赔金额被削减时，告诉您该怎么做。用华语、马来语或英语。每一元都来自书面规则，并注明出处。",
+      "explore": "看看 Tan 一家",
+      "maternity": "或试试印度场景：Suresh，用印地语",
+      "stats": {
+        "desk": "只要选计划所对应的病房，就能少付",
+        "pick": "住计划所对应的病房，家人要付的金额",
+        "rules": "每一元背后的新加坡书面规则"
+      }
+    },
+    "audit": {
+      "city": "新加坡 · 示例",
+      "household": "Tan 一家",
+      "people": "{count} 人 · Ah Kow（{age} 岁）有 MediShield Life 和一份 Shield 计划",
+      "status": "选哪种病房很关键",
+      "compareTitle": "Ah Kow 在 {hospital}：家人要付多少",
+      "quoted": "{room}（医院提供）",
+      "within": "{room}（计划所对应的病房）",
+      "warnTitle": "附加保险的全年上限，要看合作专科医生才适用",
+      "warnBody": "只有看保险公司的合作专科医生，或事先获得批准，附加保险才会为家人的全年共付额设上限。Kavach 会提醒家人签字前先问清楚。",
+      "footer": "规则来自 MOH、CPF Board 和计划本身的条款"
+    },
+    "moments": {
+      "title": "家庭损失数千元的三个时刻",
+      "change": {
+        "body": "“下个月换工作。”Kavach 会核查哪些保障随工作结束、家里的 Shield 计划还赔什么，并在 WhatsApp 上提醒您。",
+        "feature": "在最后一天前核查好保障",
+        "featureBody": "哪些保障随工作结束，MediShield Life 和 Shield 计划还会继续赔什么，以及在最后一个工作日前该做什么。"
+      },
+      "hospital": {
+        "body": "语音加相机，用华语或马来语。出示估价单，Kavach 就告诉您该给哪张卡、该要哪种病房。",
+        "featureBody": "读取估价单照片：在计划下每个病房等级要付多少，以及该先出示哪张卡。"
+      },
+      "claim": {
+        "body": "理赔信的金额被削减时，Kavach 会对照计划逐项核查扣减。如果在计划所承保的病房内仍被按比例赔付，或同一年被扣了第二次自付额，都可以提出异议。",
+        "feature": "每一项扣减都对照计划核查",
+        "featureBody": "先找保险公司，再找 FIDReC：信已为您拟好，由您自己寄出。"
+      }
+    },
+    "elder": {
+      "body": "在柜台，Siew-Hong 不用打开网站。她在 WhatsApp 上发一段华语语音或估价单照片，Kavach 就用语音和一张卡片回复。",
+      "f1Title": "华语、马来语或英语语音",
+      "f1Body": "用其中任何一种语言说话或打字；回答也会用同样的方式回来。",
+      "f2Body": "Siew-Hong 在柜台得到回答时，Wei-Ming 也会收到家庭提醒。",
+      "chatName": "Kavach",
+      "caption": "与此同时，在 Wei-Ming 的手机上",
+      "voiceLength": "0:12 · 华语语音",
+      "voiceText": "医院说{quotedWard}级病房每天{rent}，我们要住吗？",
+      "replyWarn": "先别选{quotedWard}级病房。",
+      "replyBody": "Ah Kow 的 Shield 计划是按{ward}级病房买的。住{quotedWard}级病房，计划只赔一部分，其中{cut}要家里自己付。",
+      "replyCardTitle": "请要求这个病房",
+      "replyCardSaving": "少付 {saving}",
+      "replyCardBody": "{ward}级病房，每天{rent}。您大约需要付{pay}。",
+      "replyCardRule": "规则 R-SG-005 · 签字前请先向医院的保险柜台确认。",
+      "replyAlert": "已通知 Wei-Ming",
+      "alertPill": "Kavach：“Ah Kow 在 {hospital}。Kavach 已提醒家人要{ward}级病房。”"
+    },
+    "promise": {
+      "body": "金额来自经过测试的规则，绝不靠猜。点“为什么是这些数字？”，就能看到每个金额背后的规则和条款。"
+    },
+    "cta": {
+      "chip": "每一元都注明出处保单条款",
+      "body": "用示例家庭试试新加坡场景，或花几分钟设置您自己的家庭。Kavach 不卖任何东西，也不联系任何保险公司。",
+      "hospital": "Ah Kow 在医院柜台",
+      "maternity": "印度的 Suresh，用印地语"
+    },
+    "footer": {
+      "about": "在每一个保险时刻陪在您家人身边：医院柜台、条款细则和理赔信，用华语、马来语或英语。",
+      "dpdp": "未经您同意，不读取任何内容",
+      "desk": "新加坡柜台场景",
+      "maternity": "印度柜台场景",
+      "demo": "Tan 一家",
+      "master": "CPF Board：MediShield Life 按比例赔付",
+      "sources": "MOH、CPF Board 和 MAS 的网页（注明日期），以及每份计划本身的条款"
+    },
+    "gateway": {
+      "lead": "在每一个保险时刻陪在您家人身边：医院柜台、条款细则和理赔信，用华语、马来语或英语。",
+      "policiesSub": "入院前就让您看清可住的病房等级、自付额和共付额。",
+      "rulesSub": "该要哪种病房，先出示哪张卡。",
+      "besideSub": "不收佣金，不卖任何东西。未经您同意，不读取任何内容。",
+      "tickBeside": "华语 · 马来语",
+      "demoBtn": "Tan 演示",
+      "sandboxCaption": "Sample General Hospital · 示例估价单",
+      "foot": "使用演示数据的原型 · 未经您同意，不读取任何内容"
+    },
+    "boot": {
+      "rules": "MediShield Life 和 Shield 计划规则：已理解",
+      "beside": "陪在您身边，用华语、马来语或英语"
+    }
+  },
+  "admissionSg": {
+    "sub": "病人：Ah Kow（{age} 岁）· 冠状动脉血管成形术 · 有 MediShield Life 和一份按{ward}级病房投保的 Shield 计划。住{quotedWard}级病房，家人要多付 {saving}。",
+    "impactBody": "住{ward}级病房，计划按实际收费赔付。住{quotedWard}级病房，计划只把账单的 {share}% 算作可索赔金额，所以其中 {above} 要由家人自付。",
+    "optionA": "方案 A：{room}",
+    "optionB": "方案 B：{room}",
+    "chipCut": "高于计划的病房等级：按比例赔付",
+    "chipPick": "要这种病房",
+    "tariffOver": "每天 {rent} · 高于计划所投保的{ward}级病房",
+    "tariffWithin": "每天 {rent} · 正是计划所投保的病房",
+    "rows": {
+      "R-SG-005": "高于计划病房等级、不可索赔的部分",
+      "R-HL-005": "不可索赔项目",
+      "R-SG-006": "附加保险的共付额（{percent}%）",
+      "other": "其他不支付的金额"
+    },
+    "policyPays": "Shield 计划支付 {plan} · MediShield Life 支付 {medishield}",
+    "noteCut": "高于{ward}级病房时，计划只把账单的 {share}% 算作可索赔：同样的治疗，家人要自付的部分大得多。",
+    "notePick": "同一位心脏科医生，同样的支架，同样的护理。只是换了病房。",
+    "prorationLabel": "MediShield Life 按比例赔付",
+    "prorationBody": "住{quotedWard}级病房时，MediShield Life 只按病房费用的 {wardShare}% 和手术费用的 {surgicalShare}% 计算（CPF Board，2025年4月1日起）。Shield 计划则自行设定比例。",
+    "riderLabel": "MOH 对附加保险的规定",
+    "riderBody": "家人至少要承担 {percent}% 的共付额。计划的全年上限 {cap}，只在看合作专科医生或事先获得批准时才适用。",
+    "openSource": "打开原始资料",
+    "deskLabel": "在柜台这样说（华语）",
+    "deskHint": "对入院柜台说",
+    "deskLine": "请给我父亲安排{ward}级病房。他的 Shield 计划是按{ward}级病房买的，住{quotedWard}级病房的话，计划只赔一部分账单。",
+    "deskGloss": "照着念，或直接把这句话给柜台看：请按计划所对应的{ward}级病房办理入院，而不是{quotedWard}级。",
+    "copy": "复制华语句子",
+    "rulesNames": {
+      "R-HL-005": "排除不可索赔项目",
+      "R-SG-001": "MediShield Life 按病房等级比例赔付",
+      "R-SG-002": "病房和 ICU 每日限额",
+      "R-SG-003": "每个保单年度只扣一次自付额",
+      "R-SG-004": "可索赔金额的共同保险",
+      "R-SG-005": "在计划所对应的病房内按实际收费赔付",
+      "R-SG-006": "附加保险共付额及其全年上限",
+      "R-SG-007": "保单年度限额",
+      "R-SG-010": "不确定是否为合作专科医生：两种情况都说明",
+      "R-SGCLM-001": "在计划病房内仍按比例赔付，可提出异议",
+      "R-SGCLM-002": "超出附加保险上限的共付额，可提出异议",
+      "R-SGCLM-003": "同一年第二次扣自付额，可提出异议",
+      "R-SGCLM-006": "先找保险公司，再找 FIDReC"
+    }
+  },
+  "sgRules": {
+    "eyebrow": "有出处，不靠猜",
+    "title": "每一元背后的 {count} 条新加坡书面规则",
+    "intro": "新加坡没有单一的总通函：数字来自 MOH、CPF Board 和 MAS 的网页（注明日期），以及每份计划本身的条款。只有打开原始网页核对过，才会由人工把规则标为已核查。",
+    "checked": "{count} 条规则中有 {checked} 条已由人工核查",
+    "planWording": "计划本身的条款",
+    "verified": "已对照原文核查",
+    "toVerify": "正在对照原文核查",
+    "notice": "Kavach 不是保险公司、经纪或代理。它不收佣金，也不销售任何计划。计划名称归其所有者。"
+  }
+}

@@ -1,0 +1,138 @@
+/* Signed-in app: shell, family dashboard (home) and protection plan. */
+
+@layer components {
+  /* The marigold "At the hospital" button: a soft marigold shadow that deepens on hover. */
+  .hospital-cta {
+    box-shadow: 0 2px 8px rgba(254, 174, 50, 0.35);
+    transition:
+      background-color 160ms var(--ease-out-strong),
+      box-shadow 200ms var(--ease-out-strong),
+      transform 160ms var(--ease-out-strong);
+  }
+  .hospital-cta:hover {
+    box-shadow: 0 6px 18px -4px rgba(254, 174, 50, 0.55);
+  }
+  [data-theme='dark'] .hospital-cta,
+  [data-theme='dark'] .hospital-cta:hover {
+    box-shadow: none;
+  }
+
+  /* The "as of" scrubber (Stitch home): a thin indigo-filled track and a ringed thumb.
+     The native range input stays (keyboard, screen readers); only its look changes.
+     --pct is the filled share of the track, set inline. */
+  .scrub {
+    -webkit-appearance: none;
+    appearance: none;
+    background: transparent;
+    height: 2.5rem;
+    width: 100%;
+    cursor: pointer;
+  }
+  .scrub:focus-visible {
+    outline: none;
+  }
+  .scrub::-webkit-slider-runnable-track {
+    height: 6px;
+    border-radius: 9999px;
+    background: linear-gradient(
+      to right,
+      var(--primary) 0 var(--pct, 0%),
+      var(--m3-surface-high) var(--pct, 0%) 100%
+    );
+  }
+  .scrub::-moz-range-track {
+    height: 6px;
+    border-radius: 9999px;
+    background: var(--m3-surface-high);
+  }
+  .scrub::-moz-range-progress {
+    height: 6px;
+    border-radius: 9999px;
+    background: var(--primary);
+  }
+  .scrub::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 22px;
+    height: 22px;
+    margin-top: -8px;
+    border-radius: 9999px;
+    background: var(--primary);
+    border: 4px solid var(--surface);
+    box-shadow: 0 2px 6px rgba(15, 27, 61, 0.25);
+    transition: transform 160ms var(--ease-out-strong);
+  }
+  .scrub::-moz-range-thumb {
+    width: 14px;
+    height: 14px;
+    border-radius: 9999px;
+    background: var(--primary);
+    border: 4px solid var(--surface);
+    box-shadow: 0 2px 6px rgba(15, 27, 61, 0.25);
+  }
+  .scrub:hover::-webkit-slider-thumb,
+  .scrub:active::-webkit-slider-thumb {
+    transform: scale(1.12);
+  }
+  .scrub:focus-visible::-webkit-slider-thumb {
+    outline: 3px solid var(--primary);
+    outline-offset: 2px;
+  }
+  .scrub:focus-visible::-moz-range-thumb {
+    outline: 3px solid var(--primary);
+    outline-offset: 2px;
+  }
+
+  /* Budget meter: fills from empty once, when it first appears. */
+  .meter-fill {
+    transform-origin: left center;
+    animation: meter-grow 900ms var(--ease-out-expo) 200ms both;
+  }
+  @keyframes meter-grow {
+    from {
+      transform: scaleX(0);
+    }
+  }
+
+  /* Card arrows that nudge right when the card is hovered. */
+  .nudge {
+    transition:
+      transform 200ms var(--ease-out-strong),
+      color 160ms;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .group:hover .nudge {
+      transform: translateX(3px);
+    }
+  }
+
+  /* The inspector arrives under the map when a cell is chosen. */
+  .inspector-in {
+    animation: inspector-in 320ms var(--ease-out-strong) both;
+  }
+  @keyframes inspector-in {
+    from {
+      opacity: 0;
+      transform: translate3d(0, 8px, 0) scale(0.99);
+    }
+  }
+}
+
+/* Inside the signed-in shell an icon keeps its one-line box: a Tailwind size class on an Icon
+   (text-lg, text-xl…) also sets a tall line-height, which pushes the glyph down and clips it.
+   Unlayered, so it wins over those utilities. */
+.app-shell .msym {
+  line-height: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .meter-fill,
+  .inspector-in {
+    animation: none;
+  }
+  .group:hover .nudge,
+  .scrub:hover::-webkit-slider-thumb,
+  .scrub:active::-webkit-slider-thumb {
+    transform: none;
+  }
+}

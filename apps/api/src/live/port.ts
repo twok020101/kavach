@@ -23,6 +23,7 @@ export interface DeskPort {
   evaluate(input: {
     question?: string;
     billingTypeAnswer?: BillingType;
+    panelAnswer?: 'panel' | 'nonPanel';
     language: Locale;
   }): Promise<DeskAnswer>;
   /** Stores an estimate the family told the desk aloud, and answers with it. */
@@ -51,12 +52,12 @@ export function inProcessDesk(householdId: string, sessionId: string): DeskPort 
       return deskContext(h, deskPatient(h, s.patientMemberId));
     },
     estimate: async () => (await session()).estimate,
-    evaluate: async ({ question, billingTypeAnswer, language }) =>
+    evaluate: async ({ question, billingTypeAnswer, panelAnswer, language }) =>
       // The spoken line follows the language on screen, not the words the model passed along.
       takeTurn(
         await household(),
         sessionId,
-        { text: question, billingTypeAnswer, language },
+        { text: question, billingTypeAnswer, panelAnswer, language },
         { lockLanguage: true },
       ),
     spokenEstimate: async (estimate) =>

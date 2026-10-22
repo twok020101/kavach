@@ -1,6 +1,6 @@
 'use client';
 
-import { formatInr } from '@kavach/engine';
+import { useMoney } from '@/lib/country';
 import { useInView, useReducedMotion } from 'motion/react';
 import { useEffect, useRef, useState } from 'react';
 import { cn } from '../ui/cn';
@@ -26,9 +26,15 @@ export function AnimatedAmount({
   const seen = useInView(ref, { once: true, margin: '0px 0px -10% 0px' });
   const reduce = useReducedMotion();
   const [shown, setShown] = useState(0);
+  const money = useMoney();
 
   useEffect(() => {
-    if (!seen || reduce) return;
+    // Reduced motion: the real value at once, set after hydration so server and client agree.
+    if (reduce) {
+      const tick = requestAnimationFrame(() => setShown(value));
+      return () => cancelAnimationFrame(tick);
+    }
+    if (!seen) return;
     let frame = 0;
     const start = performance.now() + delay;
     const tick = (now: number) => {
@@ -40,11 +46,10 @@ export function AnimatedAmount({
     return () => cancelAnimationFrame(frame);
   }, [seen, reduce, value, delay]);
 
-  const current = reduce ? value : shown;
   return (
     <span ref={ref} className={cn('amount whitespace-nowrap tabular-nums', className)}>
-      <span className="sr-only">{formatInr(value)}</span>
-      <span aria-hidden>{formatInr(current)}</span>
+      <span className="sr-only">{money(value)}</span>
+      <span aria-hidden>{money(shown)}</span>
     </span>
   );
 }

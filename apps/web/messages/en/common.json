@@ -8,7 +8,10 @@
   "language": "Language",
   "languages": {
     "en": "English",
-    "hi": "हिंदी"
+    "hi": "Hindi",
+    "ta": "Tamil",
+    "zh": "Mandarin",
+    "ms": "Malay"
   },
   "skipToContent": "Skip to content",
   "mainNav": "Main",
@@ -85,6 +88,7 @@
     "global": "Kavach gives guidance based on your documents and published rules. It is not an insurer, broker or agent, and the insurer decides every claim.",
     "plan": "Sizes are guidance, not product recommendations. Premiums are illustrative.",
     "hospital": "Estimate only. Please confirm with the insurance (TPA) desk before you sign.",
+    "hospitalSg": "Estimate only. Please confirm with the hospital’s insurance counter before you sign.",
     "claims": "This letter is a draft for you to review and send yourself."
   },
   "evidence": {
@@ -101,6 +105,7 @@
       "reader": "A reader and calculator for the policies you already have",
       "notInsurer": "An insurer, broker, agent or seller of policies",
       "cites": "Every rupee shown comes from written policy terms, with the page",
+      "citesSg": "Every dollar shown comes from written policy terms, with the page",
       "notGuarantee": "A guarantee of what a claim will pay: the insurer decides every claim",
       "consent": "Nothing is read or stored without your consent",
       "notPayments": "Something that takes payments or contacts insurers for you"
@@ -108,5 +113,38 @@
   },
   "copy": "Copy",
   "copied": "Copied",
-  "activeFamily": "Active family"
+  "activeFamily": "Active family",
+  "back": "Back",
+  "prototype": "Prototype",
+  "brandPanel": {
+    "deva": "कवच",
+    "eyebrow": "Healthcare & insurance shield",
+    "chip": "Every rupee cited to a clause",
+    "tagline": "Standing beside your family at every insurance moment.",
+    "lead": "A protective shield that guides multi-generational Indian families through cashless approvals, policy sub-limits and hospital claims.",
+    "change": {
+      "title": "When life changes",
+      "body": "Adapting cover for ageing parents, critical milestones and new family members."
+    },
+    "hospital": {
+      "title": "At the hospital desk",
+      "body": "Live cashless help: room-rent traps caught, which card to give first, what to ask the TPA desk."
+    },
+    "claim": {
+      "title": "When a claim goes wrong",
+      "body": "Every deduction checked clause by clause; the appeal and ombudsman letter drafted for you."
+    },
+    "footer": "Your consent, your data: built to India's Digital Personal Data Protection (DPDP) Act, 2023.",
+    "sg": {
+      "chip": "Every dollar cited to a rule",
+      "lead": "A protective shield that guides multi-generational Singapore families through MediShield Life, Integrated Shield Plans, riders and the ward they choose.",
+      "hospital": {
+        "body": "Live help at admission: which ward class your plan pays as charged, what pro-ration costs above it, which card to show first."
+      },
+      "claim": {
+        "body": "Every deduction checked against MediShield Life and your Shield plan’s terms; the appeal to your insurer drafted for you."
+      },
+      "footer": "Your consent, your data: built to Singapore’s Personal Data Protection Act (PDPA)."
+    }
+  }
 }

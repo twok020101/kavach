@@ -10,21 +10,25 @@ export type Term = { key: string; label: string; value: string; citation?: Citat
  * The terms a claim depends on, each with the citation that supports it.
  * Works for a confirmed Policy and for a draft read from a document.
  */
-export function keyTerms(policy: PolicyDraft, t: T): Term[] {
+export function keyTerms(
+  policy: PolicyDraft,
+  t: T,
+  money: (n: number) => string = formatInr,
+): Term[] {
   const { terms } = policy;
   const cite = terms.citations;
   const list: (Term | false)[] = [
     {
       key: 'sumInsured',
       label: t('facts.sumInsured'),
-      value: formatInr(policy.sumInsured),
+      value: money(policy.sumInsured),
       citation: cite.sumInsured,
     },
     {
       key: 'roomRent',
       label: t('facts.roomRent'),
       value: terms.roomRentLimitPerDay
-        ? t('values.perDay', { amount: formatInr(terms.roomRentLimitPerDay) })
+        ? t('values.perDay', { amount: money(terms.roomRentLimitPerDay) })
         : t('values.noRoomLimit'),
       citation: cite.roomRentLimitPerDay,
     },
@@ -32,7 +36,7 @@ export function keyTerms(policy: PolicyDraft, t: T): Term[] {
       key: 'icu',
       label: t('facts.icu'),
       value: terms.icuLimitPerDay
-        ? t('values.perDay', { amount: formatInr(terms.icuLimitPerDay) })
+        ? t('values.perDay', { amount: money(terms.icuLimitPerDay) })
         : t('values.icuAsBilled'),
       citation: cite.icuLimitPerDay ?? cite.icu,
     },
@@ -57,7 +61,7 @@ export function keyTerms(policy: PolicyDraft, t: T): Term[] {
       key: 'deductible',
       label: t('facts.deductible'),
       value: terms.deductible
-        ? t('values.perYear', { amount: formatInr(terms.deductible) })
+        ? t('values.perYear', { amount: money(terms.deductible) })
         : t('values.none'),
       citation: cite.deductible,
     },

@@ -4,7 +4,9 @@
  */
 import {
   CreateDeskSessionResponse,
-  type DemoCheckpoint,
+  type Country,
+  DemoCheckpoint,
+  DemoPersona,
   DeskAnswer,
   DeskCaptureResponse,
   DeskEvaluation,
@@ -24,8 +26,18 @@ import { startDemo, storedHouseholdId } from './session';
 export type DeskHousehold = {
   householdId: string;
   hospitalName?: string;
+  country: Country;
   members: Member[];
 };
+
+/** The demo scenes: a checkpoint of one family's story. */
+export type DemoScene = 'hospital' | 'maternity' | 'singapore';
+export const DEMO_SCENES: Record<DemoScene, { persona: DemoPersona; checkpoint: DemoCheckpoint }> =
+  {
+    hospital: { persona: 'sharma', checkpoint: 'hospital' },
+    maternity: { persona: 'sharma', checkpoint: 'maternity' },
+    singapore: { persona: 'tan', checkpoint: 'hospital' },
+  };
 
 export type { DeskSessionSummary };
 
@@ -33,12 +45,12 @@ export interface DeskClient {
   /** Household members to pick the patient from (S21). */
   getHousehold(): Promise<DeskHousehold>;
   /**
-   * A demo scene is written for a checkpoint of the Sharma story (Suresh's angioplasty at
-   * `hospital`, Priya's delivery at `maternity`). A demo family is moved there first, or started
-   * there, so the scene meets the policy that is in force then (issue #27). A real family is
-   * left alone.
+   * A demo scene is written for a checkpoint of one family's story (Suresh's angioplasty at
+   * `hospital`, Priya's delivery at `maternity`, Ah Kow's angioplasty in `singapore`). A demo
+   * family is moved there first, or started there, so the scene meets the policy that is in
+   * force then (issue #27). A real family is left alone.
    */
-  prepareScene(checkpoint: DemoCheckpoint): Promise<void>;
+  prepareScene(scene: DemoScene): Promise<void>;
   startSession(input: {
     patientMemberId: string;
     language: Locale;
@@ -70,19 +82,20 @@ async function desk<S extends z.ZodType>(
 export const deskClient: DeskClient = {
   async getHousehold() {
     const household = await loadCurrentHousehold();
-    return { householdId: household.id, members: household.members };
+    return { householdId: household.id, country: household.country, members: household.members };
   },
 
-  async prepareScene(checkpoint) {
+  async prepareScene(scene) {
+    const { persona, checkpoint } = DEMO_SCENES[scene];
     if (!storedHouseholdId()) {
-      await startDemo(checkpoint);
+      await startDemo(checkpoint, persona);
       return;
     }
     const household = await loadCurrentHousehold();
     if (!household.isDemo) return;
     await api(`/v1/households/${household.id}/demo:reset`, Household, {
       method: 'POST',
-      json: { checkpoint },
+      json: { checkpoint, persona },
       token: await getIdToken(),
     });
   },

@@ -1,48 +1,87 @@
 @import 'tailwindcss';
+/* Screen-group styles from the Stitch design sync (one file per screen group). */
+@import '../styles/landing.css';
+@import '../styles/auth.css';
+@import '../styles/app.css';
+@import '../styles/desk.css';
 
-/* Design tokens from docs/plan/07-design-system.md §11.
+/* Design tokens: the Google Stitch design (design/…/kavach/DESIGN.md, Material 3 names) mapped
+   onto the app's own variables, so every screen takes the Stitch palette, radii and depth.
    The desk re-declares the light tokens, so it stays light inside a dark page. */
 :root,
 [data-mode='desk'] {
   color-scheme: light;
-  --bg: #fbfaf7;
+  --bg: #faf8ff;
   --surface: #ffffff;
-  --surface-sunken: #f5f3ee;
-  --border: #e4e0d7;
-  --border-strong: #a39d90;
-  --text: #1c1a17;
-  --text-muted: #5e6472;
-  --primary: #2e45a0;
-  --primary-hover: #23357a;
-  --primary-soft: #e3e8f8;
+  --surface-sunken: #f2f3ff;
+  --border: #e1e2ee;
+  --border-strong: #8c8d9c;
+  --text: #0d1a3c;
+  --text-muted: #444652;
+  /* Stitch primary (#102c88) for actions; primary-container (#2e45a0) is its hover. */
+  --primary: #102c88;
+  --primary-hover: #2e45a0;
+  --primary-soft: #e3e7ff;
   --on-primary: #ffffff;
-  --accent: #f4a62a;
-  --accent-ink: #0f1b3d;
+  --accent: #feae32;
+  --accent-ink: #2a1800;
   --accent-soft: #fff8eb;
-  --accent-hover: #e99b1c;
-  /* The hard 2 px base under a solid button (07 reconciliation, spec 2026-10-17 §Button). */
-  --base-primary: #1b2a63;
-  --base-accent: #a86a08;
+  --accent-hover: #f7a11a;
+  --base-primary: rgba(16, 44, 136, 0.22);
+  --base-accent: rgba(178, 111, 0, 0.3);
   --status-safe: #1f7a4d;
   --status-safe-bg: #e4f3ea;
   --status-partial: #9a5b00;
   --status-partial-bg: #fdf1dc;
   --status-gap: #b42318;
   --status-gap-bg: #fde8e6;
-  --status-na: #6b665c;
-  --status-na-bg: #ece9e2;
-  --citation: #23357a;
-  --citation-bg: #f2f4fc;
-  /* Radii per 07 §5: 6 inputs and chips, 12 cards, 20 sheets and big buttons. */
-  --radius-sm: 6px;
+  --status-na: #5d5f6e;
+  --status-na-bg: #ebedf5;
+  --citation: #273e99;
+  --citation-bg: #f2f3ff;
+  /* Radii (DESIGN.md "Rounded level 2"): 8 chips and inputs, 12 panels, 16 cards, 24 hero frames. */
+  --radius-sm: 8px;
   --radius-md: 12px;
-  --radius-lg: 20px;
-  /* Elevation (07 §5): 0 is the default (flat, bordered); 2 only for sheets and popovers.
-     No raised cards, no accent glow, no colour wash (plain register, spec 2026-10-17). */
-  --shadow-1: none;
-  --shadow-2: 0 8px 24px rgba(15, 27, 61, 0.12);
-  --shadow-accent: none;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  /* Ambient depth tinted with navy ink (DESIGN.md §Elevation). */
+  --shadow-1: 0 1px 3px rgba(15, 27, 61, 0.04), 0 4px 12px rgba(15, 27, 61, 0.03);
+  --shadow-2: 0 8px 32px rgba(15, 27, 61, 0.12), 0 2px 6px rgba(15, 27, 61, 0.04);
+  --shadow-hover: 0 4px 12px rgba(46, 69, 160, 0.08), 0 12px 28px rgba(15, 27, 61, 0.06);
+  --shadow-accent: 0 8px 20px -8px rgba(244, 166, 42, 0.55);
   --wash: none;
+
+  /* Material 3 roles used by the Stitch screens. */
+  --m3-primary-container: #2e45a0;
+  --m3-on-primary-container: #adbaff;
+  --m3-primary-fixed: #dde1ff;
+  --m3-primary-fixed-dim: #b8c4ff;
+  --m3-on-primary-fixed: #001355;
+  --m3-inverse-primary: #b8c4ff;
+  --m3-secondary: #835400;
+  --m3-secondary-container: #feae32;
+  --m3-on-secondary-container: #6c4500;
+  --m3-secondary-fixed: #ffddb5;
+  --m3-tertiary: #003f23;
+  --m3-tertiary-container: #005934;
+  --m3-on-tertiary-container: #7ad09b;
+  --m3-tertiary-fixed: #9ef5be;
+  --m3-tertiary-fixed-dim: #82d8a3;
+  --m3-surface-lowest: #ffffff;
+  --m3-surface-low: #f2f3ff;
+  --m3-surface-container: #ebedff;
+  --m3-surface-high: #e3e7ff;
+  --m3-surface-highest: #dbe1ff;
+  --m3-surface-dim: #d0d9ff;
+  --m3-on-surface: #0d1a3c;
+  --m3-on-surface-variant: #444652;
+  --m3-outline: #757683;
+  --m3-outline-variant: #c5c5d4;
+  --m3-inverse-surface: #242f52;
+  --m3-inverse-on-surface: #eff0ff;
+  --m3-error: #ba1a1a;
+  --m3-error-container: #ffdad6;
+  --m3-on-error-container: #93000a;
 }
 
 [data-theme='dark'] {
@@ -62,8 +101,8 @@
   --accent-ink: #12141c;
   --accent-soft: #3a2a10;
   --accent-hover: #e99b1c;
-  --base-primary: #5668b3;
-  --base-accent: #a86a08;
+  --base-primary: rgba(0, 0, 0, 0.45);
+  --base-accent: rgba(0, 0, 0, 0.45);
   --status-safe: #5bc48a;
   --status-safe-bg: #173326;
   --status-partial: #f0b44c;
@@ -74,19 +113,50 @@
   --status-na-bg: #23263a;
   --citation: #b8c4f5;
   --citation-bg: #1f2540;
-  --shadow-1: none;
+  --shadow-1: 0 1px 2px rgba(0, 0, 0, 0.3);
   --shadow-2: 0 12px 32px rgba(0, 0, 0, 0.5);
+  --shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.4);
   --shadow-accent: none;
   --wash: none;
+
+  --m3-primary-container: #2e45a0;
+  --m3-on-primary-container: #dde1ff;
+  --m3-primary-fixed: #23294a;
+  --m3-primary-fixed-dim: #34407a;
+  --m3-on-primary-fixed: #dde1ff;
+  --m3-inverse-primary: #102c88;
+  --m3-secondary: #ffb956;
+  --m3-secondary-container: #f4a62a;
+  --m3-on-secondary-container: #2a1800;
+  --m3-secondary-fixed: #3a2a10;
+  --m3-tertiary: #82d8a3;
+  --m3-tertiary-container: #005934;
+  --m3-on-tertiary-container: #9ef5be;
+  --m3-tertiary-fixed: #173326;
+  --m3-tertiary-fixed-dim: #1f4a33;
+  --m3-surface-lowest: #12141c;
+  --m3-surface-low: #171a25;
+  --m3-surface-container: #1c2030;
+  --m3-surface-high: #23283a;
+  --m3-surface-highest: #2b3146;
+  --m3-surface-dim: #12141c;
+  --m3-on-surface: #edebe6;
+  --m3-on-surface-variant: #b5b9cc;
+  --m3-outline: #8f93a8;
+  --m3-outline-variant: #3a3f55;
+  --m3-inverse-surface: #e3e7ff;
+  --m3-inverse-on-surface: #242f52;
+  --m3-error: #ffb4ab;
+  --m3-error-container: #93000a;
+  --m3-on-error-container: #ffdad6;
 }
 
-/* Hospital desk: always light, maximum contrast, bigger type. */
+/* Hospital desk: always light, maximum contrast. */
 [data-mode='desk'] {
-  --bg: #ffffff;
+  --bg: #faf8ff;
   --surface: #ffffff;
-  --text: #0b0b0c;
-  --text-muted: #34312b;
-  --border: #ddd8ce;
+  --text: #0b1534;
+  --text-muted: #3a3c48;
 }
 
 /* Larger text (S27 Settings). The desk sets its own size. */
@@ -97,9 +167,15 @@ html[data-text-scale='xlarge']:not(:has([data-mode='desk'])) {
   font-size: 125%;
 }
 
-/* Desk mode scales the whole page (rem units) to a 20 px base. */
+/* Desk mode: a bigger base on a phone at the counter (18 px). On a laptop the live session is a
+   multi-column console that follows the Stitch type scale at the normal base. */
 html:has([data-mode='desk']) {
-  font-size: 125%;
+  font-size: 112.5%;
+}
+@media (min-width: 1024px) {
+  html:has([data-mode='desk']) {
+    font-size: 100%;
+  }
 }
 
 @theme inline {
@@ -131,18 +207,107 @@ html:has([data-mode='desk']) {
   --radius-sm: var(--radius-sm);
   --radius-md: var(--radius-md);
   --radius-lg: var(--radius-lg);
+  --radius-xl: var(--radius-xl);
   --shadow-1: var(--shadow-1);
   --shadow-2: var(--shadow-2);
+  --shadow-hover: var(--shadow-hover);
   --shadow-accent: var(--shadow-accent);
+  /* Material 3 roles from the Stitch screens (bg-primary-container, text-on-surface-variant…).
+     `primary`, `surface` and `on-primary` keep the app's meaning above: page is `bg`, card is `surface`. */
+  --color-primary-container: var(--m3-primary-container);
+  --color-on-primary-container: var(--m3-on-primary-container);
+  --color-primary-fixed: var(--m3-primary-fixed);
+  --color-primary-fixed-dim: var(--m3-primary-fixed-dim);
+  --color-on-primary-fixed: var(--m3-on-primary-fixed);
+  --color-inverse-primary: var(--m3-inverse-primary);
+  --color-secondary: var(--m3-secondary);
+  --color-secondary-container: var(--m3-secondary-container);
+  --color-on-secondary-container: var(--m3-on-secondary-container);
+  --color-secondary-fixed: var(--m3-secondary-fixed);
+  --color-tertiary: var(--m3-tertiary);
+  --color-tertiary-container: var(--m3-tertiary-container);
+  --color-on-tertiary-container: var(--m3-on-tertiary-container);
+  --color-tertiary-fixed: var(--m3-tertiary-fixed);
+  --color-tertiary-fixed-dim: var(--m3-tertiary-fixed-dim);
+  --color-surface-container-lowest: var(--m3-surface-lowest);
+  --color-surface-container-low: var(--m3-surface-low);
+  --color-surface-container: var(--m3-surface-container);
+  --color-surface-container-high: var(--m3-surface-high);
+  --color-surface-container-highest: var(--m3-surface-highest);
+  --color-surface-dim: var(--m3-surface-dim);
+  --color-on-surface: var(--m3-on-surface);
+  --color-on-surface-variant: var(--m3-on-surface-variant);
+  --color-outline: var(--m3-outline);
+  --color-outline-variant: var(--m3-outline-variant);
+  --color-inverse-surface: var(--m3-inverse-surface);
+  --color-inverse-on-surface: var(--m3-inverse-on-surface);
+  --color-error: var(--m3-error);
+  --color-error-container: var(--m3-error-container);
+  --color-on-error-container: var(--m3-on-error-container);
+  /* Fixed brand colours for the always-indigo panels (gateway, sign-in, consent). */
+  --color-brand-navy: #0f1b3d;
+  --color-brand-ink: #102c88;
+  --color-brand-indigo: #2e45a0;
+  --color-brand-marigold: #feae32;
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-brand: cubic-bezier(0.2, 0.8, 0.2, 1);
   /* Strong curves (Emil Kowalski): built-in easings are too weak to read as intentional. */
   --ease-out-strong: cubic-bezier(0.23, 1, 0.32, 1);
   --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
-  --font-sans: var(--font-inter), var(--font-noto-deva), system-ui, sans-serif;
-  --font-display: var(--font-jakarta), var(--font-noto-deva), sans-serif;
-  --font-serif: var(--font-source-serif), serif;
+  --ease-in-out-strong: cubic-bezier(0.77, 0, 0.175, 1);
+  --font-sans:
+    var(--font-inter), var(--font-noto-deva), var(--font-noto-tamil), var(--font-noto-sc),
+    system-ui, sans-serif;
+  --font-display:
+    var(--font-jakarta), var(--font-noto-deva), var(--font-noto-tamil), var(--font-noto-sc),
+    sans-serif;
+  --font-serif:
+    var(--font-source-serif), var(--font-noto-sc), var(--font-noto-deva), var(--font-noto-tamil),
+    serif;
   --font-mono: var(--font-jetbrains), ui-monospace, monospace;
+}
+
+/* The Stitch type scale (DESIGN.md typography): text-headline-xl, text-body-md, text-label-caps… */
+@theme {
+  --text-headline-xl: 2.5rem;
+  --text-headline-xl--line-height: 3rem;
+  --text-headline-xl--letter-spacing: -0.02em;
+  --text-headline-xl--font-weight: 700;
+  --text-headline-lg: 2rem;
+  --text-headline-lg--line-height: 2.5rem;
+  --text-headline-lg--letter-spacing: -0.015em;
+  --text-headline-lg--font-weight: 700;
+  --text-headline-md: 1.5rem;
+  --text-headline-md--line-height: 2rem;
+  --text-headline-md--letter-spacing: -0.01em;
+  --text-headline-md--font-weight: 600;
+  --text-headline-sm: 1.25rem;
+  --text-headline-sm--line-height: 1.75rem;
+  --text-headline-sm--font-weight: 600;
+  --text-title-md: 1rem;
+  --text-title-md--line-height: 1.5rem;
+  --text-title-md--font-weight: 600;
+  --text-body-lg: 1.125rem;
+  --text-body-lg--line-height: 1.75rem;
+  --text-body-md: 0.9375rem;
+  --text-body-md--line-height: 1.5rem;
+  --text-body-sm: 0.8125rem;
+  --text-body-sm--line-height: 1.25rem;
+  --text-numeral-lg: 1.75rem;
+  --text-numeral-lg--line-height: 2.25rem;
+  --text-numeral-lg--letter-spacing: -0.02em;
+  --text-numeral-lg--font-weight: 700;
+  --text-numeral-md: 1.125rem;
+  --text-numeral-md--line-height: 1.5rem;
+  --text-numeral-md--font-weight: 600;
+  --text-citation-md: 0.875rem;
+  --text-citation-md--line-height: 1.375rem;
+  --text-citation-sm: 0.75rem;
+  --text-citation-sm--line-height: 1.125rem;
+  --text-label-caps: 0.6875rem;
+  --text-label-caps--line-height: 1rem;
+  --text-label-caps--letter-spacing: 0.06em;
+  --text-label-caps--font-weight: 600;
 }
 
 @layer base {
@@ -347,15 +512,15 @@ html:has([data-mode='desk']) {
     transform: scale(0.97);
   }
 
-  /* A solid button stands on a hard 2 px base (07 §Button). On press it moves down onto its
-     base, which disappears: the finger feels the button go in. Hover darkens by a step and lifts
-     a pixel, on a mouse only. Transform and box-shadow, nothing that lays out. */
+  /* A solid button sits on a soft tinted shadow (Stitch: shadow-[0_4px_16px_rgba(16,44,136,.18)]).
+     Hover lifts it a pixel and deepens the shadow, on a mouse only; press gives a little.
+     Transform and box-shadow, nothing that lays out. */
   .btn-solid {
     --base: var(--base-primary);
-    box-shadow: 0 2px 0 var(--base);
+    box-shadow: 0 4px 16px -2px var(--base);
     transition:
       transform 160ms var(--ease-out-strong),
-      box-shadow 160ms var(--ease-out-strong),
+      box-shadow 200ms var(--ease-out-strong),
       background-color 160ms,
       border-color 160ms,
       color 160ms;
@@ -364,17 +529,17 @@ html:has([data-mode='desk']) {
     --base: var(--base-accent);
   }
   .btn-solid.btn-outline {
-    --base: var(--primary);
+    --base: transparent;
   }
   @media (hover: hover) and (pointer: fine) {
     .btn-solid:hover:not(:disabled) {
       transform: translateY(-1px);
-      box-shadow: 0 3px 0 var(--base);
+      box-shadow: 0 8px 22px -4px var(--base);
     }
   }
   .btn-solid:active:not(:disabled) {
-    transform: translateY(2px);
-    box-shadow: 0 0 0 var(--base);
+    transform: translateY(0) scale(0.985);
+    box-shadow: 0 2px 8px -2px var(--base);
   }
   .btn-solid:disabled {
     box-shadow: none;
@@ -498,8 +663,17 @@ html:has([data-mode='desk']) {
   font-feature-settings: 'tnum';
 }
 
-:lang(hi) {
-  line-height: 1.7;
+/* Layered and zero-specificity, so `leading-*`/`tracking-*` utilities and the icon font's own
+   letter-spacing still win (unlayered, these broke Material Symbols ligatures on zh pages). */
+@layer base {
+  :where(:lang(hi), :lang(ta)) {
+    line-height: 1.7;
+  }
+  /* Chinese: a little more air between lines, and no negative tracking from the display sizes. */
+  :where(:lang(zh)) {
+    line-height: 1.65;
+    letter-spacing: 0.01em;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -633,6 +807,11 @@ html.booting .landing {
   .boot__lines {
     display: flex;
     min-height: 7.5rem;
+    /* Hindi, Tamil and Malay wrap each line to two: reserve the height so the rail does not
+       drop as the lines land. */
+    &:is(:lang(hi), :lang(ta), :lang(ms)) {
+      min-height: 12.5rem;
+    }
     flex-direction: column;
     gap: 12px;
     margin: 0;
@@ -1051,5 +1230,151 @@ html.booting .landing {
   .orb__arc,
   .orb__wave i {
     animation: none;
+  }
+}
+
+/* ---------------------------------------------------------------------------------------------
+   Stitch primitives (design sync): icons, live chips, card lift, staggered entrance, citations,
+   the indigo brand panel. Every motion here is switched off under prefers-reduced-motion. */
+@layer components {
+  /* Material Symbols Outlined (loaded in app/[locale]/layout.tsx); see components/kavach/icon.tsx. */
+  .msym {
+    font-family: 'Material Symbols Outlined';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 1.25em;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    flex: none;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: 'liga';
+    font-variation-settings:
+      'FILL' var(--msym-fill, 0),
+      'wght' var(--msym-wght, 400),
+      'GRAD' 0,
+      'opsz' 24;
+    user-select: none;
+    overflow: hidden;
+    width: 1em;
+    height: 1em;
+  }
+
+  /* A status dot that sends out a soft ring: "live", "listening", "active". */
+  .live-dot {
+    position: relative;
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    flex: none;
+    border-radius: 9999px;
+    background: var(--live, var(--status-safe));
+  }
+  .live-dot::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: inherit;
+    animation: live-ping 1.6s cubic-bezier(0, 0, 0.2, 1) infinite;
+  }
+  @keyframes live-ping {
+    75%,
+    100% {
+      transform: scale(2.4);
+      opacity: 0;
+    }
+  }
+
+  /* Cards that respond to the pointer: lift 2 px and take the hover shadow (mouse only). */
+  .lift {
+    transition:
+      transform 220ms var(--ease-out-strong),
+      box-shadow 220ms var(--ease-out-strong),
+      border-color 160ms;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .lift:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-hover);
+    }
+  }
+
+  /* Staggered entrance: children rise in order (set --i on each, 50 ms apart). */
+  .stagger > * {
+    animation: stagger-rise 560ms var(--ease-out-expo) both;
+    animation-delay: calc(var(--i, 0) * 50ms + var(--stagger-base, 0ms));
+  }
+  .rise-in {
+    animation: stagger-rise 560ms var(--ease-out-expo) both;
+    animation-delay: calc(var(--i, 0) * 50ms);
+  }
+  @keyframes stagger-rise {
+    from {
+      opacity: 0;
+      transform: translate3d(0, 10px, 0);
+    }
+  }
+
+  /* Verbatim policy wording and circular references: serif, indigo rule on the left. */
+  .citation {
+    font-family: var(--font-serif);
+    font-size: 0.875rem;
+    line-height: 1.375rem;
+    background: var(--citation-bg);
+    border-left: 3px solid var(--m3-primary-container);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    padding: 0.625rem 0.875rem;
+  }
+
+  /* The always-indigo brand panel (gateway, loader, sign-in, consent). */
+  .brand-panel {
+    background:
+      radial-gradient(120% 80% at 0% 0%, rgba(255, 255, 255, 0.06), transparent 55%),
+      linear-gradient(160deg, #1d3594 0%, #2e45a0 55%, #2a3f99 100%);
+    color: #ffffff;
+  }
+  .brand-tile {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: var(--radius-lg);
+    backdrop-filter: blur(12px);
+  }
+  /* The dark navy gateway card. */
+  .gateway-card {
+    background:
+      radial-gradient(90% 60% at 85% 100%, rgba(254, 174, 50, 0.1), transparent 60%),
+      radial-gradient(80% 50% at 10% 0%, rgba(84, 110, 220, 0.25), transparent 60%),
+      linear-gradient(180deg, #121f4f 0%, #0f1b3d 100%);
+    color: #eef0ff;
+  }
+
+  /* Horizontal chip rows that scroll on a phone without a visible bar. */
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Glass header over a scrolling page. */
+  .glass {
+    background: color-mix(in srgb, var(--bg) 82%, transparent);
+    backdrop-filter: saturate(1.4) blur(14px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .live-dot::after,
+  .stagger > *,
+  .rise-in {
+    animation: none;
+  }
+  .lift:hover {
+    transform: none;
   }
 }

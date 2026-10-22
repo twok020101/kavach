@@ -1,6 +1,7 @@
 {
   "title": "Demo household",
   "intro": "Your own copy of the Sharma family. Reset it to any moment of the story.",
+  "introSg": "Your own copy of the Tan family in Singapore. Reset it to any moment of the story.",
   "loading": "Setting up the demo household…",
   "error": "Couldn't load the household. Is the API running?",
   "retry": "Try again",
@@ -25,7 +26,8 @@
   },
   "speaksHindi": "Speaks Hindi",
   "conditions": {
-    "diabetes_t2": "Type 2 diabetes"
+    "diabetes_t2": "Type 2 diabetes",
+    "hypertension": "High blood pressure"
   },
   "policiesHeading": "Policies",
   "kinds": {
@@ -35,7 +37,9 @@
     "term_life": "Term life",
     "personal_accident": "Personal accident",
     "endowment": "Endowment",
-    "motor": "Motor"
+    "motor": "Motor",
+    "medishield_life": "MediShield Life",
+    "integrated_shield": "Integrated Shield Plan"
   },
   "sumInsured": "Cover {amount}",
   "covers": "Covers {names}",
@@ -44,5 +48,11 @@
   "copay": "{percent}% co-pay",
   "copayFromAge": "{percent}% co-pay from age {age}",
   "deductible": "Pays above {amount}",
-  "claimsUsed": "Used this year {amount}"
+  "claimsUsed": "Used this year {amount}",
+  "speaks": "Speaks {language}",
+  "shell": {
+    "sample": "Sample family",
+    "steps": "{count, plural, =0 {Nothing waiting} one {# step waiting} other {# steps waiting}}",
+    "account": "{name}: family settings"
+  }
 }

@@ -25,7 +25,7 @@
     "edit": "परिवार और पैसे की जानकारी बदलें",
     "editHint": "लोग, उम्र, आमदनी और ख़र्च",
     "demo": "डेमो कंट्रोल",
-    "demoHint": "शर्मा परिवार की कहानी के किसी पल पर जाएँ",
+    "demoHint": "इस परिवार की कहानी के किसी पल पर जाएँ",
     "timeline": "टाइमलाइन",
     "timelineHint": "क्या हुआ और क्या आने वाला है",
     "claims": "क्लेम",
@@ -89,7 +89,8 @@
       "opted_out": "बंद किया",
       "not_joined": "अभी नहीं जुड़े",
       "no_number": "नंबर नहीं"
-    }
+    },
+    "phonePlaceholder": "{market, select, SG {+65 9xxx xxxx} other {+91 98xxx xxxxx}}"
   },
   "timeline": {
     "title": "टाइमलाइन",

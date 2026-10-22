@@ -1,0 +1,306 @@
+{
+  "modeNote": "Mod hospital: teks besar dan kontras tinggi.",
+  "start": {
+    "title": "Bantuan di hospital",
+    "demoNote": "Demo: keluarga Sharma di City Heart Hospital. Suresh dimasukkan ke hospital untuk angioplasti yang dirancang, dan jawapannya dalam bahasa Hindi. Anda boleh menukar kedua-duanya.",
+    "who": "Siapa yang dimasukkan ke hospital?",
+    "language": "Jawapan dalam",
+    "start": "Mula",
+    "pickFirst": "Pilih siapa yang dimasukkan ke hospital untuk bermula.",
+    "loadFailed": "Butiran keluarga tidak dapat dimuatkan.",
+    "loadOffline": "Kavach tidak dapat menghubungi pelayannya sekarang, jadi butiran keluarga tidak dimuatkan. Semak sambungan dan cuba lagi.",
+    "privacy": "Kamera hanya digunakan apabila anda mengambil foto anggaran. Tiada apa yang dikongsi tanpa anda.",
+    "demoNoteMaternity": "Demo: Priya dimasukkan ke Lotus Women’s Hospital untuk kelahiran normal yang dirancang. Polisi syarikat mengehadkan bersalin pada ₹50,000. Jawapan dalam bahasa Inggeris; anda boleh menukar kedua-duanya.",
+    "prepare": {
+      "eyebrow": "Babak demo",
+      "title": "Menyediakan babak",
+      "hospital": "Suresh di City Heart Hospital, jawapan dalam bahasa Hindi",
+      "maternity": "Priya di Lotus Women’s Hospital, jawapan dalam bahasa Inggeris",
+      "singapore": "Ah Kow di Sample General Hospital, Singapura, jawapan dalam bahasa Mandarin",
+      "steps": {
+        "family": "Membuka polisi keluarga",
+        "session": "Memulakan sesi kaunter",
+        "open": "Membuka kaunter secara langsung"
+      },
+      "note": "Data demo. Setiap amaun di skrin seterusnya datang daripada peraturan polisi.",
+      "failed": "Babak tidak dapat dimulakan. Pilih siapa yang dimasukkan ke hospital di bawah dan mulakannya sendiri.",
+      "offline": "Kavach tidak dapat menghubungi pelayannya sekarang, jadi babak demo tidak bermula. Semak sambungan dan cuba lagi.",
+      "retry": "Cuba lagi"
+    },
+    "demoNoteSingapore": "Demo: keluarga Tan di Singapura. Ah Kow dimasukkan ke Sample General Hospital untuk angioplasti yang dirancang; pelan Shield beliau dibeli untuk Kelas B1 dan hospital menawarkan Kelas A. Jawapan dalam bahasa Mandarin; anda boleh menukar kedua-duanya.",
+    "memberMeta": "{relation}, {age} tahun"
+  },
+  "session": {
+    "title": "Membantu {name}",
+    "titleLoading": "Bantuan di hospital",
+    "end": "Tamat",
+    "orb": {
+      "thinking": "Kavach sedang menyemak",
+      "ready": "Sedia: tunjukkan anggaran atau taip",
+      "idleHint": "Tekan “Bercakap dengan Kavach” untuk bercakap, atau taip soalan anda."
+    },
+    "textMode": "Mod teks",
+    "status": {
+      "open": "Sesi dibuka",
+      "ended": "Sesi tamat",
+      "live": "Suara langsung",
+      "voiceOff": "Suara dimatikan",
+      "mute": "Matikan mikrofon",
+      "unmute": "Mikrofon hidup"
+    },
+    "conversation": "Perbualan",
+    "greeting": "Salam. Ambil foto anggaran hospital, kemudian tanya soalan anda.",
+    "sampleSent": "Menggunakan anggaran contoh",
+    "photoSent": "Foto anggaran",
+    "estimateRead": "Saya sudah membaca anggaran {hospital}: {days, plural, one {# hari} other {# hari}}, {rooms} jenis bilik. Inilah kos setiap bilik kepada anda.",
+    "captureFailed": "Saya tidak dapat membaca foto itu. Sila ambil semula dengan seluruh muka surat dalam bingkai.",
+    "steps": {
+      "reading": "Membaca anggaran",
+      "tariff": "Mencari tarif bilik",
+      "policies": "Menyemak polisi keluarga",
+      "rooms": "Membandingkan bilik",
+      "verify": "Menyemak setiap angka"
+    },
+    "capture": {
+      "title": "Tunjukkan anggaran hospital",
+      "hint": "Pastikan seluruh muka surat dalam bingkai, dengan cahaya yang baik.",
+      "photo": "Ambil gambar anggaran",
+      "sample": "Guna anggaran contoh",
+      "demoData": "Data demo"
+    },
+    "estimate": {
+      "photoAlt": "Foto anggaran anda",
+      "days": "{days, plural, one {# hari} other {# hari}}",
+      "rooms": "Jenis bilik dalam anggaran",
+      "check": "Adakah ini betul?",
+      "retake": "Ambil semula",
+      "lines": "Apa yang ada dalam anggaran",
+      "quotedFor": "Seperti yang disebut untuk {room}",
+      "total": "Jumlah anggaran",
+      "mark": {
+        "nonPayable": "Tidak dibayar",
+        "aboveLimit": "Melebihi had bilik",
+        "ratio": "Dikurangkan mengikut bilik",
+        "icu": "ICU: tidak pernah dikurangkan",
+        "covered": "Dilindungi"
+      },
+      "sample": "Contoh"
+    },
+    "bill": {
+      "title": "Anggaran dibaca: {hospital}",
+      "quoted": "Disebut harga untuk {room} · {days, plural, one {# hari} other {# hari}}",
+      "charge": "Caj",
+      "amount": "Amaun",
+      "total": "Jumlah dalam anggaran ({room})",
+      "checking": "Menyemak setiap baris dengan polisi…",
+      "flag": {
+        "aboveLimit": "Melebihi had bilik",
+        "ratio": "Potongan berkadar",
+        "never": "Tidak pernah dipotong",
+        "icu": "ICU: tidak pernah dipotong",
+        "nonPayable": "Tidak dibayar"
+      },
+      "note": {
+        "aboveLimit": "Melebihi had",
+        "ratio": "Dipotong mengikut bilik",
+        "never": "Tidak dipotong mengikut bilik",
+        "icu": "Tidak dipotong mengikut bilik",
+        "nonPayable": "Dikecualikan"
+      },
+      "notPaid": "Polisi tidak akan membayar",
+      "policyPays": "Polisi bayar",
+      "youPay": "Keluarga bayar (dari poket sendiri)"
+    },
+    "deduction": {
+      "R-HL-001": "Potongan berkadar",
+      "R-HL-002": "Sewa ICU melebihi had ICU",
+      "R-HL-005": "Item tidak dibayar",
+      "R-HL-008": "Sewa bilik melebihi had",
+      "R-MT-001": "Melebihi had bersalin",
+      "R-MT-001-none": "Tiada manfaat bersalin",
+      "R-MT-002": "Tempoh menunggu bersalin belum tamat",
+      "R-SG-001": "Tidak boleh dituntut di wad ini (pro-rata MediShield Life)",
+      "R-SG-003": "Deduktibel",
+      "R-SG-004": "Ko-insurans",
+      "R-SG-005": "Tidak boleh dituntut melebihi wad pelan",
+      "R-SG-006": "Bayaran bersama dengan rider"
+    },
+    "advice": {
+      "eyebrow": "Nasihat bilik Kavach",
+      "lead": "Daripada {from} kepada {to}",
+      "saves": "Keluarga menjimatkan",
+      "savesVsCostliest": "Kurang daripada bilik paling mahal",
+      "without": "Tanpa nasihat Kavach",
+      "costliest": "Bilik paling mahal",
+      "quoted": "Bilik dalam anggaran itu sendiri, {room}: keluarga membayar",
+      "with": "Dengan nasihat Kavach",
+      "oop": "Dari poket sendiri dalam {room}",
+      "same": "{room} sudah pun bilik paling murah untuk keluarga."
+    },
+    "saving": {
+      "eyebrow": "Pilihan bilik",
+      "headline": "Jimat <amount></amount>",
+      "sub": "Minta {room} ({rent} sehari) di kaunter, bukan {costly}.",
+      "opt": "Pilih {room}",
+      "optAsk": "Kami mahu bilik {room}. Apa yang patut kami katakan di kaunter?",
+      "costliest": "Bilik paling mahal",
+      "pick": "Cadangan Kavach",
+      "perDay": "{rent} sehari",
+      "rows": {
+        "bill": "Bil hospital",
+        "copay": "Insurans bersama",
+        "policyPays": "Polisi bayar",
+        "youPay": "Keluarga bayar"
+      },
+      "allRooms": "Bandingkan kesemua {count} bilik",
+      "none": "Tiada penjimatan: setiap bilik sama kosnya kepada keluarga."
+    },
+    "prompts": {
+      "title": "Tanya kaunter kemasukan sekarang",
+      "intro": "Bacakan ayat ini di kaunter, perkataan demi perkataan.",
+      "empty": "Kavach akan menulis ayat yang tepat untuk dikatakan sebaik sahaja ia membaca anggaran.",
+      "deskQuestion": "Satu soalan untuk kaunter"
+    },
+    "rules": {
+      "title": "Peraturan polisi yang digunakan",
+      "count": "{count, plural, one {# peraturan} other {# peraturan}}",
+      "verified": "Disahkan",
+      "toVerify": "Untuk disahkan",
+      "outcome": {
+        "copay": "Insurans bersama",
+        "pays": "Bayar",
+        "applied": "Digunakan",
+        "protected": "Dilindungi",
+        "ask": "Tanya kaunter",
+        "counts": "Dikira {percent}",
+        "riderCovers": "Rider bayar",
+        "deductible": "Deduktibel",
+        "coinsurance": "Ko-insurans",
+        "asCharged": "Mengikut caj sebenar"
+      },
+      "names": {
+        "R-HL-001": "Potongan berkadar",
+        "R-HL-002": "ICU tidak pernah dipotong secara berkadar",
+        "R-HL-003": "Insurans bersama atas amaun yang boleh diterima",
+        "R-HL-005": "Item tidak dibayar",
+        "R-HL-006": "Polisi mana yang dituntut dahulu",
+        "R-HL-008": "Had sewa bilik",
+        "R-HL-009": "Deduktibel super top-up",
+        "R-HL-010": "Jenis pengebilan belum diketahui",
+        "R-HL-014": "Harga pakej mengikut bilik",
+        "R-MT-001": "Had bersalin",
+        "R-MT-002": "Tempoh menunggu bersalin",
+        "R-SG-001": "Pro-rata MediShield Life mengikut kelas wad",
+        "R-SG-002": "Had harian wad dan ICU",
+        "R-SG-003": "Deduktibel sekali setahun polisi",
+        "R-SG-004": "Ko-insurans atas jumlah boleh dituntut",
+        "R-SG-005": "Pelan membayar mengikut caj sebenar dalam wadnya",
+        "R-SG-006": "Bayaran bersama rider dan had tahunannya",
+        "R-SG-007": "Had tahun polisi",
+        "R-SG-010": "Belum tahu sama ada pakar panel"
+      },
+      "details": "Lihat kiraan setiap peraturan"
+    },
+    "footer": {
+      "session": "Sesi",
+      "prototype": "Prototaip",
+      "demo": "Prototaip · data demo"
+    },
+    "answers": "Jawapan",
+    "compareRooms": "Bandingkan bilik",
+    "why": "Mengapa angka ini?",
+    "share": "Hantar kepada keluarga",
+    "copied": "Disalin. Tampal dalam WhatsApp.",
+    "endAndSummary": "Tamat dan lihat ringkasan",
+    "suggestions": "Soalan yang dicadangkan",
+    "suggest": {
+      "room": "Bilik mana yang patut kami ambil?",
+      "card": "Kad polisi mana yang patut saya beri dahulu?"
+    },
+    "questionLabel": "Soalan anda",
+    "questionPlaceholder": "Taip soalan anda",
+    "send": "Hantar",
+    "askTitle": "Soalan lazim",
+    "captureUnreadable": "Format foto itu tidak dapat dibaca di sini. Foto HEIC iPhone memerlukan kamera ditetapkan kepada 'Most Compatible', atau hantar tangkapan skrin foto itu. Kemudian cuba lagi.",
+    "captureTooBig": "Foto itu terlalu besar untuk dihantar. Ambil semula pada saiz biasa, atau hantar tangkapan skrin.",
+    "estimateUnclear": "Saya tidak dapat menggunakan ini sebagai anggaran. {note}",
+    "packageRead": "Saya sudah membaca harga pakej {hospital}: {rooms, plural, one {# pakej} other {# pakej}}. Inilah kos setiap satu kepada anda.",
+    "scene": {
+      "label": "Babak demo",
+      "hospital": "Babak 1: Suresh · PTCA (City Heart)",
+      "maternity": "Babak 2: Priya · Bersalin (Lotus)",
+      "singapore": "Ah Kow · Singapura",
+      "name": {
+        "hospital": "Suresh",
+        "maternity": "Priya",
+        "singapore": "Ah Kow"
+      },
+      "place": {
+        "hospital": "City Heart",
+        "maternity": "Lotus",
+        "singapore": "Singapura"
+      }
+    },
+    "admitted": "Dimasukkan",
+    "memberChip": "{name} ({relation}, {age})",
+    "controls": "Kawalan kaunter pantas",
+    "sendPrompts": "Hantar ini kepada keluarga di WhatsApp",
+    "result": {
+      "title": "Keputusan Kavach",
+      "save": "Jimat <amount></amount>",
+      "noSaving": "Setiap bilik sama kosnya kepada keluarga",
+      "reason": "{room} paling murah untuk keluarga selepas peraturan polisi digunakan.",
+      "reasonSame": "Minta {room}; polisi melayan setiap bilik dengan sama.",
+      "ask": "Minta {room}",
+      "perDay": "sehari",
+      "recommendedChip": "Cadangan Kavach",
+      "costsMoreChip": "Kos lebih tinggi",
+      "familyPays": "Keluarga bayar"
+    },
+    "askDesk": {
+      "title": "Tanya kaunter kemasukan sekarang",
+      "intro": "Bacakan ini di kaunter, atau salin.",
+      "ask": "Tanya kaunter",
+      "say": "Apa kata Kavach"
+    },
+    "textNote": {
+      "title": "Mod teks",
+      "body": "Taip soalan anda, atau ketik Bercakap dengan Kavach untuk bercakap."
+    },
+    "ward": {
+      "eyebrow": "Kelas wad",
+      "title": "Siapa bayar di setiap wad",
+      "entitlement": "Integrated Shield Plan melindungi wad sehingga {ward}.",
+      "above": "{room} melebihinya: hanya {percent} daripada bil boleh dituntut, jadi {amount} ditanggung keluarga.",
+      "within": "{room} dalam had itu: pelan membayar mengikut caj sebenar.",
+      "mshl": "Di {room}, MediShield Life hanya mengira {wardShare} caj wad dan {surgicalShare} caj pembedahan.",
+      "wardName": "{ward, select, private {wad hospital swasta} other {Kelas {ward}}}",
+      "payer": "Siapa bayar",
+      "quoted": "Dalam anggaran",
+      "pick": "Disyorkan",
+      "rows": {
+        "mshl": "MediShield Life",
+        "plan": "Integrated Shield Plan",
+        "rider": "Rider",
+        "family": "Keluarga bayar"
+      },
+      "medisave": "MediSave boleh membayar bahagian keluarga; ia tidak mengurangkannya."
+    }
+  },
+  "summary": {
+    "title": "Ringkasan sesi",
+    "heading": "Apa yang Kavach nasihatkan untuk {name}",
+    "otherLanguage": "Baca dalam bahasa lain",
+    "empty": "Tiada jawapan diberikan dalam sesi ini.",
+    "saved": "Disimpan ke garis masa keluarga",
+    "cards": "Kad jawapan",
+    "claimHint": "Jika tuntutan dikurangkan kemudian,",
+    "claimLink": "muat naik surat penyelesaian di sini.",
+    "share": "Hantar ringkasan kepada keluarga",
+    "copied": "Disalin. Tampal dalam WhatsApp.",
+    "newSession": "Mula semula",
+    "home": "Kembali ke laman utama",
+    "loadFailed": "Kavach tidak dapat memuatkan ringkasan ini. Semak sambungan dan cuba lagi.",
+    "retry": "Cuba lagi"
+  }
+}

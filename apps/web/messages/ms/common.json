@@ -1,0 +1,150 @@
+{
+  "verified": "Disahkan",
+  "toVerify": "Semak dengan syarikat insurans",
+  "rules": "Peraturan",
+  "loading": "Sedang memuatkan",
+  "error": "Ada masalah. Sila cuba lagi, atau taip soalan anda.",
+  "close": "Tutup",
+  "language": "Bahasa",
+  "languages": {
+    "en": "English",
+    "hi": "Hindi",
+    "ta": "Tamil",
+    "zh": "Mandarin",
+    "ms": "Melayu"
+  },
+  "skipToContent": "Langkau ke kandungan",
+  "mainNav": "Utama",
+  "atHospital": "Di hospital",
+  "nav": {
+    "home": "Utama",
+    "plan": "Pelan",
+    "policies": "Polisi",
+    "timeline": "Garis masa",
+    "claims": "Tuntutan",
+    "more": "Lagi",
+    "hospital": "Hospital"
+  },
+  "status": {
+    "covered": "Dilindungi",
+    "partial": "Dilindungi sebahagian",
+    "contingent": "Bergantung pada kerja",
+    "gap": "Tidak dilindungi",
+    "na": "Tidak perlu"
+  },
+  "relation": {
+    "self": "Diri sendiri",
+    "spouse": "Pasangan",
+    "child": "Anak",
+    "parent": "Ibu bapa",
+    "parent_in_law": "Ibu bapa mertua",
+    "other": "Keluarga"
+  },
+  "captions": {
+    "agent": "Kavach",
+    "user": "Anda"
+  },
+  "why": {
+    "rulesTitle": "Peraturan di sebalik jawapan",
+    "tariffTitle": "Tarif bilik hospital",
+    "tariffIntro": "Dibaca daripada anggaran. Caj yang ditanda di bawah berubah mengikut bilik, jadi syarikat insurans memotongnya secara berkadar jika bilik melebihi had anda.",
+    "charge": "Caj",
+    "changesWithRoom": "Berubah mengikut bilik",
+    "branchTitle": "Hanya <amount></amount> dijimatkan jika hospital tidak mengenakan harga mengikut bilik",
+    "branchBody": "Jika begitu, hanya sewa bilik yang berbeza, dan tiada yang lain dipotong. Anda akan membayar lebih kurang:"
+  },
+  "heads": {
+    "room": "Sewa bilik",
+    "nursing": "Kejururawatan & RMO",
+    "surgeon": "Pakar bedah / prosedur",
+    "ot": "Makmal kateter / OT",
+    "doctor_visits": "Lawatan doktor",
+    "icu": "ICU",
+    "implant": "Stent / implan",
+    "pharmacy": "Farmasi & bahan guna habis",
+    "consumables": "Bahan guna habis",
+    "diagnostics": "Diagnostik",
+    "non_payable": "Item tidak dibayar",
+    "other": "Lain-lain"
+  },
+  "compare": {
+    "room": "Bilik",
+    "recommended": "Minta yang ini",
+    "bill": "Bil hospital",
+    "notPaid": "Tidak dibayar: {label}",
+    "copay": "Insurans bersama",
+    "policyPays": "Polisi bayar",
+    "youPay": "Anda bayar",
+    "none": "Tiada"
+  },
+  "statusShort": {
+    "covered": "Dilindungi",
+    "partial": "Sebahagian",
+    "contingent": "Ikut kerja",
+    "gap": "Jurang",
+    "na": "–"
+  },
+  "disclaimer": {
+    "global": "Kavach memberi panduan berdasarkan dokumen anda dan peraturan yang diterbitkan. Ia bukan syarikat insurans, broker atau ejen, dan syarikat insurans yang memutuskan setiap tuntutan.",
+    "plan": "Saiz perlindungan adalah panduan, bukan cadangan produk. Premium hanya sebagai ilustrasi.",
+    "hospital": "Anggaran sahaja. Sila sahkan dengan kaunter insurans (TPA) sebelum anda menandatangani.",
+    "hospitalSg": "Anggaran sahaja. Sila sahkan dengan kaunter insurans hospital sebelum anda menandatangani.",
+    "claims": "Surat ini adalah draf untuk anda semak dan hantar sendiri."
+  },
+  "evidence": {
+    "sources": "Peraturan disemak dengan",
+    "irdai2024": "Pekeliling induk IRDAI mengenai insurans kesihatan, 29 Mei 2024",
+    "irdai2020": "Pekeliling IRDAI mengenai potongan berkadar, 2020",
+    "wordings": "{count} perkataan polisi awam diuji, {checked} dilabel oleh manusia",
+    "sample": "Data demo ditanda SAMPLE dan bukan tentang orang sebenar"
+  },
+  "isNot": {
+    "isTitle": "Apa itu Kavach",
+    "notTitle": "Apa yang ia bukan",
+    "rows": {
+      "reader": "Pembaca dan pengira untuk polisi yang sudah anda miliki",
+      "notInsurer": "Syarikat insurans, broker, ejen atau penjual polisi",
+      "cites": "Setiap rupee yang ditunjukkan datang daripada terma polisi bertulis, dengan nombor muka surat",
+      "citesSg": "Setiap dolar yang ditunjukkan datang daripada terma polisi bertulis, dengan nombor muka surat",
+      "notGuarantee": "Jaminan berapa yang akan dibayar untuk tuntutan: syarikat insurans yang memutuskan setiap tuntutan",
+      "consent": "Tiada apa yang dibaca atau disimpan tanpa kebenaran anda",
+      "notPayments": "Sesuatu yang mengambil bayaran atau menghubungi syarikat insurans bagi pihak anda"
+    }
+  },
+  "copy": "Salin",
+  "copied": "Disalin",
+  "activeFamily": "Keluarga aktif",
+  "back": "Kembali",
+  "prototype": "Prototaip",
+  "brandPanel": {
+    "deva": "कवच",
+    "eyebrow": "Perisai penjagaan kesihatan & insurans",
+    "chip": "Setiap rupee dirujuk kepada klausa",
+    "tagline": "Berdiri di sisi keluarga anda pada setiap saat insurans.",
+    "lead": "Perisai pelindung yang membimbing keluarga India pelbagai generasi melalui kelulusan tanpa tunai, had kecil polisi dan tuntutan hospital.",
+    "change": {
+      "title": "Apabila hidup berubah",
+      "body": "Menyesuaikan perlindungan untuk ibu bapa yang semakin berusia, peristiwa penting dan ahli keluarga baru."
+    },
+    "hospital": {
+      "title": "Di kaunter hospital",
+      "body": "Bantuan tanpa tunai secara langsung: perangkap sewa bilik dikesan, kad mana yang perlu diberi dahulu, apa yang perlu ditanya di kaunter TPA."
+    },
+    "claim": {
+      "title": "Apabila tuntutan bermasalah",
+      "body": "Setiap potongan disemak klausa demi klausa; surat rayuan dan surat kepada ombudsman disediakan untuk anda."
+    },
+    "footer": "Kebenaran anda, data anda: dibina mengikut Akta Perlindungan Data Peribadi Digital (DPDP) India, 2023.",
+    "sg": {
+      "chip": "Setiap dolar dirujuk kepada peraturan",
+      "lead": "Perisai pelindung yang membimbing keluarga Singapura pelbagai generasi melalui MediShield Life, Integrated Shield Plan, rider dan pilihan wad.",
+      "hospital": {
+        "body": "Bantuan langsung semasa kemasukan: kelas wad yang dibayar penuh oleh pelan anda, berapa kos pengurangan berkadar di atasnya, kad mana yang perlu ditunjukkan dahulu."
+      },
+      "claim": {
+        "body": "Setiap potongan disemak mengikut terma MediShield Life dan pelan Shield anda; surat rayuan kepada syarikat insurans disediakan untuk anda."
+      },
+      "footer": "Kebenaran anda, data anda: dibina mengikut Akta Perlindungan Data Peribadi (PDPA) Singapura."
+    }
+  }
+}

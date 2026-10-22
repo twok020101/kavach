@@ -1,20 +1,12 @@
 'use client';
 
 import type { ConsentPurpose, Household } from '@kavach/schemas';
-import {
-  ChevronRight,
-  Clock,
-  Download,
-  Eye,
-  FileWarning,
-  ListChecks,
-  LogOut,
-  type LucideIcon,
-  Trash2,
-  Users,
-} from 'lucide-react';
+import { clsx } from 'clsx';
+import { Download, LogOut, Trash2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { type ReactNode, useState } from 'react';
+import { PageHeader, sectionTitle } from '@/components/app/page-parts';
+import { Icon } from '@/components/kavach/icon';
 import { LanguageSwitch } from '@/components/kavach/language-switch';
 import { PlanFrame } from '@/components/plan/plan-frame';
 import { ConsentToggles } from '@/components/setup/consent-toggles';
@@ -35,36 +27,36 @@ function Settings({ household }: { household: Household }) {
   const t = useTranslations('settings');
   const router = useRouter();
   const { theme, setTheme, textScale, setTextScale } = useAppearance();
-  // The demo lets anyone see the member home: a Hindi-speaking parent first (Kamala), else any adult.
+  // The demo lets anyone see the member home: a parent who does not speak English first (Kamala), else any adult.
   const adults = household.members.filter((m) => m.relation !== 'self' && m.age >= 18);
   const memberToPreview = household.isDemo
-    ? (adults.find((m) => m.relation === 'parent' && m.language === 'hi' && m.age < 60) ??
+    ? (adults.find((m) => m.relation === 'parent' && m.language !== 'en' && m.age < 60) ??
       adults.find((m) => m.relation === 'parent') ??
       adults[0])
     : undefined;
 
   return (
-    <div className="mx-auto flex max-w-3xl flex-col gap-5">
-      <h1 className="font-display text-3xl font-bold tracking-tight">{t('title')}</h1>
+    <div className="flex max-w-3xl flex-col gap-6">
+      <PageHeader title={t('title')} />
 
       {/* Phone: the sections that are not tabs live here. */}
       <Card className="p-0 sm:p-0 lg:hidden">
         <ul className="hairline">
           <NavRow
             href="/timeline"
-            icon={Clock}
+            icon="timeline"
             label={t('family.timeline')}
             hint={t('family.timelineHint')}
           />
           <NavRow
             href="/claims"
-            icon={FileWarning}
+            icon="receipt_long"
             label={t('family.claims')}
             hint={t('family.claimsHint')}
           />
           <NavRow
             href="/actions"
-            icon={ListChecks}
+            icon="checklist"
             label={t('family.actions')}
             hint={t('family.actionsHint')}
           />
@@ -105,19 +97,25 @@ function Settings({ household }: { household: Household }) {
         <ul className="hairline">
           <NavRow
             href="/settings/access"
-            icon={Users}
+            icon="group"
             label={t('family.access')}
             hint={t('family.accessHint')}
           />
           {!household.isDemo && (
             <NavRow
               href="/setup/family/confirm"
+              icon="edit"
               label={t('family.edit')}
               hint={t('family.editHint')}
             />
           )}
           {household.isDemo && (
-            <NavRow href="/demo" label={t('family.demo')} hint={t('family.demoHint')} />
+            <NavRow
+              href="/demo"
+              icon="restart_alt"
+              label={t('family.demo')}
+              hint={t('family.demoHint')}
+            />
           )}
           {memberToPreview && (
             <li>
@@ -127,18 +125,20 @@ function Settings({ household }: { household: Household }) {
                   rememberMemberId(memberToPreview.id);
                   router.push('/home');
                 }}
-                className="press flex w-full items-center gap-3 p-4 text-left hover:bg-sunken"
+                className="press flex w-full items-center gap-3 px-4 py-4 text-left hover:bg-sunken sm:px-5"
               >
                 <span className="flex size-10 shrink-0 items-center justify-center rounded-md bg-accent-soft text-accent-ink dark:text-text">
-                  <Eye aria-hidden className="size-5" />
+                  <Icon name="visibility" className="text-xl" />
                 </span>
-                <span className="flex flex-1 flex-col">
-                  <span className="font-semibold">
+                <span className="flex min-w-0 flex-1 flex-col">
+                  <span className="font-display text-title-md text-on-surface">
                     {t('family.viewAs', { name: memberToPreview.name.split(' ')[0] ?? '' })}
                   </span>
-                  <span className="text-sm text-muted">{t('family.viewAsHint')}</span>
+                  <span className="text-body-sm text-on-surface-variant">
+                    {t('family.viewAsHint')}
+                  </span>
                 </span>
-                <ChevronRight aria-hidden className="size-5 text-muted" />
+                <Icon name="chevron_right" className="shrink-0 text-2xl text-outline" />
               </button>
             </li>
           )}
@@ -259,16 +259,12 @@ function Section({
   children: ReactNode;
 }) {
   return (
-    <Card as="section" className={flush ? 'flex flex-col gap-0 p-0 sm:p-0' : 'flex flex-col gap-4'}>
-      <h2
-        className={
-          flush
-            ? 'px-4 pt-4 font-display text-lg font-semibold'
-            : 'font-display text-lg font-semibold'
-        }
-      >
-        {title}
-      </h2>
+    <Card
+      as="section"
+      className={flush ? 'flex flex-col gap-1 p-0 sm:p-0' : 'flex flex-col gap-4 sm:p-6'}
+    >
+      {/* clsx, not cn: tailwind-merge reads text-headline-sm as a colour and drops it. */}
+      <h2 className={clsx(sectionTitle, flush && 'px-4 pt-4 sm:px-5 sm:pt-5')}>{title}</h2>
       {children}
     </Card>
   );
@@ -277,7 +273,7 @@ function Section({
 function Row({ label, children }: { label: string; children: ReactNode }) {
   return (
     <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-      <span className="font-medium">{label}</span>
+      <span className="text-body-md font-medium text-on-surface">{label}</span>
       {children}
     </div>
   );
@@ -285,29 +281,28 @@ function Row({ label, children }: { label: string; children: ReactNode }) {
 
 function NavRow({
   href,
-  icon: Icon,
+  icon,
   label,
   hint,
 }: {
   href:
     '/timeline' | '/claims' | '/actions' | '/settings/access' | '/setup/family/confirm' | '/demo';
-  icon?: LucideIcon;
+  /** Material Symbols ligature for the tile. */
+  icon: string;
   label: string;
   hint: string;
 }) {
   return (
     <li>
-      <Link href={href} className="press flex items-center gap-3 p-4 hover:bg-sunken">
-        {Icon && (
-          <span className="flex size-10 shrink-0 items-center justify-center rounded-md bg-primary-soft text-primary">
-            <Icon aria-hidden className="size-5" />
-          </span>
-        )}
-        <span className="flex flex-1 flex-col">
-          <span className="font-semibold">{label}</span>
-          <span className="text-sm text-muted">{hint}</span>
+      <Link href={href} className="press flex items-center gap-3 px-4 py-4 hover:bg-sunken sm:px-5">
+        <span className="flex size-10 shrink-0 items-center justify-center rounded-md bg-primary-soft text-primary">
+          <Icon name={icon} className="text-xl" />
         </span>
-        <ChevronRight aria-hidden className="size-5 text-muted" />
+        <span className="flex min-w-0 flex-1 flex-col">
+          <span className="font-display text-title-md text-on-surface">{label}</span>
+          <span className="text-body-sm text-on-surface-variant">{hint}</span>
+        </span>
+        <Icon name="chevron_right" className="shrink-0 text-2xl text-outline" />
       </Link>
     </li>
   );

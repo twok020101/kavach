@@ -1,11 +1,12 @@
 'use client';
 
-import { formatInr } from '@kavach/engine';
 import type { AssessedDeduction, ClaimCase, Household } from '@kavach/schemas';
 import { ArrowLeft, CircleCheck, CircleHelp, CircleX, FileText, Info, PenLine } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { apiMessage } from '@/lib/api';
+import { useMoney } from '@/lib/country';
 import { useState } from 'react';
+import { ListSkeleton, pageTitle, QueryError } from '@/components/app/page-parts';
 import { ClauseChip } from '@/components/documents/ClauseSheet';
 import { Amount } from '@/components/kavach/amount';
 import { RuleId } from '@/components/kavach/verified-badge';
@@ -39,11 +40,13 @@ function Check({ household, cid }: { household: Household; cid: string }) {
   const t = useTranslations('claim');
   const date = useDate();
   const router = useRouter();
-  const { data: claim, error } = useClaim(household.id, cid);
+  const { data: claim, error, refetch } = useClaim(household.id, cid);
   const draft = useDraftAppeal(household.id, cid);
 
-  if (error) return <p className="rounded-md bg-gap-bg p-3 text-gap">{t('error')}</p>;
-  if (!claim) return <p className="text-muted">{t('loading')}</p>;
+  if (error && !claim) {
+    return <QueryError message={t('error')} retryLabel={t('retry')} onRetry={() => refetch()} />;
+  }
+  if (!claim) return <ListSkeleton rows={3} rowClassName="h-28" label={t('loading')} />;
   const { letter, assessment } = claim;
   if (!letter || !assessment) {
     return (
@@ -64,7 +67,7 @@ function Check({ household, cid }: { household: Household; cid: string }) {
       </Link>
 
       <header className="flex flex-col gap-1">
-        <h1 className="font-display text-2xl font-bold">
+        <h1 className={pageTitle}>
           {letter.patientName}
           {letter.diagnosis && ` · ${letter.diagnosis}`}
         </h1>
@@ -161,7 +164,9 @@ function Check({ household, cid }: { household: Household; cid: string }) {
         <FileText aria-hidden className="size-5" />
         {t('check.seeLetter')}
       </Button>
-      <p className="text-sm text-muted">{t('check.notAdvice')}</p>
+      <p className="text-sm text-muted">
+        {household.country === 'SG' ? t('check.notAdviceSg') : t('check.notAdvice')}
+      </p>
     </div>
   );
 }
@@ -174,6 +179,7 @@ function DeductionRow({
   householdId: string;
 }) {
   const t = useTranslations('claim.check');
+  const money = useMoney();
   const look = LOOK[d.verdict];
   return (
     <li className={cn('rounded-md border border-l-4 border-border bg-surface p-4', look.border)}>
@@ -187,7 +193,7 @@ function DeductionRow({
         </Badge>
         {d.recoverable > 0 && (
           <span className="amount text-sm font-medium">
-            {t('back', { amount: formatInr(d.recoverable) })}
+            {t('back', { amount: money(d.recoverable) })}
           </span>
         )}
       </div>
@@ -203,6 +209,7 @@ function DeductionRow({
 /** R-CLM-005: the co-pay the letter applied, checked against the policy rate. */
 function CopayRow({ claim }: { claim: ClaimCase }) {
   const t = useTranslations('claim.check');
+  const money = useMoney();
   const firing = claim.assessment?.trace.find((f) => f.ruleId === 'R-CLM-005');
   if (!firing || !claim.letter?.copayApplied) return null;
   const percent = Number(firing.inputs.copayPercent ?? 0);
@@ -226,7 +233,7 @@ function CopayRow({ claim }: { claim: ClaimCase }) {
         <RuleId id="R-CLM-005" />
       </div>
       <p className="mt-2 text-sm">
-        {valid ? t('copayValid', { percent }) : t('copayWrong', { expected: formatInr(expected) })}
+        {valid ? t('copayValid', { percent }) : t('copayWrong', { expected: money(expected) })}
       </p>
     </li>
   );
@@ -235,6 +242,7 @@ function CopayRow({ claim }: { claim: ClaimCase }) {
 /** What the engine read from the letter about the stay, which the family can correct. */
 function BillFacts({ household, claim }: { household: Household; claim: ClaimCase }) {
   const t = useTranslations('claim.check');
+  const money = useMoney();
   const assess = useAssess(household.id, claim.id);
   const [editing, setEditing] = useState(false);
   const [rent, setRent] = useState(String(claim.bill?.roomRentPerDay ?? ''));
@@ -247,9 +255,7 @@ function BillFacts({ household, claim }: { household: Household; claim: ClaimCas
       <p className="flex flex-wrap items-center gap-x-2 text-sm text-muted">
         <span>{t('fromLetter')}:</span>
         <span className="amount">
-          {bill.roomRentPerDay
-            ? t('room', { amount: formatInr(bill.roomRentPerDay) })
-            : t('noRoom')}
+          {bill.roomRentPerDay ? t('room', { amount: money(bill.roomRentPerDay) }) : t('noRoom')}
         </span>
         <span>· {bill.icuStay ? t('icu') : t('noIcu')}</span>
         <button className="font-medium text-primary underline" onClick={() => setEditing(true)}>

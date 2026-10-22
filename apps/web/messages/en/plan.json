@@ -19,11 +19,19 @@
     "savings_plan_not_term": "This is mainly a savings plan; its life cover is small for what you pay.",
     "below_minimum": "Below the minimum we suggest."
   },
+  "shell": {
+    "deskReady": "Hospital desk ready",
+    "demoDate": "Demo date: <b>{date}</b>",
+    "comingUp": "Coming up",
+    "family": "{name}: family settings",
+    "footer": "Prototype · demo data"
+  },
   "home": {
-    "demoDate": "Demo date: {date}",
+    "demoDate": "Demo date: <b>{date}</b>",
     "startStory": "Start the story",
     "score": "Safety score",
-    "summary": "{gaps, plural, =0 {No gaps} one {# gap} other {# gaps}} · {onJob, plural, =0 {nothing depends on a job} one {# depends on {name}'s job} other {# depend on {name}'s job}}",
+    "summaryGaps": "{gaps, plural, =0 {No gaps} one {# gap} other {# gaps}}",
+    "summaryJob": "{onJob, plural, =0 {nothing depends on a job} one {# depends on {name}'s job} other {# depend on {name}'s job}}",
     "mapCaption": "Who is covered for what, on the chosen date",
     "member": "Member",
     "cellTitle": "{name} · {risk}",
@@ -56,7 +64,7 @@
       "evening": "Good evening, {name}",
       "night": "Hello, {name}"
     },
-    "watch": "Kavach is keeping an eye on {policies, plural, one {# policy} other {# policies}} for {people} people.",
+    "watch": "Kavach is keeping an eye on <b>{policies, plural, one {# policy} other {# policies}}</b> for <b>{people} people</b>.",
     "needsYou": "{count, plural, =0 {Nothing needs you today.} one {# thing needs you.} other {# things need you.}}",
     "scoreWord": {
       "low": "Needs attention",
@@ -70,7 +78,7 @@
       "claim": "Check a claim letter",
       "claimHint": "Every deduction, against the policy",
       "invite": "Give {name} the hospital button",
-      "inviteHint": "Her own login, in Hindi"
+      "inviteHint": "Their own login, in {language}"
     },
     "comingUp": {
       "title": "Coming up",
@@ -81,15 +89,20 @@
     "ready": {
       "title": "Ready for an emergency",
       "intro": "If someone is admitted tonight, this is what Kavach will say first.",
-      "line": "{name}: give the {policy} card first{limit, select, none {} other { · room limit {limit}/day}}",
+      "line": "<b>{name}:</b> give the {policy} card first",
+      "limit": "room limit {limit}/day",
       "nick": {
         "company": "company policy",
         "parents": "parents’ policy",
         "topup": "top-up policy",
-        "own": "own policy"
+        "own": "own policy",
+        "shield": "Shield plan",
+        "medishield": "MediShield Life"
       },
-      "none": "No health policy covers {name} today."
-    }
+      "none": "No health policy covers {name} today.",
+      "wardAsk": "ask for a {ward, select, private {private hospital} other {Class {ward}}} ward"
+    },
+    "asOfShort": "As of {date}"
   },
   "scrubber": {
     "asOf": "As of {date}",
@@ -144,7 +157,18 @@
     },
     "disclaimer": "Premiums are illustrative, not a quote. Kavach doesn't sell insurance; talk to a licensed adviser before you buy.",
     "allocated": "In the plan",
-    "leftOver": "Left over"
+    "leftOver": "Left over",
+    "prioritised": "Prioritised cover",
+    "ofTotal": "{count} of {total} in the plan",
+    "openPolicy": "Open the policy",
+    "eyebrow": "Smart recommendations",
+    "traced": "Traced to {count, plural, one {# rule} other {# rules}}",
+    "budget": "Budget",
+    "used": "{pct}% of the free budget used",
+    "helpTitle": "Life changing?",
+    "helpAction": "Tell Kavach",
+    "utilised": "{percent}% of the money free for protection is in the plan",
+    "dotPrioritised": "Prioritised coverages"
   },
   "change": {
     "title": "What's changing?",
@@ -169,7 +193,12 @@
     },
     "check": "Check",
     "understood": "Here's what I understood",
-    "parseError": "Couldn't understand that. Try saying it another way."
+    "parseError": "Couldn't understand that. Try saying it another way.",
+    "intro": "Say it the way you would tell a friend. Kavach checks what it means for your family's cover and prepares the steps.",
+    "examplesSg": {
+      "newJob": "Joining a new company on 1 Dec. Their group insurance covers me and my family.",
+      "loan": "Taking a housing loan for a new flat."
+    }
   },
   "confirm": {
     "leaves": "{name} leaves {employer} on {date}",
@@ -212,7 +241,9 @@
   "actions": {
     "title": "Your steps",
     "empty": "Nothing waiting. Tell Kavach what's changing and it will prepare the steps.",
-    "due": "Due {date}"
+    "due": "Due {date}",
+    "emptyTitle": "Nothing is waiting for you",
+    "emptyBody": "When something changes, Kavach prepares the letters and reminders here for you to review."
   },
   "review": {
     "notFound": "Couldn't find this step.",
@@ -234,5 +265,27 @@
     "neverSends": "Kavach never sends letters for you. You send it.",
     "whatsapp": "Kavach on WhatsApp",
     "error": "Something went wrong. Please try again."
+  },
+  "policyKind": {
+    "medishield_life": "MediShield Life",
+    "integrated_shield": "Integrated Shield Plan"
+  },
+  "sgTerms": {
+    "label": {
+      "ward": "Ward",
+      "dailyLimit": "Daily ward limit",
+      "deductible": "Deductible",
+      "coinsurance": "Co-insurance",
+      "rider": "Rider",
+      "yearLimit": "Policy-year limit"
+    },
+    "value": {
+      "ward": "Pays as charged up to {ward, select, private {a private hospital ward} other {a Class {ward} ward}}",
+      "perDay": "{amount} a day",
+      "perYear": "{amount} a year",
+      "tiers": "{from}% falling to {to}%",
+      "percent": "{percent}%",
+      "riderCap": "{percent}% co-payment, capped at {cap} a year with a panel specialist"
+    }
   }
 }

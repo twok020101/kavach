@@ -9,15 +9,19 @@ type CardProps = HTMLAttributes<HTMLElement> & {
   interactive?: boolean;
 };
 
-/** The default container for content: rounded, white, bordered (elevation 0, never raised). */
+/** The default container for content: rounded 16, white, a hairline and the resting ambient shadow (Stitch). */
 export function Card({ as = 'div', tone = 'raised', interactive, className, ...rest }: CardProps) {
   const Tag: ElementType = as;
   return (
     <Tag
       className={cn(
-        'rounded-md p-4 sm:p-5',
-        tone === 'soft' ? 'bg-sunken' : 'border border-border bg-surface',
-        interactive && 'press cursor-pointer hover:border-primary',
+        'rounded-lg p-4 sm:p-5',
+        tone === 'soft'
+          ? 'bg-sunken'
+          : tone === 'flat'
+            ? 'border border-border bg-surface'
+            : 'border border-border bg-surface shadow-1',
+        interactive && 'press lift cursor-pointer hover:border-primary-container',
         className,
       )}
       {...rest}

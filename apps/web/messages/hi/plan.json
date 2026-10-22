@@ -19,11 +19,19 @@
     "savings_plan_not_term": "यह मुख्य रूप से बचत योजना है; जितना आप भरते हैं उसके हिसाब से जीवन कवर कम है।",
     "below_minimum": "हमारी सुझाई न्यूनतम राशि से कम।"
   },
+  "shell": {
+    "deskReady": "अस्पताल डेस्क तैयार है",
+    "demoDate": "डेमो की तारीख़: <b>{date}</b>",
+    "comingUp": "आगे की तारीख़ें",
+    "family": "{name}: परिवार की सेटिंग",
+    "footer": "प्रोटोटाइप · डेमो डेटा"
+  },
   "home": {
-    "demoDate": "डेमो की तारीख़: {date}",
+    "demoDate": "डेमो की तारीख़: <b>{date}</b>",
     "startStory": "कहानी शुरू करें",
     "score": "सुरक्षा स्कोर",
-    "summary": "{gaps, plural, =0 {कोई कमी नहीं} other {# कमियाँ}} · {onJob, plural, =0 {कुछ भी नौकरी पर निर्भर नहीं} other {# {name} की नौकरी पर निर्भर}}",
+    "summaryGaps": "{gaps, plural, =0 {कोई कमी नहीं} one {# कमी} other {# कमियाँ}}",
+    "summaryJob": "{onJob, plural, =0 {कुछ भी नौकरी पर निर्भर नहीं} other {# {name} की नौकरी पर निर्भर}}",
     "mapCaption": "चुनी गई तारीख़ पर किसे किस चीज़ का कवर है",
     "member": "सदस्य",
     "cellTitle": "{name} · {risk}",
@@ -56,7 +64,7 @@
       "evening": "शुभ संध्या, {name}",
       "night": "नमस्ते, {name}"
     },
-    "watch": "कवच {people} लोगों के लिए {policies} पॉलिसियों पर नज़र रखे हुए है।",
+    "watch": "कवच <b>{people} लोगों</b> के लिए <b>{policies, plural, one {# पॉलिसी} other {# पॉलिसियों}}</b> पर नज़र रखे हुए है।",
     "needsYou": "{count, plural, =0 {आज आपसे कुछ नहीं चाहिए।} one {# काम आपका इंतज़ार कर रहा है।} other {# काम आपका इंतज़ार कर रहे हैं।}}",
     "scoreWord": {
       "low": "ध्यान चाहिए",
@@ -70,7 +78,7 @@
       "claim": "क्लेम लेटर जाँचिए",
       "claimHint": "हर कटौती, पॉलिसी से मिलाकर",
       "invite": "{name} को अस्पताल वाला बटन दीजिए",
-      "inviteHint": "उनका अपना लॉगिन, हिंदी में"
+      "inviteHint": "उनका अपना लॉगिन, {language} में"
     },
     "comingUp": {
       "title": "आगे की तारीख़ें",
@@ -81,15 +89,20 @@
     "ready": {
       "title": "इमरजेंसी के लिए तैयार",
       "intro": "अगर आज रात कोई भर्ती हो, तो कवच सबसे पहले यह कहेगा।",
-      "line": "{name}: पहले {policy} का कार्ड दीजिए{limit, select, none {} other { · कमरे की लिमिट {limit}/दिन}}",
+      "line": "<b>{name}:</b> पहले {policy} का कार्ड दीजिए",
+      "limit": "कमरे की लिमिट {limit}/दिन",
       "nick": {
         "company": "कंपनी वाली पॉलिसी",
         "parents": "पेरेंट्स वाली पॉलिसी",
         "topup": "टॉप-अप पॉलिसी",
-        "own": "अपनी पॉलिसी"
+        "own": "अपनी पॉलिसी",
+        "shield": "Shield प्लान",
+        "medishield": "MediShield Life"
       },
-      "none": "आज कोई हेल्थ पॉलिसी {name} को कवर नहीं करती।"
-    }
+      "none": "आज कोई हेल्थ पॉलिसी {name} को कवर नहीं करती।",
+      "wardAsk": "{ward, select, private {निजी अस्पताल का वार्ड} other {क्लास {ward} वार्ड}} माँगें"
+    },
+    "asOfShort": "{date} की स्थिति"
   },
   "scrubber": {
     "asOf": "{date} तक",
@@ -144,7 +157,18 @@
     },
     "disclaimer": "प्रीमियम अनुमानित हैं, कोटेशन नहीं। Kavach बीमा नहीं बेचता; ख़रीदने से पहले लाइसेंसधारी सलाहकार से बात करें।",
     "allocated": "प्लान में",
-    "leftOver": "बचा हुआ"
+    "leftOver": "बचा हुआ",
+    "prioritised": "प्राथमिकता वाला कवर",
+    "ofTotal": "{total} में से {count} प्लान में",
+    "openPolicy": "पॉलिसी खोलें",
+    "eyebrow": "समझदार सुझाव",
+    "traced": "{count} नियमों पर आधारित",
+    "budget": "बजट",
+    "used": "खाली बजट का {pct}% इस्तेमाल",
+    "helpTitle": "ज़िंदगी में कुछ बदल रहा है?",
+    "helpAction": "कवच को बताइए",
+    "utilised": "सुरक्षा के लिए खाली पैसे का {percent}% योजना में है",
+    "dotPrioritised": "प्राथमिकता वाले कवर"
   },
   "change": {
     "title": "क्या बदल रहा है?",
@@ -169,7 +193,12 @@
     },
     "check": "जाँचें",
     "understood": "मैंने यह समझा",
-    "parseError": "समझ नहीं आया। किसी और तरह से बताइए।"
+    "parseError": "समझ नहीं आया। किसी और तरह से बताइए।",
+    "intro": "जैसे किसी दोस्त को बताते, वैसे ही लिखें। Kavach देखेगा कि परिवार के कवर पर इसका क्या असर है, और कदम तैयार करेगा।",
+    "examplesSg": {
+      "newJob": "1 दिसंबर से नई कंपनी में जा रहा हूँ। उनका ग्रुप बीमा मुझे और मेरे परिवार को कवर करता है।",
+      "loan": "नए फ़्लैट के लिए होम लोन ले रहे हैं।"
+    }
   },
   "confirm": {
     "leaves": "{name} {date} को {employer} छोड़ रहे हैं",
@@ -212,7 +241,9 @@
   "actions": {
     "title": "आपके क़दम",
     "empty": "कुछ बाक़ी नहीं। Kavach को बताइए क्या बदल रहा है, वह क़दम तैयार कर देगा।",
-    "due": "{date} तक"
+    "due": "{date} तक",
+    "emptyTitle": "अभी आपके लिए कुछ बाकी नहीं है",
+    "emptyBody": "कुछ बदलेगा तो Kavach यहाँ आपके देखने के लिए पत्र और रिमाइंडर तैयार रखेगा।"
   },
   "review": {
     "notFound": "यह क़दम नहीं मिला।",
@@ -234,5 +265,27 @@
     "neverSends": "Kavach आपकी ओर से कभी पत्र नहीं भेजता। भेजना आपको है।",
     "whatsapp": "WhatsApp पर Kavach",
     "error": "कुछ गड़बड़ हुई। फिर कोशिश करें।"
+  },
+  "policyKind": {
+    "medishield_life": "MediShield Life",
+    "integrated_shield": "Integrated Shield Plan"
+  },
+  "sgTerms": {
+    "label": {
+      "ward": "वार्ड",
+      "dailyLimit": "रोज़ की वार्ड सीमा",
+      "deductible": "डिडक्टिबल",
+      "coinsurance": "को-इंश्योरेंस",
+      "rider": "राइडर",
+      "yearLimit": "पॉलिसी वर्ष की सीमा"
+    },
+    "value": {
+      "ward": "{ward, select, private {निजी अस्पताल के वार्ड} other {क्लास {ward} वार्ड}} तक पूरा बिल",
+      "perDay": "{amount} प्रति दिन",
+      "perYear": "{amount} प्रति वर्ष",
+      "tiers": "{from}% से घटकर {to}%",
+      "percent": "{percent}%",
+      "riderCap": "{percent}% सह-भुगतान, पैनल विशेषज्ञ के साथ सालाना सीमा {cap}"
+    }
   }
 }

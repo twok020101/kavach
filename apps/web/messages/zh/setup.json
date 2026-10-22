@@ -1,0 +1,281 @@
+{
+  "step": "第 {step} 步，共 {total} 步",
+  "back": "返回",
+  "continue": "继续",
+  "error": "没有成功。请再试一次。",
+  "loading": "加载中…",
+  "loadError": "无法载入您的家庭资料。请检查网络连接后再试一次。",
+  "retry": "再试一次",
+  "signIn": {
+    "title": "您全家的保险，集中在一处",
+    "intro": "登录以妥善保存并同步您全家的保障、文件和计划。",
+    "statusChip": "原型 · 演示数据",
+    "dpdp": "遵循《2023年数字个人数据保护法》（DPDP）",
+    "dpdpSg": "按新加坡 PDPA 设计",
+    "tabsLabel": "登录方式",
+    "tabs": {
+      "quick": "快速进入",
+      "otp": "手机验证码",
+      "abha": "ABHA ID",
+      "singpass": "Singpass"
+    },
+    "continueShield": "进入家庭护盾",
+    "google": "使用 Google 账号登录",
+    "googleOff": "这个黑客松原型已关闭 Google 登录。不用账号继续，也能试用所有功能。",
+    "guest": "不用账号继续",
+    "guestNote": "我们把您的家庭资料保存在这部设备上。您可以稍后再添加账号。",
+    "localMode": "本地模式：登录已关闭，您将直接进入。",
+    "noSetup": "无需设置",
+    "offBadge": "未开启",
+    "useQuick": "使用快速进入",
+    "otp": {
+      "title": "用手机号码登录",
+      "phone": "手机号码",
+      "send": "发送验证码",
+      "off": "这个原型尚未开启一次性密码（OTP）登录。用快速进入就能试用所有功能。"
+    },
+    "abha": {
+      "title": "用 ABHA ID 登录",
+      "label": "ABHA 号码（14 位数）",
+      "what": "ABHA 是您的 Ayushman Bharat 健康账户号码。",
+      "continue": "用 ABHA 继续",
+      "off": "这个原型尚未开启 ABHA 登录。用快速进入就能试用所有功能。"
+    },
+    "singpass": {
+      "title": "用 Singpass 登录",
+      "label": "Singpass 账号（NRIC 或 FIN）",
+      "what": "Singpass 是新加坡的国家数码身份。",
+      "continue": "用 Singpass 继续",
+      "off": "这个原型尚未开启 Singpass 登录。用快速进入就能试用所有功能。"
+    },
+    "demo": "只是看看？试试示例家庭",
+    "demoLink": "试试演示家庭",
+    "invited": "{inviter} 邀请您加入 {household}",
+    "invitedAs": "您将以 {name} 的身份加入。您会看到自己的保障和医院按钮。",
+    "join": "加入家庭",
+    "inviteGone": "这个邀请已过期或已被使用。请索取新的链接。",
+    "demoCard": {
+      "badge": "无需设置",
+      "title": "探索 Sharma 一家的演示",
+      "body": "五个人、四份保单和一次住院都已设置好，您可以用真实数字查看每个画面。",
+      "meta": "{people} 人 · {policies} 份保单 · 演示数据",
+      "open": "打开演示",
+      "initial": "S",
+      "kicker": "示例家庭 · 印度"
+    },
+    "facts": {
+      "title": "Kavach 一览",
+      "chip": "原型",
+      "languages": "语言",
+      "purposes": "同意选项",
+      "sold": "出售的数据"
+    },
+    "help": {
+      "hospital": "现在在医院吗？",
+      "whatsapp": "WhatsApp 帮助"
+    },
+    "promiseTitle": "我们的隐私承诺",
+    "promisePill": "绝不出售",
+    "demoCardSg": {
+      "kicker": "示例家庭 · 新加坡",
+      "initial": "T",
+      "title": "看看 Tan 一家在医院柜台",
+      "body": "Ah Kow 在 Sample General Hospital 入院：MediShield Life、Shield 计划和病房选择，用华语。",
+      "open": "打开新加坡场景"
+    }
+  },
+  "launch": {
+    "homeTitle": "Kavach 已就绪",
+    "homeBody": "您全家的保单已经读好，随时可以核查。",
+    "homePill": "正在打开您的主页",
+    "otherPill": "正在打开 Kavach",
+    "setupTitle": "您已登录",
+    "setupBody": "接下来只需几个简短步骤，就能设置好您的家庭。",
+    "setupPill": "正在打开设置"
+  },
+  "consent": {
+    "title": "开始之前",
+    "intro": "Kavach 保存您的家庭资料，只为给您提供建议。请依照印度《2023年数字个人数据保护法》（DPDP），逐项选择我们可以使用的内容。",
+    "introSg": "Kavach 保存您的家庭资料，只为给您提供建议。请逐项选择我们可以使用的内容。没有您的同意，不读取、不保存任何内容，之后也可以随时更改。",
+    "chip": "依照《2023年 DPDP 法》征求同意",
+    "chipSg": "按新加坡 PDPA 征求同意",
+    "changeNote": "您可以随时在设置中更改",
+    "purposes": {
+      "planning": {
+        "label": "使用我的家庭、财务和保单资料来规划保障",
+        "hint": "用来显示您全家的保障、找出保单之间的缺口，并估算需要补充多少。",
+        "note": "只在您的家庭设置在此期间保存；可随时在设置中删除。"
+      },
+      "documents": {
+        "label": "读取我上传的文件",
+        "hint": "保单、福利摘要、医院估价单和理赔信，读取后每一卢比都能对应到所在页码。",
+        "hintSg": "保单、福利摘要、医院估价单和理赔信，读取后每一元都能对应到所在页码。",
+        "note": "只读取您上传的文件。不会从保险公司获取任何内容。"
+      },
+      "health": {
+        "label": "健康资料（例如糖尿病）",
+        "hint": "长期病症会影响等待期，也会影响在医院该提出什么要求。绝不与保险公司或任何其他人分享。",
+        "note": "您可以随时在设置中关闭这一项。",
+        "warn": "没有这一项，医院建议可能不够精确。"
+      },
+      "whatsapp": {
+        "label": "给我家人的 WhatsApp 消息",
+        "hint": "医院提醒和有日期的提示，发到您所选家人的手机上。",
+        "note": "只有提醒和提示。绝无推销。"
+      }
+    },
+    "required": "Kavach 至少需要第一项才能运作。",
+    "promise": "我们绝不出售您的数据。我们绝不代您联系保险公司。您可以随时在设置中下载或删除所有内容。",
+    "guarantee": "我们<b>绝不出售您的数据</b>。我们绝不代您联系保险公司。您可以随时在设置中下载或删除所有内容。",
+    "agree": "同意并继续",
+    "essential": "必需",
+    "optional": "可选",
+    "count": "{total} 项用途中已开启 {on} 项",
+    "promiseTitle": "我们的承诺"
+  },
+  "family": {
+    "title": "介绍一下您的家庭",
+    "intro": "谁依靠您？一句话就够了。",
+    "label": "用您自己的话说说您的家庭",
+    "placeholder": "我是 Rahul，34 岁，住在 Bengaluru。太太 Priya，女儿 Anaya 5 岁，我父母和我们同住…",
+    "placeholderSg": "我是 Wei-Ming，38 岁，住在 Tampines。太太 Hui-Ling，儿子 Jia-En 6 岁，我父母和我们同住…",
+    "try": "试试：",
+    "example": "我、我太太 Priya、女儿 Anaya，还有我在 Pune 的父母",
+    "exampleSg": "我、我太太 Hui-Ling、儿子 Jia-En，还有住在 Tampines 的父母",
+    "speak": "按住说话",
+    "listening": "正在听… 说完后松开",
+    "micBlocked": "无法使用麦克风。请改为输入。",
+    "voiceReady": "语音已录好（{seconds} 秒）。点继续发送。",
+    "clearVoice": "移除",
+    "understanding": "正在理解您的家庭",
+    "found": "找到 {count, plural, one {# 个人} other {# 个人}}",
+    "nobody": "我没能从中找到任何人。能说说谁和您同住吗？"
+  },
+  "confirm": {
+    "title": "这是您的家庭吗？",
+    "intro": "点任何人即可更改资料。",
+    "familyName": "家庭名称",
+    "familyNamePlaceholder": "Kulkarni 一家",
+    "city": "城市",
+    "you": "您",
+    "age": "{age} 岁",
+    "addAge": "添加年龄",
+    "earning": "有收入",
+    "assumed": "我们假设：",
+    "assumedEarning": "{name} {earning, select, true {有收入} other {没有收入}}",
+    "change": "更改",
+    "add": "添加成员",
+    "needAges": "填写 {count, plural, one {# 项资料} other {# 项资料}}后继续",
+    "looksRight": "没错",
+    "edit": {
+      "title": "编辑成员",
+      "newTitle": "添加成员",
+      "name": "姓名",
+      "relation": "关系",
+      "age": "年龄",
+      "earning": "有收入",
+      "earningOptions": {
+        "yes": "是",
+        "no": "否",
+        "unknown": "不确定"
+      },
+      "conditions": "健康状况",
+      "conditionsHint": "只因您允许了健康资料才会保存。",
+      "language": "Kavach 与他们交流的语言",
+      "save": "保存",
+      "remove": "从家庭中移除"
+    },
+    "conditionNames": {
+      "diabetes_t2": "糖尿病",
+      "hypertension": "高血压",
+      "heart_disease": "心脏病",
+      "asthma": "哮喘"
+    },
+    "defaultNames": {
+      "self": "您",
+      "spouse": "配偶",
+      "child": "子女",
+      "parent": "父母",
+      "parent_in_law": "岳父母/公婆",
+      "other": "家庭成员"
+    },
+    "assumedSelf": "您是家庭的收入来源",
+    "heard": "我们听到：“{text}”"
+  },
+  "money": {
+    "title": "四个数字。大概就行。",
+    "intro": "为什么要问：只建议您负担得起的。",
+    "takeHome": "每月实得薪资",
+    "emi": "每月所有贷款分期",
+    "spend": "每月家庭开支",
+    "spendHint": "房租、学费、日用品…",
+    "fund": "紧急时可动用的储蓄",
+    "emiHigh": "这占了您收入的很大一部分。我们会把计划做得精简些。",
+    "loans": "添加贷款详情（可选）",
+    "loansOutstanding": "尚未还清的贷款（房贷、车贷…）",
+    "income": "税前年收入（可选）",
+    "incomeHint": "用于计算人寿保额。留空则按实得薪资 × 12 计算。"
+  },
+  "questions": {
+    "title": "只有 {count, plural, one {一个问题} other {# 个问题}}",
+    "none": "没有更多问题了",
+    "noneIntro": "我们已经有了显示您全家保障所需的资料。",
+    "intro": "每个回答都会改变您的计划。",
+    "spouse_earning": {
+      "q": "{name} 有收入吗？",
+      "why": "决定家庭依靠谁的收入。",
+      "options": {
+        "no": "没有",
+        "part_time": "有，兼职",
+        "yes": "有"
+      }
+    },
+    "other_cover": {
+      "q": "{employer, select, none {您有没有尚未添加的健康或人寿保单？} other {{employer} 是您唯一的雇主保障吗？}}",
+      "why": "决定您换工作时父母是否仍有保障。",
+      "options": {
+        "only": "就这些",
+        "another": "我还有另一份"
+      }
+    },
+    "parents_health": {
+      "q": "{name} 有长期健康问题吗？",
+      "why": "医院和保险公司会问；它会改变等待期。",
+      "options": {
+        "none": "没有",
+        "diabetes_t2": "糖尿病",
+        "hypertension": "高血压",
+        "heart_disease": "心脏"
+      }
+    },
+    "impact": "您的人寿保额会变动约 <amount></amount>",
+    "see": "查看我全家的保障"
+  },
+  "landing": {
+    "signIn": "登录",
+    "start": "从我的家庭开始"
+  },
+  "stepNames": {
+    "family": "家庭",
+    "money": "财务",
+    "documents": "文件",
+    "questions": "问题"
+  },
+  "brand": {
+    "tagline": "在每一个保险时刻，陪在您家人身边。",
+    "promise": "我们绝不出售您的数据，也绝不代您联系保险公司。",
+    "change": {
+      "title": "生活有变化时",
+      "body": "新工作、新生儿、父母搬来同住：看看您会失去哪些保障，并把它保住。"
+    },
+    "hospital": {
+      "title": "在医院柜台",
+      "body": "用您的语言，用语音。该给哪张卡，该要哪种病房。"
+    },
+    "claim": {
+      "title": "索赔出问题时",
+      "body": "每一项扣减都对照保单核查，申诉信已拟好。"
+    },
+    "lead": "Kavach 把家里的每一份保单读一遍，然后在家庭最容易损失金钱的三个时刻告诉您该怎么做。用您的语言，附页码。"
+  }
+}

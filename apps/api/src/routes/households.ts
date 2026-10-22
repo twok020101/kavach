@@ -1,4 +1,4 @@
-import { DemoCheckpoint, Household } from '@kavach/schemas';
+import { DemoCheckpoint, DemoPersona, Household } from '@kavach/schemas';
 import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod';
 import { z } from 'zod';
 import { loadHousehold, requireUser } from '../auth';
@@ -23,7 +23,7 @@ export const householdRoutes: FastifyPluginAsyncZod = async (app) => {
       schema: {
         params: Params,
         body: z.object({
-          persona: z.literal('sharma').default('sharma'),
+          persona: DemoPersona.optional(),
           checkpoint: DemoCheckpoint,
         }),
         response: { 200: Household },
@@ -31,7 +31,7 @@ export const householdRoutes: FastifyPluginAsyncZod = async (app) => {
     },
     async (request) => {
       const household = await loadDemoHousehold(request, request.params.hid);
-      return resetDemoHousehold(household, request.body.checkpoint);
+      return resetDemoHousehold(household, request.body.checkpoint, request.body.persona);
     },
   );
 

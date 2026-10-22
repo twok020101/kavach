@@ -1,8 +1,14 @@
-import { ProofResponse, type FieldScore } from '@kavach/schemas';
-import { ArrowLeft, BadgeCheck, CircleDashed, ExternalLink, FlaskConical } from 'lucide-react';
+import { ProofResponse, type FieldScore, type Locale } from '@kavach/schemas';
+import {
+  ArrowLeft,
+  BadgeCheck,
+  CircleDashed,
+  ExternalLink,
+  FlaskConical,
+  RotateCw,
+} from 'lucide-react';
 import { getFormatter, getTranslations, setRequestLocale } from 'next-intl/server';
 import type { ReactNode } from 'react';
-import { EvidenceBand } from '@/components/kavach/evidence-band';
 import { RuleId } from '@/components/kavach/verified-badge';
 import { LanguageSwitch } from '@/components/kavach/language-switch';
 import { Logo } from '@/components/kavach/logo';
@@ -10,8 +16,52 @@ import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
 import { Link } from '@/i18n/navigation';
 import { api } from '@/lib/api';
+import { marketForLocale } from '@/lib/market';
 
 const EVALS_URL = 'https://github.com/twok020101/kavach/tree/main/evals';
+
+const isSgRule = (id: string) => id.startsWith('R-SG');
+
+/**
+ * The dark evidence band at the top (as the app's EvidenceBand), naming both markets' sources:
+ * this page lists India's rules and Singapore's, so the band cites IRDAI and MOH / CPF Board / MAS,
+ * the reader's market first.
+ */
+async function ProofBand({
+  sg,
+  wordings,
+  checked,
+}: {
+  sg: boolean;
+  wordings?: number;
+  checked?: number;
+}) {
+  const t = await getTranslations('common.evidence');
+  const td = await getTranslations('common.disclaimer');
+  const tsg = await getTranslations('landing.sg.footer');
+  const india = [t('irdai2024'), t('irdai2020')];
+  const sources = sg ? [tsg('sources'), ...india] : [...india, tsg('sources')];
+  return (
+    <div className="bg-primary-hover text-sm leading-relaxed text-white">
+      <div className="mx-auto flex max-w-3xl flex-col gap-1 px-4 py-5">
+        <p>
+          <span className="text-white/70">{t('sources')} </span>
+          {sources.map((s, n) => (
+            <span key={s}>
+              {n > 0 && <span className="text-white/70"> · </span>}
+              <span className="font-semibold text-accent">{s}</span>
+            </span>
+          ))}
+        </p>
+        {wordings !== undefined && (
+          <p>{t('wordings', { count: wordings, checked: checked ?? 0 })}</p>
+        )}
+        <p className="text-white/70">{t('sample')}</p>
+        <p className="mt-2 border-t border-white/20 pt-2 text-white/85">{td('global')}</p>
+      </div>
+    </div>
+  );
+}
 
 async function loadProof() {
   try {
@@ -26,22 +76,28 @@ export default async function ProofPage({ params }: PageProps<'/[locale]/proof'>
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations('proof');
+  const ts = await getTranslations('landing.admissionSg');
   const format = await getFormatter();
   const proof = await loadProof();
+  const sg = marketForLocale(locale as Locale) === 'SG';
 
   const pct = (a: number) => format.number(a, { style: 'percent', maximumFractionDigits: 0 });
 
   return (
-    <div className="min-h-dvh">
+    <div className="lp-page min-h-dvh">
       <header className="mx-auto flex max-w-3xl items-center gap-3 px-4 py-3">
-        <Link href="/" aria-label={t('back')} className="flex items-center gap-1 text-primary">
+        <Link
+          href="/"
+          aria-label={t('back')}
+          className="flex min-h-11 items-center gap-1 rounded-md text-primary"
+        >
           <ArrowLeft aria-hidden className="size-5" />
           <Logo />
         </Link>
         <LanguageSwitch className="ml-auto" />
       </header>
-      <EvidenceBand
-        as="header"
+      <ProofBand
+        sg={sg}
         wordings={proof?.results.wordings}
         checked={proof?.results.labelsChecked}
       />
@@ -55,9 +111,20 @@ export default async function ProofPage({ params }: PageProps<'/[locale]/proof'>
         </section>
 
         {!proof ? (
-          <p role="alert" className="rounded-md bg-gap-bg p-3 text-gap">
-            {t('error')}
-          </p>
+          <div
+            role="alert"
+            className="flex flex-col items-start gap-3 rounded-md bg-gap-bg p-4 text-gap sm:flex-row sm:items-center sm:justify-between"
+          >
+            <p>{t('error')}</p>
+            {/* A full load, so the server asks the API again. */}
+            <a
+              href={`/${locale}/proof`}
+              className="inline-flex min-h-12 shrink-0 items-center gap-2 rounded-md bg-surface px-4 font-semibold text-primary shadow-1"
+            >
+              <RotateCw aria-hidden className="size-4" />
+              {t('retry')}
+            </a>
+          </div>
         ) : (
           <>
             {proof.results.mode === 'fixtures' && (
@@ -133,7 +200,7 @@ export default async function ProofPage({ params }: PageProps<'/[locale]/proof'>
             </Section>
 
             <Section id="wordings" title={t('wordingsTitle')} intro={t('wordingsIntro')}>
-              <ul className="flex flex-col gap-3">
+              <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                 {proof.results.results.map((w) => (
                   <Card as="li" key={w.uin} className="flex flex-col gap-2 p-4">
                     <p className="font-semibold">{w.product}</p>
@@ -166,25 +233,52 @@ export default async function ProofPage({ params }: PageProps<'/[locale]/proof'>
                   total: proof.rules.length,
                 })}
               </p>
-              <ul className="flex flex-col divide-y divide-border rounded-md border border-border bg-surface">
-                {proof.rules.map((r) => (
-                  <li key={r.id} className="flex flex-col gap-1.5 p-3">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <RuleId id={r.id} />
-                      {r.status === 'verified' ? (
-                        <Badge tone="safe" icon={BadgeCheck}>
-                          {t('ruleVerified')}
-                        </Badge>
-                      ) : (
-                        <Badge tone="partial" icon={CircleDashed}>
-                          {t('ruleToVerify')}
-                        </Badge>
-                      )}
-                    </div>
-                    <p>{r.name}</p>
-                  </li>
-                ))}
-              </ul>
+              {/* India's rules and Singapore's, each under its own name; the reader's market first. */}
+              {(sg ? (['SG', 'IN'] as const) : (['IN', 'SG'] as const)).map((m) => {
+                const rules = proof.rules.filter((r) => isSgRule(r.id) === (m === 'SG'));
+                if (rules.length === 0) return null;
+                return (
+                  <div key={m} className="flex flex-col gap-2 pt-2">
+                    <h3 className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
+                      <span className="font-display text-lg font-bold">
+                        {m === 'SG' ? t('rulesSingapore') : t('rulesIndia')}
+                      </span>
+                      <span className="text-sm text-muted">
+                        {t('groupCount', {
+                          verified: rules.filter((r) => r.status === 'verified').length,
+                          total: rules.length,
+                        })}
+                      </span>
+                    </h3>
+                    <ul className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                      {rules.map((r) => (
+                        <li
+                          key={r.id}
+                          className="flex flex-col gap-1.5 rounded-md border border-border bg-surface p-3"
+                        >
+                          <div className="flex flex-wrap items-center gap-2">
+                            <RuleId id={r.id} />
+                            {r.status === 'verified' ? (
+                              <Badge tone="safe" icon={BadgeCheck}>
+                                {t('ruleVerified')}
+                              </Badge>
+                            ) : (
+                              <Badge tone="partial" icon={CircleDashed}>
+                                {t('ruleToVerify')}
+                              </Badge>
+                            )}
+                          </div>
+                          <p className="text-sm">
+                            {isSgRule(r.id) && ts.has(`rulesNames.${r.id}`)
+                              ? ts(`rulesNames.${r.id}`)
+                              : r.name}
+                          </p>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                );
+              })}
             </Section>
 
             <Section id="method" title={t('methodTitle')}>
@@ -212,7 +306,7 @@ export default async function ProofPage({ params }: PageProps<'/[locale]/proof'>
             </Section>
 
             <Section id="honest" title={t('honestTitle')}>
-              <p>{t('honest')}</p>
+              <p>{t('honest', { count: proof.results.wordings })}</p>
             </Section>
           </>
         )}

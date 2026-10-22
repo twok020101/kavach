@@ -1,0 +1,168 @@
+{
+  "title": "Tetapan",
+  "error": "Itu tidak berjaya. Sila cuba lagi.",
+  "appearance": {
+    "title": "Bahasa dan paparan",
+    "language": "Bahasa",
+    "theme": "Tema",
+    "themes": {
+      "system": "Sama seperti telefon saya",
+      "light": "Cerah",
+      "dark": "Gelap"
+    },
+    "textSize": "Saiz teks",
+    "textSizes": {
+      "normal": "Biasa",
+      "large": "Besar",
+      "xlarge": "Lebih besar"
+    },
+    "toggle": "Tukar tema cerah atau gelap"
+  },
+  "family": {
+    "title": "Keluarga",
+    "access": "Akses keluarga",
+    "accessHint": "Siapa boleh membuka Kavach untuk keluarga anda",
+    "edit": "Sunting keluarga dan kewangan",
+    "editHint": "Orang, umur, pendapatan dan perbelanjaan",
+    "demo": "Kawalan demo",
+    "demoHint": "Lompat ke satu saat dalam cerita keluarga ini",
+    "timeline": "Garis masa",
+    "timelineHint": "Apa yang berlaku dan apa yang akan datang",
+    "claims": "Tuntutan",
+    "claimsHint": "Surat penyelesaian disemak, rayuan disediakan",
+    "actions": "Langkah anda",
+    "actionsHint": "Surat dan peringatan yang menunggu anda",
+    "viewAs": "Lihat aplikasi sebagai {name}",
+    "viewAsHint": "Laman utama ringkas yang ahli keluarga dapat: satu butang, perlindungan mereka, siapa untuk dihubungi"
+  },
+  "consent": {
+    "title": "Apa yang Kavach boleh guna",
+    "save": "Simpan pilihan",
+    "saved": "Disimpan",
+    "demoNote": "Keluarga demo adalah rekaan, jadi ia mempunyai setiap kebenaran."
+  },
+  "data": {
+    "title": "Data anda",
+    "download": "Muat turun data saya",
+    "downloadHint": "Semua yang Kavach simpan tentang keluarga anda, sebagai satu fail.",
+    "delete": "Padam data keluarga kami",
+    "deleteHint": "Memadam keluarga, dokumennya, pelan dan surat. Ini tidak boleh dibatalkan.",
+    "deleteConfirm": "Taip “{phrase}” untuk mengesahkan",
+    "deletePhrase": "DELETE",
+    "deleteButton": "Padam semuanya",
+    "deleted": "Dipadam."
+  },
+  "about": {
+    "title": "Tentang",
+    "body": "Kavach menjelaskan insurans anda dan membantu anda bertindak. Ia tidak menjual insurans dan tidak pernah menghubungi syarikat insurans bagi pihak anda. Jumlah dikira dengan peraturan tetap daripada dokumen polisi anda; sentiasa semak dengan syarikat insurans anda sebelum membuat keputusan.",
+    "proof": "Sejauh mana tepat Kavach?"
+  },
+  "signOut": "Log keluar",
+  "access": {
+    "title": "Akses keluarga",
+    "intro": "Orang yang boleh membuka Kavach untuk keluarga anda, dan siapa yang dimaklumkan apabila seseorang berada di hospital.",
+    "logins": "Log masuk",
+    "owner": "Pemilik · nampak semua",
+    "member": "Nampak perlindungan sendiri dan butang hospital",
+    "youLabel": "Peranti ini",
+    "remove": "Buang",
+    "alerts": "Apabila seseorang berada di hospital, beritahu",
+    "alertsHint": "Mendapat makluman di WhatsApp dan nampak lawatan hospital dalam garis masa.",
+    "alertsNone": "Pilih seseorang",
+    "invite": "Jemput ahli keluarga",
+    "inviteWho": "Siapa yang anda jemput?",
+    "inviteLanguage": "Bahasa mereka",
+    "invitePhone": "Nombor WhatsApp mereka (pilihan)",
+    "createLink": "Buat pautan jemputan",
+    "linkReady": "Kongsi pautan ini dengan {name}. Ia sah selama 14 hari.",
+    "copy": "Salin pautan",
+    "copied": "Disalin",
+    "sendWhatsApp": "Hantar di WhatsApp",
+    "shareText": "{inviter} menambah anda ke {household} di Kavach. Buka pautan ini: {url}",
+    "pending": "Jemputan dihantar",
+    "inviteSent": "Dijemput {date}",
+    "joined": "Telah menyertai",
+    "whatsapp": "WhatsApp",
+    "whatsappHint": "Kavach menghantar mesej kepada seseorang di WhatsApp hanya selepas mereka membalas YES kepada mesej pertamanya. Menghantar STOP akan mematikannya.",
+    "waState": {
+      "joined": "Kata ya",
+      "opted_out": "Dihentikan",
+      "not_joined": "Belum menyertai",
+      "no_number": "Tiada nombor"
+    },
+    "phonePlaceholder": "{market, select, SG {+65 9xxx xxxx} other {+91 98xxx xxxxx}}"
+  },
+  "timeline": {
+    "title": "Garis masa",
+    "intro": "Apa yang berlaku pada perlindungan keluarga anda, dan apa yang akan datang.",
+    "today": "Hari ini",
+    "ahead": "Akan datang",
+    "empty": "Belum ada apa-apa di sini. Tambah dokumen atau beritahu kami apa yang berubah.",
+    "filters": {
+      "all": "Semua",
+      "changes": "Perubahan",
+      "documents": "Dokumen",
+      "hospital": "Hospital",
+      "claims": "Tuntutan"
+    },
+    "by": {
+      "you": "Anda kata",
+      "document": "Daripada dokumen",
+      "kavach": "Kavach"
+    },
+    "entry": {
+      "setup": "Keluarga disediakan · {count} orang",
+      "consent": "Kebenaran dikemas kini",
+      "document_added": "Membaca {filename}",
+      "life_change": "Perubahan hidup",
+      "action": "Disediakan untuk anda",
+      "desk_session": "{name} di hospital",
+      "desk_session_at": "{name} di {hospital}",
+      "claim_case": "Surat tuntutan disemak",
+      "cover_starts": "Perlindungan {name} bermula",
+      "cover_ends": "Perlindungan {name} tamat",
+      "notification": "Makluman kepada {name}"
+    },
+    "actionStatus": {
+      "draft": "Menunggu anda",
+      "approved": "Diluluskan",
+      "done": "Selesai",
+      "dismissed": "Diabaikan"
+    },
+    "effective": "Dari {date}",
+    "channel": {
+      "whatsapp_template": "di WhatsApp",
+      "whatsapp_text": "di WhatsApp",
+      "in_app": "dalam aplikasi"
+    }
+  },
+  "plan": {
+    "budgetTitle": "Bajet anda untuk perlindungan",
+    "budgetLeft": "Anda ada baki <amount></amount> setiap bulan selepas ansuran pinjaman dan perbelanjaan.",
+    "budgetTotal": "Kami cadangkan meletakkan sehingga <amount></amount> sebulan untuk perlindungan: yang lebih kecil antara 20% daripada baki dan 10% daripada gaji bersih anda.",
+    "budgetExisting": "Anda sudah membayar <existing></existing> sebulan untuk polisi anda sendiri, jadi <free></free> tersedia untuk perlindungan baru.",
+    "budgetThin": "Simpanan kecemasan anda kurang daripada tiga bulan ansuran pinjaman dan perbelanjaan. Bina simpanan itu secara serentak.",
+    "budgetChange": "Tukar angka kewangan anda",
+    "itemWhat": "Apa yang dilindungi",
+    "itemCover": "Perlindungan <amount></amount>",
+    "itemWho": "Untuk {names}",
+    "itemPremium": "Kira-kira <amount></amount> sebulan",
+    "itemIllustrative": "Premium indikatif daripada senarai harga ilustrasi, bukan sebut harga.",
+    "itemWhy": "Mengapa saiz ini",
+    "partner": "Bercakap dengan rakan kongsi berlesen",
+    "partnerTitle": "Bercakap dengan rakan kongsi berlesen",
+    "partnerIntro": "Kavach tidak menjual insurans. Rakan kongsi berlesen boleh menunjukkan sebut harga sebenar untuk: {item}.",
+    "partnerShare": "Kongsi dengan rakan kongsi",
+    "partnerFields": {
+      "cover": "Perlindungan yang anda perlukan",
+      "people": "Nama dan umur",
+      "city": "Bandar anda",
+      "health": "Keadaan kesihatan"
+    },
+    "partnerContinue": "Teruskan ke rakan kongsi",
+    "partnerDemo": "Demo — tiada pembelian sebenar. Dalam produk sebenar, ini membuka halaman rakan kongsi dengan hanya apa yang anda tandakan.",
+    "partnerBack": "Kembali",
+    "itemPremiumLabel": "Premium",
+    "perMonthShort": "sebulan"
+  }
+}

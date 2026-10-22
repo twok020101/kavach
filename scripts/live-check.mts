@@ -53,14 +53,21 @@ function micChunks(): string[] {
 }
 const TURN_TIMEOUT_MS = Number(process.env.TURN_TIMEOUT_MS ?? 30_000);
 
-const { householdId } = await post<{ householdId: string }>('/v1/public/demo?checkpoint=hospital');
+// LIVE_PERSONA=tan LIVE_PATIENT=mem_ahkow LIVE_LANGUAGE=zh runs the Singapore scene.
+const PERSONA = process.env.LIVE_PERSONA ?? 'sharma';
+const PATIENT = process.env.LIVE_PATIENT ?? 'mem_suresh';
+const LANGUAGE = process.env.LIVE_LANGUAGE ?? 'hi';
+const { householdId } = await post<{ householdId: string }>(
+  `/v1/public/demo?checkpoint=hospital&persona=${PERSONA}`,
+);
 const desk = `/v1/households/${householdId}/desk/sessions`;
 const { sessionId } = await post<{ sessionId: string }>(desk, {
-  patientMemberId: 'mem_suresh',
-  language: 'hi',
+  patientMemberId: PATIENT,
+  language: LANGUAGE,
   channel: 'live',
 });
-await post(`${desk}/${sessionId}/captures:sample`);
+const FIXTURE = process.env.LIVE_FIXTURE ? `?fixture=${process.env.LIVE_FIXTURE}` : '';
+await post(`${desk}/${sessionId}/captures:sample${FIXTURE}`);
 console.log(`session ${sessionId} (household ${householdId}), sample estimate captured`);
 
 const wsUrl = new URL(`/v1/live/${sessionId}`, API.replace(/^http/, 'ws'));
@@ -86,7 +93,7 @@ await new Promise<void>((resolve, reject) => {
     const message = JSON.parse(String(event.data)) as LiveServerMessage;
     got.push(message);
     if (message.type === 'ready') {
-      ws.send(JSON.stringify({ type: 'hello', language: 'hi', sampleRate: 16000 }));
+      ws.send(JSON.stringify({ type: 'hello', language: LANGUAGE, sampleRate: 16000 }));
       // MIC_TEXT types the question instead of speaking it: checks the tool loop and the
       // spoken answer without depending on speech recognition.
       if (process.env.MIC_TEXT) {

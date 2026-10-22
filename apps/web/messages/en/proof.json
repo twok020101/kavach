@@ -56,6 +56,10 @@
   "ruleVerified": "Verified",
   "ruleToVerify": "To verify",
   "rulesCount": "{verified} of {total} rules verified",
+  "rulesIndia": "India: IRDAI rules and policy wordings",
+  "rulesSingapore": "Singapore: MediShield Life, Shield plan and rider rules",
+  "groupCount": "{verified} of {total} verified",
+  "retry": "Try again",
   "methodTitle": "How we measure",
   "method": {
     "dataset": "Dataset: {count} public policy wordings from {insurers} insurers, including group, senior citizen, super top-up and the IRDAI standard product. The PDFs are not stored in our repository; a script fetches them by URL and checks their fingerprint.",
@@ -66,6 +70,6 @@
   },
   "codeLink": "Open the evals on GitHub",
   "honestTitle": "What this does not show yet",
-  "honest": "Eight wordings is a small set; we say so rather than round it up. Citation accuracy and the verifier catch rate are not measured on this page yet.",
+  "honest": "A test set of {count} wordings is small; we say so rather than round it up. Citation accuracy and the verifier catch rate are not measured on this page yet.",
   "error": "The results could not be loaded. Please try again in a moment."
 }

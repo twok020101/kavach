@@ -15,9 +15,11 @@ export function AgentSteps({ steps, className }: { steps: AgentStep[]; className
       {steps.map((step) => (
         <motion.li
           key={step.label}
-          initial={{ opacity: 0, x: reduce ? 0 : -4 }}
+          // The same first frame on the server and the client (no hydration mismatch); under
+          // reduced motion only the short fade remains.
+          initial={{ opacity: 0, x: -4 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.15 }}
+          transition={{ duration: 0.15, x: { duration: reduce ? 0.001 : 0.15 } }}
           className={cn(
             'flex items-center gap-2',
             step.state === 'pending' ? 'text-muted' : 'text-text',

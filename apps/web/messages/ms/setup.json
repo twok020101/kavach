@@ -1,0 +1,281 @@
+{
+  "step": "Langkah {step} daripada {total}",
+  "back": "Kembali",
+  "continue": "Teruskan",
+  "error": "Itu tidak berjaya. Sila cuba lagi.",
+  "loading": "Sedang memuatkan…",
+  "loadError": "Kami tidak dapat memuatkan butiran keluarga anda. Semak sambungan anda dan cuba lagi.",
+  "retry": "Cuba lagi",
+  "signIn": {
+    "title": "Insurans keluarga anda, di satu tempat",
+    "intro": "Log masuk untuk memastikan perlindungan, dokumen dan pelan keluarga anda selamat dan disegerakkan.",
+    "statusChip": "Prototaip · data demo",
+    "dpdp": "Dibina mengikut Akta DPDP, 2023",
+    "dpdpSg": "Dibina mengikut PDPA Singapura",
+    "tabsLabel": "Cara untuk log masuk",
+    "tabs": {
+      "quick": "Akses pantas",
+      "otp": "OTP telefon bimbit",
+      "abha": "ID ABHA",
+      "singpass": "Singpass"
+    },
+    "continueShield": "Teruskan ke Perisai Keluarga",
+    "google": "Log masuk dengan Google",
+    "googleOff": "Log masuk Google dimatikan dalam prototaip hackathon ini. Teruskan tanpa akaun untuk mencuba semuanya.",
+    "guest": "Teruskan tanpa akaun",
+    "guestNote": "Kami menyimpan keluarga anda pada peranti ini. Anda boleh menambah akaun kemudian.",
+    "localMode": "Mod tempatan: log masuk dimatikan, jadi anda akan terus masuk.",
+    "noSetup": "Tanpa persediaan",
+    "offBadge": "Belum dihidupkan",
+    "useQuick": "Guna Akses pantas",
+    "otp": {
+      "title": "Log masuk dengan nombor telefon bimbit anda",
+      "phone": "Nombor telefon bimbit",
+      "send": "Hantar OTP",
+      "off": "Log masuk dengan kata laluan sekali guna (OTP) belum dihidupkan dalam prototaip ini. Akses pantas membolehkan anda mencuba semuanya."
+    },
+    "abha": {
+      "title": "Log masuk dengan ID ABHA anda",
+      "label": "Nombor ABHA (14 digit)",
+      "what": "ABHA ialah nombor Akaun Kesihatan Ayushman Bharat anda.",
+      "continue": "Teruskan dengan ABHA",
+      "off": "Log masuk dengan ABHA belum dihidupkan dalam prototaip ini. Akses pantas membolehkan anda mencuba semuanya."
+    },
+    "singpass": {
+      "title": "Log masuk dengan Singpass",
+      "label": "ID Singpass (NRIC atau FIN)",
+      "what": "Singpass ialah identiti digital kebangsaan Singapura.",
+      "continue": "Teruskan dengan Singpass",
+      "off": "Log masuk dengan Singpass belum dihidupkan dalam prototaip ini. Akses pantas membolehkan anda mencuba semuanya."
+    },
+    "demo": "Sekadar melihat? Cuba keluarga contoh",
+    "demoLink": "Cuba keluarga demo",
+    "invited": "{inviter} menjemput anda ke {household}",
+    "invitedAs": "Anda akan menyertai sebagai {name}. Anda akan nampak perlindungan anda dan butang hospital.",
+    "join": "Sertai keluarga",
+    "inviteGone": "Jemputan ini telah tamat tempoh atau sudah digunakan. Minta pautan baru.",
+    "promiseTitle": "Janji privasi kami",
+    "promisePill": "Data tidak dijual",
+    "demoCard": {
+      "badge": "Tanpa persediaan",
+      "kicker": "Keluarga contoh · India",
+      "initial": "S",
+      "title": "Terokai demo keluarga Sharma",
+      "body": "Lima orang, empat polisi dan satu kemasukan hospital sudah disediakan, jadi anda boleh melihat setiap skrin dengan angka sebenar.",
+      "meta": "{people} orang · {policies} polisi · data demo",
+      "open": "Buka demo"
+    },
+    "facts": {
+      "title": "Kavach, dalam fakta ringkas",
+      "chip": "Prototaip",
+      "languages": "Bahasa",
+      "purposes": "Pilihan kebenaran",
+      "sold": "Data dijual"
+    },
+    "help": {
+      "hospital": "Di hospital sekarang?",
+      "whatsapp": "Bantuan WhatsApp"
+    },
+    "demoCardSg": {
+      "kicker": "Keluarga contoh · Singapura",
+      "initial": "T",
+      "title": "Lihat keluarga Tan di kaunter hospital",
+      "body": "Kemasukan Ah Kow di Sample General Hospital: MediShield Life, pelan Shield dan pilihan wad, dalam bahasa Melayu.",
+      "open": "Buka babak Singapura"
+    }
+  },
+  "launch": {
+    "homeTitle": "Kavach sudah sedia",
+    "homeBody": "Polisi keluarga anda sudah dibaca dan sedia untuk disemak.",
+    "homePill": "Membuka papan pemuka anda",
+    "otherPill": "Membuka Kavach",
+    "setupTitle": "Anda sudah log masuk",
+    "setupBody": "Seterusnya, beberapa langkah ringkas untuk menyediakan keluarga anda.",
+    "setupPill": "Membuka persediaan"
+  },
+  "consent": {
+    "title": "Sebelum kita mula",
+    "intro": "Kavach menyimpan butiran keluarga anda hanya untuk memberi nasihat. Pilih apa yang kami boleh guna, satu tujuan pada satu masa, di bawah Akta Perlindungan Data Peribadi Digital (DPDP) India, 2023.",
+    "introSg": "Kavach menyimpan butiran keluarga anda hanya untuk memberi nasihat. Pilih apa yang kami boleh guna, satu tujuan pada satu masa. Tiada apa yang dibaca atau disimpan tanpa persetujuan anda, dan anda boleh mengubahnya kemudian.",
+    "chip": "Kebenaran di bawah Akta DPDP, 2023",
+    "chipSg": "Kebenaran mengikut PDPA Singapura",
+    "changeNote": "Anda boleh mengubah ini bila-bila masa dalam Tetapan",
+    "purposes": {
+      "planning": {
+        "label": "Guna butiran keluarga, kewangan dan polisi saya untuk merancang perlindungan",
+        "hint": "Diperlukan untuk menunjukkan perlindungan keluarga anda, mencari jurang antara polisi, dan menentukan saiz perlindungan yang perlu ditambah.",
+        "note": "Disimpan hanya selagi keluarga anda disediakan di sini; padam bila-bila masa dari Tetapan."
+      },
+      "documents": {
+        "label": "Baca dokumen yang saya muat naik",
+        "hint": "Polisi, ringkasan manfaat, anggaran hospital dan surat tuntutan, dibaca supaya setiap rupee dapat merujuk kepada muka suratnya.",
+        "hintSg": "Polisi, ringkasan manfaat, anggaran hospital dan surat tuntutan, dibaca supaya setiap dolar dapat merujuk kepada muka suratnya.",
+        "note": "Hanya dokumen yang anda muat naik. Tiada apa yang diambil daripada syarikat insurans."
+      },
+      "health": {
+        "label": "Butiran kesihatan (contohnya, diabetes)",
+        "hint": "Penyakit jangka panjang mengubah tempoh menunggu dan apa yang perlu diminta di hospital. Tidak pernah dikongsi dengan syarikat insurans atau sesiapa pun.",
+        "note": "Anda boleh mematikan ini bila-bila masa dalam Tetapan.",
+        "warn": "Tanpa ini, nasihat hospital mungkin kurang tepat."
+      },
+      "whatsapp": {
+        "label": "Mesej WhatsApp kepada keluarga saya",
+        "hint": "Makluman hospital dan peringatan bertarikh, di telefon ahli keluarga yang anda pilih.",
+        "note": "Makluman dan peringatan sahaja. Tiada promosi."
+      }
+    },
+    "required": "Kavach memerlukan sekurang-kurangnya yang pertama untuk berfungsi.",
+    "promiseTitle": "Janji kami",
+    "promise": "Kami tidak pernah menjual data anda. Kami tidak pernah menghubungi syarikat insurans bagi pihak anda. Anda boleh memuat turun atau memadam semuanya pada bila-bila masa dari Tetapan.",
+    "guarantee": "Kami <b>tidak pernah menjual data anda</b>. Kami tidak pernah menghubungi syarikat insurans bagi pihak anda. Anda boleh memuat turun atau memadam semuanya pada bila-bila masa dari Tetapan.",
+    "agree": "Setuju dan teruskan",
+    "essential": "Penting",
+    "optional": "Pilihan",
+    "count": "{on} daripada {total} tujuan dihidupkan"
+  },
+  "family": {
+    "title": "Ceritakan tentang keluarga anda",
+    "intro": "Siapa yang bergantung pada anda? Satu ayat sudah cukup.",
+    "label": "Keluarga anda, dalam kata-kata anda",
+    "placeholder": "Saya Rahul, 34, di Bengaluru. Isteri Priya, anak perempuan Anaya berumur 5, dan ibu bapa saya tinggal bersama kami…",
+    "placeholderSg": "Saya Wei-Ming, 38, di Tampines. Isteri Hui-Ling, anak lelaki Jia-En berumur 6, dan ibu bapa saya tinggal bersama kami…",
+    "try": "Cuba:",
+    "example": "Saya, isteri saya Priya, anak perempuan Anaya, dan ibu bapa saya di Pune",
+    "exampleSg": "Saya, isteri saya Hui-Ling, anak lelaki Jia-En, dan ibu bapa saya di Tampines",
+    "speak": "Tahan untuk bercakap",
+    "listening": "Mendengar… lepaskan apabila selesai",
+    "micBlocked": "Kami tidak dapat menggunakan mikrofon. Sila taip sahaja.",
+    "voiceReady": "Nota suara dirakam ({seconds} s). Teruskan untuk menghantarnya.",
+    "clearVoice": "Buang",
+    "understanding": "Memahami keluarga anda",
+    "found": "Dijumpai {count, plural, one {# orang} other {# orang}}",
+    "nobody": "Saya tidak dapat mencari sesiapa dalam itu. Boleh anda beritahu siapa yang tinggal bersama anda?"
+  },
+  "confirm": {
+    "title": "Adakah ini keluarga anda?",
+    "intro": "Ketik sesiapa untuk menukar butiran mereka.",
+    "familyName": "Nama keluarga",
+    "familyNamePlaceholder": "Keluarga Kulkarni",
+    "city": "Bandar",
+    "you": "anda",
+    "age": "{age} thn",
+    "addAge": "Tambah umur",
+    "earning": "ada pendapatan",
+    "assumed": "Kami andaikan:",
+    "assumedEarning": "{name} {earning, select, true {ada pendapatan} other {tiada pendapatan}}",
+    "change": "tukar",
+    "add": "Tambah seseorang",
+    "needAges": "Isi {count, plural, one {# butiran} other {# butiran}} untuk teruskan",
+    "looksRight": "Nampak betul",
+    "edit": {
+      "title": "Sunting orang",
+      "newTitle": "Tambah seseorang",
+      "name": "Nama",
+      "relation": "Hubungan",
+      "age": "Umur",
+      "earning": "Ada pendapatan",
+      "earningOptions": {
+        "yes": "Ya",
+        "no": "Tidak",
+        "unknown": "Tidak pasti"
+      },
+      "conditions": "Keadaan kesihatan",
+      "conditionsHint": "Disimpan hanya kerana anda membenarkan butiran kesihatan.",
+      "language": "Bahasa Kavach bercakap dengan mereka",
+      "save": "Simpan",
+      "remove": "Buang dari keluarga"
+    },
+    "conditionNames": {
+      "diabetes_t2": "Diabetes",
+      "hypertension": "Tekanan darah tinggi",
+      "heart_disease": "Masalah jantung",
+      "asthma": "Asma"
+    },
+    "defaultNames": {
+      "self": "Anda",
+      "spouse": "Pasangan",
+      "child": "Anak",
+      "parent": "Ibu bapa",
+      "parent_in_law": "Ibu bapa mertua",
+      "other": "Ahli keluarga"
+    },
+    "assumedSelf": "Anda mencari pendapatan keluarga",
+    "heard": "Kami dengar: “{text}”"
+  },
+  "money": {
+    "title": "Empat angka. Anggaran kasar pun boleh.",
+    "intro": "Mengapa kami tanya: untuk mencadangkan hanya apa yang anda mampu.",
+    "takeHome": "Gaji bersih / bulan",
+    "emi": "Semua ansuran pinjaman / bulan",
+    "spend": "Perbelanjaan isi rumah / bulan",
+    "spendHint": "Sewa, sekolah, barang dapur…",
+    "fund": "Simpanan yang boleh anda guna dalam kecemasan",
+    "emiHigh": "Itu sebahagian besar pendapatan anda. Kami akan pastikan pelan ini ringkas.",
+    "loans": "Tambah butiran pinjaman (pilihan)",
+    "loansOutstanding": "Pinjaman yang masih perlu dibayar (rumah, kereta…)",
+    "income": "Pendapatan tahunan sebelum cukai (pilihan)",
+    "incomeHint": "Digunakan untuk menentukan saiz perlindungan hayat. Biarkan kosong untuk guna gaji bersih × 12."
+  },
+  "questions": {
+    "title": "Hanya {count, plural, one {satu soalan} other {# soalan}}",
+    "none": "Tiada lagi soalan",
+    "noneIntro": "Kami sudah ada apa yang diperlukan untuk menunjukkan perlindungan keluarga anda.",
+    "intro": "Setiap jawapan mengubah pelan anda.",
+    "spouse_earning": {
+      "q": "Adakah {name} ada pendapatan?",
+      "why": "Menentukan pendapatan siapa yang keluarga bergantung.",
+      "options": {
+        "no": "Tidak",
+        "part_time": "Ya, separuh masa",
+        "yes": "Ya"
+      }
+    },
+    "other_cover": {
+      "q": "{employer, select, none {Adakah anda ada polisi kesihatan atau hayat yang belum ditambah?} other {Adakah {employer} satu-satunya perlindungan majikan anda?}}",
+      "why": "Menentukan sama ada ibu bapa anda selamat jika anda bertukar kerja.",
+      "options": {
+        "only": "Itu sahaja",
+        "another": "Saya ada satu lagi"
+      }
+    },
+    "parents_health": {
+      "q": "Adakah {name} mempunyai keadaan kesihatan jangka panjang?",
+      "why": "Hospital dan syarikat insurans bertanya; ia mengubah tempoh menunggu.",
+      "options": {
+        "none": "Tiada",
+        "diabetes_t2": "Diabetes",
+        "hypertension": "Tekanan darah tinggi",
+        "heart_disease": "Jantung"
+      }
+    },
+    "impact": "Mengubah perlindungan hayat anda sebanyak kira-kira <amount></amount>",
+    "see": "Lihat perlindungan keluarga saya"
+  },
+  "landing": {
+    "signIn": "Log masuk",
+    "start": "Mula dengan keluarga saya"
+  },
+  "stepNames": {
+    "family": "Keluarga",
+    "money": "Kewangan",
+    "documents": "Dokumen",
+    "questions": "Soalan"
+  },
+  "brand": {
+    "tagline": "Berdiri di sisi keluarga anda pada setiap saat insurans.",
+    "lead": "Kavach membaca setiap polisi di rumah sekali, kemudian memberitahu apa yang perlu dibuat pada tiga saat keluarga kehilangan wang. Dalam bahasa anda, dengan nombor muka surat.",
+    "promise": "Kami tidak pernah menjual data anda dan tidak pernah menghubungi syarikat insurans bagi pihak anda.",
+    "change": {
+      "title": "Apabila hidup berubah",
+      "body": "Kerja baru, bayi, ibu bapa berpindah masuk: lihat perlindungan yang anda hilang dan kekalkannya."
+    },
+    "hospital": {
+      "title": "Di kaunter hospital",
+      "body": "Dalam bahasa anda, melalui suara. Kad mana yang patut diberi, bilik mana yang patut diminta."
+    },
+    "claim": {
+      "title": "Apabila tuntutan bermasalah",
+      "body": "Setiap potongan disemak dengan polisi, rayuan disediakan."
+    }
+  }
+}

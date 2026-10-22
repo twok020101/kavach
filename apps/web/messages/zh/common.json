@@ -1,0 +1,150 @@
+{
+  "verified": "已核实",
+  "toVerify": "请向保险公司确认",
+  "rules": "规则",
+  "loading": "加载中",
+  "error": "出了点问题。请再试一次，或改为输入您的问题。",
+  "close": "关闭",
+  "language": "语言",
+  "languages": {
+    "en": "English",
+    "hi": "印地语",
+    "ta": "泰米尔语",
+    "zh": "华语",
+    "ms": "马来语"
+  },
+  "skipToContent": "跳到主要内容",
+  "mainNav": "主菜单",
+  "atHospital": "在医院",
+  "nav": {
+    "home": "首页",
+    "plan": "计划",
+    "policies": "保单",
+    "timeline": "时间线",
+    "claims": "索赔",
+    "more": "更多",
+    "hospital": "医院"
+  },
+  "status": {
+    "covered": "已承保",
+    "partial": "部分承保",
+    "contingent": "视工作而定",
+    "gap": "未承保",
+    "na": "不需要"
+  },
+  "relation": {
+    "self": "本人",
+    "spouse": "配偶",
+    "child": "子女",
+    "parent": "父母",
+    "parent_in_law": "岳父母/公婆",
+    "other": "家人"
+  },
+  "captions": {
+    "agent": "Kavach",
+    "user": "您"
+  },
+  "why": {
+    "rulesTitle": "答案背后的规则",
+    "tariffTitle": "医院的病房收费",
+    "tariffIntro": "从估价单读取。下面标记的费用会随病房变动，所以如果病房超出您的限额，保险公司会按比例扣减这些费用。",
+    "charge": "费用",
+    "changesWithRoom": "随病房变动",
+    "branchTitle": "如果医院不按病房定价，只省下 <amount></amount>",
+    "branchBody": "那样只有房费不同，其他费用不会被扣减。您大约要付："
+  },
+  "heads": {
+    "room": "房费",
+    "nursing": "护理与驻院医生",
+    "surgeon": "外科医生 / 手术",
+    "ot": "导管室 / 手术室",
+    "doctor_visits": "医生查房",
+    "icu": "ICU",
+    "implant": "支架 / 植入物",
+    "pharmacy": "药物与耗材",
+    "consumables": "耗材",
+    "diagnostics": "检查化验",
+    "non_payable": "不予支付项目",
+    "other": "其他"
+  },
+  "compare": {
+    "room": "病房",
+    "recommended": "选这个",
+    "bill": "医院账单",
+    "notPaid": "不支付：{label}",
+    "copay": "共同承担",
+    "policyPays": "保单支付",
+    "youPay": "您支付",
+    "none": "无"
+  },
+  "statusShort": {
+    "covered": "已承保",
+    "partial": "部分",
+    "contingent": "视工作",
+    "gap": "缺口",
+    "na": "–"
+  },
+  "disclaimer": {
+    "global": "Kavach 根据您的文件和公开规则提供指引。它不是保险公司、经纪或代理，每一项索赔都由保险公司决定。",
+    "plan": "保额只是指引，不是产品推荐。保费仅为示例。",
+    "hospital": "仅为估算。签字前请先向保险（TPA）柜台确认。",
+    "hospitalSg": "仅为估算。签字前请先向医院的保险柜台确认。",
+    "claims": "这封信是草稿，请您自行审阅并寄出。"
+  },
+  "evidence": {
+    "sources": "规则核对依据",
+    "irdai2024": "IRDAI 健康保险总通函，2024年5月29日",
+    "irdai2020": "IRDAI 关于按比例扣减的通函，2020年",
+    "wordings": "已测试 {count} 份公开保单条款，其中 {checked} 份由人工标注",
+    "sample": "演示数据标有 SAMPLE 字样，与真实人物无关"
+  },
+  "isNot": {
+    "isTitle": "Kavach 是什么",
+    "notTitle": "它不是什么",
+    "rows": {
+      "reader": "读取并计算您已有保单的工具",
+      "notInsurer": "保险公司、经纪、代理或保单销售方",
+      "cites": "显示的每一卢比都来自书面保单条款，并附页码",
+      "citesSg": "显示的每一元都来自书面保单条款，并附页码",
+      "notGuarantee": "对索赔赔付金额的保证：每一项索赔都由保险公司决定",
+      "consent": "未经您同意，不读取、不保存任何内容",
+      "notPayments": "代您收款或代您联系保险公司的服务"
+    }
+  },
+  "copy": "复制",
+  "copied": "已复制",
+  "activeFamily": "当前家庭",
+  "back": "返回",
+  "prototype": "原型",
+  "brandPanel": {
+    "deva": "कवच",
+    "eyebrow": "医疗与保险护盾",
+    "chip": "每一卢比都注明出处条款",
+    "tagline": "在每一个保险时刻，陪在您家人身边。",
+    "lead": "一面守护的盾，陪印度多代同堂的家庭走过免现金住院审批、保单分项限额和住院索赔。",
+    "change": {
+      "title": "生活有变化时",
+      "body": "为年迈的父母、人生的重要阶段和新添的家人，及时调整保障。"
+    },
+    "hospital": {
+      "title": "在医院柜台",
+      "body": "免现金住院的现场协助：识破房费陷阱，告诉您先出示哪张卡、该问 TPA 柜台什么。"
+    },
+    "claim": {
+      "title": "索赔出问题时",
+      "body": "逐条核查每一项扣减；为您拟好申诉信和致保险监察员（ombudsman）的信。"
+    },
+    "footer": "您的同意，您的数据：遵循印度《2023年数字个人数据保护法》（DPDP）。",
+    "sg": {
+      "chip": "每一元都注明出处规则",
+      "lead": "一面守护的盾，陪新加坡多代同堂的家庭弄清 MediShield Life、Integrated Shield Plan、附加保险（rider）和病房的选择。",
+      "hospital": {
+        "body": "入院时的现场协助：您的计划在哪个病房级别内按实际收费赔付，超出后按比例赔付要多付多少，先出示哪张卡。"
+      },
+      "claim": {
+        "body": "按 MediShield Life 和您的 Shield 计划条款逐项核查每一笔扣减；为您拟好给保险公司的申诉信。"
+      },
+      "footer": "您的同意，您的数据：按新加坡《个人资料保护法》（PDPA）设计。"
+    }
+  }
+}
