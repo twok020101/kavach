@@ -1,1 +1,192 @@
-/* Landing (Stitch "family insurance intelligence") and the launch gateway opening. */
+/* Landing (Stitch "family insurance intelligence") and the launch gateway opening.
+   components/landing/* and components/kavach/boot.tsx. The landing is the one public page with
+   richer motion (Jai's landing exception); everything here stops under prefers-reduced-motion. */
+
+/* ---------------------------------------------------------------------------------------------
+   The gateway opening (boot.tsx): brand panel left, dark gateway card right; the card alone on a
+   phone. The overlay scrolls inside itself, so a short screen never clips the way in. */
+.gw {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: grid;
+  background: var(--bg);
+  transition: transform var(--lift, 640ms) cubic-bezier(0.77, 0, 0.175, 1);
+  will-change: transform;
+}
+@media (min-width: 1024px) {
+  .gw {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+.gw.is-leaving {
+  transform: translateY(-100%);
+}
+/* The card lags the panel a little as it lifts, so the exit has depth. */
+.gw.is-leaving .gw__card {
+  transform: translateY(10%);
+  opacity: 0.7;
+  transition:
+    transform var(--lift, 640ms) cubic-bezier(0.77, 0, 0.175, 1),
+    opacity 320ms ease-out;
+}
+.gw__side {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  height: 100dvh;
+  flex-direction: column;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.gw__stage {
+  display: flex;
+  flex: 1;
+}
+.gw__card {
+  width: 100%;
+  min-height: 100dvh;
+  /* Safe centring: auto margins collapse instead of clipping when the card is taller. */
+  margin: auto;
+}
+@media (min-width: 640px) {
+  .gw__stage {
+    padding: 32px;
+  }
+  .gw__card {
+    max-width: 600px;
+    min-height: 0;
+    border-radius: var(--radius-xl);
+  }
+}
+@media (min-width: 1024px) {
+  .gw__stage {
+    padding: 16px 40px 40px;
+  }
+}
+
+/* A check row: dim until the rail reaches it, then it lights and its tick pops. */
+.gw__row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 8px 12px;
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.05);
+  opacity: 0.4;
+  transition:
+    opacity 420ms var(--ease-out-strong),
+    background-color 200ms;
+}
+.gw__row.is-in {
+  opacity: 1;
+}
+.gw__row:hover {
+  background: rgba(255, 255, 255, 0.09);
+}
+.gw__check {
+  display: flex;
+  width: 24px;
+  height: 24px;
+  margin-top: 2px;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.6);
+  transition:
+    background-color 300ms,
+    color 300ms;
+}
+.gw__row.is-in .gw__check {
+  background: #005934;
+  color: #9ef5be;
+  animation: gw-pop 420ms var(--ease-out-strong);
+}
+
+/* Entrance: the card's parts rise in order; the mark settles in first. */
+.gw-rise {
+  animation: gw-rise 640ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: calc(var(--i, 0) * 70ms + 120ms);
+}
+.gw-pop {
+  animation: gw-pop 560ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.gw__spin {
+  animation: gw-spin 1.2s linear infinite;
+}
+.gw__bob {
+  animation: gw-bob 1.8s ease-in-out infinite;
+}
+@keyframes gw-rise {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 12px, 0);
+  }
+}
+@keyframes gw-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+}
+@keyframes gw-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes gw-bob {
+  50% {
+    transform: translateY(3px);
+  }
+}
+
+/* ---------------------------------------------------------------------------------------------
+   The landing page. */
+
+/* Bars in the live-audit card and the voice note grow from the left once on view. */
+.lp-grow {
+  transform-origin: left;
+  animation: lp-grow 900ms cubic-bezier(0.16, 1, 0.3, 1) 700ms both;
+}
+@keyframes lp-grow {
+  from {
+    transform: scaleX(0);
+  }
+}
+/* Nothing on the page moves while the gateway is up, and staggered cards wait for their reveal. */
+html.booting .landing .lp-grow,
+html.booting .landing .stagger > *,
+.landing .rv:not(.in) .stagger > *,
+.landing .rv:not(.in) .lp-grow {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* A slightly longer, softer reveal than the app's (landing exception). */
+  .landing .rv {
+    transform: translateY(18px);
+    transition:
+      opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .landing .rv.in {
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gw,
+  .gw.is-leaving .gw__card {
+    transition: none;
+  }
+  .gw-rise,
+  .gw-pop,
+  .gw__spin,
+  .gw__bob,
+  .gw__row.is-in .gw__check,
+  .lp-grow {
+    animation: none;
+  }
+}

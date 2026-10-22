@@ -28,7 +28,12 @@ export function AnimatedAmount({
   const [shown, setShown] = useState(0);
 
   useEffect(() => {
-    if (!seen || reduce) return;
+    // Reduced motion: the real value at once, set after hydration so server and client agree.
+    if (reduce) {
+      const tick = requestAnimationFrame(() => setShown(value));
+      return () => cancelAnimationFrame(tick);
+    }
+    if (!seen) return;
     let frame = 0;
     const start = performance.now() + delay;
     const tick = (now: number) => {
@@ -40,11 +45,10 @@ export function AnimatedAmount({
     return () => cancelAnimationFrame(frame);
   }, [seen, reduce, value, delay]);
 
-  const current = reduce ? value : shown;
   return (
     <span ref={ref} className={cn('amount whitespace-nowrap tabular-nums', className)}>
       <span className="sr-only">{formatInr(value)}</span>
-      <span aria-hidden>{formatInr(current)}</span>
+      <span aria-hidden>{formatInr(shown)}</span>
     </span>
   );
 }

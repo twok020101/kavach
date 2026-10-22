@@ -194,15 +194,20 @@ export function MomentStoryboard({
 
 /**
  * The opening statement: its words rise out of their baseline one after another on first paint.
- * `emphasis` is the trailing phrase set in the primary colour. Assistive tech reads the plain text.
+ * `emphasis` is the trailing phrase, in the primary colour unless `emphasisClassName` says
+ * otherwise; `emphasisBlock` sets it on its own line. Assistive tech reads the plain text.
  */
 export function WordsRise({
   text,
   emphasis,
+  emphasisClassName = 'text-primary',
+  emphasisBlock = false,
   className,
 }: {
   text: string;
   emphasis?: string;
+  emphasisClassName?: string;
+  emphasisBlock?: boolean;
   className?: string;
 }) {
   let index = 0;
@@ -226,7 +231,13 @@ export function WordsRise({
       </span>
       <span aria-hidden>
         {words(text)}
-        {emphasis ? <> {words(emphasis, 'text-primary')}</> : null}
+        {emphasis ? (
+          emphasisBlock ? (
+            <span className="block">{words(emphasis, emphasisClassName)}</span>
+          ) : (
+            <> {words(emphasis, emphasisClassName)}</>
+          )
+        ) : null}
       </span>
     </h1>
   );
