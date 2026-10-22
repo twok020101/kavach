@@ -114,6 +114,9 @@ function RoomBox({ option, tone }: { option: RoomOptionResult; tone: 'costly' | 
   const t = useTranslations('desk.session');
   const money = useMoney();
   const pick = tone === 'pick';
+  // India's co-pay is apart from the deductions; Singapore's co-payment is one of them (R-SG-006).
+  const deducted = option.deductions.reduce((sum, d) => sum + d.amount, 0);
+  const copayApart = option.copay > 0 && deducted < option.outOfPocket;
   const rows: { label: string; amount: number; minus?: boolean }[] = [
     { label: t('saving.rows.bill'), amount: option.bill },
     ...option.deductions.map((d) => ({
@@ -121,7 +124,7 @@ function RoomBox({ option, tone }: { option: RoomOptionResult; tone: 'costly' | 
       amount: d.amount,
       minus: true,
     })),
-    ...(option.copay > 0 ? [{ label: t('saving.rows.copay'), amount: option.copay }] : []),
+    ...(copayApart ? [{ label: t('saving.rows.copay'), amount: option.copay }] : []),
     { label: t('saving.rows.policyPays'), amount: option.policyPays },
   ];
   return (
