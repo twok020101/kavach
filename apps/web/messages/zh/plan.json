@@ -19,11 +19,19 @@
     "savings_plan_not_term": "这主要是一份储蓄计划；相对于您所缴的保费，人寿保障很小。",
     "below_minimum": "低于我们建议的最低额。"
   },
+  "shell": {
+    "deskReady": "医院柜台已就绪",
+    "demoDate": "演示日期：<b>{date}</b>",
+    "comingUp": "即将到来",
+    "family": "{name}：家庭设置",
+    "footer": "原型 · 演示数据"
+  },
   "home": {
-    "demoDate": "演示日期：{date}",
+    "demoDate": "演示日期：<b>{date}</b>",
     "startStory": "开始故事",
     "score": "安全评分",
-    "summary": "{gaps, plural, =0 {没有缺口} one {# 个缺口} other {# 个缺口}} · {onJob, plural, =0 {没有保障依赖工作} one {# 项依赖 {name} 的工作} other {# 项依赖 {name} 的工作}}",
+    "summaryGaps": "{gaps, plural, =0 {没有缺口} one {# 个缺口} other {# 个缺口}}",
+    "summaryJob": "{onJob, plural, =0 {没有保障依赖工作} one {# 项依赖 {name} 的工作} other {# 项依赖 {name} 的工作}}",
     "mapCaption": "所选日期，谁有哪些保障",
     "member": "成员",
     "cellTitle": "{name} · {risk}",
@@ -56,7 +64,7 @@
       "evening": "晚上好，{name}",
       "night": "您好，{name}"
     },
-    "watch": "Kavach 正在为 {people} 位家人留意 {policies, plural, one {# 份保单} other {# 份保单}}。",
+    "watch": "Kavach 正在为 <b>{people} 位家人</b>留意 <b>{policies, plural, one {# 份保单} other {# 份保单}}</b>。",
     "needsYou": "{count, plural, =0 {今天没有需要您处理的事。} one {有 # 件事需要您处理。} other {有 # 件事需要您处理。}}",
     "scoreWord": {
       "low": "需要关注",
@@ -81,12 +89,15 @@
     "ready": {
       "title": "紧急情况已准备好",
       "intro": "如果今晚有人入院，这是 Kavach 会先说的话。",
-      "line": "{name}：先给 {policy} 的卡{limit, select, none {} other { · 病房限额每天 {limit}}}",
+      "line": "<b>{name}：</b>先给 {policy} 的卡",
+      "limit": "病房限额每天 {limit}",
       "nick": {
         "company": "公司保单",
         "parents": "父母的保单",
         "topup": "top-up 保单",
-        "own": "自己的保单"
+        "own": "自己的保单",
+        "shield": "Shield 计划",
+        "medishield": "MediShield Life"
       },
       "none": "今天没有健康保单承保 {name}。"
     },
@@ -146,8 +157,15 @@
     "disclaimer": "保费仅为示例，不是报价。Kavach 不销售保险；购买前请咨询持牌顾问。",
     "allocated": "已列入计划",
     "leftOver": "剩余",
+    "prioritised": "优先保障",
     "ofTotal": "计划中 {count}/{total}",
     "openPolicy": "打开保单",
+    "eyebrow": "智能建议",
+    "traced": "依据 {count, plural, one {# 条规则} other {# 条规则}}",
+    "budget": "预算",
+    "used": "已用掉可用预算的 {pct}%",
+    "helpTitle": "生活有变化？",
+    "helpAction": "告诉 Kavach",
     "utilised": "可用于保障的钱中有 {percent}% 已列入计划",
     "dotPrioritised": "优先保障"
   },

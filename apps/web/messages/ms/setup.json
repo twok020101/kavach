@@ -7,25 +7,73 @@
   "signIn": {
     "title": "Insurans keluarga anda, di satu tempat",
     "intro": "Log masuk untuk memastikan perlindungan, dokumen dan pelan keluarga anda selamat dan disegerakkan.",
-    "google": "Teruskan dengan Google",
+    "statusChip": "Prototaip · data demo",
+    "dpdp": "Dibina mengikut Akta DPDP, 2023",
+    "dpdpSg": "Tiada apa dibaca tanpa kebenaran anda",
+    "tabsLabel": "Cara untuk log masuk",
+    "tabs": {
+      "quick": "Akses pantas",
+      "otp": "OTP telefon bimbit",
+      "abha": "ID ABHA",
+      "singpass": "Singpass"
+    },
+    "continueShield": "Teruskan ke Perisai Keluarga",
+    "google": "Log masuk dengan Google",
+    "googleOff": "Log masuk Google dimatikan dalam prototaip hackathon ini. Teruskan tanpa akaun untuk mencuba semuanya.",
     "guest": "Teruskan tanpa akaun",
     "guestNote": "Kami menyimpan keluarga anda pada peranti ini. Anda boleh menambah akaun kemudian.",
     "localMode": "Mod tempatan: log masuk dimatikan, jadi anda akan terus masuk.",
+    "noSetup": "Tanpa persediaan",
+    "offBadge": "Belum dihidupkan",
+    "useQuick": "Guna Akses pantas",
+    "otp": {
+      "title": "Log masuk dengan nombor telefon bimbit anda",
+      "phone": "Nombor telefon bimbit",
+      "send": "Hantar OTP",
+      "off": "Log masuk dengan kata laluan sekali guna (OTP) belum dihidupkan dalam prototaip ini. Akses pantas membolehkan anda mencuba semuanya."
+    },
+    "abha": {
+      "title": "Log masuk dengan ID ABHA anda",
+      "label": "Nombor ABHA (14 digit)",
+      "what": "ABHA ialah nombor Akaun Kesihatan Ayushman Bharat anda.",
+      "continue": "Teruskan dengan ABHA",
+      "off": "Log masuk dengan ABHA belum dihidupkan dalam prototaip ini. Akses pantas membolehkan anda mencuba semuanya."
+    },
+    "singpass": {
+      "title": "Log masuk dengan Singpass",
+      "label": "ID Singpass (NRIC atau FIN)",
+      "what": "Singpass ialah identiti digital kebangsaan Singapura.",
+      "continue": "Teruskan dengan Singpass",
+      "off": "Log masuk dengan Singpass belum dihidupkan dalam prototaip ini. Akses pantas membolehkan anda mencuba semuanya."
+    },
     "demo": "Sekadar melihat-lihat?",
     "demoLink": "Cuba keluarga demo",
     "invited": "{inviter} menjemput anda ke {household}",
     "invitedAs": "Anda akan menyertai sebagai {name}. Anda akan nampak perlindungan anda dan butang hospital.",
     "join": "Sertai keluarga",
     "inviteGone": "Jemputan ini telah tamat tempoh atau sudah digunakan. Minta pautan baru.",
+    "promiseTitle": "Janji privasi kami",
+    "promisePill": "Data tidak dijual",
     "demoCard": {
       "badge": "Tanpa persediaan",
+      "kicker": "Keluarga sampel, sudah disediakan",
+      "initial": "श",
       "title": "Terokai demo keluarga Sharma",
       "body": "Lima orang, empat polisi dan satu kemasukan hospital sudah disediakan, jadi anda boleh melihat setiap skrin dengan angka sebenar.",
-      "open": "Buka demo",
-      "initial": "S",
-      "kicker": "Keluarga sampel, sudah disediakan"
+      "meta": "{people} orang · {policies} polisi · data demo",
+      "open": "Buka demo"
     },
-    "promiseTitle": "Janji kami kepada keluarga anda",
+    "facts": {
+      "title": "Kavach, dalam fakta ringkas",
+      "chip": "Prototaip",
+      "languages": "Bahasa",
+      "purposes": "Pilihan kebenaran",
+      "sold": "Data dijual"
+    },
+    "help": {
+      "hospital": "Di hospital sekarang?",
+      "whatsapp": "Bantuan WhatsApp"
+    },
     "demoCardSg": {
       "kicker": "Keluarga contoh di Singapura",
       "initial": "T",
@@ -34,38 +82,54 @@
       "open": "Buka babak Singapura"
     }
   },
+  "launch": {
+    "homeTitle": "Kavach sudah sedia",
+    "homeBody": "Polisi keluarga anda sudah dibaca dan sedia untuk disemak.",
+    "homePill": "Membuka papan pemuka anda",
+    "otherPill": "Membuka Kavach",
+    "setupTitle": "Anda sudah log masuk",
+    "setupBody": "Seterusnya, beberapa langkah ringkas untuk menyediakan keluarga anda.",
+    "setupPill": "Membuka persediaan"
+  },
   "consent": {
     "title": "Sebelum kita mula",
-    "intro": "Kavach menyimpan butiran keluarga anda untuk memberi nasihat. Pilih apa yang kami boleh guna.",
+    "intro": "Kavach menyimpan butiran keluarga anda hanya untuk memberi nasihat. Pilih apa yang kami boleh guna, satu tujuan pada satu masa, di bawah Akta Perlindungan Data Peribadi Digital (DPDP) India, 2023.",
+    "introSg": "Kavach menyimpan butiran keluarga anda hanya untuk memberi nasihat. Pilih apa yang kami boleh guna, satu tujuan pada satu masa. Tiada apa yang dibaca atau disimpan tanpa persetujuan anda, dan anda boleh mengubahnya kemudian.",
+    "chip": "Kebenaran di bawah Akta DPDP, 2023",
+    "chipSg": "Kebenaran anda, satu tujuan pada satu masa",
+    "changeNote": "Anda boleh mengubah ini bila-bila masa dalam Tetapan",
     "purposes": {
       "planning": {
         "label": "Guna butiran keluarga, kewangan dan polisi saya untuk merancang perlindungan",
-        "hint": "Diperlukan untuk menunjukkan perlindungan keluarga anda.",
+        "hint": "Diperlukan untuk menunjukkan perlindungan keluarga anda, mencari jurang antara polisi, dan menentukan saiz perlindungan yang perlu ditambah.",
         "note": "Disimpan hanya selagi keluarga anda disediakan di sini; padam bila-bila masa dari Tetapan."
       },
       "documents": {
         "label": "Baca dokumen yang saya muat naik",
-        "hint": "Polisi, ringkasan manfaat, anggaran hospital.",
+        "hint": "Polisi, ringkasan manfaat, anggaran hospital dan surat tuntutan, dibaca supaya setiap rupee dapat merujuk kepada muka suratnya.",
+        "hintSg": "Polisi, ringkasan manfaat, anggaran hospital dan surat tuntutan, dibaca supaya setiap dolar dapat merujuk kepada muka suratnya.",
         "note": "Hanya dokumen yang anda muat naik. Tiada apa yang diambil daripada syarikat insurans."
       },
       "health": {
         "label": "Butiran kesihatan (contohnya, diabetes)",
-        "hint": "Pilihan. Membantu di hospital. Tanpanya, nasihat hospital mungkin kurang tepat.",
-        "note": "Tidak pernah dikongsi dengan syarikat insurans atau sesiapa pun."
+        "hint": "Penyakit jangka panjang mengubah tempoh menunggu dan apa yang perlu diminta di hospital. Tidak pernah dikongsi dengan syarikat insurans atau sesiapa pun.",
+        "note": "Anda boleh mematikan ini bila-bila masa dalam Tetapan.",
+        "warn": "Tanpa ini, nasihat hospital mungkin kurang tepat."
       },
       "whatsapp": {
         "label": "Mesej WhatsApp kepada keluarga saya",
-        "hint": "Pilihan. Makluman dan peringatan bertarikh.",
+        "hint": "Makluman hospital dan peringatan bertarikh, di telefon ahli keluarga yang anda pilih.",
         "note": "Makluman dan peringatan sahaja. Tiada promosi."
       }
     },
     "required": "Kavach memerlukan sekurang-kurangnya yang pertama untuk berfungsi.",
+    "promiseTitle": "Janji kami",
     "promise": "Kami tidak pernah menjual data anda. Kami tidak pernah menghubungi syarikat insurans bagi pihak anda. Anda boleh memuat turun atau memadam semuanya pada bila-bila masa dari Tetapan.",
+    "guarantee": "Kami <b>tidak pernah menjual data anda</b>. Kami tidak pernah menghubungi syarikat insurans bagi pihak anda. Anda boleh memuat turun atau memadam semuanya pada bila-bila masa dari Tetapan.",
     "agree": "Setuju dan teruskan",
     "essential": "Penting",
     "optional": "Pilihan",
-    "count": "{on} daripada {total} kebenaran dihidupkan",
-    "promiseTitle": "Janji kami"
+    "count": "{on} daripada {total} tujuan dihidupkan"
   },
   "family": {
     "title": "Ceritakan tentang keluarga anda",
@@ -195,6 +259,7 @@
   },
   "brand": {
     "tagline": "Berdiri di sisi keluarga anda pada setiap saat insurans.",
+    "lead": "Kavach membaca setiap polisi di rumah sekali, kemudian memberitahu apa yang perlu dibuat pada tiga saat keluarga kehilangan wang. Dalam bahasa anda, dengan nombor muka surat.",
     "promise": "Kami tidak pernah menjual data anda dan tidak pernah menghubungi syarikat insurans bagi pihak anda.",
     "change": {
       "title": "Apabila hidup berubah",
@@ -207,7 +272,6 @@
     "claim": {
       "title": "Apabila tuntutan bermasalah",
       "body": "Setiap potongan disemak dengan polisi, rayuan disediakan."
-    },
-    "lead": "Kavach membaca setiap polisi di rumah sekali, kemudian memberitahu apa yang perlu dibuat pada tiga saat keluarga kehilangan wang. Dalam bahasa anda, dengan nombor muka surat."
+    }
   }
 }

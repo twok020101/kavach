@@ -7,10 +7,45 @@
   "signIn": {
     "title": "您全家的保险，集中在一处",
     "intro": "登录以妥善保存并同步您全家的保障、文件和计划。",
-    "google": "使用 Google 账号继续",
+    "statusChip": "原型 · 演示数据",
+    "dpdp": "遵循《2023年数字个人数据保护法》（DPDP）",
+    "dpdpSg": "未经您同意，不读取任何内容",
+    "tabsLabel": "登录方式",
+    "tabs": {
+      "quick": "快速进入",
+      "otp": "手机验证码",
+      "abha": "ABHA ID",
+      "singpass": "Singpass"
+    },
+    "continueShield": "进入家庭护盾",
+    "google": "使用 Google 账号登录",
+    "googleOff": "这个黑客松原型已关闭 Google 登录。不用账号继续，也能试用所有功能。",
     "guest": "不用账号继续",
     "guestNote": "我们把您的家庭资料保存在这部设备上。您可以稍后再添加账号。",
     "localMode": "本地模式：登录已关闭，您将直接进入。",
+    "noSetup": "无需设置",
+    "offBadge": "未开启",
+    "useQuick": "使用快速进入",
+    "otp": {
+      "title": "用手机号码登录",
+      "phone": "手机号码",
+      "send": "发送验证码",
+      "off": "这个原型尚未开启一次性密码（OTP）登录。用快速进入就能试用所有功能。"
+    },
+    "abha": {
+      "title": "用 ABHA ID 登录",
+      "label": "ABHA 号码（14 位数）",
+      "what": "ABHA 是您的 Ayushman Bharat 健康账户号码。",
+      "continue": "用 ABHA 继续",
+      "off": "这个原型尚未开启 ABHA 登录。用快速进入就能试用所有功能。"
+    },
+    "singpass": {
+      "title": "用 Singpass 登录",
+      "label": "Singpass 账号（NRIC 或 FIN）",
+      "what": "Singpass 是新加坡的国家数码身份。",
+      "continue": "用 Singpass 继续",
+      "off": "这个原型尚未开启 Singpass 登录。用快速进入就能试用所有功能。"
+    },
     "demo": "只是看看？",
     "demoLink": "试试演示家庭",
     "invited": "{inviter} 邀请您加入 {household}",
@@ -21,11 +56,24 @@
       "badge": "无需设置",
       "title": "探索 Sharma 一家的演示",
       "body": "五个人、四份保单和一次住院都已设置好，您可以用真实数字查看每个画面。",
+      "meta": "{people} 人 · {policies} 份保单 · 演示数据",
       "open": "打开演示",
-      "initial": "沙",
+      "initial": "श",
       "kicker": "示范家庭，已设置好"
     },
-    "promiseTitle": "我们对您家人的承诺",
+    "facts": {
+      "title": "Kavach 一览",
+      "chip": "原型",
+      "languages": "语言",
+      "purposes": "同意选项",
+      "sold": "出售的数据"
+    },
+    "help": {
+      "hospital": "现在在医院吗？",
+      "whatsapp": "WhatsApp 帮助"
+    },
+    "promiseTitle": "我们的隐私承诺",
+    "promisePill": "绝不出售",
     "demoCardSg": {
       "kicker": "新加坡示例家庭",
       "initial": "T",
@@ -34,37 +82,53 @@
       "open": "打开新加坡场景"
     }
   },
+  "launch": {
+    "homeTitle": "Kavach 已就绪",
+    "homeBody": "您全家的保单已经读好，随时可以核查。",
+    "homePill": "正在打开您的主页",
+    "otherPill": "正在打开 Kavach",
+    "setupTitle": "您已登录",
+    "setupBody": "接下来只需几个简短步骤，就能设置好您的家庭。",
+    "setupPill": "正在打开设置"
+  },
   "consent": {
     "title": "开始之前",
-    "intro": "Kavach 保存您的家庭资料以便提供建议。请选择我们可以使用的内容。",
+    "intro": "Kavach 保存您的家庭资料，只为给您提供建议。请依照印度《2023年数字个人数据保护法》（DPDP），逐项选择我们可以使用的内容。",
+    "introSg": "Kavach 保存您的家庭资料，只为给您提供建议。请逐项选择我们可以使用的内容。没有您的同意，不读取、不保存任何内容，之后也可以随时更改。",
+    "chip": "依照《2023年 DPDP 法》征求同意",
+    "chipSg": "您的同意，逐项决定",
+    "changeNote": "您可以随时在设置中更改",
     "purposes": {
       "planning": {
         "label": "使用我的家庭、财务和保单资料来规划保障",
-        "hint": "显示您全家的保障所必需。",
+        "hint": "用来显示您全家的保障、找出保单之间的缺口，并估算需要补充多少。",
         "note": "只在您的家庭设置在此期间保存；可随时在设置中删除。"
       },
       "documents": {
         "label": "读取我上传的文件",
-        "hint": "保单、福利摘要、医院估价单。",
+        "hint": "保单、福利摘要、医院估价单和理赔信，读取后每一卢比都能对应到所在页码。",
+        "hintSg": "保单、福利摘要、医院估价单和理赔信，读取后每一元都能对应到所在页码。",
         "note": "只读取您上传的文件。不会从保险公司获取任何内容。"
       },
       "health": {
         "label": "健康资料（例如糖尿病）",
-        "hint": "可选。在医院时有帮助。没有它，医院建议可能不够精确。",
-        "note": "绝不与保险公司或任何其他人分享。"
+        "hint": "长期病症会影响等待期，也会影响在医院该提出什么要求。绝不与保险公司或任何其他人分享。",
+        "note": "您可以随时在设置中关闭这一项。",
+        "warn": "没有这一项，医院建议可能不够精确。"
       },
       "whatsapp": {
         "label": "给我家人的 WhatsApp 消息",
-        "hint": "可选。提醒和有日期的提示。",
+        "hint": "医院提醒和有日期的提示，发到您所选家人的手机上。",
         "note": "只有提醒和提示。绝无推销。"
       }
     },
     "required": "Kavach 至少需要第一项才能运作。",
     "promise": "我们绝不出售您的数据。我们绝不代您联系保险公司。您可以随时在设置中下载或删除所有内容。",
+    "guarantee": "我们<b>绝不出售您的数据</b>。我们绝不代您联系保险公司。您可以随时在设置中下载或删除所有内容。",
     "agree": "同意并继续",
     "essential": "必需",
     "optional": "可选",
-    "count": "{total} 项权限中已开启 {on} 项",
+    "count": "{total} 项用途中已开启 {on} 项",
     "promiseTitle": "我们的承诺"
   },
   "family": {

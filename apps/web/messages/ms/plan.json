@@ -19,11 +19,19 @@
     "savings_plan_not_term": "Ini terutamanya pelan simpanan; perlindungan hayatnya kecil berbanding apa yang anda bayar.",
     "below_minimum": "Di bawah minimum yang kami cadangkan."
   },
+  "shell": {
+    "deskReady": "Kaunter hospital sedia",
+    "demoDate": "Tarikh demo: <b>{date}</b>",
+    "comingUp": "Akan datang",
+    "family": "{name}: tetapan keluarga",
+    "footer": "Prototaip · data demo"
+  },
   "home": {
-    "demoDate": "Tarikh demo: {date}",
+    "demoDate": "Tarikh demo: <b>{date}</b>",
     "startStory": "Mulakan cerita",
     "score": "Skor keselamatan",
-    "summary": "{gaps, plural, =0 {Tiada jurang} one {# jurang} other {# jurang}} · {onJob, plural, =0 {tiada yang bergantung pada kerja} one {# bergantung pada kerja {name}} other {# bergantung pada kerja {name}}}",
+    "summaryGaps": "{gaps, plural, =0 {Tiada jurang} one {# jurang} other {# jurang}}",
+    "summaryJob": "{onJob, plural, =0 {tiada yang bergantung pada kerja} one {# bergantung pada kerja {name}} other {# bergantung pada kerja {name}}}",
     "mapCaption": "Siapa dilindungi untuk apa, pada tarikh yang dipilih",
     "member": "Ahli",
     "cellTitle": "{name} · {risk}",
@@ -56,7 +64,7 @@
       "evening": "Selamat petang, {name}",
       "night": "Helo, {name}"
     },
-    "watch": "Kavach sedang memantau {policies, plural, one {# polisi} other {# polisi}} untuk {people} orang.",
+    "watch": "Kavach sedang memantau <b>{policies, plural, one {# polisi} other {# polisi}}</b> untuk <b>{people} orang</b>.",
     "needsYou": "{count, plural, =0 {Tiada apa yang memerlukan anda hari ini.} one {# perkara memerlukan anda.} other {# perkara memerlukan anda.}}",
     "scoreWord": {
       "low": "Perlu perhatian",
@@ -81,12 +89,15 @@
     "ready": {
       "title": "Sedia untuk kecemasan",
       "intro": "Jika seseorang dimasukkan ke hospital malam ini, inilah yang Kavach akan katakan dahulu.",
-      "line": "{name}: beri kad {policy} dahulu{limit, select, none {} other { · had bilik {limit}/hari}}",
+      "line": "<b>{name}:</b> beri kad {policy} dahulu",
+      "limit": "had bilik {limit}/hari",
       "nick": {
         "company": "polisi syarikat",
         "parents": "polisi ibu bapa",
         "topup": "polisi top-up",
-        "own": "polisi sendiri"
+        "own": "polisi sendiri",
+        "shield": "pelan Shield",
+        "medishield": "MediShield Life"
       },
       "none": "Tiada polisi kesihatan melindungi {name} hari ini."
     },
@@ -146,8 +157,15 @@
     "disclaimer": "Premium hanya ilustrasi, bukan sebut harga. Kavach tidak menjual insurans; berbincang dengan penasihat berlesen sebelum anda membeli.",
     "allocated": "Dalam pelan",
     "leftOver": "Baki",
+    "prioritised": "Perlindungan mengikut keutamaan",
     "ofTotal": "{count} daripada {total} dalam pelan",
     "openPolicy": "Buka polisi",
+    "eyebrow": "Cadangan pintar",
+    "traced": "Dijejak kepada {count, plural, one {# peraturan} other {# peraturan}}",
+    "budget": "Bajet",
+    "used": "{pct}% daripada bajet bebas telah digunakan",
+    "helpTitle": "Hidup sedang berubah?",
+    "helpAction": "Beritahu Kavach",
     "utilised": "{percent}% daripada wang bebas untuk perlindungan ada dalam pelan",
     "dotPrioritised": "Perlindungan mengikut keutamaan"
   },

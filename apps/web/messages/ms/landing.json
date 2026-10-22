@@ -1,26 +1,209 @@
 {
-  "headline": "AI yang berdiri di sisi keluarga anda pada setiap saat insurans.",
-  "subhead": "Kavach mengingati perlindungan keluarga anda dan bertindak apabila perlu: apabila hidup berubah, di kaunter hospital, dan apabila tuntutan bermasalah.",
-  "tryHospital": "Cuba babak hospital",
-  "previewLabel": "Contoh jawapan",
-  "previewCaption": "Apa yang Kavach beritahu keluarga di kaunter hospital",
-  "momentsTitle": "Tiga saat yang penting",
+  "announce": {
+    "cited": "Setiap rupee dirujuk kepada klausa",
+    "noCommission": "Tiada komisen, tiada desakan jualan",
+    "prototype": "Prototaip dengan data demo",
+    "badge": "Prototaip"
+  },
+  "nav": {
+    "label": "Kavach",
+    "eyebrow": "Insurans keluarga, diterangkan",
+    "demo": "Demo Sharma",
+    "desk": "Kaunter hospital",
+    "cover": "Peta perlindungan",
+    "claim": "Semakan tuntutan",
+    "proof": "Bukti",
+    "signIn": "Log masuk",
+    "atHospital": "Di hospital",
+    "atHospitalShort": "Hospital"
+  },
+  "hero": {
+    "chip": "Setiap rupee dirujuk kepada klausa · Tiada komisen",
+    "title": "Setiap keluarga India ada insurans.",
+    "titleEm": "Tidak ramai yang tahu apa yang sebenarnya dibayar.",
+    "lead": "Kavach mengingati setiap polisi dalam rumah dan memberitahu anda apa yang perlu dibuat apabila hidup berubah, di kaunter hospital, dan apabila tuntutan dibayar kurang. Dalam bahasa Hindi atau Inggeris. Setiap rupee datang daripada terma polisi bertulis, dengan nombor muka surat.",
+    "tryHospital": "Cuba babak hospital",
+    "tryHospitalChip": "Kurang daripada seminit",
+    "explore": "Terokai keluarga Sharma",
+    "exploreChip": "Data contoh",
+    "maternity": "Atau cuba babak bersalin: kelahiran anak Priya",
+    "statsLabel": "Apa yang Kavach temui dalam keluarga contoh",
+    "stats": {
+      "desk": "kurang perlu dibayar, dengan meminta bilik yang betul",
+      "claim": "ditemui untuk dirayu dalam satu surat penyelesaian",
+      "wordings": "perkataan polisi awam dalam set ujian",
+      "rules": "peraturan bertulis di sebalik setiap rupee"
+    }
+  },
+  "audit": {
+    "chip": "Semakan enjin",
+    "city": "Bengaluru · contoh",
+    "household": "Isi rumah Sharma",
+    "people": "{count} orang · Suresh, {age}, dilindungi oleh {policies} polisi",
+    "status": "2 perkara perlu tindakan",
+    "compareTitle": "Suresh di {hospital}: apa yang keluarga bayar",
+    "quoted": "Bilik {room} (disebut harga)",
+    "within": "Bilik {room} (dalam had)",
+    "warnTitle": "Perlindungan ibu bapa bergantung pada kerja Rahul",
+    "warnBody": "Perlindungan berkumpulan majikan tamat bersama kerja. Kavach menyediakan draf permohonan untuk memindahkan Suresh dan Kamala ke polisi peribadi tepat pada masanya.",
+    "footer": "Peraturan daripada pekeliling IRDAI dan perkataan polisi"
+  },
+  "admission": {
+    "chip": "Di kaunter kemasukan",
+    "title": "Keputusan kemasukan secara langsung: {hospital}",
+    "sub": "Pesakit: Suresh Sharma ({age}) · angioplasti koronari · jumlah diinsuranskan {si} · had sewa bilik {limit} sehari. Bilik yang {diff} lebih mahal sehari menyebabkan keluarga membayar {saving} lebih.",
+    "sample": "Anggaran contoh · data demo",
+    "impactTitle": "Kesan keputusan: {saving} kurang perlu dibayar",
+    "impactChip": "Doktor sama, rawatan sama",
+    "impactBody": "Memilih bilik {rent} menghapuskan potongan berkadar ke atas {base} caj yang harganya mengikut bilik: pakar bedah, makmal kateter, kejururawatan dan lawatan doktor.",
+    "impactLabel": "Kurang perlu dibayar",
+    "optionA": "Pilihan A: bilik {room}",
+    "optionB": "Pilihan B: bilik {room}",
+    "chipCut": "Potongan berkadar dikenakan",
+    "chipPick": "Minta bilik ini",
+    "tariffOver": "{rent} sehari · {excess} melebihi had {limit}",
+    "tariffWithin": "{rent} sehari · dalam had {limit}",
+    "bill": "Bil hospital",
+    "rows": {
+      "R-HL-008": "Sewa bilik melebihi had",
+      "R-HL-001": "Potongan berkadar ke atas caj yang harganya mengikut bilik",
+      "R-HL-005": "Item tidak dibayar",
+      "copay": "Insurans bersama ({percent}% mulai umur {age})",
+      "other": "Amaun lain yang tidak dibayar"
+    },
+    "none": "Tiada",
+    "youPay": "Anda bayar",
+    "policyPays": "Polisi bayar {amount}",
+    "noteCut": "Pakar bedah, makmal kateter, kejururawatan dan lawatan doktor lebih mahal dalam bilik ini, dan syarikat insurans hanya membayarnya mengikut nisbah {limit} ÷ {rent}.",
+    "notePick": "Pakar bedah sama, stent sama, penjagaan sama. Hanya bilik yang berubah.",
+    "whyTitle": "Mengapa angka ini",
+    "whyChip": "Peraturan {id}",
+    "circular2020": "Pekeliling IRDAI, 2020",
+    "circular2020Body": "Potongan berkadar hanya ke atas caj yang harganya mengikut bilik; tidak pernah ke atas ubat, implan atau diagnostik.",
+    "ruleApplied": "Peraturan yang digunakan",
+    "master2024": "Pekeliling induk IRDAI",
+    "master2024Body": "Perniagaan insurans kesihatan, 29 Mei 2024.",
+    "openPdf": "Buka PDF",
+    "verified": "Disahkan",
+    "toVerify": "Sedang disemak dengan sumber",
+    "fired": "Peraturan yang dijalankan",
+    "allRules": "Lihat setiap peraturan",
+    "deskLabel": "Katakan ini di kaunter (bahasa Hindi)",
+    "deskHint": "Kepada kaunter TPA",
+    "deskLine": "कृपया {rent} प्रतिदिन वाला कमरा दीजिए। हमारी पॉलिसी में कमरे की सीमा {limit} प्रतिदिन है, उससे महँगे कमरे में डॉक्टर और ऑपरेशन के खर्च भी कटेंगे।",
+    "deskGloss": "“Sila beri kami bilik {rent} sehari. Had bilik polisi kami ialah {limit} sehari; dalam bilik yang lebih mahal, caj doktor dan pembedahan juga dipotong.”",
+    "listen": "Dengar",
+    "stop": "Berhenti",
+    "copy": "Salin ayat Hindi",
+    "copied": "Disalin",
+    "rulesNames": {
+      "R-HL-001": "Potongan berkadar hanya ke atas caj yang harganya mengikut bilik",
+      "R-HL-003": "Insurans bersama atas amaun yang boleh diterima",
+      "R-HL-005": "Item tidak dibayar dikecualikan",
+      "R-HL-006": "Pilihan susunan polisi",
+      "R-HL-008": "Sewa bilik dihadkan pada had",
+      "R-HL-009": "Super top-up hanya membayar melebihi deduktibelnya"
+    }
+  },
   "moments": {
+    "eyebrow": "Di mana Kavach membantu",
+    "title": "Tiga saat keluarga India kehilangan ratusan ribu rupee",
+    "intro": "Kavach mengenali isi rumah anda sekali sahaja, dalam kira-kira dua minit. Kemudian ia bertindak sebelum anda memerlukan hospital, semasa kemasukan, dan apabila surat penyelesaian tiba.",
+    "kicker": "Saat {n} · {when}",
     "change": {
+      "when": "Sebelum ke hospital",
       "title": "Apabila hidup berubah",
-      "stat": "Perlindungan ibu bapa dikekalkan, tidak hilang",
-      "when": "Sebelum ke hospital"
+      "feature": "Perlindungan ibu bapa dikekalkan, tidak hilang",
+      "featureBody": "Permohonan untuk memindahkan perlindungan berkumpulan ke polisi peribadi, disediakan sebelum hari terakhir bekerja (peraturan R-MG-001).",
+      "link": "Lihat pelan pertukaran kerja",
+      "body": "“Menyertai syarikat permulaan pada 1 Dis.” Kavach nampak perlindungan ibu bapa anda tamat pada 30 Nov, menyediakan surat untuk mengekalkannya, dan mengingatkan anda di WhatsApp."
     },
     "hospital": {
+      "when": "Semasa kemasukan",
       "title": "Di kaunter hospital",
-      "stat": "<amount></amount> kurang perlu dibayar",
-      "when": "Semasa kemasukan"
+      "feature": "<amount></amount> kurang perlu dibayar",
+      "featureBody": "Membaca foto anggaran: caj mana yang berubah mengikut bilik, dan kad mana yang perlu diberi dahulu.",
+      "link": "Buka kaunter hospital",
+      "body": "Suara dan kamera, dalam bahasa Hindi. Tunjukkan anggaran dan Kavach memberitahu kad polisi mana yang perlu diberi dan bilik mana yang perlu diminta."
     },
     "claim": {
+      "when": "Selepas discaj",
       "title": "Apabila tuntutan bermasalah",
-      "body": "Hantar surat penyelesaian. Kavach menyemak setiap potongan dengan polisi anda dan menyediakan rayuan.",
-      "when": "Selepas discaj"
+      "body": "Bilnya <bill></bill>; syarikat insurans meluluskan <approved></approved> dan memotong <cut></cut> sebagai potongan berkadar, walaupun bilik itu dalam had.",
+      "feature": "<amount></amount> ditemui untuk dirayu",
+      "featureBody": "Setiap potongan disemak dengan perkataan polisi; rayuan disediakan untuk anda hantar sendiri.",
+      "link": "Semak surat penyelesaian"
     }
+  },
+  "elder": {
+    "chip": "Tiada aplikasi untuk dipasang",
+    "title": "WhatsApp dan suara yang mesra warga emas",
+    "body": "Di kaunter, Kamala tidak membuka laman web. Dia menghantar nota suara dalam bahasa Hindi atau foto anggaran di WhatsApp, dan Kavach membalas dengan nota suara dan kad.",
+    "f1Title": "Nota suara dalam bahasa Hindi atau Inggeris",
+    "f1Body": "Bercakap atau taip dalam mana-mana bahasa; jawapan kembali dengan cara yang sama.",
+    "f2Title": "Keluarga dimaklumkan",
+    "f2Body": "Apabila Kamala mendapat jawapan di kaunter, Rahul menerima makluman keluarga di telefonnya.",
+    "f3Title": "Cuba pada nombor ujian",
+    "f3Body": "Imbas kod atau buka WhatsApp, kemudian hantar RAHUL untuk menyertai keluarga demo.",
+    "sandbox": "Nombor ujian WhatsApp",
+    "joinCode": "Mesej penyertaan: {join}",
+    "open": "Buka WhatsApp",
+    "chatName": "Kavach (कवच)",
+    "chatStatus": "Keluarga demo · data contoh",
+    "caption": "Sementara itu, di telefon Rahul",
+    "voiceLength": "0:14 · Nota suara bahasa Hindi",
+    "voiceText": "अस्पताल वाले {rent} वाला डीलक्स कमरा लेने को कह रहे हैं। क्या लें?",
+    "replyWarn": "रुकिए, डीलक्स कमरा मत लीजिए।",
+    "replyBody": "सुरेश जी की पॉलिसी में कमरे की सीमा {limit} प्रतिदिन है। डीलक्स कमरे में डॉक्टर और ऑपरेशन के खर्च से {cut} कट जाएँगे।",
+    "replyCardTitle": "यह कमरा माँगिए",
+    "replyCardSaving": "बचत {saving}",
+    "replyCardBody": "{rent} प्रतिदिन वाला कमरा। आपको लगभग {pay} देने होंगे।",
+    "replyCardRule": "नियम R-HL-001 · साइन करने से पहले TPA डेस्क से पक्का कर लीजिए।",
+    "replyAlert": "राहुल को परिवार अलर्ट भेजा गया",
+    "alertPill": "Kavach: “Suresh berada di {hospital}. Kavach memberitahu keluarga supaya meminta bilik {rent}.”",
+    "inputHint": "Taip mesej atau tahan mikrofon untuk bercakap"
+  },
+  "policies": {
+    "eyebrow": "Dokumen sebenar, bukan contoh",
+    "title": "{count} perkataan polisi awam dalam set ujian",
+    "intro": "Set ujian ini terdiri daripada perkataan polisi insurans kesihatan India yang sebenar, difailkan dengan IRDAI atau diterbitkan oleh syarikat insurans dan dikenal pasti melalui UIN. Pembaca Kavach dinilai berbanding label yang disemak oleh manusia dengan setiap PDF.",
+    "fixtures": "Larian terkini menggunakan jawapan ujian yang dirakam, bukan model langsung: ia membuktikan aliran kerja berfungsi; ia bukan skor ketepatan.",
+    "checked": "{checked} daripada {count} label disemak oleh manusia",
+    "publicWording": "Perkataan awam",
+    "cardStatus": "{status} · {label}",
+    "notice": "Kavach bukan syarikat insurans, broker atau ejen. Ia tidak menerima komisen dan tidak menjual polisi. Nama syarikat insurans adalah milik pemiliknya.",
+    "masterPdf": "Pekeliling induk IRDAI 2024 (PDF)",
+    "proofLink": "Cara kami mengukur"
+  },
+  "promise": {
+    "eyebrow": "Janji kami",
+    "title": "Setiap angka menunjukkan kiraannya",
+    "body": "Amaun rupee datang daripada peraturan yang telah diuji, bukan tekaan. Ketik “Mengapa angka ini?” untuk melihat peraturan dan klausa di sebalik setiap satu.",
+    "proofLink": "Lihat sejauh mana tepatnya Kavach membaca polisi sebenar"
+  },
+  "cta": {
+    "chip": "Setiap rupee dirujuk kepada klausa polisi",
+    "title": "Jangan berdepan kaunter hospital tanpa persediaan.",
+    "body": "Cuba kedua-dua babak pada keluarga contoh, atau sediakan keluarga anda sendiri dalam beberapa minit. Kavach tidak menjual apa-apa dan tidak menghubungi mana-mana syarikat insurans.",
+    "hospital": "Suresh di kaunter hospital",
+    "maternity": "Kelahiran anak Priya",
+    "own": "Sediakan keluarga saya"
+  },
+  "footer": {
+    "about": "Berdiri di sisi keluarga anda pada setiap saat insurans: kaunter hospital, cetakan halus dan surat tuntutan, dalam bahasa Hindi atau Inggeris.",
+    "dpdp": "Dibina mengikut Akta DPDP, 2023",
+    "tryTitle": "Cubalah",
+    "evidenceTitle": "Bukti",
+    "desk": "Babak kaunter hospital",
+    "maternity": "Babak bersalin",
+    "demo": "Keluarga Sharma",
+    "cover": "Peta perlindungan",
+    "claim": "Semakan tuntutan",
+    "proof": "Bukti dan ketepatan",
+    "master": "Pekeliling induk IRDAI 2024",
+    "signIn": "Log masuk",
+    "built": "Dibina untuk Google Cloud AI Builder Cup 2026 · Data demo ditanda SAMPLE · Tiada pembayaran, sama sekali.",
+    "prototype": "Prototaip"
   },
   "whatsapp": {
     "title": "Tiada aplikasi? Jawapan yang sama di WhatsApp",
@@ -34,32 +217,6 @@
     "note": "Ini menggunakan nombor ujian WhatsApp. Keahlian bertahan 3 hari; imbas semula selepas itu.",
     "joinText": "Atau hantar “{join}” ke {number} di WhatsApp."
   },
-  "trust": {
-    "title": "Setiap angka menunjukkan pengiraannya",
-    "body": "Jumlah rupee datang daripada peraturan yang diuji, bukan tekaan. Ketik “Mengapa angka ini?” untuk melihat peraturan dan klausa di sebalik setiap satu."
-  },
-  "footer": {
-    "disclaimer": "Panduan, bukan cadangan polisi. Sahkan dengan syarikat insurans anda atau kaunter TPA.",
-    "sample": "Semua dalam demo ini adalah data contoh rekaan.",
-    "built": "Dibina di atas Gemini dan Google Cloud."
-  },
-  "headlineMark": "setiap saat insurans",
-  "eyebrow": "Hindi dan Inggeris · suara dahulu · dibina untuk seluruh keluarga",
-  "tryFamily": "Cuba dengan keluarga Sharma",
-  "statsLabel": "Apa yang Kavach jumpa dalam keluarga contoh",
-  "stats": {
-    "desk": "kurang perlu dibayar, dengan meminta bilik yang betul di kaunter hospital",
-    "claim": "dijumpai untuk dirayu dalam satu surat penyelesaian",
-    "cited": "daripada jumlah rupee datang daripada peraturan yang diuji, setiap satu dengan klausanya",
-    "wordings": "perkataan polisi awam dibaca dan diuji, muka demi muka"
-  },
-  "titlePlain": "Insurans keluarga anda,",
-  "titleEm": "dijelaskan pada saat ia penting.",
-  "howItWorks": "Cara ia berfungsi",
-  "trustLine": "Dibina untuk Google Cloud AI Builder Cup 2026 · Data demo ditanda SAMPLE · Tiada apa yang disimpan tanpa kebenaran · Tiada bayaran, selama-lamanya.",
-  "tryMaternity": "Cuba babak bersalin",
-  "tryMaternitySub": "Bersalin Priya dan had perlindungan bersalin, dalam bahasa Inggeris.",
-  "kicker": "Tarik nafas. Polisi sudah pun dibaca.",
   "boot": {
     "policies": "Polisi keluarga anda: dibaca, dengan nombor muka surat",
     "rules": "Peraturan hospital dan bersalin: difahami",
@@ -67,146 +224,187 @@
     "tagline": "Berdiri di sisi keluarga anda pada setiap saat insurans.",
     "skip": "Ketik di mana-mana untuk teruskan"
   },
-  "story": {
-    "caption": "Bagaimana saat hospital berlaku",
-    "saving": "Kurang perlu dibayar",
-    "pause": "Jeda cerita",
-    "play": "Main cerita"
+  "gateway": {
+    "label": "Selamat datang ke Kavach",
+    "engine": "Enjin peraturan sedia",
+    "rules": "{count} peraturan bertulis",
+    "demo": "Berjalan pada data demo",
+    "eyebrow": "Perisai insurans keluarga · Prototaip",
+    "title": "Tarik nafas dalam-dalam.",
+    "titleA": "Kavach",
+    "titleEm": "bersama anda.",
+    "lead": "Berdiri di sisi keluarga anda pada setiap saat insurans: kaunter hospital, cetakan halus dan surat tuntutan, dalam bahasa Hindi atau Inggeris.",
+    "policiesSub": "Had sewa bilik, insurans bersama dan tempoh menunggu, ditunjukkan sebelum kemasukan.",
+    "rulesSub": "Bilik mana yang perlu diminta dan kad mana yang perlu diberi dahulu.",
+    "besideSub": "Tiada komisen, tiada jualan. Dibina mengikut Akta DPDP, 2023.",
+    "progress": "Membuka Kavach",
+    "tickPolicies": "Polisi",
+    "tickRules": "Peraturan",
+    "tickBeside": "Hindi · Inggeris",
+    "enter": "Masuk ke Kavach",
+    "demoBtn": "Demo Sharma",
+    "promise": "Janji kami",
+    "hint": "Ketik di mana-mana atau tekan Space untuk teruskan",
+    "sandbox": "Kotak pasir enjin Kavach",
+    "sandboxChip": "Data demo",
+    "sandboxAlt": "Skrin pembukaan prototaip pertama Kavach",
+    "sandboxCaption": "City Heart Hospital · anggaran contoh",
+    "sandboxSaving": "{saving} kurang perlu dibayar",
+    "foot": "Dibina mengikut Akta DPDP India, 2023 · Prototaip dengan data demo",
+    "foot2": "Bukan syarikat insurans, broker atau ejen. Syarikat insurans yang memutuskan setiap tuntutan."
   },
-  "closing": {
-    "title": "Jangan sekali-kali hadapi kaunter hospital tanpa persediaan.",
-    "body": "Cuba dua babak dengan keluarga contoh, atau sediakan keluarga anda sendiri dalam beberapa minit. Kavach tidak menjual apa-apa dan tidak menghubungi mana-mana syarikat insurans.",
-    "maternity": "Kelahiran anak Priya",
-    "own": "Sediakan keluarga saya"
-  },
-  "momentKicker": "Saat {n} · {when}",
-  "sampleBadge": "Contoh",
-  "decision": {
-    "kicker": "Beberapa minit di kaunter kemasukan",
-    "title": "Keputusan kemasukan di {hospital}",
-    "optionA": "Pilihan A · bilik yang ditawarkan",
-    "optionB": "Pilihan B · bilik yang Kavach cadangkan",
-    "perDay": "{amount} sehari",
-    "familyPays": "Keluarga membayar",
-    "costsMore": "Kos lebih tinggi",
-    "suggested": "Kavach mencadangkan",
-    "bannerTitle": "Minta {room}: {amount} kurang untuk dibayar",
-    "bannerLabel": "Kurang dibayar",
-    "sayTitle": "Apa yang perlu dikatakan di kaunter",
-    "firstCardTitle": "Kad mana dahulu",
-    "rulesNote": "Setiap angka datang daripada terma bertulis polisi. Babak kaunter menunjukkan peraturan dan halaman di sebaliknya."
-  },
-  "chat": {
-    "name": "Kavach",
-    "voice": "Nota suara",
-    "saving": "Kurang dibayar",
-    "sample": "Perbualan contoh"
-  },
-  "whatsappSection": {
-    "kicker": "Tiada aplikasi untuk dipasang",
-    "f1Title": "Nota suara dalam bahasa anda",
-    "f1Body": "Tanya dengan lantang. Kavach menjawab dengan nota suara dan kad ringkas.",
-    "f2Title": "Keluarga turut mendengar",
-    "f2Body": "Apabila ibu atau bapa bertanya di kaunter, orang yang membayar premium mendapat jawapan yang sama.",
-    "f3Title": "Cuba nombor ujian",
-    "f3Body": "Imbas kod untuk menyertai nombor ujian WhatsApp Kavach."
-  },
-  "ex": {
-    "IN": {
-      "hospital": "City Heart Hospital",
-      "familyName": "Keluarga Sharma",
-      "lead": "Kavach mengingati setiap polisi di rumah dan memberitahu apa yang perlu dilakukan apabila hidup berubah, di kaunter hospital, dan apabila tuntutan dibayar kurang. Dalam bahasa Hindi atau Inggeris. Setiap rupee datang daripada terma polisi bertulis, lengkap dengan nombor halaman.",
-      "tryHospitalSub": "Anggaran contoh, Hindi atau Inggeris, kurang seminit. Tanpa log masuk.",
-      "momentsIntro": "Kavach mempelajari isi rumah sekali sahaja, dalam kira-kira dua minit. Kemudian ia bertindak pada tiga saat apabila keluarga India kehilangan wang.",
-      "closingHospital": "Suresh di kaunter hospital",
-      "otherTitle": "Cuba babak Singapura",
-      "otherSub": "Angioplasti Ah Kow: pelan Shield Class B1 yang ditawarkan bilik Class A, dalam bahasa Mandarin.",
-      "family": {
-        "title": "Keluarga contoh yang sudah dikenali Kavach",
-        "caption": "Lima orang, empat polisi, satu gambaran. Kavach mempelajarinya sekali sahaja, dalam kira-kira dua minit.",
-        "relations": {
-          "self": "Rahul, 34 · membayar premium",
-          "spouse": "Priya, 32",
-          "child": "Anaya, 5",
-          "father": "Suresh, 62 · pesakit",
-          "mother": "Kamala, 58 · membuka Kavach di kaunter"
-        }
-      },
-      "story": {
-        "step1Title": "Kamala menekan Di hospital",
-        "step1Body": "Dalam bahasa Hindi, pada telefonnya sendiri. Kavach sudah mengenali kedua-dua polisi Suresh.",
-        "step2Title": "Dia menunjukkan anggaran kepada kamera",
-        "step2Body": "Kavach membaca tarif bilik: deluxe {quoted} sehari, standard {lower}.",
-        "step3Title": "“Minta bilik {lower}.”",
-        "step3Body": "Hanya caj yang berkait dengan harga bilik dipotong di bilik yang lebih mahal. Kavach memberitahu kad mana yang patut diberi dahulu, dan apa yang perlu diminta di kaunter."
-      },
-      "decision": {
-        "patient": "Suresh, 62 · angioplasti terancang · dua polisi dalam keluarga",
-        "roomQuoted": "Bilik deluxe",
-        "roomLower": "Bilik standard",
-        "roomLowerShort": "bilik standard",
-        "why": "Polisi Suresh membayar bilik sehingga had tertentu. Melebihi had itu, syarikat insurans turut memotong caj pakar bedah, dewan bedah dan caj lain yang berkait dengan harga bilik, dalam nisbah yang sama.",
-        "script": "“Tolong tempahkan bilik standard untuk bapa saya, pada {amount} sehari atau kurang.”",
-        "firstCard": "Beri kad polisi ibu bapa dahulu; polisi yang satu lagi menanggung baki."
-      },
-      "moments": {
-        "change": "“Menyertai syarikat permulaan pada 1 Dis.” Kavach nampak perlindungan ibu bapa anda tamat pada 30 Nov, menyediakan surat untuk mengekalkannya, dan mengingatkan anda di WhatsApp.",
-        "hospital": "Suara dan kamera, dalam bahasa Hindi. Tunjukkan anggaran dan Kavach beritahu kad polisi mana yang patut diberi dan bilik mana yang patut diminta.",
-        "claimStat": "<amount></amount> dijumpai untuk dirayu"
-      },
-      "whatsappBody": "Hantar foto anggaran atau nota suara dalam bahasa Hindi. Kavach membalas dengan nota suara dan kad.",
-      "chat": {
-        "ask": "Kaunter menawarkan bilik deluxe pada {quoted} sehari. Bolehkah kami ambil?",
-        "reply": "Minta bilik standard pada {lower} sehari. Di bilik deluxe, polisi turut memotong caj pakar bedah dan dewan bedah."
+  "sg": {
+    "announce": {
+      "cited": "Setiap dolar dirujuk kepada klausa"
+    },
+    "nav": {
+      "demo": "Demo Tan"
+    },
+    "hero": {
+      "chip": "Setiap dolar dirujuk kepada klausa · Tiada komisen",
+      "title": "Setiap keluarga Singapura ada MediShield Life.",
+      "titleEm": "Tidak ramai yang tahu apa yang dibayar oleh pelan Shield mereka.",
+      "lead": "Kavach mengingati setiap polisi dalam rumah dan memberitahu anda apa yang perlu dibuat apabila hidup berubah, di kaunter hospital, dan apabila tuntutan dibayar kurang. Dalam bahasa Mandarin, Melayu atau Inggeris. Setiap dolar datang daripada terma polisi bertulis, dengan nombor muka surat.",
+      "explore": "Terokai keluarga Tan",
+      "maternity": "Atau cuba babak India: Suresh, dalam bahasa Hindi",
+      "stats": {
+        "desk": "kurang perlu dibayar, dengan meminta wad yang sepadan dengan pelan",
+        "pick": "apa yang keluarga bayar dalam wad yang sepadan dengan pelan",
+        "rules": "peraturan bertulis Singapura di sebalik setiap dolar"
       }
     },
-    "SG": {
-      "hospital": "Sample General Hospital",
-      "familyName": "Keluarga Tan, Singapura",
-      "lead": "Kavach mengingati setiap polisi di rumah dan memberitahu apa yang perlu dilakukan apabila hidup berubah, di kaunter hospital, dan apabila tuntutan dibayar kurang. Dalam bahasa Mandarin, Melayu atau Inggeris. Setiap dolar datang daripada terma polisi bertulis, lengkap dengan nombor halaman.",
-      "tryHospitalSub": "Anggaran contoh, Mandarin, Melayu atau Inggeris, kurang seminit. Tanpa log masuk.",
-      "momentsIntro": "Kavach mempelajari isi rumah sekali sahaja, dalam kira-kira dua minit. Kemudian ia bertindak pada tiga saat apabila keluarga kehilangan wang.",
-      "closingHospital": "Ah Kow di kaunter hospital",
-      "otherTitle": "Cuba babak India",
-      "otherSub": "Angioplasti Suresh di City Heart Hospital, dalam bahasa Hindi.",
-      "family": {
-        "title": "Keluarga contoh yang sudah dikenali Kavach",
-        "caption": "Lima orang, MediShield Life dan satu pelan Shield, satu gambaran. Kavach mempelajarinya sekali sahaja, dalam kira-kira dua minit.",
-        "relations": {
-          "self": "Wei-Ming, 38 · membayar premium",
-          "spouse": "Hui-Ling, 36",
-          "child": "Jia-En, 6",
-          "father": "Ah Kow, 68 · pesakit",
-          "mother": "Siew-Hong, 64"
-        }
+    "audit": {
+      "city": "Singapura · contoh",
+      "household": "Isi rumah Tan",
+      "people": "{count} orang · Ah Kow, {age}, ada MediShield Life dan pelan Shield",
+      "status": "Pilihan wad penting",
+      "compareTitle": "Ah Kow di {hospital}: apa yang keluarga bayar",
+      "quoted": "{room}, yang ditawarkan",
+      "within": "{room}, wad pelan",
+      "warnTitle": "Had tahunan rider memerlukan pakar panel",
+      "warnBody": "Rider mengehadkan bayaran bersama keluarga untuk tahun itu hanya jika menggunakan pakar panel atau mendapat pra-kebenaran. Kavach memberitahu keluarga supaya bertanya sebelum menandatangani.",
+      "footer": "Peraturan daripada MOH, CPF Board dan perkataan pelan itu sendiri"
+    },
+    "moments": {
+      "title": "Tiga saat keluarga kehilangan beribu-ribu dolar",
+      "change": {
+        "body": "“Bertukar kerja bulan depan.” Kavach menyemak perlindungan mana yang tamat bersama kerja, apa yang masih dibayar oleh pelan Shield keluarga, dan mengingatkan anda di WhatsApp.",
+        "feature": "Perlindungan disemak sebelum hari terakhir",
+        "featureBody": "Apa yang tamat bersama kerja, apa yang terus dibayar oleh MediShield Life dan pelan Shield, dan apa yang perlu dibuat sebelum hari terakhir bekerja."
       },
-      "story": {
-        "step1Title": "Keluarga menekan Di hospital",
-        "step1Body": "Dalam bahasa Mandarin, pada telefon mereka sendiri. Kavach sudah mengenali MediShield Life Ah Kow dan pelan Shield beliau.",
-        "step2Title": "Mereka menunjukkan anggaran kepada kamera",
-        "step2Body": "Kavach membaca caj wad: Class A {quoted} sehari, Class B1 {lower}.",
-        "step3Title": "“Minta wad Class B1.”",
-        "step3Body": "Pelan Shield beliau dibeli untuk Class B1. Di Class A, pelan itu hanya membayar sebahagian daripada bil. Kavach memberitahu kad mana yang patut diberi dahulu, dan apa yang perlu diminta di kaunter."
+      "hospital": {
+        "body": "Suara dan kamera, dalam bahasa Mandarin atau Melayu. Tunjukkan anggaran dan Kavach memberitahu kad mana yang perlu diberi dan wad mana yang perlu diminta.",
+        "featureBody": "Membaca foto anggaran: kos setiap kelas wad di bawah pelan, dan kad mana yang perlu diberi dahulu."
       },
-      "decision": {
-        "patient": "Ah Kow, 68 · angioplasti terancang · pelan Shield dibeli untuk Class B1",
-        "roomQuoted": "Wad Class A",
-        "roomLower": "Wad Class B1",
-        "roomLowerShort": "wad Class B1",
-        "why": "Pelan Shield Ah Kow dibeli untuk wad Class B1. Di wad Class A, pelan hanya membayar sebahagian daripada bil, jadi keluarga membayar jauh lebih banyak untuk rawatan yang sama.",
-        "script": "“Tolong masukkan bapa saya ke wad Class B1.”",
-        "firstCard": "Beri kad pelan Shield dahulu; MediShield Life merupakan sebahagian daripadanya."
-      },
-      "moments": {
-        "change": "“Bertukar kerja bulan depan.” Kavach menyemak perlindungan mana yang tamat bersama pekerjaan, apa yang masih dibayar oleh pelan Shield keluarga, dan mengingatkan anda di WhatsApp.",
-        "hospital": "Suara dan kamera, dalam bahasa Mandarin atau Melayu. Tunjukkan anggaran dan Kavach beritahu kad mana yang patut diberi dan wad mana yang patut diminta.",
-        "claimStat": "Setiap potongan disemak berdasarkan pelan"
-      },
-      "whatsappBody": "Hantar foto anggaran atau nota suara dalam bahasa Mandarin atau Melayu. Kavach membalas dengan nota suara dan kad.",
-      "chat": {
-        "ask": "Hospital menawarkan wad Class A pada {quoted} sehari. Patutkah kami ambil?",
-        "reply": "Minta wad Class B1 pada {lower} sehari. Di Class A, pelan Shield beliau hanya membayar sebahagian daripada bil."
+      "claim": {
+        "body": "Apabila surat tuntutan dibayar kurang, Kavach menyemak setiap potongan dengan pelan. Pengiraan pro-rata dalam wad yang dilindungi pelan, atau deduktibel kedua dalam tahun yang sama, boleh dipertikaikan.",
+        "feature": "Setiap potongan disemak dengan pelan",
+        "featureBody": "Syarikat insurans dahulu, kemudian FIDReC: surat disediakan untuk anda hantar sendiri."
       }
+    },
+    "elder": {
+      "body": "Di kaunter, Siew-Hong tidak membuka laman web. Dia menghantar nota suara dalam bahasa Mandarin atau foto anggaran di WhatsApp, dan Kavach membalas dengan nota suara dan kad.",
+      "f1Title": "Nota suara dalam bahasa Mandarin, Melayu atau Inggeris",
+      "f1Body": "Bercakap atau taip dalam mana-mana bahasa ini; jawapan kembali dengan cara yang sama.",
+      "f2Body": "Apabila Siew-Hong mendapat jawapan di kaunter, Wei-Ming juga menerima makluman keluarga.",
+      "chatName": "Kavach",
+      "caption": "Sementara itu, di telefon Wei-Ming",
+      "voiceLength": "0:12 · Nota suara bahasa Mandarin",
+      "voiceText": "医院说{quotedWard}级病房每天{rent}，我们要住吗？",
+      "replyWarn": "先别选{quotedWard}级病房。",
+      "replyBody": "Ah Kow 的 Shield 计划是按{ward}级病房买的。住{quotedWard}级病房，计划只赔一部分，其中{cut}要家里自己付。",
+      "replyCardTitle": "请要求这个病房",
+      "replyCardSaving": "少付 {saving}",
+      "replyCardBody": "{ward}级病房，每天{rent}。您大约需要付{pay}。",
+      "replyCardRule": "规则 R-SG-005 · 签字前请先向医院的保险柜台确认。",
+      "replyAlert": "已通知 Wei-Ming",
+      "alertPill": "Kavach: “Ah Kow berada di {hospital}. Kavach memberitahu keluarga supaya meminta wad Kelas {ward}.”"
+    },
+    "promise": {
+      "body": "Amaun dolar datang daripada peraturan yang telah diuji, bukan tekaan. Ketik “Mengapa angka ini?” untuk melihat peraturan dan klausa di sebalik setiap satu."
+    },
+    "cta": {
+      "chip": "Setiap dolar dirujuk kepada klausa polisi",
+      "body": "Cuba babak Singapura pada keluarga contoh, atau sediakan keluarga anda sendiri dalam beberapa minit. Kavach tidak menjual apa-apa dan tidak menghubungi mana-mana syarikat insurans.",
+      "hospital": "Ah Kow di kaunter hospital",
+      "maternity": "Suresh di India, dalam bahasa Hindi"
+    },
+    "footer": {
+      "about": "Berdiri di sisi keluarga anda pada setiap saat insurans: kaunter hospital, cetakan halus dan surat tuntutan, dalam bahasa Mandarin, Melayu atau Inggeris.",
+      "dpdp": "Tiada apa dibaca tanpa kebenaran anda",
+      "desk": "Babak kaunter Singapura",
+      "maternity": "Babak kaunter India",
+      "demo": "Keluarga Tan",
+      "master": "CPF Board: pengiraan pro-rata MediShield Life",
+      "sources": "Halaman MOH, CPF Board dan MAS, bertarikh, serta perkataan setiap pelan itu sendiri"
+    },
+    "gateway": {
+      "lead": "Berdiri di sisi keluarga anda pada setiap saat insurans: kaunter hospital, cetakan halus dan surat tuntutan, dalam bahasa Mandarin, Melayu atau Inggeris.",
+      "policiesSub": "Kelayakan wad, deduktibel dan bayaran bersama, ditunjukkan sebelum kemasukan.",
+      "rulesSub": "Wad mana yang perlu diminta dan kad mana yang perlu diberi dahulu.",
+      "besideSub": "Tiada komisen, tiada jualan. Tiada apa dibaca tanpa kebenaran anda.",
+      "tickBeside": "Mandarin · Melayu",
+      "demoBtn": "Demo Tan",
+      "sandboxCaption": "Sample General Hospital · anggaran contoh",
+      "foot": "Prototaip dengan data demo · Tiada apa dibaca tanpa kebenaran anda"
+    },
+    "boot": {
+      "rules": "Peraturan MediShield Life dan pelan Shield: difahami",
+      "beside": "Berdiri di sisi anda, dalam bahasa Mandarin, Melayu atau Inggeris"
     }
+  },
+  "admissionSg": {
+    "sub": "Pesakit: Ah Kow ({age}) · angioplasti koronari · MediShield Life dan pelan Shield yang dibeli untuk wad Kelas {ward}. Wad Kelas {quotedWard} menyebabkan keluarga membayar {saving} lebih.",
+    "impactBody": "Dalam wad Kelas {ward}, pelan membayar mengikut caj sebenar. Dalam Kelas {quotedWard}, ia hanya mengira {share}% daripada bil sebagai boleh dituntut, jadi {above} daripadanya ditanggung oleh keluarga.",
+    "optionA": "Pilihan A: {room}",
+    "optionB": "Pilihan B: {room}",
+    "chipCut": "Melebihi wad pelan: dikira pro-rata",
+    "chipPick": "Minta wad ini",
+    "tariffOver": "{rent} sehari · melebihi wad Kelas {ward} yang sepadan dengan pelan",
+    "tariffWithin": "{rent} sehari · wad yang sepadan dengan pelan",
+    "rows": {
+      "R-SG-005": "Tidak boleh dituntut melebihi wad pelan",
+      "R-HL-005": "Item yang tidak boleh dituntut",
+      "R-SG-006": "Bayaran bersama dengan rider ({percent}%)",
+      "other": "Amaun lain yang tidak dibayar"
+    },
+    "policyPays": "Pelan Shield bayar {plan} · MediShield Life {medishield}",
+    "noteCut": "Melebihi Kelas {ward}, pelan hanya mengira {share}% daripada bil: rawatan yang sama meninggalkan bahagian yang jauh lebih besar untuk ditanggung keluarga.",
+    "notePick": "Pakar kardiologi sama, stent sama, penjagaan sama. Hanya wad yang berubah.",
+    "prorationLabel": "Pengiraan pro-rata MediShield Life",
+    "prorationBody": "Dalam Kelas {quotedWard}, MediShield Life mengira {wardShare}% daripada caj wad dan {surgicalShare}% daripada caj pembedahan (CPF Board, mulai 1 April 2025). Pelan Shield menetapkan bahagiannya sendiri.",
+    "riderLabel": "Syarat rider MOH",
+    "riderBody": "Sekurang-kurangnya {percent}% bayaran bersama kekal ditanggung keluarga. Had tahunan pelan sebanyak {cap} hanya terpakai jika menggunakan pakar panel atau mendapat pra-kebenaran.",
+    "openSource": "Buka sumber",
+    "deskLabel": "Katakan ini di kaunter (bahasa Mandarin)",
+    "deskHint": "Kepada kaunter kemasukan",
+    "deskLine": "请给我父亲安排{ward}级病房。他的 Shield 计划是按{ward}级病房买的，住{quotedWard}级病房的话，计划只赔一部分账单。",
+    "deskGloss": "“Sila masukkan bapa saya ke wad Kelas {ward}. Pelan Shield beliau dibeli untuk Kelas {ward}; dalam Kelas {quotedWard}, pelan hanya membayar sebahagian daripada bil.”",
+    "copy": "Salin ayat Mandarin",
+    "rulesNames": {
+      "R-HL-005": "Item yang tidak boleh dituntut dikecualikan",
+      "R-SG-001": "Pengiraan pro-rata MediShield Life mengikut kelas wad",
+      "R-SG-002": "Had harian wad dan ICU",
+      "R-SG-003": "Deduktibel sekali setiap tahun polisi",
+      "R-SG-004": "Ko-insurans atas amaun yang boleh dituntut",
+      "R-SG-005": "Pelan membayar mengikut caj sebenar dalam wadnya",
+      "R-SG-006": "Bayaran bersama rider dan had tahunannya",
+      "R-SG-007": "Had tahun polisi",
+      "R-SG-010": "Pakar panel belum diketahui: kedua-dua jawapan",
+      "R-SGCLM-001": "Pengiraan pro-rata dalam wad pelan boleh dipertikaikan",
+      "R-SGCLM-002": "Bayaran bersama melebihi had rider boleh dipertikaikan",
+      "R-SGCLM-003": "Deduktibel kedua dalam setahun boleh dipertikaikan",
+      "R-SGCLM-006": "Syarikat insurans dahulu, kemudian FIDReC"
+    }
+  },
+  "sgRules": {
+    "eyebrow": "Sumber, bukan tekaan",
+    "title": "{count} peraturan bertulis Singapura di sebalik setiap dolar",
+    "intro": "Singapura tidak mempunyai satu pekeliling induk: angka-angkanya datang daripada halaman MOH, CPF Board dan MAS yang bertarikh, serta daripada perkataan setiap pelan itu sendiri. Peraturan hanya ditanda sebagai disemak oleh manusia selepas halaman sumber utama dibuka.",
+    "checked": "{checked} daripada {count} peraturan disemak oleh manusia",
+    "planWording": "Perkataan pelan itu sendiri",
+    "verified": "Disemak dengan sumber",
+    "toVerify": "Sedang disemak dengan sumber",
+    "notice": "Kavach bukan syarikat insurans, broker atau ejen. Ia tidak menerima komisen dan tidak menjual pelan. Nama pelan adalah milik pemiliknya."
   }
 }

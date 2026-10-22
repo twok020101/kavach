@@ -88,6 +88,7 @@
     "global": "Kavach memberi panduan berdasarkan dokumen anda dan peraturan yang diterbitkan. Ia bukan syarikat insurans, broker atau ejen, dan syarikat insurans yang memutuskan setiap tuntutan.",
     "plan": "Saiz perlindungan adalah panduan, bukan cadangan produk. Premium hanya sebagai ilustrasi.",
     "hospital": "Anggaran sahaja. Sila sahkan dengan kaunter insurans (TPA) sebelum anda menandatangani.",
+    "hospitalSg": "Anggaran sahaja. Sila sahkan dengan kaunter insurans hospital sebelum anda menandatangani.",
     "claims": "Surat ini adalah draf untuk anda semak dan hantar sendiri."
   },
   "evidence": {
@@ -104,6 +105,7 @@
       "reader": "Pembaca dan pengira untuk polisi yang sudah anda miliki",
       "notInsurer": "Syarikat insurans, broker, ejen atau penjual polisi",
       "cites": "Setiap rupee yang ditunjukkan datang daripada terma polisi bertulis, dengan nombor muka surat",
+      "citesSg": "Setiap dolar yang ditunjukkan datang daripada terma polisi bertulis, dengan nombor muka surat",
       "notGuarantee": "Jaminan berapa yang akan dibayar untuk tuntutan: syarikat insurans yang memutuskan setiap tuntutan",
       "consent": "Tiada apa yang dibaca atau disimpan tanpa kebenaran anda",
       "notPayments": "Sesuatu yang mengambil bayaran atau menghubungi syarikat insurans bagi pihak anda"
@@ -111,5 +113,27 @@
   },
   "copy": "Salin",
   "copied": "Disalin",
-  "activeFamily": "Keluarga aktif"
+  "activeFamily": "Keluarga aktif",
+  "back": "Kembali",
+  "prototype": "Prototaip",
+  "brandPanel": {
+    "deva": "कवच",
+    "eyebrow": "Perisai penjagaan kesihatan & insurans",
+    "chip": "Setiap rupee dirujuk kepada klausa",
+    "tagline": "Berdiri di sisi keluarga anda pada setiap saat insurans.",
+    "lead": "Perisai pelindung yang membimbing keluarga India pelbagai generasi melalui kelulusan tanpa tunai, had kecil polisi dan tuntutan hospital.",
+    "change": {
+      "title": "Apabila hidup berubah",
+      "body": "Menyesuaikan perlindungan untuk ibu bapa yang semakin berusia, peristiwa penting dan ahli keluarga baru."
+    },
+    "hospital": {
+      "title": "Di kaunter hospital",
+      "body": "Bantuan tanpa tunai secara langsung: perangkap sewa bilik dikesan, kad mana yang perlu diberi dahulu, apa yang perlu ditanya di kaunter TPA."
+    },
+    "claim": {
+      "title": "Apabila tuntutan bermasalah",
+      "body": "Setiap potongan disemak klausa demi klausa; surat rayuan dan surat kepada ombudsman disediakan untuk anda."
+    },
+    "footer": "Kebenaran anda, data anda: dibina mengikut Akta Perlindungan Data Peribadi Digital (DPDP) India, 2023."
+  }
 }
