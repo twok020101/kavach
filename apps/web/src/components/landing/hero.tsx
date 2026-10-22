@@ -1,4 +1,4 @@
-import { getTranslations } from 'next-intl/server';
+import type { Country } from '@kavach/engine';
 import type { CSSProperties, ReactNode } from 'react';
 import { Amount } from '@/components/kavach/amount';
 import { Icon } from '@/components/kavach/icon';
@@ -6,12 +6,22 @@ import { Spotlit, WordsRise } from '@/components/kavach/landing-live';
 import { cn } from '@/components/ui/cn';
 import { Link } from '@/i18n/navigation';
 import { landingNumbers } from '@/lib/mock/landing';
-import type { Admission } from './data';
+import type { LandingCase } from './data';
+import { landingT } from './market-t';
 
 /** Entrance order of the opening section once the gateway lifts. */
 const rise = (i: number) => ({ '--i': i }) as CSSProperties;
 
-const FAMILY = ['Rahul', 'Priya', 'Anaya', 'Suresh', 'Kamala'];
+/** Each market's sample family, in the order the audit card shows them. */
+const FAMILY: Record<Country, string[]> = {
+  IN: ['Rahul', 'Priya', 'Anaya', 'Suresh', 'Kamala'],
+  SG: ['Wei-Ming', 'Hui-Ling', 'Jia-En', 'Ah Kow', 'Siew-Hong'],
+};
+/** The rules the audit card's comparison rests on. */
+const AUDIT_RULES: Record<Country, string> = {
+  IN: 'R-HL-001 · R-MG-001',
+  SG: 'R-SG-005 · R-SG-006',
+};
 const TINTS = [
   'bg-primary-soft text-primary-hover',
   'bg-primary-soft text-primary-hover',
@@ -22,10 +32,28 @@ const TINTS = [
 
 /**
  * The opening section (Stitch hero): the statement with its marigold second line, the two ways
- * in, the stat ribbon and, on the right, the engine's own check of the Sharma household.
+ * in, the stat ribbon and, on the right, the engine's own check of the sample household: the
+ * Sharmas in India, or the Tans in Singapore (S$, MediShield Life and a Shield plan).
  */
-export async function Hero({ admission, wordings }: { admission: Admission; wordings?: number }) {
-  const t = await getTranslations('landing.hero');
+export async function Hero({
+  market,
+  admission,
+  wordings,
+}: {
+  market: Country;
+  admission: LandingCase;
+  wordings?: number;
+}) {
+  const t = await landingT('hero', market);
+  const sg = market === 'SG';
+  const scene = { pathname: '/desk', query: { demo: '1', ...(sg ? { scene: 'singapore' } : {}) } };
+  // The second scene: Priya's delivery in India; from Singapore, the India desk.
+  const other = sg
+    ? { href: { pathname: '/desk', query: { demo: '1' } }, icon: 'travel_explore' }
+    : {
+        href: { pathname: '/desk', query: { demo: '1', scene: 'maternity' } },
+        icon: 'pregnant_woman',
+      };
   return (
     <Spotlit className="relative bg-surface-container-low px-4 py-10 sm:px-6 sm:py-14 lg:px-8">
       <div className="mx-auto flex max-w-7xl flex-col items-center gap-10 lg:flex-row lg:items-start lg:gap-12">
@@ -50,7 +78,7 @@ export async function Hero({ admission, wordings }: { admission: Admission; word
 
           <div className="rise flex flex-wrap items-center gap-3 pt-1" style={rise(4)}>
             <Link
-              href={{ pathname: '/desk', query: { demo: '1' } }}
+              href={scene}
               className="btn-solid flex min-h-14 items-center gap-2.5 rounded-md bg-primary px-5 text-title-md font-bold text-on-primary shadow-2 hover:bg-primary-hover"
             >
               <Icon name="bolt" className="text-xl" />
@@ -71,18 +99,21 @@ export async function Hero({ admission, wordings }: { admission: Admission; word
             </Link>
           </div>
           <Link
-            href={{ pathname: '/desk', query: { demo: '1', scene: 'maternity' } }}
+            href={other.href}
             className="rise -mt-2 inline-flex min-h-11 w-fit items-center gap-1.5 text-body-md font-semibold text-primary underline-offset-4 hover:underline"
             style={rise(5)}
           >
-            <Icon name="pregnant_woman" className="text-lg" />
+            <Icon name={other.icon} className="text-lg" />
             {t('maternity')}
             <Icon name="arrow_forward" className="text-base" />
           </Link>
 
           <ul
             aria-label={t('statsLabel')}
-            className="rise grid grid-cols-2 gap-3 pt-2 sm:grid-cols-4 sm:gap-4"
+            className={cn(
+              'rise grid grid-cols-2 gap-3 pt-2 sm:gap-4',
+              sg ? 'sm:grid-cols-3' : 'sm:grid-cols-4',
+            )}
             style={rise(6)}
           >
             <Stat
@@ -91,13 +122,22 @@ export async function Hero({ admission, wordings }: { admission: Admission; word
               value={<Amount value={admission.saving} />}
               caption={t('stats.desk')}
             />
-            <Stat
-              icon="gavel"
-              tone="text-primary"
-              value={<Amount value={landingNumbers.claimRecoverable} />}
-              caption={t('stats.claim')}
-            />
-            {wordings !== undefined && (
+            {sg ? (
+              <Stat
+                icon="bed"
+                tone="text-primary"
+                value={<Amount value={admission.pick.outOfPocket} />}
+                caption={t('stats.pick')}
+              />
+            ) : (
+              <Stat
+                icon="gavel"
+                tone="text-primary"
+                value={<Amount value={landingNumbers.claimRecoverable} />}
+                caption={t('stats.claim')}
+              />
+            )}
+            {!sg && wordings !== undefined && (
               <Stat
                 icon="menu_book"
                 tone="text-secondary"
@@ -114,7 +154,7 @@ export async function Hero({ admission, wordings }: { admission: Admission; word
           </ul>
         </div>
 
-        <LiveAudit admission={admission} />
+        <LiveAudit market={market} admission={admission} />
       </div>
     </Spotlit>
   );
@@ -145,8 +185,8 @@ function Stat({
 }
 
 /** The right-hand card: what the engine found in the sample household, with a live ping. */
-async function LiveAudit({ admission: a }: { admission: Admission }) {
-  const t = await getTranslations('landing.audit');
+async function LiveAudit({ market, admission: a }: { market: Country; admission: LandingCase }) {
+  const t = await landingT('audit', market);
   const pickShare = Math.round((a.pick.outOfPocket / a.quoted.outOfPocket) * 100);
   return (
     <aside
@@ -185,7 +225,7 @@ async function LiveAudit({ admission: a }: { admission: Admission }) {
         </div>
 
         <ul className="flex -space-x-2" aria-label={t('household')}>
-          {FAMILY.map((name, i) => (
+          {FAMILY[market].map((name, i) => (
             <li
               key={name}
               title={name}
@@ -232,7 +272,7 @@ async function LiveAudit({ admission: a }: { admission: Admission }) {
           <Icon name="menu_book" className="text-sm" />
           {t('footer')}
         </span>
-        <span className="font-mono text-secondary">R-HL-001 · R-MG-001</span>
+        <span className="font-mono text-secondary">{AUDIT_RULES[market]}</span>
       </div>
     </aside>
   );

@@ -1,6 +1,6 @@
 'use client';
 
-import { formatInr } from '@kavach/engine';
+import { type Country, formatMoney } from '@kavach/engine';
 import { useTranslations } from 'next-intl';
 import {
   useEffect,
@@ -68,9 +68,22 @@ const readWanted = () => (wanted ??= decide());
  * never waits more than a few seconds, plays once per tab (a refresh plays it again), never on
  * app or hospital routes, and not at all under reduced motion unless ?boot=1 asks for it.
  */
-export function Boot({ saving, rulesCount }: { saving: number; rulesCount: number }) {
-  const t = useTranslations('landing.gateway');
-  const tb = useTranslations('landing.boot');
+export function Boot({
+  market = 'IN',
+  saving,
+  rulesCount,
+}: {
+  /** The reader's market: Singapore keys under `landing.sg.gateway` and `landing.sg.boot` win. */
+  market?: Country;
+  saving: number;
+  rulesCount: number;
+}) {
+  const tl = useTranslations('landing');
+  const pick =
+    (ns: 'gateway' | 'boot') => (key: string, values?: Record<string, string | number>) =>
+      tl(market === 'SG' && tl.has(`sg.${ns}.${key}`) ? `sg.${ns}.${key}` : `${ns}.${key}`, values);
+  const t = pick('gateway');
+  const tb = pick('boot');
   const active = useSyncExternalStore(noop, readWanted, () => false);
   const [leaving, setLeaving] = useState(false);
   const [gone, setGone] = useState(false);
@@ -397,7 +410,7 @@ export function Boot({ saving, rulesCount }: { saving: number; rulesCount: numbe
                       {t('sandboxCaption')}
                     </span>
                     <span className="text-label-caps font-semibold uppercase text-[#9ef5be]">
-                      {t('sandboxSaving', { saving: formatInr(saving) })}
+                      {t('sandboxSaving', { saving: formatMoney(saving, market) })}
                     </span>
                   </div>
                 </div>

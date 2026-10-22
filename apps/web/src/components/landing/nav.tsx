@@ -1,16 +1,20 @@
-import { getTranslations } from 'next-intl/server';
+import type { Country } from '@kavach/engine';
 import { Icon } from '@/components/kavach/icon';
 import { LanguageSwitch } from '@/components/kavach/language-switch';
 import { LogoMark } from '@/components/kavach/logo';
 import { ThemeToggle } from '@/components/kavach/theme-toggle';
 import { Link } from '@/i18n/navigation';
+import { landingT } from './market-t';
 
 /** The thin announcement bar and the glass header of the landing page (Stitch top bar). */
-export async function LandingNav() {
-  const t = await getTranslations('landing');
+export async function LandingNav({ market }: { market: Country }) {
+  const tn = await landingT('nav', market);
+  const ta = await landingT('announce', market);
+  const t = (key: string) => (key.startsWith('nav.') ? tn(key.slice(4)) : ta(key.slice(9)));
+  const desk = market === 'SG' ? { demo: '1', scene: 'singapore' } : { demo: '1' };
   const links = [
     { href: '/demo', label: t('nav.demo') },
-    { href: { pathname: '/desk', query: { demo: '1' } }, label: t('nav.desk') },
+    { href: { pathname: '/desk', query: desk }, label: t('nav.desk') },
     { href: '/home', label: t('nav.cover') },
     { href: '/claims', label: t('nav.claim') },
     { href: '/proof', label: t('nav.proof') },

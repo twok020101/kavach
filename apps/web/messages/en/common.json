@@ -88,6 +88,7 @@
     "global": "Kavach gives guidance based on your documents and published rules. It is not an insurer, broker or agent, and the insurer decides every claim.",
     "plan": "Sizes are guidance, not product recommendations. Premiums are illustrative.",
     "hospital": "Estimate only. Please confirm with the insurance (TPA) desk before you sign.",
+    "hospitalSg": "Estimate only. Please confirm with the hospital’s insurance counter before you sign.",
     "claims": "This letter is a draft for you to review and send yourself."
   },
   "evidence": {
@@ -104,6 +105,7 @@
       "reader": "A reader and calculator for the policies you already have",
       "notInsurer": "An insurer, broker, agent or seller of policies",
       "cites": "Every rupee shown comes from written policy terms, with the page",
+      "citesSg": "Every dollar shown comes from written policy terms, with the page",
       "notGuarantee": "A guarantee of what a claim will pay: the insurer decides every claim",
       "consent": "Nothing is read or stored without your consent",
       "notPayments": "Something that takes payments or contacts insurers for you"

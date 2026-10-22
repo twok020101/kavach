@@ -219,7 +219,7 @@ export async function AdmissionSection({ a }: { a: Admission }) {
   );
 }
 
-function Cell({ label, children }: { label: string; children: React.ReactNode }) {
+export function Cell({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div className="flex flex-col gap-1 rounded-lg bg-surface p-3.5">
       <p className="text-label-caps font-bold uppercase text-on-surface-variant">{label}</p>
@@ -228,7 +228,7 @@ function Cell({ label, children }: { label: string; children: React.ReactNode })
   );
 }
 
-function Status({
+export function Status({
   status,
   verified,
   toVerify,
@@ -250,9 +250,10 @@ function Status({
   );
 }
 
-function OptionCard({
+export function OptionCard({
   i,
   tone,
+  badKey = 'R-HL-001',
   chip,
   title,
   billLabel,
@@ -268,6 +269,8 @@ function OptionCard({
 }: {
   i: number;
   tone: 'cut' | 'pick';
+  /** The row that makes the dearer room dear, shown in red: the proportionate cut, or pro-ration. */
+  badKey?: string;
   chip: string;
   title: string;
   billLabel: string;
@@ -310,7 +313,7 @@ function OptionCard({
       <dl className="flex flex-col gap-2.5 rounded-lg bg-surface p-3 text-body-sm sm:p-4">
         {copy.rows.map((r) => {
           const zero = r.amount === 0;
-          const bad = cut && r.key === 'R-HL-001';
+          const bad = cut && r.key === badKey;
           return (
             <div key={r.key} className="flex items-baseline justify-between gap-3">
               <dt

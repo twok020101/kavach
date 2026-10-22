@@ -1,4 +1,4 @@
-import { formatInr } from '@kavach/engine';
+import { type Country, formatMoney, RULES } from '@kavach/engine';
 import type { WordingResult } from '@kavach/schemas';
 import { getTranslations } from 'next-intl/server';
 import type { CSSProperties, ReactNode } from 'react';
@@ -12,8 +12,8 @@ import { Reveal } from '@/components/kavach/reveal';
 import { cn } from '@/components/ui/cn';
 import { Link } from '@/i18n/navigation';
 import { landingNumbers } from '@/lib/mock/landing';
-import type { Admission } from './data';
 import { claimData } from './data';
+import { landingT } from './market-t';
 
 type Href = Parameters<typeof Link>[0]['href'];
 const i = (n: number) => ({ '--i': n }) as CSSProperties;
@@ -43,8 +43,9 @@ function Eyebrow({
 
 /* ------------------------------------------------------------------------------------------- */
 /** The three moments where families lose money, as three cards with a feature box and a link. */
-export async function Moments() {
-  const t = await getTranslations('landing.moments');
+export async function Moments({ market, saving }: { market: Country; saving: number }) {
+  const t = await landingT('moments', market);
+  const sg = market === 'SG';
   const claim = claimData();
   const amount = (value: number) =>
     function CountUp() {
@@ -72,10 +73,12 @@ export async function Moments() {
       key: 'hospital',
       icon: 'photo_camera',
       tile: 'bg-secondary-fixed text-on-secondary-container',
-      href: { pathname: '/desk', query: { demo: '1' } },
+      href: { pathname: '/desk', query: { demo: '1', ...(sg ? { scene: 'singapore' } : {}) } },
       linkTone: 'text-secondary',
       body: t('hospital.body'),
-      feature: t.rich('hospital.feature', { amount: amount(landingNumbers.hospitalSaving) }),
+      feature: t.rich('hospital.feature', {
+        amount: amount(sg ? saving : landingNumbers.hospitalSaving),
+      }),
     },
     {
       key: 'claim',
@@ -174,13 +177,35 @@ function sandboxJoin() {
   return { number, join, link };
 }
 
-/** The second door: Kamala's WhatsApp chat, told in a phone mock, and how to try it. */
-export async function ElderSection({ a }: { a: Admission }) {
-  const t = await getTranslations('landing.elder');
+/** The figures the elder's chat quotes, from the market's engine run. */
+export type ElderChat = {
+  hospital: string;
+  /** The dearer room's rent, the cut it brings, the saving; the room to ask for and its cost. */
+  rent: number;
+  cut: number;
+  saving: number;
+  pickRent: number;
+  pay: number;
+  /** India: the policy's room-rent limit. Singapore: the plan's ward and the ward offered. */
+  limit?: number;
+  ward?: string;
+  quotedWard?: string;
+};
+
+/** Who speaks in the chat, by market: Kamala in Hindi, Siew-Hong in Mandarin. */
+const ELDER: Record<Country, { initial: string; lang: string }> = {
+  IN: { initial: 'क', lang: 'hi' },
+  SG: { initial: 'S', lang: 'zh' },
+};
+
+/** The second door: the elder parent's WhatsApp chat, told in a phone mock, and how to try it. */
+export async function ElderSection({ market, chat }: { market: Country; chat: ElderChat }) {
+  const t = await landingT('elder', market);
   const tw = await getTranslations('landing.whatsapp');
   const sandbox = sandboxJoin();
-  const inr = formatInr;
-  const cut = a.quoted.rows.find((r) => r.key === 'R-HL-001')?.amount ?? 0;
+  const inr = (n: number) => formatMoney(n, market);
+  const elder = ELDER[market];
+  const wards = { ward: chat.ward ?? '', quotedWard: chat.quotedWard ?? '' };
   const features = [
     { icon: 'mic', title: t('f1Title'), body: t('f1Body') },
     { icon: 'notifications_active', title: t('f2Title'), body: t('f2Body') },
@@ -273,7 +298,7 @@ export async function ElderSection({ a }: { a: Admission }) {
 
               {/* Messages */}
               <div
-                lang="hi"
+                lang={elder.lang}
                 className="stagger flex flex-col gap-4 bg-surface-container-low p-3 text-sm sm:p-4"
               >
                 {/* Kamala's voice note (her side, on the right) */}
@@ -293,14 +318,14 @@ export async function ElderSection({ a }: { a: Admission }) {
                       </span>
                     </div>
                     <p className="font-serif text-citation-sm italic text-on-surface-variant">
-                      “{t('voiceText', { rent: inr(a.quoted.rentPerDay) })}”
+                      “{t('voiceText', { rent: inr(chat.rent), ...wards })}”
                     </p>
                   </div>
                   <span
                     aria-hidden
                     className="flex size-7 shrink-0 items-center justify-center rounded-full bg-partial-bg font-display text-xs font-bold text-partial"
                   >
-                    क
+                    {elder.initial}
                   </span>
                 </div>
 
@@ -314,19 +339,20 @@ export async function ElderSection({ a }: { a: Admission }) {
                     {t('replyWarn')}
                   </p>
                   <p className="text-body-sm">
-                    {t('replyBody', { limit: inr(a.limit), cut: inr(cut) })}
+                    {t('replyBody', { limit: inr(chat.limit ?? 0), cut: inr(chat.cut), ...wards })}
                   </p>
                   <div className="flex flex-col gap-1.5 rounded-lg bg-surface-container-low p-2.5 text-xs">
                     <p className="flex items-center justify-between gap-2 font-bold text-primary">
                       <span>{t('replyCardTitle')}</span>
                       <span className="text-safe">
-                        {t('replyCardSaving', { saving: inr(a.saving) })}
+                        {t('replyCardSaving', { saving: inr(chat.saving) })}
                       </span>
                     </p>
                     <p>
                       {t('replyCardBody', {
-                        rent: inr(a.pick.rentPerDay),
-                        pay: inr(a.pick.outOfPocket),
+                        rent: inr(chat.pickRent),
+                        pay: inr(chat.pay),
+                        ...wards,
                       })}
                     </p>
                     <p className="text-[0.6875rem] text-on-surface-variant">{t('replyCardRule')}</p>
@@ -361,7 +387,7 @@ export async function ElderSection({ a }: { a: Admission }) {
               <span className="min-w-0">
                 <span className="block font-semibold text-on-surface">{t('caption')}</span>
                 <span className="block text-on-surface-variant">
-                  {t('alertPill', { hospital: a.hospital, rent: inr(a.pick.rentPerDay) })}
+                  {t('alertPill', { hospital: chat.hospital, rent: inr(chat.pickRent), ...wards })}
                 </span>
               </span>
             </figcaption>
@@ -504,9 +530,103 @@ export async function Policies({
 }
 
 /* ------------------------------------------------------------------------------------------- */
+/** Who wrote a rule's figure, in a few words: the body before the first comma or colon. */
+const sourceBody = (title: string) => title.split(/[,:]/)[0]!.trim();
+
+/**
+ * Singapore's rules in place of India's public wordings: every R-SG rule the engine carries, its
+ * status and who sets the figure. Singapore has no single master circular, so the section says so
+ * and shows which rules a person has checked against the primary page and which are still open.
+ */
+export async function SgRules() {
+  const t = await getTranslations('landing.sgRules');
+  const ts = await getTranslations('landing.admissionSg');
+  const rules = Object.values(RULES).filter((r) => r.id.startsWith('R-SG'));
+  const checked = rules.filter((r) => r.status === 'verified').length;
+
+  return (
+    <section
+      id="policies"
+      aria-labelledby="sg-rules-title"
+      className="scroll-mt-28 bg-surface-container-low px-4 py-14 sm:px-6 sm:py-16 lg:px-8"
+    >
+      <div className="mx-auto flex max-w-7xl flex-col gap-10">
+        <Reveal className="flex flex-col justify-between gap-4 md:flex-row md:items-end">
+          <div>
+            <Eyebrow icon="fact_check" className="text-safe">
+              {t('eyebrow')}
+            </Eyebrow>
+            <h2
+              id="sg-rules-title"
+              className="font-display text-[1.75rem] font-bold leading-tight text-primary sm:text-headline-lg"
+            >
+              {t('title', { count: rules.length })}
+            </h2>
+            <p className="mt-1 max-w-2xl text-body-md text-on-surface-variant">{t('intro')}</p>
+          </div>
+          <Link
+            href="/proof"
+            className="lift inline-flex min-h-12 shrink-0 items-center gap-2 self-start rounded-md bg-surface px-4 text-sm font-semibold text-primary shadow-1 md:self-auto"
+          >
+            <Icon name="database" className="text-base text-partial" />
+            {t('checked', { checked, count: rules.length })}
+          </Link>
+        </Reveal>
+
+        <Reveal>
+          <ul className="stagger grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {rules.map((r, n) => {
+              const source = r.sources[0]?.title ?? '';
+              const own = /policy's own wording/i.test(source);
+              return (
+                <li
+                  key={r.id}
+                  style={i(n)}
+                  className="lift flex flex-col gap-2 rounded-xl bg-surface p-4 shadow-1"
+                >
+                  <span className="w-fit rounded-sm bg-primary-soft px-1.5 py-0.5 font-mono text-[0.6875rem] font-bold text-primary">
+                    {r.id}
+                  </span>
+                  <p className="font-display text-title-md font-bold">
+                    {ts.has(`rulesNames.${r.id}`) ? ts(`rulesNames.${r.id}`) : r.id}
+                  </p>
+                  <p
+                    title={source}
+                    className="font-serif text-citation-sm text-on-surface-variant [overflow-wrap:anywhere]"
+                  >
+                    {own ? t('planWording') : sourceBody(source)}
+                  </p>
+                  <p
+                    className={cn(
+                      'mt-auto flex items-center gap-1 pt-1 text-xs font-semibold',
+                      r.status === 'verified' ? 'text-safe' : 'text-partial',
+                    )}
+                  >
+                    <Icon
+                      name={r.status === 'verified' ? 'verified' : 'pending'}
+                      className="text-sm"
+                    />
+                    {r.status === 'verified' ? t('verified') : t('toVerify')}
+                  </p>
+                </li>
+              );
+            })}
+          </ul>
+        </Reveal>
+
+        <Reveal className="flex items-start gap-3 rounded-xl bg-surface p-4 text-xs text-on-surface-variant">
+          <Icon name="account_balance" className="text-xl text-primary" />
+          <span>{t('notice')}</span>
+        </Reveal>
+      </div>
+    </section>
+  );
+}
+
+/* ------------------------------------------------------------------------------------------- */
 /** What Kavach is and is not; the gateway's "Our promise" lands here. */
-export async function PromiseSection() {
-  const t = await getTranslations('landing.promise');
+export async function PromiseSection({ market }: { market: Country }) {
+  const t = await landingT('promise', market);
   return (
     <section
       id="promise"
@@ -532,7 +652,7 @@ export async function PromiseSection() {
           </Link>
         </div>
         <div className="rounded-xl bg-surface p-5 shadow-1 sm:p-6 lg:col-span-7">
-          <IsIsNot />
+          <IsIsNot market={market} />
         </div>
       </Reveal>
     </section>
@@ -541,8 +661,9 @@ export async function PromiseSection() {
 
 /* ------------------------------------------------------------------------------------------- */
 /** The dark closing band: the two scenes and the way to your own family. */
-export async function CtaBand() {
-  const t = await getTranslations('landing.cta');
+export async function CtaBand({ market }: { market: Country }) {
+  const t = await landingT('cta', market);
+  const sg = market === 'SG';
   return (
     <section
       aria-labelledby="cta-title"
@@ -562,17 +683,23 @@ export async function CtaBand() {
         <p className="max-w-2xl text-body-lg text-white/85">{t('body')}</p>
         <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
           <Link
-            href={{ pathname: '/desk', query: { demo: '1' } }}
+            href={{
+              pathname: '/desk',
+              query: { demo: '1', ...(sg ? { scene: 'singapore' } : {}) },
+            }}
             className="btn-solid btn-accent flex min-h-14 items-center gap-2 rounded-md bg-accent px-6 text-title-md font-bold text-accent-ink hover:bg-accent-hover"
           >
             <Icon name="local_hospital" fill className="text-xl" />
             {t('hospital')}
           </Link>
           <Link
-            href={{ pathname: '/desk', query: { demo: '1', scene: 'maternity' } }}
+            href={{
+              pathname: '/desk',
+              query: { demo: '1', ...(sg ? {} : { scene: 'maternity' }) },
+            }}
             className="press flex min-h-14 items-center gap-2 rounded-md bg-white/10 px-6 text-title-md font-bold text-white hover:bg-white/20"
           >
-            <Icon name="pregnant_woman" className="text-xl" />
+            <Icon name={sg ? 'travel_explore' : 'pregnant_woman'} className="text-xl" />
             {t('maternity')}
           </Link>
           <Link
@@ -591,21 +718,28 @@ export async function CtaBand() {
 /* ------------------------------------------------------------------------------------------- */
 /** The footer: brand, real links, the rules' sources and the global disclaimer verbatim. */
 export async function LandingFooter({
+  market,
   wordings,
   checked,
   masterUrl,
 }: {
+  market: Country;
   wordings?: number;
   checked?: number;
+  /** India: the IRDAI master circular. Singapore: MOH's MediShield Life page. */
   masterUrl?: string;
 }) {
-  const t = await getTranslations('landing.footer');
+  const t = await landingT('footer', market);
   const te = await getTranslations('common.evidence');
   const tp = await getTranslations('landing.promise');
+  const sg = market === 'SG';
   const tryLinks: { href: Href; label: string }[] = [
-    { href: { pathname: '/desk', query: { demo: '1' } }, label: t('desk') },
     {
-      href: { pathname: '/desk', query: { demo: '1', scene: 'maternity' } },
+      href: { pathname: '/desk', query: { demo: '1', ...(sg ? { scene: 'singapore' } : {}) } },
+      label: t('desk'),
+    },
+    {
+      href: { pathname: '/desk', query: { demo: '1', ...(sg ? {} : { scene: 'maternity' }) } },
       label: t('maternity'),
     },
     { href: '/demo', label: t('demo') },
@@ -684,12 +818,18 @@ export async function LandingFooter({
         </div>
 
         <div className="flex flex-col gap-2 border-t border-surface-container pt-6 font-serif text-citation-sm text-on-surface-variant">
-          <p>
-            {te('sources')} <span className="font-semibold text-primary">{te('irdai2024')}</span>
-            {' · '}
-            <span className="font-semibold text-primary">{te('irdai2020')}</span>
-          </p>
-          {wordings !== undefined && (
+          {sg ? (
+            <p>
+              {te('sources')} <span className="font-semibold text-primary">{t('sources')}</span>
+            </p>
+          ) : (
+            <p>
+              {te('sources')} <span className="font-semibold text-primary">{te('irdai2024')}</span>
+              {' · '}
+              <span className="font-semibold text-primary">{te('irdai2020')}</span>
+            </p>
+          )}
+          {!sg && wordings !== undefined && (
             <p>{te('wordings', { count: wordings, checked: checked ?? 0 })}</p>
           )}
           <DisclaimerBar kind="global" className="font-sans" />

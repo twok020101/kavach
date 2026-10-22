@@ -3,7 +3,8 @@
 import { useTranslations } from 'next-intl';
 import { cn } from '../ui/cn';
 
-export type DisclaimerKind = 'global' | 'plan' | 'hospital' | 'claims';
+/** `hospitalSg`: the hospital line for Singapore, where the desk is the hospital's insurance counter. */
+export type DisclaimerKind = 'global' | 'plan' | 'hospital' | 'hospitalSg' | 'claims';
 
 /** The thin disclaimer bar of 07 §8, with the copy of 11 §4 verbatim. Client, so screens can place it. */
 export function DisclaimerBar({ kind, className }: { kind: DisclaimerKind; className?: string }) {

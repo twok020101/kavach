@@ -7,10 +7,14 @@ const noop = () => () => {};
 const hasSpeech = () => 'speechSynthesis' in window;
 
 /**
- * The Hindi line to say at the TPA counter, with a speaker (the browser's own Hindi voice, when
- * it has one) and a copy button. The words come from the messages, the amounts from the engine.
+ * The line to say at the desk, in the desk's language (Hindi at the TPA counter in India,
+ * Mandarin at the admissions counter in Singapore), with a speaker (the browser's own voice for
+ * that language, when it has one) and a copy button. The words come from the messages, the
+ * amounts from the engine.
  */
 export function DeskLine({
+  lang = 'hi',
+  speechLang = 'hi-IN',
   line,
   label,
   hint,
@@ -20,6 +24,8 @@ export function DeskLine({
   copy,
   copied,
 }: {
+  lang?: string;
+  speechLang?: string;
   line: string;
   label: string;
   hint: string;
@@ -47,7 +53,7 @@ export function DeskLine({
       return;
     }
     const utterance = new SpeechSynthesisUtterance(line);
-    utterance.lang = 'hi-IN';
+    utterance.lang = speechLang;
     utterance.rate = 0.92;
     utterance.onend = () => setSpeaking(false);
     utterance.onerror = () => setSpeaking(false);
@@ -84,7 +90,10 @@ export function DeskLine({
             <span className="text-label-caps font-bold uppercase text-secondary">{label}</span>
             <span className="font-serif text-citation-sm text-on-surface-variant">{hint}</span>
           </p>
-          <p lang="hi" className="font-display text-base font-semibold leading-relaxed sm:text-lg">
+          <p
+            lang={lang}
+            className="font-display text-base font-semibold leading-relaxed sm:text-lg"
+          >
             “{line}”
           </p>
           <p className="font-serif text-citation-sm italic text-on-surface-variant">{gloss}</p>
